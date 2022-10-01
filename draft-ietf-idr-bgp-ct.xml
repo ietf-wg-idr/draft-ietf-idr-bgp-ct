@@ -1,0 +1,1906 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+<?rfc toc="yes"?>
+<?rfc tocompact="yes"?>
+<?rfc tocdepth="3"?>
+<?rfc tocindent="yes"?>
+<?rfc symrefs="yes"?>
+<?rfc sortrefs="yes"?>
+<?rfc comments="yes"?>
+<?rfc inline="yes"?>
+<?rfc compact="yes"?>
+<?rfc subcompact="no"?>
+<rfc category="exp"
+     docName="draft-ietf-idr-bgp-ct-00"
+     ipr="trust200902">
+  <front>
+    <title abbrev="BGP Classful Transport Planes">BGP Classful Transport
+    Planes</title>
+
+    <author fullname="Kaliraj Vairavakkalai" initials="K." role="editor"
+            surname="Vairavakkalai">
+      <organization>Juniper Networks, Inc.</organization>
+
+      <address>
+        <postal>
+          <street>1133 Innovation Way,</street>
+
+          <city>Sunnyvale</city>
+
+          <region>CA</region>
+
+          <code>94089</code>
+
+          <country>US</country>
+        </postal>
+
+        <email>kaliraj@juniper.net</email>
+      </address>
+    </author>
+    <author fullname="Natrajan Venkataraman" initials="N." role="editor"
+            surname="Venkataraman">
+      <organization>Juniper Networks, Inc.</organization>
+
+      <address>
+        <postal>
+          <street>1133 Innovation Way,</street>
+
+          <city>Sunnyvale</city>
+
+          <region>CA</region>
+
+          <code>94089</code>
+
+          <country>US</country>
+        </postal>
+
+        <email>natv@juniper.net</email>
+      </address>
+    </author>
+  
+    <date day="06" month="09" year="2022"/>
+
+    <abstract>
+      <t>This document specifies a mechanism, referred to as "Intent Driven
+      Service Mapping" to express association of overlay routes with underlay
+      routes satisfying a certain SLA using BGP. The document describes a
+      framework for classifying underlay routes into transport classes and
+      mapping service routes to specific transport class.</t>
+
+      <t>The "Transport class" construct maps to a desired SLA and can be used
+      to realize the "Topology Slice" in 5G Network slicing architecture.</t>
+
+      <t>This document specifies BGP protocol procedures that enable
+      dissemination of such service mapping information that may span multiple
+      cooperating administrative domains. These domains may be administetered
+      by the same provider or by closely co-ordinating provider networks.</t>
+
+      <t>A new BGP transport layer address family (SAFI 76) is defined for
+      this purpose that uses RFC-4364 technology and follows RFC-8277 NLRI
+      encoding. This new address family is called "BGP Classful Transport",
+      aka BGP CT.</t>
+
+      <t>BGP CT makes it possible to advertise multiple tunnels to the same
+      destination address, thus avoiding need of multiple loopbacks on the
+      egress node.</t>
+
+      <t>It carries transport prefixes across tunnel domain boundaries (e.g.
+      in Inter-AS Option-C networks), which is parallel to BGP LU (SAFI 4) .
+      It disseminates "Transport class" information for the transport prefixes
+      across the participating domains, which is not possible with BGP LU.
+      This makes the end-to-end network a "Transport Class" aware tunneled
+      network.</t>
+
+      <t>Though BGP CT family is used only in the option-C inter-AS neworks,
+      the Service Mapping procedures described in this document apply in the
+      same manner to Intra-AS service end points as well as Inter-AS option-A,
+      option-B and option-C variations.</t>
+    </abstract>
+
+    <note title="Requirements Language">
+      <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+      "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+      document are to be interpreted as described in <xref
+      target="RFC2119">RFC 2119</xref>.</t>
+    </note>
+  </front>
+
+  <middle>
+    <section title="Introduction">
+      <t>The mechanisms defined in this document enable brownfiled networks
+      deployed using existing technologies like RSVP-TE and greenfield
+      networks that use technologies like SPRING achieve 'Intent Driven
+      Service Mapping'.</t>
+
+      <t>To facilitate this, the tunnels in a network can be grouped by the
+      purpose they serve into a "Transport Class". These tunnels could be
+      created using any signaling protocol including but not limited to LDP,
+      RSVP-TE, BGP LU or SPRING. The tunnels could also use native IP or IPv6
+      as long as they can carry MPLS payload. Tunnels may exist between
+      different pair of end points. Multiple tunnels may exist between the
+      same pair of end points.</t>
+
+      <t>Thus, a Transport Class consists of tunnels created by various
+      protocols that satisfy the properties of the class. For example, a
+      "Gold" transport class may consist of tunnels that traverse the shortest
+      path with fast re-route protection. A "Silver" transport class may hold
+      tunnels that traverse shortest paths without protection. A "To NbrAS
+      Foo" transport class may hold tunnels that exit to neighboring AS Foo
+      and so on.</t>
+
+      <t>The extensions specified in this document can be used to create a BGP
+      transport tunnel that potentially spans domains while preserving its
+      Transport Class. Examples of domain are Autonomous System (AS) or IGP
+      area. Within each domain, there is a second level underlay tunnel used
+      by BGP to cross the domain. The second level underlay tunnels could be
+      hetrogeneous; each domain may use a different type of tunnel (e.g. MPLS,
+      IP, GRE or SRv6) or use a differnet signaling protocol. A domain
+      boundary is demarcated by a rewrite of BGP nexthop to 'self' while
+      readvertising tunnel routes in BGP CT. Examples of domain boundary are
+      inter-AS links and inter-region ABRs. The path uses MPLS label-switching
+      when crossing domain boundaries and uses the native intra-AS tunnel of
+      the desired transport class when traversing within a domain.</t>
+
+      <t>Overlay routes carry sufficient indication of the desired Transport
+      Classes in the form of a BGP community called the "Mapping community".
+      The "route resolution" procedure on the ingress node selects an
+      appropriate tunnel whose destination matches (LPM) the nexthop of the
+      overlay route belonging to the corresponding Transport Class. If the
+      overlay route is carried in BGP, the protocol nexthop (or PNH) is
+      carried as an attribute of the route.</t>
+
+      <t>The PNH of the overlay route is also referred to as "Service
+      Endpoint" (SEP). The SEP may exist in the same domain as the service
+      ingress node or lie in a different domain, which is adjacent or
+      non-adjacent. In the former case, reachability to the SEP is provided by
+      an intra-domain tunneling protocol and in the latter case, reachability
+      to the SEP is via BGP transport families (e.g. SAFI 4 or 76).</t>
+
+      <t>In this architecture, the intra-domain transport protocols (e.g.
+      RSVP-TE, SRTE) are also "Transport Class aware". They publish ingress
+      routes in the Transport Route Database associated with the Transport
+      Class at the tunnel ingress node. These routes are used to resolve BGP
+      routes inluding BGP CT which may be further readvertised to adjacent
+      domains to extend this tunnel. How exactly the transport protocols are
+      made transport class aware is outside the scope of this document.</t>
+
+      <t>This document describes mechanisms to: <list>
+          <t>Model a "Transport Class" as a "Transport Route Database" on a
+          router and to collect tunnel ingress routes of a certain class.</t>
+
+          <t>Enable service routes to resolve over an intended Transport Class
+          by virtue of carrying the appropriate "Mapping Community", which
+          results in using the corresponding Transport Route Database for
+          finding nexthop reachability.</t>
+
+          <t>Publish tunnel ingress routes in a Transport Route Database via
+          BGP without any path hiding using BGP VPN and Add-path procedures,
+          such that overlay routes in the receiving domains can also resolve
+          over tunnels of the associated Transport Class.</t>
+
+          <t>Provide a way for cooperating domains to reconcile any
+          differences in extended community namespaces and interoperate
+          between different transport signaling protocols in each domain.</t>
+        </list></t>
+
+      <t>In this document we focus mainly on MPLS as the intra-domain
+      transport tunnel forwarding technology, but the mechanisms described
+      here would work in similar manner for non-MPLS (e.g. IP, GRE, UDP or
+      SRv6) transport tunnel forwarding technologies too.</t>
+
+      <t>This document assumes MPLS forwarding as the defacto standard when
+      crossing domain boundaries. However mechanisms specified in this
+      document can also support different forwarding technologies (e.g. SRv6).
+      Section 17 (SRv6 support) in this document describes the application of
+      BGP CT over SRv6 data plane.</t>
+
+      <t>The document <xref target="Seamless-SR">Seamless Segment
+      Routing</xref> describes various use cases and applications of
+      procedures described in this document.</t>
+    </section>
+
+    <section title="Terminology">
+      <t>LSP: Label Switched Path.</t>
+
+      <t>TE : Traffic Engineering.</t>
+
+      <t>SN : Service Node. A router that sends or receives BGP Service routes
+      (e.g. SAFI 1, 128) with self as nexthop.</t>
+
+      <t>BN : Border Node. A router that sends or receives BGP Transport
+      routes (e.g. SAFI 4, 76) with self as nexthop.</t>
+
+      <t>TN : Transport Node, P-router.</t>
+
+      <t>BGP-VPN : VPNs built using RFC4364 mechanisms.</t>
+
+      <t>RT : Route-Target extended community.</t>
+
+      <t>RD : Route-Distinguisher.</t>
+
+      <t>VRF: Virtual Router Forwarding Table.</t>
+
+      <t>CsC: Carrier serving Carrier VPN.</t>
+
+      <t>PNH : Protocol-Nexthop address carried in a BGP Update message.</t>
+
+      <t>EP : End point, a loopback address in the network.</t>
+
+      <t>SEP : Service End point, the PNH of a Service route.</t>
+
+      <t>LPM : Longest Prefix Match.</t>
+
+      <t>SLA: Service Level Agreement.</t>
+
+      <t>EPE: Egress Peer Engineering.</t>
+
+      <t>Service Family : BGP address family used for advertising routes for
+      "data traffic" as opposed to tunnels (e.g. SAFI 1 or 128).</t>
+
+      <t>Transport Family : BGP address family used for advertising tunnels,
+      which are in turn used by service routes for resolution (e.g. SAFI 4 or
+      76).</t>
+
+      <t>Transport Tunnel : A tunnel over which a service may place traffic
+      (e.g. GRE, UDP, LDP, RSVP-TE or SPRING).</t>
+
+      <t>Tunnel Ingress Route: Route to Tunnel Destination/Endpoint installed
+      at the headend (ingress) of the tunnel by the tunneling protocol.</t>
+
+      <t>Tunnel Domain : A domain of the network containing SNs and BNs under
+      a single administrative control that has tunnels between them. An
+      end-to-end tunnel spanning several adjacent tunnel domains can be
+      created by "stitching" them together using labels.</t>
+
+      <t>Transport Class : A group of transport tunnels offering the same
+      SLA.</t>
+
+      <t>Transport Class RT : A Route-Target extended community used to
+      identify a specific Transport Class.</t>
+
+      <t>Transport Route Database : At the SN and BN, a Transport Class has an
+      associated Transport Route Database that collects its tunnel ingress
+      routes.</t>
+
+      <t>Transport Plane : An end to end plane comprising of transport tunnels
+      belonging to same Transport Class. Tunnels of same Transport Class are
+      stitched together by BGP CT route readvertisements with nexthop self to
+      enable Label-Swap forwarding across domain boundaries.</t>
+
+      <t>Mapping Community : BGP Community/Extended-community on a service
+      route that maps it to resolve over a Transport Class.</t>
+    </section>
+
+    <section title="Transport Class">
+      <t>A Transport Class is defined as a set of transport tunnels that share
+      the same SLA. It is encoded as the Transport Class RT, which is a new
+      Route-Target extended community.</t>
+
+      <t>A Transport Class is configured at SN and BN with RD and Route Target
+      attributes. Creation of a Transport Class instantiates its corresponding
+      Transport Route Database.</t>
+
+      <t>The operator may configure an SN/BN to classify a tunnel into an
+      appropriate Transport Class, which causes the tunnel's ingress route to
+      be installed in the corresponding Transport Route Database. These routes
+      are used to resolve BGP routes inluding BGP CT which may be further
+      readvertised to adjacent domains to extend this tunnel.</t>
+
+      <t>Alternatively, a router receiving the transport routes in BGP with
+      appropriate signaling information can associate those ingress routes to
+      the appropriate Transport Class. E.g. for Classful Transport family
+      (SAFI 76) routes, the Transport Class RT indicates the Transport Class.
+      For BGP LU family(SAFI 4) routes, import processing based on Communities
+      or inter-AS source-peer may be used to place the route in the desired
+      Transport Class.</t>
+
+      <t>When the ingress route is received via <xref
+      target="SRTE">SRTE</xref> with "Color:Endpoint" as the NLRI that encodes
+      the Transport Class as an integer 'Color', the 'Color' is mapped to a
+      Transport Class during import processing. SRTE ingress route for
+      'Endpoint' is installed in the corresponding Transport Route Database.
+      The SRTE tunnel will be extended by a BGP CT advertisement with NLRI
+      'RD:Endpoint', Transport Class RT and a new label. The MPLS swap route
+      thus installed for the new label will pop the label and deliver
+      decapsulated traffic into the path determined by SRTE route.</t>
+
+      <t><xref target="RFC8664">RFC8664</xref> extends PCEP to carry SRTE
+      Color. This color association learnt from PCEP is also mapped to a
+      Transport Class thus associating the PCEP signaled SRTE LSP with the
+      desired Transport Class.</t>
+
+      <t>Similarly, <xref target="PCEP-RSVP-COLOR">PCEP-RSVP-COLOR</xref>
+      extends PCEP to carry RSVP Color. This color association learnt from
+      PCEP is also mapped to a Transport Class thus associating the PCEP
+      signaled RSVP-TE LSP with the desired Transport Class.</t>
+    </section>
+
+    <section title="&quot;Transport Class&quot; Route Target Extended Community">
+      <t>This document defines a new type of Route Target, called "Transport
+      Class" Route Target Extended Community.</t>
+
+      <t>"Transport Class" Route Target extended community is a transitive
+      extended community <xref target="RFC4360">EXT-COMM</xref> of
+      extended-type, with a new Format (Type high = 0xa) and SubType as 0x2
+      (Route Target).</t>
+
+      <t>This new Route Target Format has the following encoding:</t>
+
+      <figure>
+        <artwork>
+
+
+
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Type= 0xa   | SubType= 0x02 |            Reserved           |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                     Transport Class ID                        |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+      Fig 1: "Transport Class" Route Target Extended Community
+
+ Type: 1 octet
+
+    Type field contains value 0xa.
+
+ SubType: 1 octet
+
+    Subtype field contain 0x2. This indicates 'Route Target'.
+
+ Transport Class ID: 4 octets
+
+    The least significant 32-bits of the value field contain the 
+    "Transport Class" identifier, which is a 32-bit integer. 
+
+ The remaining 2 octets after SubType field are Reserved. They MUST 
+ be set to zero on transmission, SHOULD be ignored on reception and
+ left unaltered.
+ 
+</artwork>
+      </figure>
+
+      <t>The "Transport class" Route Target Extended community follows the
+      mechanisms for VPN route import/export as specified in <xref
+      target="RFC4364">BGP-VPN</xref> and follows the Constrained Route
+      Distribution mechanisms as specified in <xref target="RFC4684">Route
+      Target Constraints</xref></t>
+
+      <t>A BGP speaker that implements RT Constraint <xref
+      target="RFC4684">Route Target Constraints</xref> MUST apply the RT
+      Constraint procedures to the "Transport class" Route Target Extended
+      community as well.</t>
+
+      <t>The Transport Class Route Target Extended community is carried on
+      Classful Transport family routes and allows associating them with
+      appropriate Transport Route Databases at receiving BGP speakers.</t>
+
+      <t>Use of the Transport Class Route Target Extended community with a new
+      Type code avoids conflicts with any VPN Route Target assignments already
+      in use for service families.</t>
+    </section>
+
+    <section title="Transport Route Database">
+      <t>A Transport Route Database is a logical collection of transport
+      routes pertaining to the same Transport Class. Tunnel endpoint addresses
+      in this database belong to the "Provider Namespace".</t>
+
+      <t>Overlay routes that want to use a specific Transport Class confine
+      the scope of nexthop resolution to the set of routes contained in the
+      corresponding Transport Route Database.</t>
+
+      <t>The Transport Route Database can be realized as a "Routing Table"
+      referred in <eref
+      target="https://www.rfc-editor.org/rfc/rfc4271#section-9.1.2.1">Section
+      9.1.2.1 of RFC4271</eref> which is a control plane only database.
+      However, an implementation may choose a different methodology to realize
+      this logical construct in such a way that it supports the procedures
+      defined in this document.</t>
+
+      <t>SN or BN originate routes for 'Classful Transport' address family
+      from the Transport Route Database. These routes have NLRI "RD:Endpoint",
+      Transport Class RT and an MPLS label. 'Classful Transport' family routes
+      received with Transport Class RT are imported into its corresponding
+      Transport Route Database.</t>
+    </section>
+
+    <section title="Nexthop Resolution Scheme">
+      <t>An implementation may provide an option for the service route to
+      resolve over less preferred Transport Classes, should the resolution
+      over preferred or "primary" Transport Class fail.</t>
+
+      <t>To accomplish this, the set of service routes may be associated with
+      a user-configured "Resolution Scheme" that consists of the primary
+      Transport Class and an optional ordered list of fallback Transport
+      Classes.</t>
+
+      <t>A community called as "Mapping Community" is configured for a
+      "resolution scheme". A Mapping Community maps to exactly one Resolution
+      Scheme. A Resolution Scheme comprises of one primary transport class and
+      optionally, one or more fallback transport classes.</t>
+
+      <t>A BGP route is associated with a resolution scheme during import
+      processing. The first community on the route that matches a Mapping
+      Community of a locally configured Resolution Scheme is considered the
+      effective Mapping Community for the route. The Resolution Scheme thus
+      found is used when resolving the route's PNH. If a route contains more
+      than one Mapping Community, it indicates that the route considers these
+      multiple Mapping Communities as equivalent. So, the first community that
+      maps to a Resolution Scheme is chosen.</t>
+
+      <t>A transport route received in BGP Classful Transport family SHOULD
+      use a Resolution Scheme that contains the primary Transport Class
+      without any fallback to best effort tunnels. The primary Transport Class
+      is identified by the Transport Class RT carried on the route. Thus,
+      Transport Class RT serves as the Mapping Community for BGP CT
+      routes.</t>
+
+      <t>A service route received in a BGP service family MAY map to a
+      Resolution Scheme that contains the primary Transport Class identified
+      by the Mapping Community on the route and a fallback to best effort
+      Transport Class. The primary Transport Class is identified by the
+      Mapping Community carried on the route. For e.g. the Extended Color
+      community may serve as the Mapping Community for service routes.
+      Color:0:&lt;n&gt; MAY map to a Resolution Scheme that has primary
+      Transport Class &lt;n&gt; and a fallback to best-effort Transport
+      Class.</t>
+    </section>
+
+    <section title="BGP Classful Transport Family NLRI">
+      <t>The Classful Transport (CT) family will use the existing AFI of IPv4
+      or IPv6 and a new SAFI 76 "Classful Transport" that will apply to both
+      IPv4 and IPv6 AFIs. These AFI, SAFI pair of values MUST be negotiated in
+      Multiprotocol Extensions capability described in <xref
+      target="RFC4760"/> to be able to send and receive BGP CT routes.</t>
+
+      <t>The "Classful Transport" SAFI NLRI itself is encoded as specified in
+      <xref
+      target="RFC8277">https://tools.ietf.org/html/rfc8277#section-2</xref>.</t>
+
+      <t>When AFI/SAFI is 1/76, the Classful Transport NLRI Prefix consists of
+      an 8-byte RD followed by an IPv4 prefix. When AFI/SAFI is 2/76, the
+      Classful Transport NLRI Prefix consists of an 8-byte RD followed by an
+      IPv6 prefix.</t>
+
+      <t>For better readability, the following figure illustrates a BGP
+      Classful Transport family NLRI when single Label is advertised:</t>
+
+      <figure>
+        <artwork>
+
+      0                   1                   2                   3
+      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     |    Length     |                 Label                 |Rsrv |S|
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     ~                     Route Distinguisher (8 bytes)             |
+     |                                                               |
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+     |                     IPv4/IPv6 Prefix                          ~
+     |                                                               |
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+         Fig 2: SAFI 76 "Classful Transport" NLRI
+
+ Length: 1 octet
+
+    The Length field consists of a single octet.  It specifies the
+    length in bits of the remainder of the NLRI field.
+
+    Note that the length will always be the sum of 20 (number of bits
+    in Label field), plus 3 (number of bits in Rsrv field), plus 1
+    (number of bits in S field), plus the length in bits of the
+    Prefix (RD:IP prefix).
+
+    In an MP_REACH_NLRI attribute whose SAFI is 76, the Prefix
+    (RD + IP prefix) will be 96 bits or less if the AFI is 1 
+    and will be 192 bits or less if the AFI is 2.
+    
+    As specified in [RFC4760], the actual length of the NLRI field
+    will be the number of bits specified in the Length field, rounded
+    up to the nearest integral number of octets.
+
+ Label:
+
+     The Label field is a 20-bit field containing an MPLS label value
+     (see [RFC3032]).
+
+ Rsrv:
+
+     This 3-bit field SHOULD be set to zero on transmission and MUST be
+     ignored on reception.
+
+ S:
+     When single label is advertised, this 1-bit field MUST be set to
+     one on transmission and MUST be ignored on reception.
+      
+
+ Route Distinguihser: 
+ 
+     8 byte RD as defined in [RFC4364 Sec 4.2].
+
+ IPv4/IPv6 Prefix: 
+
+    IPv4 prefix, if AFI/SAFI 1/76. 
+    IPv6 prefix, if AFI/SAFI 2/76.
+
+</artwork>
+      </figure>
+
+      <t>Attributes on a Classful Transport route include the Transport Class
+      Route-Target extended community, which is used to associate the route
+      with the correct Transport Route Databases on SNs and BNs in the
+      network.</t>
+
+      <t>SAFI 76 routes can be sent with either IPv4 or IPv6 nexthop. The type
+      of nexthop is inferred from the length of the nexthop.</t>
+
+      <t>When the length of Next Hop Address field is 24 (or 48) the nexthop
+      address is of type VPN-IPv6 with 8-octet RD set to zero (potentially
+      followed by the link-local VPN-IPv6 address of the next hop with an
+      8-octet RD set to zero).</t>
+
+      <t>When the length of the Next Hop Address field is 12 the nexthop
+      address is of type VPN-IPv4 with 8-octet RD set to zero.</t>
+    </section>
+
+    <section title="Use of Route Distinguisher">
+      <t>RD aids in troubleshooting a BGP CT network by uniquely identifying
+      the originator of a route across a multi domain network.</t>
+
+      <t>Use of RD also allows the option for signaling forwarding diversity
+      within the same Transport Class. The same Egress PE can advertise
+      multiple BGP CT routes for an EP belonging to the same Transport
+      Class.</t>
+
+      <t>E.g. multiple RDx:EP1 prefixes can be advertised for an EP1 to
+      different set of BGP peers in order to collect traffic statistics for
+      them. In absense of RD, duplicated Transport Class/Color values will be
+      needed in the transport network to achieve such use cases.</t>
+    </section>
+
+    <section title="Comparison with other families using RFC-8277 encoding">
+      <t>SAFI 128 (Inet-VPN) is an RFC8277 encoded family that carries service
+      prefixes in the NLRI, where the prefixes come from the customer
+      namespaces and are contexualized into separate user virtual service RIBs
+      called VRFs using RFC4364 procedures.</t>
+
+      <t>SAFI 4 (BGP LU) is an RFC8277 encoded family that carries transport
+      prefixes in the NLRI, where the prefixes come from the provider
+      namespace.</t>
+
+      <t>SAFI 76 (Classful Transport) is an RFC8277 encoded family that
+      carries transport prefixes in the NLRI, where the prefixes come from the
+      provider namespace and are contexualized into separate Transport Route
+      Databases using RFC4364 procedures.</t>
+
+      <t>It is worth noting that SAFI 128 has been used to carry transport
+      prefixes in "L3VPN Inter-AS Carrier's carrier" scenario, where BGP
+      LU/LDP prefixes in CsC VRF are advertised in SAFI 128 towards the
+      remote-end client carrier.</t>
+
+      <t>In this document a new AFI/SAFI is used instead of reusing SAFI 128
+      to carry these transport routes because it is operationally advantageous
+      to segregate transport and service prefixes into separate address
+      families. E.g. It allows to safely enable "per-prefix" label allocation
+      scheme for Classful Transport prefixes without affecting SAFI 128
+      service prefixes which may have huge scale. The "per prefix" label
+      allocation scheme keeps the routing churn local during topology
+      changes.</t>
+
+      <t>A new family also facilitates having a different readvertisement path
+      of the transport family routes in a network than the service route
+      readvertisement path. Service routes (Inet-VPN) are exchanged over an
+      EBGP multihop session between Autonomous systems with nexthop unchanged;
+      whereas Classful Transport routes are readvertised over EBGP single hop
+      sessions with "nexthop self" rewrite over inter-AS links.</t>
+
+      <t>The Classful Transport family is similar in vein to BGP LU, in that
+      it carries transport prefixes. The only difference is that it also
+      carries in Route Target, an indication of which Transport Class the
+      transport prefix belongs to and uses RD to disambiguate multiple
+      instances of the same transport prefix in a BGP Update.</t>
+    </section>
+
+    <section title="Protocol Procedures">
+      <t>This section summarizes the procedures followed by various nodes
+      speaking Classful Transport family.</t>
+
+      <section title="Preparing the network to deploy Classful Transport planes">
+        <t><list>
+            <t>Operator decides on the Transport Classes that exist in the
+            network and allocates a Transport Class Route Target to identify
+            each Transport Class.</t>
+
+            <t>Operator configures Transport Classes on the SNs and BNs in the
+            network with Transport Class Route Targets and unique
+            Route-Distinguishers.</t>
+
+            <t>Implementations MAY provide automatic generation and assignment
+            of RD, RT values; they MAY also provide a way to manually override
+            the automatic mechanism in order to deal with any conflicts that
+            may arise with existing RD, RT values in different network domains
+            participating in the deployment.</t>
+          </list></t>
+      </section>
+
+      <section title="Origination of Classful Transport route">
+        <t><list>
+            <t>At the ingress node of the tunnel's home domain, the tunneling
+            protocols install tunnel ingress routes in the Transport Route
+            Database associated with the Transport Class the tunnel belongs
+            to.</t>
+
+            <t>The egress node of the tunnel i.e. the tunnel endpoint
+            originates the BGP Classful Transport route with NLRI containing
+            RD:TunnelEndpoint, Transport Class RT and PNH TunnelEndpoint,
+            which will resolve over the tunnel route in Transport Route
+            Database at the ingress node. When the tunnel is up, the Classful
+            Transport BGP route will become usable and get re-advertised.</t>
+
+            <t>Alternatively, the ingress node may advertise this tunnel
+            destination into BGP as a Classful Transport family route with
+            NLRI RD:TunnelEndpoint, attaching a 'Transport Class' Route Target
+            that identifies the Transport Class. This BGP CT route is
+            advertised to EBGP peers and IBGP peers in neighboring domains.
+            This route SHOULD NOT be advertised to the IBGP core that contains
+            the tunnel.</t>
+
+            <t>Unique RD SHOULD be used by the originator of a Classful
+            Transport route to disambiguate the multiple BGP advertisements
+            for a transport end point.</t>
+          </list></t>
+      </section>
+
+      <section title="Ingress node receiving Classful Transport route">
+        <list>
+          <t>On receiving a BGP Classful Transport route with a PNH that is
+          not directly connected (e.g. an IBGP-route), a Mapping Community on
+          the route (the Transport Class RT) indicates which Transport Class
+          this route maps to. The routes in the associated Transport Route
+          Database are used to resolve the received PNH. If there does not
+          exist a route in the Transport Route Database matching the PNH, the
+          Classful Transport route is considered unusable and MUST NOT be
+          advertised further.</t>
+        </list>
+      </section>
+
+      <section title="Border node readvertising Classful Transport route with nexthop       self">
+        <list>
+          <t>The BN allocates an MPLS label to advertise upstream in Classful
+          Transport NLRI. The BN also installs an MPLS route for that label
+          that swaps the incoming label with a label received from the
+          downstream BGP speaker or pops the incoming label. It then pushes
+          received traffic to the transport tunnel or direct interface that
+          the Classful Transport route's PNH resolved over.</t>
+
+          <t>The label SHOULD be allocated with "per-prefix" label allocation
+          semantics. RD is stripped from the BGP CT NLRI prefix when a BGP CT
+          route is added to a Transport Route Database. The IP prefix in the
+          Transport Route Database context (Transport-Class, IP-prefix) is
+          used as the key to do per-prefix label allocation. This helps in
+          avoiding BGP CT route churn through out the CT network when a
+          failure happens in a domain. The failure is not propagated further
+          than the BN closest to the failure.</t>
+
+          <t>The value of advertised MPLS label is locally significant, and is
+          dynamic by default. The BN may provide option to allocate a value
+          from a statically carved out range. This can be achieved using
+          locally configured export policy, or via mechanisms described in
+          <xref target="RFC8669">BGP Prefix-SID</xref>.</t>
+        </list>
+      </section>
+
+      <section title="Border node receiving Classful Transport route on EBGP">
+        <list>
+          <t>If the route is received with PNH that is known to be directly
+          connected (e.g. EBGP single-hop peering address), the directly
+          connected interface is checked for MPLS forwarding capability. No
+          other nexthop resolution process is performed as the inter-AS link
+          can be used for any Transport Class.</t>
+
+          <t>If the inter-AS links should honor Transport Class, then the BN
+          SHOULD follow procedures of an Ingress node described above and
+          perform nexthop resolution process. The interface routes SHOULD be
+          installed in the Transport Route Database belonging to the
+          associated Transport Class.</t>
+        </list>
+      </section>
+
+      <section title="Avoiding path-hiding through Route Reflectors">
+        <list>
+          <t>When multiple BNs exist such that theu advertise a RD:EP prefix
+          to RRs, the RRs may hide all but one of the BNs, unless <xref
+          target="RFC7911">ADDPATH</xref> is used for the Classful Transport
+          family. This is similar to L3VPN option-B scenarios. Hence ADDPATH
+          SHOULD be used for Classful Transport family, to avoid path-hiding
+          through RRs.</t>
+        </list>
+      </section>
+
+      <section title="Avoiding loop between Route Reflectors in forwarding path">
+        <list>
+          <t>Pair of redundant ABRs, each acting as an RR with nexthop self
+          may chose each other as best path instead of the upstream ASBR,
+          causing a traffic forwarding loop.</t>
+
+          <t>Implementations SHOULD provide a way to alter the tie-breaking
+          rule specified in <xref target="RFC4456">BGP RR</xref> to tie-break
+          on CLUSTER_LIST step before ROUTER-ID step, when performing path
+          selection for BGP CT routes. RFC4456 considers pure RR which is not
+          in forwarding path. When RR is in forwarding path and reflects
+          routes with nexthop self as is the case for ABR BNs in a BGP
+          transport network, this rule may cause loops. This document suggests
+          the following modification to the BGP Decision Process Tie Breaking
+          rules (Sect. 9.1.2.2, <xref target="RFC4271"/>) when doing path
+          selection for BGP CT family routes:</t>
+
+          <t>The following rule SHOULD be inserted between Steps e) and f): a
+          BGP Speaker SHOULD prefer a route with the shorter CLUSTER_LIST
+          length. The CLUSTER_LIST length is zero if a route does not carry
+          the CLUSTER_LIST attribute.</t>
+
+          <t>Some deployment considerations can also help in avoiding this
+          problem: <list>
+              <t>IGP metric should be assigned such that "ABR to redundant
+              ABR" cost is inferior than "ABR to upstream ASBR" cost.</t>
+
+              <t>Tunnels belonging to non best effort Transport Classes SHOULD
+              NOT be provisioned between ABRs. This will ensure that the route
+              received from an ABR with nexthop self will not be usable at a
+              redundant ABR.</t>
+            </list> This avoids possibility of such loops altogether.</t>
+        </list>
+      </section>
+
+      <section title="Ingress node receiving service route with Mapping Community">
+        <list>
+          <t>Service routes received with Mapping Community resolve using
+          Transport Route Databases determined by the Resolution Scheme. If
+          the resolution process does not find a Tunnel Ingress Route in any
+          of the Transport Route Databases, the service route MUST be
+          considered unusable for forwarding purpose and be withdrawn.</t>
+        </list>
+      </section>
+
+      <section title="Coordinating between domains using different community       namespaces">
+        <list>
+          <t>Cooperating option-C domains may sometimes not agree on RT, RD,
+          Mapping-community or Transport Route Target values because of
+          differences in community namespaces (e.g. during network mergers or
+          renumbering for expansion). Such deployments may deploy mechanisms
+          to map and rewrite the Route Target values on domain boundaries,
+          using per ASBR import policies. This is no different than any other
+          BGP VPN family. Mechanisms used in inter-AS VPN deployments may be
+          used with the Classful Transport family also.</t>
+
+          <t>The Resolution Schemes SHOULD allow association with multiple
+          Mapping Communities. This helps with renumbering, network mergers or
+          transitions.</t>
+
+          <t>Deploying unique RDs is strongly RECOMMENDED because it helps in
+          troubleshooting by uniquely identifying originator of a route and
+          avoids path-hiding.</t>
+
+          <t>This document defines a new format of Route-Target
+          extended-community to carry Transport Class, this avoids collision
+          with regular Route Target namespace used by service routes.</t>
+        </list>
+      </section>
+    </section>
+
+    <section title="Flowspec Redirect to IP">
+      <t>Flowspec routes using Redirect to IP nexthop is described in <xref
+      target="FLOWSPEC-REDIR-IP">BGP Flow-Spec Redirect to IP
+      Action</xref></t>
+
+      <t>Such Flowspec BGP routes with Redirect to IP nexthop can be attached
+      with a Mapping Community (e.g. Color:0:100), which allows redirecting
+      the flow traffic over a tunnel to the IP nexthop satisfying the desired
+      SLA (e.g. Transport Class color 100).</t>
+
+      <t>Flowspec BGP family acts as just another service that can make use of
+      BGP CT architecture to achieve Flow based forwarding with SLAs.</t>
+    </section>
+
+    <section title="BGP CT Egress TE">
+      <t>Mechanisms described in <xref target="BGP-LU-EPE">BGP LU EPE</xref>
+      also applies to BGP CT family.</t>
+
+      <t>The Peer/32 or Peer/128 EPE route MAY be originated in BGP CT family
+      with appropriate Mapping Community (e.g. transport-target:0:100), thus
+      allowing an EPE path to the peer that satisfies the desired SLA.</t>
+    </section>
+
+    <section title="Interaction with BGP attributes specifying nexthop address and color">
+      <t>The Tunnel Encapsulation Attribute described in <xref
+      target="RFC9012">RFC9012</xref> can be used to request a specific type
+      of tunnel encapsulation. Usage of this attribute may apply to BGP
+      service routes or transport routes, including BGP Classful Transport
+      family routes.</t>
+
+      <t>Mechanisms described in <xref target="MULTI-NH-ATTR">BGP MultiNexthop
+      Attribute</xref> allow a BGP route to carry multiple nexthop addresses.
+      It also allows specifying 'Transport Class ID' as a qualifier for each
+      Nexthop address.</t>
+
+      <t>It should be noted that in such cases "Transport Class/Color" can
+      exist in multiple places on the same route, and a precedence order needs
+      to be established to determine which Transport class the route's nexthop
+      should resolve over. This document suggests the following order of
+      precedence, more preferred first: <list>
+          <t>Transport Class ID SubTLV, in MultiNexthop Attribute.</t>
+
+          <t>Color SubTLV, in Tunnel Encapsulation Attribute.</t>
+
+          <t>Transport Target Extended community, on BGP CT route.</t>
+
+          <t>Color Extended community, on BGP service route.</t>
+        </list> The above precedence order follows more specific scoping of
+      Color to less specific scoping.</t>
+
+      <t>Transport Class ID specified for Nexthop-Leg subTLV in a MultiNextHop
+      attribute is more specific indication of Color than Color subTLV in a
+      TEA, which inturn is more specific than Mapping Community (Transport
+      Target) on a BGP CT transport route, which is inturn more specific than
+      a Service route scoped Mapping Community (Color Extended community).</t>
+    </section>
+
+    <section title="Scaling considerations">
+      <section title="Avoiding unintended spread of BGP CT routes across domains">
+        <list>
+          <t><xref target="RFC8212">RFC8212</xref> suggests BGP speakers
+          require explicit configuration of both BGP Import and Export
+          Policies in order to receive or send routes over EBGP sessions.</t>
+
+          <t>It is recommended to follow this for BGP CT routes. It will
+          prohibit unintended advertisement of transport routes throughout the
+          BGP CT transport domain which may span across multiple AS domains.
+          This will conserve usage of MPLS label and nexthop resources in the
+          network. An ASBR of a domain can be provisioned to allow routes with
+          only the Transport Route Targets that are required by SNs in the
+          domain.</t>
+        </list>
+      </section>
+
+      <section title="Constrained distribution of PNHs to SNs (On Demand Nexthop)">
+        <list>
+          <t>This section describes how the number of Protocol Nexthops
+          advertised to a SN or BN can be constrained using BGP Classsful
+          Transport and <xref target="RFC4684">Route Target
+          Constraints</xref>.</t>
+
+          <t>An egress SN MAY advertise BGP CT route for RD:eSN with two Route
+          Targets: transport-target:0:&lt;TC&gt; and a RT carrying
+          &lt;eSN&gt;:&lt;TC&gt;. Where TC is the Transport Class identifier,
+          and eSN is the IP-address used by SN as BGP nexthop in its service
+          route advertisements.</t>
+
+          <t>The transport-target:0:&lt;TC&gt; is the new type of route target
+          (Transport Class RT) defined in this document. It is carried in BGP
+          extended community attribute (BGP attribute code 16).</t>
+
+          <t>The RT carrying &lt;eSN&gt;:&lt;TC&gt; MAY be an IP-address
+          specific regular RT (BGP attribute code 16), IPv6-address specific
+          RT (BGP attribute code 25), or a Wide-communities based RT (BGP
+          attribute code 34) as described in <xref target="RTC-Ext">Route
+          Target Constrain Extension</xref>. This document recommends using
+          Wide-communities based RT for the same.</t>
+
+          <t>An ingress SN MAY import BGP CT routes with Route Target carrying
+          &lt;eSN&gt;:&lt;TC&gt;. The ingress SN MAY learn the eSN values
+          either by configuration, or it MAY discover them from the BGP
+          nexthop field in the BGP VPN service routes received from eSN. A BGP
+          ingress SN receiving a BGP service route with nexthop of eSN SHOULD
+          generate a RTC/Extended-RTC route for Route Target prefix &lt;Origin
+          ASN&gt;:&lt;eSN&gt;/[80|176] in order to learn BGP CT transport
+          routes to reach eSN. This allows constrained distribution of the
+          transport routes to the PNHs actually required by iSN.</t>
+
+          <t>When path of route propogation of BGP CT routes is same as the
+          RTC routes, a BN would learn the RTC routes advertised by ingress
+          SNs and propagate further. This will allow constraining distribution
+          of BGP CT routes for a PNH to only the necessary BNs in the network,
+          closer to the egress SN.</t>
+
+          <t>This mechanism provides "On Demand Nexthop" of BGP CT routes,
+          which help with the scaling of MPLS forwarding state at SN and
+          BN.</t>
+
+          <t>However, the amount of state carried in RTC family may become
+          proportional to number of PNHs in the network. To strike a balance,
+          the RTC route advertisements for &lt;Origin
+          ASN&gt;:&lt;eSN&gt;/[80|176] MAY be confined to the BNs in home
+          region of ingress-SN, or the BNs of a super core.</t>
+
+          <t>Such a BN in the core of the network SHOULD import BGP CT routes
+          with Transport-Target:0:&lt;TC&gt; and generate a RTC route for
+          &lt;Origin ASN&gt;:0:&lt;TC&gt;/96, while not propagating the more
+          specific RTC requests for specific PNHs. This will let the BN learn
+          transport routes to all eSN nodes. But confine their propagation to
+          ingress-SNs.</t>
+        </list>
+      </section>
+
+      <section title="Limiting scope of visibility of PE loopback as PNHs">
+        <list>
+          <t>It may be even more desirable to limit the number of PNHs that
+          are globaly visible in the network. This is possible using mechanism
+          described in <xref target="MPLS-NAMESPACES">MPLS
+          Namespaces</xref></t>
+
+          <t>Such that advertisement of PE loopback addresses as next-hop in
+          BGP service routes is confined to the region they belong to. An
+          anycast IP-address called "Context Protocol Nexthop Address" (CPNH)
+          abstracts the SNs in a region from other regions in the network,
+          swapping the SN scoped service label with a CPNH scoped private
+          namespace label.</t>
+
+          <t>This provides much greater advantage in terms of scaling and
+          convergence. Changes to implement this feature are required only on
+          the local region's BNs and RRs.</t>
+        </list>
+      </section>
+    </section>
+
+    <section title="OAM considerations">
+      <t>Standard MPLS OAM procedures specified in <xref target="RFC8029"/>
+      also apply to BGP Classful Transport.</t>
+
+      <t>The 'Target FEC Stack' sub-TLV for IPv4 Classful Transport has a
+      Sub-Type of [TBD], and a length of 13. The Value field consists of the
+      RD advertised with the Classful Transport prefix, the IPv4 prefix (with
+      trailing 0 bits to make 32 bits in all) and a prefix length encoded as
+      follows:</t>
+
+      <figure anchor="FECv4" title="Classful Transport IPv4 FEC">
+        <artwork align="left" xml:space="preserve">
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |                      Route Distinguisher                      |
+      |                          (8 octets)                           |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |                         IPv4 prefix                           |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      | Prefix Length |                 Must Be Zero                  |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+	</artwork>
+      </figure>
+
+      <t>The 'Target FEC Stack' sub-TLV for IPv6 Classful Transport has a
+      Sub-Type of [TBD], and a length of 25. The Value field consists of the
+      RD advertised with the Classful Transport prefix, the IPv6 prefix (with
+      trailing 0 bits to make 128 bits in all) and a prefix length encoded as
+      follows:</t>
+
+      <figure anchor="FECv6" title="Classful Transport IPv6 FEC">
+        <artwork align="left" xml:space="preserve">
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |                      Route Distinguisher                      |
+      |                          (8 octets)                           |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |                         IPv6 prefix                           |
+      |                                                               |
+      |                                                               |
+      |                                                               |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      | Prefix Length |                 Must Be Zero                  |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+	</artwork>
+      </figure>
+    </section>
+
+    <section title="Applicability to Network Slicing">
+      <t>In Network Slicing, the Transport Slice Controller (TSC) sets up the
+      Topology (e.g. RSVP-TE, SR-TE tunnels with desired characteristics) and
+      resources (e.g. polices/shapers) in a transport network to create a
+      Transport Slice. The Transport Class construct described in this
+      document represents the "Topology Slice" portion of this equation.</t>
+
+      <t>The TSC can use the Transport Class Identifier (Color value) to
+      provision a transport tunnel in a specific Topology Slice.</t>
+
+      <t>Further, Network Slice Controller can use the Mapping Community on
+      the service route to map traffic to the desired Transport Slice.</t>
+    </section>
+
+    <section title="SRv6 support">
+      <t>This section describes how BGP CT may be used to set up inter domain
+      tunnels of a certain Transport Class, when using Segment Routing over
+      IPv6 (SRv6) data plane on the inter AS links or as an intra AS tunneling
+      mechanism.</t>
+
+      <t><xref target="RFC8986"/> specifies the SRv6 Endpoint behaviors (End
+      USD, End.BM, End.B6.Encaps and End.Replace, End.ReplaceB6,
+      respectively). <xref target="SRV6-INTER-DOMAIN"/> specify the SRv6
+      Endpoint behaviors (END.REPLACE, END.REPLACEB6 and END.DB6). These are
+      leveraged for BGP CT with SRv6 data plane.</t>
+
+      <t>The BGP Classful Transport route update for SRv6 MUST include the BGP
+      Prefix-SID attribute along with SRv6 SID information as specified in
+      <xref target="SRV6-SERVICES"/>. It may also include SRv6 SID structure
+      for Transposition as specified in <xref target="SRV6-SERVICES"/>. It
+      should be noted that prefixes carried in BGP CT family are transport
+      layer end-points, e.g. PE loopback addresses. Thus the SRv6 SID carried
+      in a BGP CT route is also a transport layer identifier.</t>
+
+      <t>This document extends the usage of "SRv6 label route tunnel" TLV to
+      AFI=1/2 SAFI 76. "SRv6 label route tunnel" is the TLV of the BGP
+      Prefix-SID Attribute as specified in <xref
+      target="SRV6-MPLS-AGRWL"/>.</t>
+    </section>
+
+    <section title="Illustration of procedures with example topology">
+      <section title="Topology">
+        <figure>
+          <artwork>
+                [RR26]      [RR27]                       [RR16]
+                 |            |                             |
+                 |            |                             |
+                 |+-[ABR23]--+|+--[ASBR21]---[ASBR13]-+|+--[PE11]--+
+                 ||          |||          `  /        |||          |
+[CE41]--[PE25]--[P28]       [P29]          `/        [P15]     [CE31]
+                 |           | |           /`         | |          |
+                 |           | |          /  `        | |          |
+                 |           | |         /    `       | |          |
+                 +--[ABR24]--+ +--[ASBR22]---[ASBR14]-+ +--[PE12]--+
+                                                                                 
+
+       |                |                  |                    |
+       +                +                  +                    +
+    CE |     region-1   |   region-2       |                    |CE
+   AS4              ...AS2...                       AS1          AS3
+
+41.41.41.41  ------------ Traffic Direction ----------&gt;   31.31.31.31
+</artwork>
+        </figure>
+
+        <t>This example shows a provider network that comprises of two
+        Autonomous systems, AS1, AS2. They are serving customers AS3, AS4
+        respectively. Traffic direction being described is CE41 to CE31. CE31
+        may request a specific SLA (e.g. Gold for this traffic), when
+        traversing these provider networks.</t>
+
+        <t>AS2 is further divided into two regions. So, there are three tunnel
+        domains in provider space. AS1 uses ISIS Flex-Algo intra-domain
+        tunnels, whereas AS2 uses RSVP-TE intra-domain tunnels.</t>
+
+        <t>The network has two Transport classes: Gold with transport class id
+        100, Bronze with transport class id 200. These transport classes are
+        provisioned at the PEs and the Border nodes (ABRs, ASBRs) in the
+        network.</t>
+
+        <t>Following tunnels exist for Gold transport class.<list>
+            <t>PE25_to_ABR23_gold - RSVP-TE tunnel</t>
+
+            <t>PE25_to_ABR24_gold - RSVP-TE tunnel</t>
+
+            <t>ABR23_to_ASBR22_gold - RSVP-TE tunnel</t>
+
+            <t>ASBR13_to_PE11_gold - ISIS FlexAlgo tunnel</t>
+
+            <t>ASBR14_to_PE11_gold - ISIS FlexAlgo tunnel</t>
+          </list></t>
+
+        <t>Following tunnels exist for Bronze transport class.<list>
+            <t>PE25_to_ABR23_bronze - RSVP-TE tunnel</t>
+
+            <t>ABR23_to_ASBR21_bronze - RSVP-TE tunnel</t>
+
+            <t>ABR23_to_ASBR22_bronze - RSVP-TE tunnel</t>
+
+            <t>ABR24_to_ASBR21_bronze - RSVP-TE tunnel</t>
+
+            <t>ASBR13_to_PE12_bronze - ISIS FlexAlgo tunnel</t>
+
+            <t>ASBR14_to_PE11_bronze - ISIS FlexAlgo tunnel</t>
+          </list></t>
+
+        <t>These tunnels are either provisioned or auto-discovered to belong
+        to transport class 100 or 200.</t>
+      </section>
+
+      <section title="Service Layer route exchange">
+        <t>Service nodes PE11, PE12 negotiate service families (SAFI 1, 128)
+        on the BGP session with RR16. Service helpers RR16, RR26 have multihop
+        EBGP session to exchange service routes between the two AS. Similarly
+        PE25 negotiates service families with RR26.</t>
+
+        <t>Forwarding happens using service routes at service nodes PE25,
+        PE11, PE12 only. Routes received from CEs are not present in any other
+        nodes' FIB in the network.</t>
+
+        <t>CE31 advertises a route for example prefix 31.31.31.31 with nexthop
+        self to PE11, PE12. CE31 can attach a Mapping Community Color:0:100 on
+        this route, to indicate its request for Gold SLA. Or, PE11 can attach
+        the same using locally configured policies.</t>
+
+        <t>Consider CE31 is getting VPN service from PE11. The 31.31.31.31
+        route is readvertised in SAFI 128 by PE11 with nexthop self (1.1.1.1)
+        and label V-L1, to RR16 with the Mapping Community Color:0:100
+        attached. This SAFI 128 route reaches PE25 via RR16, RR26 with the
+        nexthop unchanged, as PE11 and label V-L1. Now PE25 can resolve the
+        PNH 1.1.1.1 using transport routes received in BGP CT or BGP LU.</t>
+
+        <t>The IP FIB at PE25 VRF will have a route for 31.31.31.31 with a
+        nexthop when resolved, that points to a Gold tunnel in ingress
+        domain.</t>
+      </section>
+
+      <section title="Transport Layer route propagation">
+        <t>Egress nodes PE11, PE12 negotiate BGP CT family with transport
+        ASBRs ASBR13, ASBR14. These egress nodes originate BGP CT routes for
+        tunnel endpoint addresses, that are advertised as nexthop in BGP
+        service routes. In this example both PEs participate in transport
+        classes Gold and Bronze. The protocol procedures are explained using
+        Gold SLA plane and the Bronze SLA plane is used to highlight the path
+        hiding aspects.</t>
+
+        <t>PE11 is provisioned with transport class 100, RD value 1.1.1.1:10
+        and a transport-target:0:100 for Gold tunnels. And a Transport class
+        200 with RD value 1.1.1.1:20, and transport route target 0:200 for
+        Bronze tunnels. Similarly, PE12 is provisioned with transport class
+        100, RD value 1.1.1.2:10 and a transport-target:0:100 for Gold
+        tunnels. And transport class 200, RD value 1.1.1.2:20 with
+        transport-target:0:200 for Bronze tunnels</t>
+
+        <t>Similarly, these transport classes are also configured on ASBRs,
+        ABRs and PEs with same Transport Route Target and unique RDs.</t>
+
+        <t>ASBR13 and ASBR14 negotiate BGP CT family with transport ASBRs
+        ASBR21, ASBR22 in neighboring AS. They negotiate BGP CT family with
+        RR27 in region 2, which reflects BGP CT routes to ABR23, ABR24. ABR23,
+        ABR24 negotiate BGP CT family with Ingress node PE25 in region 1. BGP
+        LU family is also negotiated on these sessions alongside BGP CT
+        family. BGP LU carries "best effort" transport class routes, BGP CT
+        carries gold, bronze transport class routes.</t>
+
+        <t>PE11 is provisioned to originate BGP CT route with Gold SLA to
+        endpoint PE11. This route is sent with NLRI RD prefix
+        1.1.1.1:10:1.1.1.1, Label B-L0, nexthop 1.1.1.1 and a route target
+        extended community transport-target:0:100. Label B-L0 can either be
+        Implicit Null (Label 3) or a Ultimate Hop Pop (UHP) label.</t>
+
+        <t>This route is received by ASBR13 and it resolves over the tunnel
+        ASBR13_to_PE11_gold. The route is then readvertised by ASBR13 in BGP
+        CT family to ASBRs ASBR21, ASBR22 according to export policy. This
+        route is sent with same NLRI RD prefix 1.1.1.1:10:1.1.1.1, Label B-L1,
+        nexthop self, and transport-target:0:100. MPLS swap route is installed
+        at ASBR13 for B-L1 with a nexthop pointing to ASBR13_to_PE11_gold
+        tunnel.</t>
+
+        <t>Similarly ASBR14 also receives BGP CT route for 1.1.1.1:10:1.1.1.1
+        from PE11 and it resolves over the tunnel ASBR14_to_PE11_gold. The
+        route is then readvertised by ASBR14 in BGP CT family to ASBRs ASBR21,
+        ASBR22 according to export policy. This route is sent with same NLRI
+        RD prefix 1.1.1.1:10:1.1.1.1, Label B-L2, nexthop self, and
+        transport-target:0:100. MPLS swap route is installed at ASBR14 for
+        B-L1 with a nexthop pointing to ASBR14_to_PE11_gold tunnel.</t>
+
+        <t>In the Bronze plane, BGP CT route with Bronze SLA to endpoint PE11
+        is originated by PE11 with a NLRI containing RD prefix
+        1.1.1.1:20:1.1.1.1, and appropriate label. The RD allows both Gold and
+        Bronze advertisements traverse path selection pinchpoints without any
+        path hiding at RRs or ASBRs. And route target extended community
+        transport-target:0:200 lets the route resolve over Bronze tunnels in
+        the network, similar to the process being described for Gold SLA
+        path.</t>
+
+        <t>Moving back to the Gold plane, ASBR21 receives the Gold SLA BGP CT
+        routes for NLRI RD prefix 1.1.1.1:10:1.1.1.1 over the single hop EBGP
+        sessions from ASBR13, ASBR14, and can compute ECMP/FRR towards them.
+        ASBR21 readvertises BGP CT route for 1.1.1.1:10:1.1.1.1 with nexthop
+        self (loopback adderss 2.2.2.1) to RR27, advertising a new label B-L3.
+        MPLS swap route is installed for label B-L3 at ASBR21 to swap to
+        received label B-L1, B-L2 and forward to ASBR13, ASBR14 respectively.
+        RR27 readvertises this BGP CT route to ABR23, ABR24 with label and
+        nexthop unchanged.</t>
+
+        <t>Similarly, ASBR22 receives BGP CT route 1.1.1.1:10:1.1.1.1 over the
+        single hop EBGP sessions from ASBR13, ASBR14, and readvertises with
+        nexthop self (loopback adderss 2.2.2.2) to RR27, advertising a new
+        label B-L4. MPLS swap route is installed for label B-L4 at ASBR22 to
+        swap to received label B-L1, B-L2 and forward to ASBR13, ASBR14
+        respectively. RR27 readvertises this BGP CT route also to ABR23, ABR24
+        with label and nexthop unchanged.</t>
+
+        <t>Addpath is enabled for BGP CT family on the sessions between RR27
+        and ASBRs, ABRs such that routes for 1.1.1.1:10:1.1.1.1 with the
+        nexthops ASBR21 and ASBR22 are reflected to ABR23, ABR24 without any
+        path hiding. Thus giving ABR23 visibiity of both available nexthops
+        for Gold SLA.</t>
+
+        <t>ABR23 receives the route with nexthop 2.2.2.1, label B-L3 from
+        RR27. The route target "transport-target:0:100" on this route acts as
+        Mapping Community, and instructs ABR23 to strictly resolve the nexthop
+        using transport class 100 routes only. ABR23 is unable to find a route
+        for 2.2.2.1 with transport class 100. Thus it considers this route
+        unusable and does not propagate it further. This prunes ASBR21 from
+        Gold SLA tunneled path.</t>
+
+        <t>ABR23 also receives the route with nexthop 2.2.2.2, label B-L4 from
+        RR27. The route target "transport-target:0:100" on this route acts as
+        Mapping Community, and instructs ABR23 to strictly resolve the nexthop
+        using transport class 100 routes only. ABR23 successfully resolves the
+        nexthop to point to ABR23_to_ASBR22_gold tunnel. ABR23 readvertises
+        this BGP CT route with nexthop self (loopback address 2.2.2.3) and a
+        new label B-L5 to PE25. Swap route for B-L5 is installed by ABR23 to
+        swap to label B-L4, and forward into ABR23_to_ASBR22_gold tunnel.</t>
+
+        <t>PE25 receives the BGP CT route for prefix 1.1.1.1:10:1.1.1.1 with
+        label B-L5, nexthop 2.2.2.3 and transport-target:0:100 from RR26. And
+        it similarly resolves the nexthop 2.2.2.3 over transport class 100,
+        pushing labels associated with PE25_to_ABR23_gold tunnel.</t>
+
+        <t>In this manner, the Gold transport LSP "ASBR13_to_PE11_gold" in
+        egress-domain is extended by BGP CT until the ingress-node PE25 in
+        ingress domain, to create an end-to-end Gold SLA path. MPLS swap
+        routes are installed at ASBR13, ASBR22 and ABR23, when propagating the
+        PE11 BGP CT Gold transport class route 1.1.1.1:10:1.1.1.1 with nexthop
+        self towards PE25.</t>
+
+        <t>The BGP CT LSP thus formed, originates in PE25, and terminates in
+        ASBR13 (assuming PE11 advertised Implicit Null), traversing over the
+        Gold underlay LSPs in each domain. ASBR13 uses UHP to stitch the BGP
+        CT LSP into the "ASBR13_to_PE11_gold" LSP to traverse the last domain,
+        thus satisfying Gold SLA end-to-end.</t>
+
+        <t>When PE25 receives service routes from RR26 with nexthop 1.1.1.1
+        and mapping community Color:0:100, it resolves over this BGP CT route
+        1.1.1.1:10:1.1.1.1. Thus pushing label B-L5, and pushing as top label
+        the labels associated with PE25_to_ABR23_gold tunnel.</t>
+      </section>
+
+      <section title="Data plane view">
+        <section title="Steady state">
+          <t>This section describes how the data plane looks like in steady
+          state.</t>
+
+          <t>CE41 transmits an IP packet with destination as 31.31.31.31. On
+          receiving this packet PE25 performs a lookup in the IP FIB
+          associated with the CE41 interface. This lookup yeids the service
+          route that pushes the VPN service label V-L1, BGP CT label B-L5, and
+          labels for PE25_to_ABR23_gold tunnel. Thus PE25 encapsulates the IP
+          packet in MPLS packet with label V-L1(innermost), B-L5, and top
+          label as PE25_to_ABR23_gold tunnel. This MPLS packet is thus
+          transmitted to ABR23 using Gold SLA.</t>
+
+          <t>ABR23 decapsulates the packet received on PE25_to_ABR23_gold
+          tunnel as required, and finds the MPLS packet with label B-L5. It
+          performs lookup for label B-L5 in the global MPLS FIB. This yields
+          the route that swaps label B-L5 with label B-L4, and pushes top
+          label provided by ABR23_to_ASBR22_gold tunnel. Thus ABR23 transmits
+          the MPLS packet with label B-L4 to ASBR22, on a tunnel that
+          satisfies Gold SLA.</t>
+
+          <t>ASBR22 similarly performs a lookup for label B-L4 in global MPLS
+          FIB, finds the route that swaps label B-L4 with label B-L2, and
+          forwards to ASBR13 over the directly connected MPLS enabled
+          interface. This interface is a common resource not dedicated to any
+          specific transport class, in this example.</t>
+
+          <t>ASBR13 receives the MPLS packet with label B-L2, and performs a
+          lookup in MPLS FIB, finds the route that pops label B-L2, and pushes
+          labels associated with ASBR13_to_PE11_gold tunnel. This transmits
+          the MPLS packet with VPN label V-L1 to PE11 using a tunnel that
+          preserves Gold SLA in AS 1.</t>
+
+          <t>PE11 receives the MPLS packet with V-L1, and performs VPN
+          forwarding. Thus transmitting the original IP payload from CE41 to
+          CE31. The payload has traversed path satisfying Gold SLA
+          end-to-end.</t>
+        </section>
+
+        <section title="Local repair of primary path">
+          <t>This section describes how the data plane at ASBR22 reacts when
+          link between ASBR22 and ASBR13 experiences a failure, and an
+          alternate path exists.</t>
+
+          <t>Assuming ASBR22_to_ASBR13 link goes down, such that traffic with
+          Gold SLA going to PE11 needs repair. ASBR22 has an alternate BGP CT
+          route for 1.1.1.1:10:1.1.1.1 from ASBR14. This has been
+          preprogrammed in forwarding by ASBR22 as FRR backup nexthop for
+          label B-L4. This allows the Gold SLA traffic to be locally repaired
+          at ASBR22 without the failure event propagated in the BGP CT
+          network. In this case, ingress node PE25 will not know there was a
+          failure, and traffic restoration will be independent of prefix scale
+          (PIC).</t>
+        </section>
+
+        <section title="Absorbing failure of primary path. Fallback to best-effort tunnels.">
+          <t>This section describes how the data plane reacts when gold path
+          experiences a failure, but no alternate path exists.</t>
+
+          <t>Assuming tunnel ABR23_to_ASBR22_gold goes down, such that now
+          end-to-end Gold path does not exist in the network. This makes the
+          BGP CT route for RD prefix 1.1.1.1:10:1.1.1.1 unusable at ABR23.
+          This makes ABR23 send a BGP withdrawal for 1.1.1.1:10:1.1.1.1 to
+          PE25.</t>
+
+          <t>Withdrawal for 1.1.1.1:10:1.1.1.1 allows PE25 to react to the
+          loss of gold path to 1.1.1.1. Assuming PE25 is provisioned to use
+          best-effort transport class as the backup path, this withdrawal of
+          BGP CT route allows PE25 to adjust the nexthop of the VPN
+          Service-route to push the labels provided by the BGP LU route. That
+          repairs the traffic to go via best effort path. PE25 can also be
+          provisioned to use Bronze transport class as the backup path. The
+          repair will happen in similar manner in that case as-well.</t>
+
+          <t>Traffic repair to absorb the failure happens at ingress node
+          PE25, in a service prefix scale independent manner. This is called
+          PIC (Prefix scale Independent Convergence). The repair time will be
+          proportional to time taken for withdrawing the BGP CT route.</t>
+
+          <t>The above examples demostrate the various levels of failsafe
+          mechanisms available to protect traffic in a BGP CT network.</t>
+        </section>
+      </section>
+    </section>
+
+    <section anchor="IANA" title="IANA Considerations">
+      <t>This document makes following requests of IANA.</t>
+
+      <section title="New BGP SAFI">
+        <t>New BGP SAFI code for "Classful Transport". Value 76.</t>
+
+        <t>This will be used to create new AFI,SAFI pairs for IPv4, IPv6
+        Classful Transport families. viz:</t>
+
+        <t><list style="symbols">
+            <t>"Inet, Classful Transport". AFI/SAFI = "1/76" for carrying IPv4
+            Classful Transport prefixes.</t>
+
+            <t>"Inet6, Classful Transport". AFI/SAFI = "2/76" for carrying
+            IPv6 Classful Transport prefixes.</t>
+          </list></t>
+      </section>
+
+      <section title="New Format for BGP Extended Community">
+        <t>Please assign a new Format (Type high = 0xa) of extended community
+        <xref target="RFC4360">EXT-COMM</xref> called "Transport Class" from
+        the following registries:<list>
+            <t>the "BGP Transitive Extended Community Types" registry, and</t>
+
+            <t>the "BGP Non-Transitive Extended Community Types" registry.</t>
+          </list></t>
+
+        <t>Please assign the same low-order six bits for both allocations.</t>
+
+        <t>This document uses this new Format with subtype 0x2 (route target),
+        as a transitive extended community.</t>
+
+        <t>The Route Target thus formed is called "Transport Class" route
+        target extended community.</t>
+
+        <t>Taking reference of <xref target="RFC7153">RFC7153</xref> ,
+        following requests are made:</t>
+
+        <section title="Existing registries to be modified">
+          <section title="Registries for the &quot;Type&quot; Field">
+            <section title="Transitive Types">
+              <t>This registry contains values of the high-order octet (the
+              "Type" field) of a Transitive Extended Community.<figure>
+                  <artwork>Registry Name: BGP Transitive Extended Community Types
+
+      TYPE VALUE       NAME
++      0x0a             Transitive Transport Class Extended
++                       Community (Sub-Types are defined in the
++                       "Transitive Transport Class Extended
++                       Community Sub-Types" registry)
+
+</artwork>
+                </figure></t>
+            </section>
+
+            <section title="Non-Transitive Types">
+              <t>This registry contains values of the high-order octet (the
+              "Type" field) of a Non-transitive Extended Community.<figure>
+                  <artwork>
+Registry Name: BGP Non-Transitive Extended Community Types
+
+     TYPE VALUE       NAME
+
++     0x4a             Non-Transitive Transport Class Extended
++                      Community (Sub-Types are defined in the
++                      "Non-Transitive Transport Class Extended
++                      Community Sub-Types" registry)</artwork>
+                </figure></t>
+            </section>
+          </section>
+        </section>
+
+        <section title="New registries to be created">
+          <section title="Transitive &quot;Transport Class&quot; Extended Community Sub-Types Registry">
+            <figure>
+              <artwork>
+ This registry contains values of the second octet (the "Sub-Type"
+ field) of an extended community when the value of the first octet
+ (the "Type" field) is 0x07.
+
+   Registry Name: Transitive Transport Class Extended
+                  Community Sub-Types
+
+      RANGE              REGISTRATION PROCEDURE
+
+      0x00-0xBF          First Come First Served
+      0xC0-0xFF          IETF Review
+
+      SUB-TYPE VALUE     NAME
+
+      0x02               Route Target
+</artwork>
+            </figure>
+          </section>
+
+          <section title="Non-Transitive &quot;Transport Class&quot; Extended Community Sub-Types Registry">
+            <figure>
+              <artwork>
+This registry contains values of the second octet (the "Sub-Type" 
+field) of an extended community when the value of the first octet
+(the "Type" field) is 0x47.
+
+   Registry Name: Non-Transitive Transport Class Extended
+                  Community Sub-Types
+
+      RANGE              REGISTRATION PROCEDURE
+
+      0x00-0xBF          First Come First Served
+      0xC0-0xFF          IETF Review
+
+      SUB-TYPE VALUE     NAME
+
+      0x02               Route Target
+</artwork>
+            </figure>
+          </section>
+        </section>
+      </section>
+
+      <section title="MPLS OAM code points">
+        <t>The following two code points are sought for Target FEC Stack
+        sub-TLVs:</t>
+
+        <t><list style="symbols">
+            <t>IPv4 BGP Classful Transport</t>
+
+            <t>IPv6 BGP Classful Transport</t>
+          </list></t>
+      </section>
+    </section>
+
+    <section anchor="Security" title="Security Considerations">
+      <t>Mechanisms described in this document carry Transport routes in a new
+      BGP address family. That minimizes possibility of these routes leaking
+      outside the expected domain or mixing with service routes.</t>
+
+      <t>When redistributing between SAFI 4 and SAFI 76 Classful Transport
+      routes, there is a possibility of SAFI 4 routes mixing with SAFI 1
+      service routes. To avoid such scenarios, it is RECOMMENDED that
+      implementations support keeping SAFI 4 routes in a separate transport
+      RIB, distinct from service RIB that contain SAFI 1 service routes.</t>
+    </section>
+
+   </middle>
+
+  <back>
+
+    <references title="Normative References">
+      <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"?>
+
+      <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8277.xml"?>
+
+      <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4271.xml"?>
+
+      <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4364.xml"?>
+
+      <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4360.xml"?>
+
+      <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4684.xml"?>
+
+      <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4760.xml"?>
+
+      <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7911.xml"?>
+
+      <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8029.xml"?>
+
+      <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7153.xml"?>
+
+      <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8669.xml"?>
+
+      <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4456.xml"?>
+
+      <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8212.xml"?>
+
+      <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8664.xml"?>
+
+      <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.9012.xml"?>
+
+      <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8986.xml"?>
+
+      <reference anchor="SRTE"
+                 target="https://tools.ietf.org/html/draft-ietf-idr-segment-routing-te-policy-08">
+        <front>
+          <title>Advertising Segment Routing Policies in BGP</title>
+
+          <author fullname="Previdi" initials="S" role="editor"
+                  surname="Previdi"/>
+
+          <date day="18" month="11" year="2019"/>
+        </front>
+      </reference>
+
+      <reference anchor="RTC-Ext"
+                 target="https://tools.ietf.org/html/draft-zzhang-idr-bgp-rt-constrains-extension-00#section-2">
+        <front>
+          <title abbrev="RTC-Ext">Route Target Constrain Extension</title>
+
+          <author fullname="Zhaohui" initials="Z" role="editor"
+                  surname="Zhang"/>
+
+          <date day="12" month="07" year="2020"/>
+        </front>
+      </reference>
+
+      <reference anchor="Seamless-SR"
+                 target="https://datatracker.ietf.org/doc/html/draft-hegde-spring-mpls-seamless-sr-03">
+        <front>
+          <title abbrev="Seamless-SR">Seamless Segment Routing</title>
+
+          <author fullname="Shraddha" initials="" role="editor"
+                  surname="Hegde"/>
+
+          <date day="17" month="11" year="2020"/>
+        </front>
+      </reference>
+
+      <reference anchor="MPLS-NAMESPACES"
+                 target="https://tools.ietf.org/html/draft-kaliraj-bess-bgp-sig-private-mpls-labels-01#section-6.1">
+        <front>
+          <title abbrev="MPLS namespaces">BGP signalled
+          MPLS-namespaces</title>
+
+          <author fullname="Kaliraj" initials="" role="editor"
+                  surname="Vairavakkalai"/>
+
+          <date day="11" month="06" year="2021"/>
+        </front>
+      </reference>
+
+      <reference anchor="BGP-LU-EPE"
+                 target="https://datatracker.ietf.org/doc/html/draft-gredler-idr-bgplu-epe-14">
+        <front>
+          <title abbrev="BGP LU EPE">Egress Peer Engineering using
+          BGP-LU</title>
+
+          <author fullname="Hannes" initials="" role="editor"
+                  surname="Gredler"/>
+
+          <date day="06" month="07" year="2021"/>
+        </front>
+      </reference>
+
+      <reference anchor="PCEP-RSVP-COLOR"
+                 target="https://datatracker.ietf.org/doc/html/draft-rajagopalan-pcep-rsvp-color-00">
+        <front>
+          <title abbrev="PCEP RSVP COLOR">Path Computation Element
+          Protocol(PCEP) Extension for RSVP Color</title>
+
+          <author fullname="Balaji" initials="" role="editor"
+                  surname="Rajagopalan"/>
+
+          <date day="15" month="01" year="2021"/>
+        </front>
+      </reference>
+
+      <reference anchor="SRV6-INTER-DOMAIN"
+                 target="https://datatracker.ietf.org/doc/html/draft-salih-spring-srv6-inter-domain-sids-00">
+        <front>
+          <title abbrev="SRV6-INTER-DOMAIN">SRv6 inter-domain mapping
+          SIDs</title>
+
+          <author fullname="Salih" initials="" role="editor" surname="K A"/>
+
+          <date day="10" month="01" year="2021"/>
+        </front>
+      </reference>
+
+      <reference anchor="SRV6-SERVICES"
+                 target="https://datatracker.ietf.org/doc/html/draft-ietf-bess-srv6-services-07">
+        <front>
+          <title abbrev="SRV6-SERVICES">SRv6 BGP based Overlay
+          Services</title>
+
+          <author fullname="Gaurav Dawra" initials="" role="editor"
+                  surname="Dawra"/>
+
+          <date day="11" month="04" year="2021"/>
+        </front>
+      </reference>
+
+      <reference anchor="SRV6-MPLS-AGRWL"
+                 target="https://datatracker.ietf.org/doc/draft-agrawal-spring-srv6-mpls-interworking/05/">
+        <front>
+          <title abbrev="SRV6-INTER-DOMAIN">SRv6 and MPLS interworking</title>
+
+          <author fullname="Swadesh Agrawal" initials="" role="editor"
+                  surname="Agrawal"/>
+
+          <date day="22" month="02" year="2021"/>
+        </front>
+      </reference>
+
+      <reference anchor="FLOWSPEC-REDIR-IP"
+                 target="https://datatracker.ietf.org/doc/html/draft-ietf-idr-flowspec-redirect-ip-02">
+        <front>
+          <title abbrev="FLOWSPEC-REDIR-IP">BGP Flow-Spec Redirect to IP
+          Action</title>
+
+          <author fullname="Adam Simpson" initials="" role="editor"
+                  surname="Simpson"/>
+
+          <date day="02" month="02" year="2015"/>
+        </front>
+      </reference>
+
+      <reference anchor="MULTI-NH-ATTR"
+                 target="https://datatracker.ietf.org/doc/html/draft-kaliraj-idr-multinexthop-attribute-02#section-3.4.3">
+        <front>
+          <title abbrev="MULTI-NH-ATTR">BGP MultiNexthop Attribute</title>
+
+          <author fullname="Kaliraj Vairavakkalai" initials="" role="editor"
+                  surname="Vairavakkalai"/>
+
+          <date day="28" month="12" year="2021"/>
+        </front>
+      </reference>
+    </references>
+        
+    <section anchor = "Contributors" title="Contributors" numbered="false">
+    
+    <section anchor="Co-Authors" title="Co-Authors" numbered="false">
+    <author fullname="Israel Means" initials="I" surname="Means">    
+      <organization abbrev="">AT&amp;T</organization>
+
+      <address>
+        <postal>
+          <street>2212 Avenida Mara,</street>
+
+          <city>Chula Vista</city>
+
+          <region>California</region>
+
+          <code>91914</code>
+
+          <country>USA</country>
+        </postal>
+
+        <email>israel.means@att.com</email>
+      </address>
+    </author>
+
+
+    <author fullname="Csaba Mates" initials="CS" surname="Mates">    
+      <organization abbrev="">Hungarian NREN</organization>
+
+      <address>
+        <postal>
+          <street>35 Vaci street,</street>
+
+          <city>Budapest</city>
+
+          <region></region>
+
+          <code>1134</code>
+
+          <country>Hungary</country>
+        </postal>
+
+        <email>ietf@nop.hu</email>
+      </address>
+    </author>
+
+    <author fullname="Deepak J Gowda" initials="J" surname="Gowda">
+      <organization abbrev="">Extreme Networks</organization>
+
+      <address>
+        <postal>
+          <street>55 Commerce Valley Drive West, Suite 300,</street>
+
+          <city>Thornhill, Toronto,</city>
+
+          <region>Ontario</region>
+
+          <code>L3T 7V9</code>
+
+          <country>Canada</country>
+        </postal>
+
+        <email>dgowda@extremenetworks.com</email>
+      </address>
+    </author>
+
+    </section>
+
+    <section anchor="Other Contributors" title="Other Contributors" numbered="false">
+
+    <author fullname="Balaji Rajagopalan" initials="B." surname="Rajagopalan">
+      <organization>Juniper Networks, Inc.</organization>
+
+      <address>
+        <postal>
+          <street>Electra, Exora Business Park~Marathahalli - Sarjapur Outer
+          Ring Road,</street>
+
+          <city>Bangalore</city>
+
+          <region>KA</region>
+
+          <code>560103</code>
+
+          <country>India</country>
+        </postal>
+
+        <email>balajir@juniper.net</email>
+      </address>
+    </author>
+
+    <author fullname="Reshma Das" initials="D." surname="Das">
+      <organization>Juniper Networks, Inc.</organization>
+
+      <address>
+        <postal>
+          <street>1133 Innovation Way,</street>
+
+          <city>Sunnyvale</city>
+
+          <region>CA</region>
+
+          <code>94089</code>
+
+          <country>US</country>
+        </postal>
+
+        <email>dreshma@juniper.net</email>
+      </address>
+    </author>
+
+    <author fullname="Rajesh M" initials="M">
+      <organization>Juniper Networks, Inc.</organization>
+      <address>
+        <postal>
+          <street>Electra, Exora Business Park~Marathahalli - Sarjapur Outer
+          Ring Road,</street>
+
+          <city>Bangalore</city>
+
+          <region>KA</region>
+
+          <code>560103</code>
+
+          <country>India</country>
+        </postal>
+        <email>mrajesh@juniper.net</email>
+      </address>
+    </author>
+
+    <author fullname="Chaitanya Yadlapalli" initials="C" surname="Yadlapalli">
+      <organization abbrev="">AT&amp;T</organization>
+      <address>
+        <postal>
+          <street>200 S Laurel Ave,</street>
+
+          <city>Middletown,</city>
+
+          <region>NJ</region>
+
+          <code>07748</code>
+
+          <country>USA</country>
+        </postal>
+
+        <email>cy098d@att.com</email>
+      </address>
+    </author>
+
+    <author fullname="Gyan Mishra" initials="G." surname="Mishra">
+      <organization>Verizon Inc.</organization>
+
+      <address>
+        <postal>
+          <street>13101 Columbia Pike</street>
+
+          <city>Silver Spring</city>
+
+          <region>MD</region>
+
+          <code>20904</code>
+
+          <country>USA</country>
+        </postal>
+
+        <email>gyan.s.mishra@verizon.com</email>
+      </address>
+    </author>
+
+    <author fullname="Mazen Khaddam" initials="M" surname="Khaddam">
+      <organization abbrev="">Cox Communications Inc.</organization>
+
+      <address>
+        <postal>
+          <street/>
+
+          <city>Atlanta</city>
+
+          <region>GA</region>
+
+          <code/>
+
+          <country>USA</country>
+        </postal>
+
+        <email>mazen.khaddam@cox.com</email>
+      </address>
+    </author>
+
+    <author fullname="Rafal Jan Szarecki" initials="R" surname="Szarecki">
+      <organization abbrev="">Google.</organization>
+
+      <address>
+        <postal>
+          <street>1160 N Mathilda Ave, Bldg 5,</street>
+
+          <city>Sunnyvale,</city>
+
+          <region>CA</region>
+
+          <code>94089</code>
+
+          <country>USA</country>
+        </postal>
+
+        <email>szarecki@google.com</email>
+      </address>
+    </author>
+
+    <author fullname="Xiaohu Xu" initials="X" surname="Xu">
+      <organization abbrev="">Capitalonline.</organization>
+
+      <address>
+        <postal>
+          <street/>
+
+          <city>Beijing</city>
+
+          <region/>
+
+          <code/>
+
+          <country>China</country>
+        </postal>
+
+        <email>xiaohu.xu@capitalonline.net</email>
+      </address>
+    </author>
+    </section>
+    </section>
+
+    <section anchor="Acknowledgements" title="Acknowledgements" numbered="false">
+      <t>The authors thank Jeff Haas, John Scudder, Susan Hares, Moses Nagarajah,
+      Navaneetha Krishnan, Ravi M R, Chandrasekar Ramachandran, Shradha Hegde,
+      Richard Roberts, Krzysztof Szarkowicz, John E Drake, Srihari Sangli,
+      Vijay Kestur, Santosh Kolenchery, Robert Raszuk, Ahmed Darwish, Aravind
+      Srinivas Srinivasa Prabhakar, Moshiko Nayman, Chris Trip for the
+      valuable discussions and review comments.</t>
+
+      <t>The decision to not reuse SAFI 128 and create a new address-family to
+      carry these transport-routes was based on suggestion made by Richard
+      Roberts and Krzysztof Szarkowicz.</t>
+    </section>
+
+
+  </back>
+</rfc>
