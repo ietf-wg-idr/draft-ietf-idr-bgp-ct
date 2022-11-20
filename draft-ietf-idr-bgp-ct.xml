@@ -10,9 +10,7 @@
 <?rfc inline="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="exp"
-     docName="draft-ietf-idr-bgp-ct-00"
-     ipr="trust200902">
+<rfc category="exp" docName="draft-ietf-idr-bgp-ct-01" ipr="trust200902">
   <front>
     <title abbrev="BGP Classful Transport Planes">BGP Classful Transport
     Planes</title>
@@ -37,6 +35,7 @@
         <email>kaliraj@juniper.net</email>
       </address>
     </author>
+
     <author fullname="Natrajan Venkataraman" initials="N." role="editor"
             surname="Venkataraman">
       <organization>Juniper Networks, Inc.</organization>
@@ -57,8 +56,8 @@
         <email>natv@juniper.net</email>
       </address>
     </author>
-  
-    <date day="06" month="09" year="2022"/>
+
+    <date day="19" month="11" year="2022"/>
 
     <abstract>
       <t>This document specifies a mechanism, referred to as "Intent Driven
@@ -91,10 +90,11 @@
       This makes the end-to-end network a "Transport Class" aware tunneled
       network.</t>
 
-      <t>Though BGP CT family is used only in the option-C inter-AS neworks,
-      the Service Mapping procedures described in this document apply in the
-      same manner to Intra-AS service end points as well as Inter-AS option-A,
-      option-B and option-C variations.</t>
+      <t>Just like BGP LU (SAFI 4), BGP CT family (SAFI 76) is used in 
+      inter-AS option-C networks. The Service Mapping procedures described 
+      in this document apply in the same manner to Intra-AS service end points 
+      as well as Inter-AS option-A, option-B, option-C variations. 
+      Examples of these variations are given in Appendix A.</t>
     </abstract>
 
     <note title="Requirements Language">
@@ -205,7 +205,7 @@
       <t>TE : Traffic Engineering.</t>
 
       <t>SN : Service Node. A router that sends or receives BGP Service routes
-      (e.g. SAFI 1, 128) with self as nexthop.</t>
+      (e.g. SAFIs 1, 128) with self as nexthop.</t>
 
       <t>BN : Border Node. A router that sends or receives BGP Transport
       routes (e.g. SAFI 4, 76) with self as nexthop.</t>
@@ -327,7 +327,7 @@
       <t>This new Route Target Format has the following encoding:</t>
 
       <figure>
-        <artwork>
+        <artwork align="left" xml:space="preserve">
 
 
 
@@ -467,7 +467,7 @@
       Classful Transport family NLRI when single Label is advertised:</t>
 
       <figure>
-        <artwork>
+        <artwork align="left" xml:space="preserve">
 
       0                   1                   2                   3
       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -1034,10 +1034,11 @@
       target="SRV6-MPLS-AGRWL"/>.</t>
     </section>
 
-    <section title="Illustration of procedures with example topology">
+    <section title="Illustration of BGP CT procedures in Inter AS option-C">
       <section title="Topology">
         <figure>
-          <artwork>
+          <artwork align="left" xml:space="preserve">
+
                 [RR26]      [RR27]                       [RR16]
                  |            |                             |
                  |            |                             |
@@ -1105,26 +1106,39 @@
       </section>
 
       <section title="Service Layer route exchange">
-        <t>Service nodes PE11, PE12 negotiate service families (SAFI 1, 128)
-        on the BGP session with RR16. Service helpers RR16, RR26 have multihop
-        EBGP session to exchange service routes between the two AS. Similarly
-        PE25 negotiates service families with RR26.</t>
+        <t>Service nodes PE11, PE12 negotiate service families (SAFIs 1, 128)
+        on the BGP session with RR16. Service helpers RR16 and RR26 exchange 
+        these service routes with nexthop unchanged over a multihop EBGP session 
+        between the two AS. PE25 negotiates service families (SAFIs 1, 128)
+        with RR26.</t>
 
-        <t>Forwarding happens using service routes at service nodes PE25,
-        PE11, PE12 only. Routes received from CEs are not present in any other
-        nodes' FIB in the network.</t>
+        <t>The PEs see each other as nexthop in the BGP Update for service family 
+        (SAFIs 1, 128) routes. Addpath send, receive is enabled on both directions 
+        on the EBGP multihop session between RR16 and RR26 for SAFIs 1, 128. 
+        Addpath send is negotiated in the RR to PE direction in each AS. This 
+        is to avoid path hiding of service routes at RR. E.g. SAFI 1 routes 
+        advertised by both PE11 and PE12. Or, SAFI 128 routes originated by both 
+        PE11 and PE12 using same RD.</t>
 
-        <t>CE31 advertises a route for example prefix 31.31.31.31 with nexthop
-        self to PE11, PE12. CE31 can attach a Mapping Community Color:0:100 on
+        <t>Forwarding happens using service routes installed at service nodes PE25,
+        PE11, PE12 only. Service routes received from CEs are not present in any 
+        other nodes' FIB in the network.</t>
+
+        <t>As an example, CE31 advertises a route for prefix 31.31.31.31 with nexthop
+        as self to PE11, PE12. CE31 can attach a Mapping Community Color:0:100 on
         this route, to indicate its request for Gold SLA. Or, PE11 can attach
         the same using locally configured policies.</t>
 
-        <t>Consider CE31 is getting VPN service from PE11. The 31.31.31.31
+        <t>Consider CE31 is getting VPN service from PE11. The RD1:31.31.31.31
         route is readvertised in SAFI 128 by PE11 with nexthop self (1.1.1.1)
         and label V-L1, to RR16 with the Mapping Community Color:0:100
-        attached. This SAFI 128 route reaches PE25 via RR16, RR26 with the
-        nexthop unchanged, as PE11 and label V-L1. Now PE25 can resolve the
+        attached. RR16 advertises this route with Addpath-ID to RR26 which
+        readvertises to PE25 with nexthop unchanged. Now PE25 can resolve the
         PNH 1.1.1.1 using transport routes received in BGP CT or BGP LU.</t>
+
+        <t>Using Addpath, service routes advertised by PE11 and PE12 for 
+        SAFIs 1, 128 reach PE25 via RR16, RR26 with the nexthop unchanged, 
+        as PE11 or PE12. </t>
 
         <t>The IP FIB at PE25 VRF will have a route for 31.31.31.31 with a
         nexthop when resolved, that points to a Gold tunnel in ingress
@@ -1483,11 +1497,9 @@ field) of an extended community when the value of the first octet
       implementations support keeping SAFI 4 routes in a separate transport
       RIB, distinct from service RIB that contain SAFI 1 service routes.</t>
     </section>
-
-   </middle>
+  </middle>
 
   <back>
-
     <references title="Normative References">
       <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"?>
 
@@ -1658,249 +1670,547 @@ field) of an extended community when the value of the first octet
         </front>
       </reference>
     </references>
-        
-    <section anchor = "Contributors" title="Contributors" numbered="false">
-    
-    <section anchor="Co-Authors" title="Co-Authors" numbered="false">
-    <author fullname="Israel Means" initials="I" surname="Means">    
-      <organization abbrev="">AT&amp;T</organization>
 
-      <address>
-        <postal>
-          <street>2212 Avenida Mara,</street>
+    <section anchor="Appendix A" numbered="true"
+             title="Applicability to Intra AS and different Inter AS deployments.">
 
-          <city>Chula Vista</city>
+      <t>As described in <xref target="RFC4364">BGP-VPN</xref> Section 10, in an option-C network, 
+      service routes (VPN-IPv4) are neither maintained nor distributed by the ASBRs. Transport routes 
+      are maintained in the ASBRs and propagated in BGP LU (SAFI 4) or BGP CT (SAFI 76).</t>
 
-          <region>California</region>
+      <t>Section 18 illustrates how constructs of BGP CT work in an Inter AS option-C 
+      deployment. The BGP CT constructs: SAFI 76, Transport Class and Resolution Scheme 
+      are used in an option-C deploymnent.</t>
 
-          <code>91914</code>
+      <t>In Intra AS and Inter AS option-A, option-B scenarios, SAFI 76 may not be used, but the
+      Transport Class and Resolution Scheme mechanisms are used to provide service mapping.</t>
 
-          <country>USA</country>
-        </postal>
+      <t>This section illustrates how BGP CT constructs work in Intra AS and Inter AS option-A, B
+      deployment scenarios.</t>
 
-        <email>israel.means@att.com</email>
-      </address>
-    </author>
+      <section title="Intra AS usecase">
+        <section title="Topology">
+          <figure>
+            <artwork align="left" xml:space="preserve">
+                                    [RR11]
+                                     |
+                                     +
+              [CE21]---[PE11]-------[P1]------[PE12]------[CE31]
+                     |                             |
+                     +                             +
+                     |                             |
+               AS2               ...AS1...               AS3
+
+             10.21.21.21 ---- Traffic Direction ----&gt; 10.31.31.31
+            </artwork>
+          </figure>
+
+          <t>This example shows a provider network Autonomous system AS1. 
+          It serves customers AS2, AS3. Traffic direction being described 
+          is CE21 to CE31. CE31 may request a specific SLA (e.g. Gold for this 
+          traffic), when traversing this provider network.</t>
+        </section>
+
+        <section title="Transport Layer">
+          <t>AS1 uses RSVP-TE intra-domain tunnels between PE11 and PE12. And
+          LDP tunnels for best effort traffic.</t>
+
+          <t>The network has two Transport classes: Gold with transport class
+          id 100, Bronze with transport class id 200. These transport classes
+          are provisioned at the PEs. This creates the Resolution Schemes for 
+          these transport classes at these PEs.</t>
+
+          <t>Following tunnels exist for Gold transport class.<list>
+              <t>PE11_to_PE12_gold - RSVP-TE tunnel</t>
+
+              <t>PE12_to_PE11_gold - RSVP-TE tunnel</t>
+            </list></t>
+
+          <t>Following tunnels exist for Bronze transport class.<list>
+              <t>PE11_to_PE12_bronze - RSVP-TE tunnel</t>
+
+              <t>PE11_to_PE12_bronze - RSVP-TE tunnel</t>
+            </list></t>
+
+          <t>These tunnels are provisioned to belong to transport class 100 or 200.</t>
+        </section>
+
+        <section title="Service Layer route exchange">
+          <t>Service nodes PE11, PE12 negotiate service families (SAFI 128)
+          on the BGP session with RR11. Service helper RR11 reflects service routes 
+          between the two PEs with nexthop unchanged. There are no tunnels for
+          transport-class 100 or 200 from RR11 to the PEs.</t>
+
+          <t>Forwarding happens using service routes at service nodes PE11,
+          PE12. Routes received from CEs are not present in any
+          other nodes' FIB in the provider network.</t>
+
+          <t>CE31 advertises a route for example prefix 10.31.31.31 with
+          nexthop self to PE12. CE31 can attach a Mapping Community
+          Color:0:100 on this route, to indicate its request for Gold SLA. Or,
+          PE11 can attach the same using locally configured policies.</t>
+
+          <t>Consider CE31 is getting VPN service from PE11. The RD:10.31.31.31
+          route is readvertised in SAFI 128 by PE12 with nexthop self
+          (10.12.12.12) and label V-L1, to RR11 with the Mapping Community
+          Color:0:100 attached. This SAFI 128 route reaches PE11 via RR11
+          with the nexthop unchanged as PE12 and label V-L1. Now PE11
+          can resolve the PNH 10.12.12.12 using PE11_to_PE12_gold RSVP TE LSP.</t>
+
+          <t>The IP FIB at PE11 VRF will have a route for 10.31.31.31 with a
+          nexthop when resolved using Resolution Scheme belonging to the mapping 
+          community Color:0:100, points to a PE11_to_PE12_gold tunnel.</t>
+
+          <t>BGP CT SAFI 76 is not used in this Intra AS deployment. But the 
+          Transport class and Resolution Scheme constructs are used to preserve end-to-end SLA.</t>
+        </section>
+      </section>
+
+      <section title="Inter AS option-A usecase">
+        <section title="Topology">
+          <figure>
+            <artwork align="left" xml:space="preserve">
+                  [RR11]                        [RR21]
+                    |                             |
+                    +                             +
+[CE31]---[PE11]----[P1]----[ASBR11]---[ASBR21]---[P2]---[PE21]----[CE41]
+        |                           |                           |
+        +                           +                           +
+        |                           |                           |
+  AS3               ..AS1..               ..AS2..                  AS4 
+
+10.31.31.31          ---- Traffic Direction ----&gt;           10.41.41.41
+            </artwork>
+          </figure>
+
+          <t>This example shows two provider network Autonomous systems AS1, AS2. 
+          They serve L3VPN customers AS3, AS4 respectively. The ASBRs ASBR11 and 
+          ASBR21 have IP VRFs connected directly. The inter AS link is IP enabled 
+          with no MPLS forwarding.</t>
+          
+          <t>Traffic direction being described is CE31 to CE41. CE41 may request
+          a specific SLA (e.g. Gold for this traffic), when traversing these provider 
+          core networks.</t>
+        </section>
+
+        <section title="Transport Layer">
+          <t>AS1 uses RSVP-TE intra-domain tunnels between PE11 and ASBR11. And
+          LDP tunnels for best effort traffic. AS2 uses SRTE intra-domain tunnels 
+          between ASBR21 and PE21, and L-ISIS for best effort tunnels.</t>
+
+          <t>The networks have two Transport classes: Gold with transport class
+          id 100, Bronze with transport class id 200. These transport classes
+          are provisioned at the PEs and ASBRs. This creates the Resolution Schemes for 
+          these transport classes at these PEs and ASBRs.</t>
+
+          <t>Following tunnels exist for Gold transport class.<list>
+              <t>PE11_to_ASBR11_gold - RSVP-TE tunnel</t>
+
+              <t>ASBR11_to_PE11_gold - RSVP-TE tunnel</t>
+
+              <t>PE21_to_ASBR21_gold - SRTE tunnel</t>
+
+              <t>ASBR21_to_PE21_gold - SRTE tunnel</t>
+            </list></t>
+
+          <t>Following tunnels exist for Bronze transport class.<list>
+              <t>PE11_to_ASBR11_bronze - RSVP-TE tunnel</t>
+
+              <t>ASBR11_to_PE11_bronze - RSVP-TE tunnel</t>
+
+              <t>PE21_to_ASBR21_bronze - SRTE tunnel</t>
+
+              <t>ASBR21_to_PE21_bronze - SRTE tunnel</t>
+            </list></t>
+
+          <t>These tunnels are provisioned to belong to transport class 100 or 200.</t>
+        </section>
+
+        <section title="Service Layer route exchange">
+          <t>Service nodes PE11, ASBR11 negotiate service familiy (SAFI 128)
+          on the BGP session with RR11. Service helper RR11 reflects service routes 
+          between the PE11 and ASBR11 with nexthop unchanged. </t> 
+          
+          <t> Similarly, in AS2 PE21, ASBR21 negotiate service family (SAFI 128) 
+          on the BGP session with RR21, which reflects service routes between the 
+          PE21 and ASBR21 with nexthop unchanged .</t>
+
+          <t>CE41 advertises a route for example prefix 10.41.41.41 with
+          nexthop self to PE21 VRF. CE41 can attach a Mapping Community
+          Color:0:100 on this route, to indicate its request for Gold SLA. Or,
+          PE21 can attach the same using locally configured policies.</t>
+
+          <t>Consider CE41 is getting VPN service from PE21. The RD:10.41.41.41
+          route is readvertised in SAFI 128 by PE21 with nexthop self
+          (10.21.21.21) and label V-L1, to RR21 with the Mapping Community
+          Color:0:100 attached. This SAFI 128 route reaches ASBR21 via RR21
+          with the nexthop unchanged as PE21 and label V-L1. Now ASBR21
+          can resolve the PNH 10.21.21.21 using ASBR21_to_PE21_gold SRTE LSP.</t>
+
+          <t>The IP FIB at ASBR21 VRF will have a route for 10.41.41.41 with a
+          nexthop resolved using Resolution Scheme associated with mapping 
+          community Color:0:100, pointing to ASBR21_to_PE21_gold tunnel.</t>
+
+          <t>This route is readvertised by ASBR21 on BGP session inside VRF with 
+          nexthop self. EBGP session peering on interface address. ASBR21 acts like a 
+          CE to ASBR11, and the above mentioned process repeats in AS1, until route 
+          reaches PE11 and resolves over PE11_to_ASBR11_gold RSVP TE tunnel.</t>
+
+          <t>Traffic traverses as IP packet on the following legs: CE31-PE11, ASBR11-ASBR21,
+          PE21-CE41. And uses MPLS forwarding inside AS1, AS2 core.</t>
+
+          <t>BGP CT SAFI 76 is not used in this Inter AS option-A deployment. But the 
+          Transport class and Resolution Scheme constructs are used to preserve end-to-end SLA.</t>
+        </section>
 
 
-    <author fullname="Csaba Mates" initials="CS" surname="Mates">    
-      <organization abbrev="">Hungarian NREN</organization>
+      </section>
+      
+      <section title="Inter AS option-B usecase">
+        <section title="Topology">
+          <figure>
+            <artwork align="left" xml:space="preserve">
+                  [RR13]                        [RR23]
+                    |                             |
+                    +                             +
+[CE31]---[PE11]----[P1]----[ASBR12]---[ASBR21]---[P2]---[PE22]----[CE41]
+        |                           |                           |
+        +                           +                           +
+        |                           |                           |
+  AS3               ..AS1..               ..AS2..                  AS4 
 
-      <address>
-        <postal>
-          <street>35 Vaci street,</street>
+10.31.31.31          ---- Traffic Direction ----&gt;           10.41.41.41
+            </artwork>
+          </figure>
 
-          <city>Budapest</city>
+          <t>This example shows two provider network Autonomous systems AS1, AS2. 
+          They serve L3VPN customers AS3, AS4 respectively. The ASBRs ASBR12 and 
+          ASBR21 dont have any IP VRFs . The inter AS link is MPLS forwarding enabled.</t>
+          
+          <t>Traffic direction being described is CE31 to CE41. CE41 may request
+          a specific SLA (e.g. Gold for this traffic), when traversing these provider 
+          core networks.</t>
+        </section>
 
-          <region></region>
+        <section title="Transport Layer">
+          <t>AS1 uses RSVP-TE intra-domain tunnels between PE11 and ASBR21. And
+          LDP tunnels for best effort traffic. AS2 uses SRTE intra-domain tunnels 
+          between ASBR21 and PE22, and L-ISIS for best effort tunnels.</t>
 
-          <code>1134</code>
+          <t>The networks have two Transport classes: Gold with transport class
+          id 100, Bronze with transport class id 200. These transport classes
+          are provisioned at the PEs and ASBRs. This creates the Resolution Schemes for 
+          these transport classes at these PEs and ASBRs.</t>
 
-          <country>Hungary</country>
-        </postal>
+          <t>Following tunnels exist for Gold transport class.<list>
+              <t>PE11_to_ASBR12_gold - RSVP-TE tunnel</t>
 
-        <email>ietf@nop.hu</email>
-      </address>
-    </author>
+              <t>ASBR12_to_PE11_gold - RSVP-TE tunnel</t>
 
-    <author fullname="Deepak J Gowda" initials="J" surname="Gowda">
-      <organization abbrev="">Extreme Networks</organization>
+              <t>PE22_to_ASBR21_gold - SRTE tunnel</t>
 
-      <address>
-        <postal>
-          <street>55 Commerce Valley Drive West, Suite 300,</street>
+              <t>ASBR21_to_PE22_gold - SRTE tunnel</t>
+            </list></t>
 
-          <city>Thornhill, Toronto,</city>
+          <t>Following tunnels exist for Bronze transport class.<list>
+              <t>PE11_to_ASBR12_bronze - RSVP-TE tunnel</t>
 
-          <region>Ontario</region>
+              <t>ASBR12_to_PE11_bronze - RSVP-TE tunnel</t>
 
-          <code>L3T 7V9</code>
+              <t>PE22_to_ASBR21_bronze - SRTE tunnel</t>
 
-          <country>Canada</country>
-        </postal>
+              <t>ASBR21_to_PE22_bronze - SRTE tunnel</t>
+            </list></t>
 
-        <email>dgowda@extremenetworks.com</email>
-      </address>
-    </author>
+          <t>These tunnels are provisioned to belong to transport class 100 or 200.</t>
+        </section>
 
+        <section title="Service Layer route exchange">
+          <t>Service nodes PE11, ASBR12 negotiate service familiy (SAFI 128)
+          on the BGP session with RR13. Service helper RR13 reflects service routes 
+          between the PE11 and ASBR12 with nexthop unchanged. </t> 
+          
+          <t> Similarly, in AS2 PE22, ASBR21 negotiate service family (SAFI 128) 
+          on the BGP session with RR23, which reflects service routes between the 
+          PE22 and ASBR21 with nexthop unchanged .</t>
+
+          <t>ASBR21 and ASBR12 negotiate SAFI 128 between them, and readvertise L3VPN
+          routes with nexthop self, allocating new labels. EBGP session peering on 
+          interface address. </t>
+
+          <t>CE41 advertises a route for example prefix 10.41.41.41 with
+          nexthop self to PE22 VRF. CE41 can attach a Mapping Community
+          Color:0:100 on this route, to indicate its request for Gold SLA. Or,
+          PE22 can attach the same using locally configured policies.</t>
+
+          <t>Consider CE41 is getting VPN service from PE22. The RD:10.41.41.41
+          route is readvertised in SAFI 128 by PE22 with nexthop self
+          (10.22.22.22) and label V-L1, to RR23 with the Mapping Community
+          Color:0:100 attached. This SAFI 128 route reaches ASBR21 via RR23
+          with the nexthop unchanged as PE22 and label V-L1. Now ASBR21
+          can resolve the PNH 10.22.22.22 using ASBR21_to_PE22_gold SRTE LSP.</t>
+
+          <t>Next, ASBR21 readvertises the RD:10.41.41.41 route with nexthop self 
+          to ASBR12, with a newly allocated MPLS label, V-L2. Forwarding for this 
+          label is installed to Swap V-L1, and Push labels for ASBR21_to_PE22_gold 
+          tunnel. </t>
+
+          <t>ASBR12 further readvertises the RD:10.41.41.41 route via RR13 to PE11
+          with nexthop self 10.12.12.12.  PE1 resolves the nexthop 10.12.12.12 over 
+          PE11_to_ASBR11_gold RSVP TE tunnel.</t>
+
+          <t>Traffic traverses as IP packet on the following legs: CE31-PE11, PE21-CE41. 
+          And uses MPLS forwarding on ASBR11-ASBR21 link, and inside AS1, AS2 core.</t>
+
+          <t>BGP CT SAFI 76 is not used in this Inter AS option-B deployment. But the 
+          Transport class and Resolution Scheme constructs are used to preserve end-to-end SLA.</t>
+        </section>
+      </section>
     </section>
 
-    <section anchor="Other Contributors" title="Other Contributors" numbered="false">
+    <section anchor="Contributors" numbered="false" title="Contributors">
+      <section anchor="Co-Authors" numbered="false" title="Co-Authors">
+        <author fullname="Israel Means" initials="I" surname="Means">
+          <organization abbrev="">AT&amp;T</organization>
 
-    <author fullname="Balaji Rajagopalan" initials="B." surname="Rajagopalan">
-      <organization>Juniper Networks, Inc.</organization>
+          <address>
+            <postal>
+              <street>2212 Avenida Mara,</street>
 
-      <address>
-        <postal>
-          <street>Electra, Exora Business Park~Marathahalli - Sarjapur Outer
-          Ring Road,</street>
+              <city>Chula Vista</city>
 
-          <city>Bangalore</city>
+              <region>California</region>
 
-          <region>KA</region>
+              <code>91914</code>
 
-          <code>560103</code>
+              <country>USA</country>
+            </postal>
 
-          <country>India</country>
-        </postal>
+            <email>israel.means@att.com</email>
+          </address>
+        </author>
 
-        <email>balajir@juniper.net</email>
-      </address>
-    </author>
+        <author fullname="Csaba Mates" initials="CS" surname="Mates">
+          <organization abbrev="">Hungarian NREN</organization>
 
-    <author fullname="Reshma Das" initials="D." surname="Das">
-      <organization>Juniper Networks, Inc.</organization>
+          <address>
+            <postal>
+              <street>35 Vaci street,</street>
 
-      <address>
-        <postal>
-          <street>1133 Innovation Way,</street>
+              <city>Budapest</city>
 
-          <city>Sunnyvale</city>
+              <region/>
 
-          <region>CA</region>
+              <code>1134</code>
 
-          <code>94089</code>
+              <country>Hungary</country>
+            </postal>
 
-          <country>US</country>
-        </postal>
+            <email>ietf@nop.hu</email>
+          </address>
+        </author>
 
-        <email>dreshma@juniper.net</email>
-      </address>
-    </author>
+        <author fullname="Deepak J Gowda" initials="J" surname="Gowda">
+          <organization abbrev="">Extreme Networks</organization>
 
-    <author fullname="Rajesh M" initials="M">
-      <organization>Juniper Networks, Inc.</organization>
-      <address>
-        <postal>
-          <street>Electra, Exora Business Park~Marathahalli - Sarjapur Outer
-          Ring Road,</street>
+          <address>
+            <postal>
+              <street>55 Commerce Valley Drive West, Suite 300,</street>
 
-          <city>Bangalore</city>
+              <city>Thornhill, Toronto,</city>
 
-          <region>KA</region>
+              <region>Ontario</region>
 
-          <code>560103</code>
+              <code>L3T 7V9</code>
 
-          <country>India</country>
-        </postal>
-        <email>mrajesh@juniper.net</email>
-      </address>
-    </author>
+              <country>Canada</country>
+            </postal>
 
-    <author fullname="Chaitanya Yadlapalli" initials="C" surname="Yadlapalli">
-      <organization abbrev="">AT&amp;T</organization>
-      <address>
-        <postal>
-          <street>200 S Laurel Ave,</street>
+            <email>dgowda@extremenetworks.com</email>
+          </address>
+        </author>
+      </section>
 
-          <city>Middletown,</city>
+      <section anchor="Other Contributors" numbered="false"
+               title="Other Contributors">
+        <author fullname="Balaji Rajagopalan" initials="B."
+                surname="Rajagopalan">
+          <organization>Juniper Networks, Inc.</organization>
 
-          <region>NJ</region>
+          <address>
+            <postal>
+              <street>Electra, Exora Business Park~Marathahalli - Sarjapur
+              Outer Ring Road,</street>
 
-          <code>07748</code>
+              <city>Bangalore</city>
 
-          <country>USA</country>
-        </postal>
+              <region>KA</region>
 
-        <email>cy098d@att.com</email>
-      </address>
-    </author>
+              <code>560103</code>
 
-    <author fullname="Gyan Mishra" initials="G." surname="Mishra">
-      <organization>Verizon Inc.</organization>
+              <country>India</country>
+            </postal>
 
-      <address>
-        <postal>
-          <street>13101 Columbia Pike</street>
+            <email>balajir@juniper.net</email>
+          </address>
+        </author>
 
-          <city>Silver Spring</city>
+        <author fullname="Reshma Das" initials="D." surname="Das">
+          <organization>Juniper Networks, Inc.</organization>
 
-          <region>MD</region>
+          <address>
+            <postal>
+              <street>1133 Innovation Way,</street>
 
-          <code>20904</code>
+              <city>Sunnyvale</city>
 
-          <country>USA</country>
-        </postal>
+              <region>CA</region>
 
-        <email>gyan.s.mishra@verizon.com</email>
-      </address>
-    </author>
+              <code>94089</code>
 
-    <author fullname="Mazen Khaddam" initials="M" surname="Khaddam">
-      <organization abbrev="">Cox Communications Inc.</organization>
+              <country>US</country>
+            </postal>
 
-      <address>
-        <postal>
-          <street/>
+            <email>dreshma@juniper.net</email>
+          </address>
+        </author>
 
-          <city>Atlanta</city>
+        <author fullname="Rajesh M" initials="M">
+          <organization>Juniper Networks, Inc.</organization>
 
-          <region>GA</region>
+          <address>
+            <postal>
+              <street>Electra, Exora Business Park~Marathahalli - Sarjapur
+              Outer Ring Road,</street>
 
-          <code/>
+              <city>Bangalore</city>
 
-          <country>USA</country>
-        </postal>
+              <region>KA</region>
 
-        <email>mazen.khaddam@cox.com</email>
-      </address>
-    </author>
+              <code>560103</code>
 
-    <author fullname="Rafal Jan Szarecki" initials="R" surname="Szarecki">
-      <organization abbrev="">Google.</organization>
+              <country>India</country>
+            </postal>
 
-      <address>
-        <postal>
-          <street>1160 N Mathilda Ave, Bldg 5,</street>
+            <email>mrajesh@juniper.net</email>
+          </address>
+        </author>
 
-          <city>Sunnyvale,</city>
+        <author fullname="Chaitanya Yadlapalli" initials="C"
+                surname="Yadlapalli">
+          <organization abbrev="">AT&amp;T</organization>
 
-          <region>CA</region>
+          <address>
+            <postal>
+              <street>200 S Laurel Ave,</street>
 
-          <code>94089</code>
+              <city>Middletown,</city>
 
-          <country>USA</country>
-        </postal>
+              <region>NJ</region>
 
-        <email>szarecki@google.com</email>
-      </address>
-    </author>
+              <code>07748</code>
 
-    <author fullname="Xiaohu Xu" initials="X" surname="Xu">
-      <organization abbrev="">Capitalonline.</organization>
+              <country>USA</country>
+            </postal>
 
-      <address>
-        <postal>
-          <street/>
+            <email>cy098d@att.com</email>
+          </address>
+        </author>
 
-          <city>Beijing</city>
+        <author fullname="Gyan Mishra" initials="G." surname="Mishra">
+          <organization>Verizon Inc.</organization>
 
-          <region/>
+          <address>
+            <postal>
+              <street>13101 Columbia Pike</street>
 
-          <code/>
+              <city>Silver Spring</city>
 
-          <country>China</country>
-        </postal>
+              <region>MD</region>
 
-        <email>xiaohu.xu@capitalonline.net</email>
-      </address>
-    </author>
+              <code>20904</code>
+
+              <country>USA</country>
+            </postal>
+
+            <email>gyan.s.mishra@verizon.com</email>
+          </address>
+        </author>
+
+        <author fullname="Mazen Khaddam" initials="M" surname="Khaddam">
+          <organization abbrev="">Cox Communications Inc.</organization>
+
+          <address>
+            <postal>
+              <street/>
+
+              <city>Atlanta</city>
+
+              <region>GA</region>
+
+              <code/>
+
+              <country>USA</country>
+            </postal>
+
+            <email>mazen.khaddam@cox.com</email>
+          </address>
+        </author>
+
+        <author fullname="Rafal Jan Szarecki" initials="R" surname="Szarecki">
+          <organization abbrev="">Google.</organization>
+
+          <address>
+            <postal>
+              <street>1160 N Mathilda Ave, Bldg 5,</street>
+
+              <city>Sunnyvale,</city>
+
+              <region>CA</region>
+
+              <code>94089</code>
+
+              <country>USA</country>
+            </postal>
+
+            <email>szarecki@google.com</email>
+          </address>
+        </author>
+
+        <author fullname="Xiaohu Xu" initials="X" surname="Xu">
+          <organization abbrev="">Capitalonline.</organization>
+
+          <address>
+            <postal>
+              <street/>
+
+              <city>Beijing</city>
+
+              <region/>
+
+              <code/>
+
+              <country>China</country>
+            </postal>
+
+            <email>xiaohu.xu@capitalonline.net</email>
+          </address>
+        </author>
+      </section>
     </section>
-    </section>
 
-    <section anchor="Acknowledgements" title="Acknowledgements" numbered="false">
-      <t>The authors thank Jeff Haas, John Scudder, Susan Hares, Moses Nagarajah,
-      Navaneetha Krishnan, Ravi M R, Chandrasekar Ramachandran, Shradha Hegde,
-      Richard Roberts, Krzysztof Szarkowicz, John E Drake, Srihari Sangli,
-      Vijay Kestur, Santosh Kolenchery, Robert Raszuk, Ahmed Darwish, Aravind
-      Srinivas Srinivasa Prabhakar, Moshiko Nayman, Chris Trip for the
-      valuable discussions and review comments.</t>
+    <section anchor="Acknowledgements" numbered="false"
+             title="Acknowledgements">
+      <t>The authors thank Jeff Haas, John Scudder, Susan Hares, Moses
+      Nagarajah, Navaneetha Krishnan, Ravi M R, Chandrasekar Ramachandran,
+      Shradha Hegde, Richard Roberts, Krzysztof Szarkowicz, John E Drake,
+      Srihari Sangli, Vijay Kestur, Santosh Kolenchery, Robert Raszuk, Ahmed
+      Darwish, Aravind Srinivas Srinivasa Prabhakar, Moshiko Nayman, Chris
+      Trip for the valuable discussions and review comments.</t>
 
       <t>The decision to not reuse SAFI 128 and create a new address-family to
       carry these transport-routes was based on suggestion made by Richard
       Roberts and Krzysztof Szarkowicz.</t>
     </section>
-
-
   </back>
 </rfc>
