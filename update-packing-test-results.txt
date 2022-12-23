@@ -1,0 +1,145 @@
+Test Intent:
+============
+
+   Ref: https://github.com/ietf-wg-idr/draft-ietf-idr-bgp-ct/issues/14
+        https://github.com/ietf-wg-idr/draft-ietf-idr-bgp-ct/issues/2
+
+   BGP-CT carries transport class as an attribute, which impacts BGP update packing.
+   Measure the impact of reduced Update packing on BGP control-plane convergence for
+   scale conditions mentioned in:
+
+   https://datatracker.ietf.org/doc/html/draft-hr-spring-intentaware-routing-using-color-00#section-6.3.2
+
+   viz:
+
+     "Support a massive scaled transport network
+        *  Number of Remote PE's: >= 300k
+        *  Number of Colors C: >= 5"
+
+  Note: There are other issues related to MPLS label allocation and forwarding scale
+    for this scale. This experiment does not focus on those. It focuses on only the 
+    BGP control plane convergence aspect of this scaled scenario.
+
+Environment:
+=============
+    All nodes are simulated as Docker containers on Linux server with 56 CPUs
+    (server not dedicated to this experiment, has other workloads too).
+
+    root@rahi-03:~# uname -nar
+    Linux rahi-03 4.15.0-159-generic #167-Ubuntu SMP Tue Sep 21 08:55:05 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
+
+    root@rahi-03:~# docker --version
+    Docker version 20.10.7, build 20.10.7-0ubuntu5~18.04.3
+
+    root@rahi-03:~# clab version | grep version
+    version: 0.32.3
+
+    Junos Routing Image: crpd:22.4R1.5
+
+Topology:
+=========
+
+                           RR1 6
+                            | 
+                     5    4 |+------PE1 1
+                    PE0-----P1------PE2 2
+                             +------PE3 3
+
+
+         - PE0-PE3 have 5 transport classes configured. All peer with RR1
+         - PE1-PE3 are originating BGP-CT routes for 387105 endpoints in 5 transport classes.
+         - RR1 reflects the 1.9M routes to PE0
+
+Test Methodology:
+=================
+
+    Few Iterations of:
+	 - Deactivate BGP at PE0. This brings down session with RR1.
+         - Wait for cleanup complete.
+         - Activate BGP at PE0. Wait for receiving all 1.9M routes from RR1.
+         - Record the time taken to receive EOR, in-Updates, in-Octets
+           shown in show bgp neighbor extensive output (PS1).
+
+
+    Test independently for
+        - BGP-CTv4 family,
+        - BGP-CTv6 family,
+        - BGP-CTv6 family with SRv6-SIDs.
+
+ PS1: Example output:
+
+  root@PE0# run show bgp neighbor extensive | match "family|table|update|initial|prefix"
+  Nov 23 20:46:51
+    Options: <LocalAddress AddressFamily Rib-group Refresh>
+    Table bgp.transport-inet6.3 Bit: 20000
+      Active prefixes:              1935480
+      Received prefixes:            1935480
+      Accepted prefixes:            1935480
+      Advertised prefixes:          0
+    Family inet6-transport
+      Initial send time: 0
+      Initial recv time: 58
+    Input messages:  Total 13833  Updates 13831   Refreshes 0     Octets 55507402
+    Output messages: Total 4      Updates 0       Refreshes 0     Octets 87
+
+
+TEST RESULTS:
+---------------
+
+Image: crpd:23.1I20221101_2159_kaliraj
+========================================
+
+  BGP CT IPv4.
+
+  Iteration       Num-TCs        Num-Endpoints    Total-Routes     In-Updates     Time
+  -----------+----------------+----------------+---------------+---------------+-------
+    1               5              387105          1935480          7851          73 sec
+    2               5              387105          1935480          7851          82 sec
+    3               5              387105          1935480          7851          77 sec
+    4               5              387105          1935480          7851          76 sec
+    5               5              387105          1935480          7851          75 sec
+
+
+  BGO CT IPv6.
+
+  Iteration       Num-TCs        Num-Endpoints    Total-Routes     In-Updates     Time
+  -----------+----------------+----------------+---------------+---------------+-------
+    1               5              387105          1935480          13831         73 sec
+    2               5              387105          1935480          13831         65 sec
+    3               5              387105          1935480          13831         66 sec
+    4               5              387105          1935480          13832         71 sec
+    5               5              387105          1935480          13832         64 sec
+    6               5              387105          1935480          13832         64 sec
+
+
+Junos Routing Image: crpd:22.4R1.5
+========================================
+
+  BGP CT IPv4.
+
+   Iter     Num-TCs   Num-Endpoints    Total-Routes     In-Updates    In-Octets   Time
+  -------+---------+----------------+---------------+---------------+-----------+-------
+    1         5         387105          1935480           7851         31619342   72 sec
+    2         5         387105          1935480           7851         31619342   94 sec
+    3         5         387105          1935480           7851         31619342   72 sec
+    4         5         387105          1935480           7851         31619342   72 sec
+    5         5         387105          1935480           7851         31619342   72 sec
+    6         5         387105          1935480           7851         31619342   71 sec (tcp-nodelay)
+    7         5         387105          1935480           7851         31619342   72 sec (tcp-nodelay)
+    8         5         387105          1935480           7851         31619342   94 sec (tcp-nodelay)
+
+
+
+   BGP CT IPv6.
+
+   Iter     Num-TCs   Num-Endpoints    Total-Routes     In-Updates    In-Octets   Time
+  -------+---------+----------------+---------------+---------------+-----------+-------
+    1         5         387105          1935480          13831         55507402    58 sec
+    2         5         387105          1935480          13831         55507402    59 sec
+    3         5         387105          1935480          13831         55507402    58 sec
+    4         5         387105          1935480          13832         55507497    57 sec
+    5         5         387105          1935480          13832         55507497    64 sec
+    6         5         387105          1935480          13832         55507497    63 sec (tcp-nodelay)
+    7         5         387105          1935480          13832         55507497    63 sec (tcp-nodelay)
+    8         5         387105          1935480          13831         55507402    62 sec (tcp-nodelay)
+
