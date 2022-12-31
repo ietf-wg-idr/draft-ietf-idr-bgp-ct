@@ -175,9 +175,9 @@ Internet-Draft        BGP Classful Transport Planes        December 2022
    20. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  38
      20.1.  New BGP SAFI . . . . . . . . . . . . . . . . . . . . . .  38
      20.2.  New Format for BGP Extended Community  . . . . . . . . .  38
-       20.2.1.  Existing registries to be modified . . . . . . . . .  38
+       20.2.1.  Existing registries to be modified . . . . . . . . .  39
        20.2.2.  New registries to be created . . . . . . . . . . . .  39
-     20.3.  MPLS OAM code points . . . . . . . . . . . . . . . . . .  39
+     20.3.  MPLS OAM code points . . . . . . . . . . . . . . . . . .  40
    21. Security Considerations . . . . . . . . . . . . . . . . . . .  40
    22. Normative References  . . . . . . . . . . . . . . . . . . . .  40
    Appendix A.  Applicability to Intra AS and different Inter AS
@@ -1950,8 +1950,8 @@ Internet-Draft        BGP Classful Transport Planes        December 2022
          technologies.
 
    This section describes how nodes supporting dissimilar encapsulation
-   technologies interoperate with each other when using BGP CT family.
-
+   technologies can interoperate with each other when using BGP CT
+   family.
 
 
 
@@ -1964,8 +1964,8 @@ Internet-Draft        BGP Classful Transport Planes        December 2022
 
 19.3.2.1.  Interop between MPLS and SRv6 nodes.
 
-   BGP speakers carry MPLS label and SRv6 SID in BGP CT SAFI 76 routes
-   using protocol encoding as described in Carrying Multiple
+   BGP speakers may carry MPLS label and SRv6 SID in BGP CT SAFI 76
+   routes using protocol encoding as described in Carrying Multiple
    Encapsulation information (Section 7.1)
 
    MPLS Labels are carried using RFC 8277 encoding, and SRv6 SID is
@@ -1985,15 +1985,17 @@ Internet-Draft        BGP Classful Transport Planes        December 2022
    This example shows a provider network with a mix of devices with
    different forwarding capabilities.  R1 and R2 support forwarding both
    MPLS and SRv6 packets.  R3 supports forwarding MPLS packets only.  R4
-   supports forwarding SRv6 packets only.  All these nodes peer with
-   Route Reflector RR1 which reflects routes between these nodes with
-   nexthop unchanged.
+   supports forwarding SRv6 packets only.  All these nodes have BGP
+   session with Route Reflector RR1 which reflects routes between these
+   nodes with nexthop unchanged.  BGP CT family is negotiated on these
+   sessions.
 
    R1 and R2 send and receive both MPLS label and SRv6 SID in the BGP CT
    control plane routes.  This allows them to be ingress and egress for
    both MPLS and SRv6 data planes.  MPLS Label is carried using RFC 8277
    encoding, and SRv6 SID is carried using Prefix SID attribute as
-   specified in RFC 8986, without any transposition.
+   specified in RFC 8986, without any transposition.  Either MPLS or
+   SRv6 forwarding can be used between R1 and R2.
 
    R1 and R3 send and receive MPLS label in the BGP CT control plane
    routes using RFC 8277 encoding.  This allows them to be ingress and
@@ -2001,15 +2003,13 @@ Internet-Draft        BGP Classful Transport Planes        December 2022
    attribute, which will not be used by R3.  In order to interoperate
    with MPLS only device R3, R1 MUST NOT use SRv6 Transposition scheme
    described in RFC 8986 that overloads the RFC 8277 MPLS-Label field
-   with SRv6 Transposition information.
+   with SRv6 Transposition information.  MPLS forwarding will be used
+   between R1 and R3.
 
    R1 and R4 send and receive SRv6 SID in the BGP CT control plane
    routes using BGP Prefix-SID attribute.  This allows them to be
-   ingress and egress for SRv6 data plane.  R4 will carry MPLS-Label 3
-   (Implicit-NULL) in RFC 8277 encoding, which tells R1 not to push any
-   MPLS label towards R4.  The MPLS Label advertised by R1 will not be
-   used by R4.  SRv6 forwarding will be used between R1 and R4.
-
+   ingress and egress for SRv6 data plane.  R4 will carry the special
+   MPLS Label with value 3 (Implicit-NULL) in RFC 8277 encoding, which
 
 
 
@@ -2018,53 +2018,53 @@ Vairavakkalai & VenkataramaExpires 4 July 2023                 [Page 36]
 Internet-Draft        BGP Classful Transport Planes        December 2022
 
 
+   tells R1 not to push any MPLS label towards R4.  The MPLS Label
+   advertised by R1 in RFC 8277 NLRI will not be used by R4.  SRv6
+   forwarding will be used between R1 and R4.
+
    Note in this example that R3 and R4 cannot communicate directly with
-   each other, because they dont support a common forwarding technology
+   each other, because they dont support a common forwarding technology.
 
-19.3.2.2.  Interop between MPLS and IPIP nodes.
+19.3.2.2.  Interop between nodes supporting MPLS and UDP tunneling.
 
-   MPLS Labels are carried using RFC 8277 encoding, and IPIP tunnel
-   information is carried using TEA attribute as specified in RFC 9012
+   This section describes how nodes supporting MPLS forwarding can
+   interoperate with other nodes supporting UDP (or IP) tunneling, when
+   using BGP CT family.
+
+   MPLS Labels are carried using RFC 8277 encoding, and UDP (or IP)
+   tunneling information is carried using TEA attribute as specified in
+   RFC 9012
 
                          RR1--+
-                                \  +-------R2  [MPLS + IPIP]
+                                \  +-------R2  [MPLS + UDP]
                                  \ |
                          R1--------P-------R3  [MPLS only]
-                   [MPLS + IPIP]   |
-                                   +-------R4  [IPIP only]
+                   [MPLS + UDP]    |
+                                   +-------R4  [UDP only]
 
                      <---- Bidirectional Traffic ---->
 
-           Figure 8: BGP CT Interop between MPLS and IPIP nodes.
+       Figure 8: BGP CT Interop between MPLS and UDP tunneling nodes.
 
-   In this example, R1 and R2 support forwarding both MPLS and IPIP
-   packets.  R3 supports forwarding MPLS packets only.  R4 supports
-   forwarding IPIP packets only.  All these nodes peer with Route
-   Reflector RR1 which reflects routes between these nodes with nexthop
-   unchanged.
+   In this example, R1 and R2 support forwarding both MPLS and UDP
+   tunneled packets.  R3 supports forwarding MPLS packets only.  R4
+   supports forwarding UDP tunneled packets only.  All these nodes have
+   BGP session with Route Reflector RR1 which reflects routes between
+   these nodes with nexthop unchanged.  BGP CT family is negotiated on
+   these sessions.
 
-   R1 and R2 send and receive both MPLS label and IPIP encap info in the
-   BGP CT control plane routes.  This allows them to be ingress and
-   egress for both MPLS and IPIP data planes.  MPLS Label is carried
-   using RFC 8277 encoding.  IPIP information is carried using TEA
-   attribute as specified in RFC 9012.
+   R1 and R2 send and receive both MPLS label and UDP tunneling info in
+   the BGP CT control plane routes.  This allows them to be ingress and
+   egress for both MPLS and UDP tunneling data planes.  MPLS Label is
+   carried using RFC 8277 encoding.  UDP tunneling information is
+   carried using TEA attribute as specified in RFC 9012.  Either MPLS or
+   UDP tunneled forwarding can be used between R1 and R2.
 
    R1 and R3 send and receive MPLS label in the BGP CT control plane
    routes using RFC 8277 encoding.  This allows them to be ingress and
-   egress for MPLS data plane.  R1 will carry IPIP info in TEA
-   attribute, which will not be used by R3.  Only MPLS forwarding can be
+   egress for MPLS data plane.  R1 will carry UDP tunneling info in TEA
+   attribute, which will not be used by R3.  MPLS forwarding will be
    used between R1 and R3.
-
-   R1 and R4 send and receive IPIP info in the BGP CT control plane
-   routes using BGP TEA attribute.  This allows them to be ingress and
-   egress for IPIP data plane.  R4 will carry MPLS-Label 3 (Implicit-
-   NULL) in RFC 8277 encoding, which tells R1 not to push any MPLS label
-   towards R4.  The MPLS Label advertised by R1 will not be used by R4.
-   IPIP tunneled forwarding will be used between R1 and R4.
-
-   Note in this example that R3 and R4 cannot communicate directly with
-   each other, because they dont support a common forwarding technology
-
 
 
 
@@ -2073,6 +2073,17 @@ Vairavakkalai & VenkataramaExpires 4 July 2023                 [Page 37]
 
 Internet-Draft        BGP Classful Transport Planes        December 2022
 
+
+   R1 and R4 send and receive UDP tunneling info in the BGP CT control
+   plane routes using BGP TEA attribute.  This allows them to be ingress
+   and egress for UDP tunneled data plane.  R4 will carry special MPLS
+   Label with value 3 (Implicit-NULL) in RFC 8277 encoding, which tells
+   R1 not to push any MPLS label towards R4.  The MPLS Label advertised
+   by R1 will not be used by R4.  UDP tunneled forwarding will be used
+   between R1 and R4.
+
+   Note in this example that R3 and R4 cannot communicate directly with
+   each other, because they dont support a common forwarding technology
 
 20.  IANA Considerations
 
@@ -2111,6 +2122,14 @@ Internet-Draft        BGP Classful Transport Planes        December 2022
 
    Taking reference of RFC7153 [RFC7153] , following requests are made:
 
+
+
+
+Vairavakkalai & VenkataramaExpires 4 July 2023                 [Page 38]
+
+Internet-Draft        BGP Classful Transport Planes        December 2022
+
+
 20.2.1.  Existing registries to be modified
 
 20.2.1.1.  Registries for the "Type" Field
@@ -2119,16 +2138,6 @@ Internet-Draft        BGP Classful Transport Planes        December 2022
 
    This registry contains values of the high-order octet (the "Type"
    field) of a Transitive Extended Community.
-
-
-
-
-
-
-Vairavakkalai & VenkataramaExpires 4 July 2023                 [Page 38]
-
-Internet-Draft        BGP Classful Transport Planes        December 2022
-
 
 Registry Name: BGP Transitive Extended Community
                   Types TYPE VALUE NAME + 0x0a Transitive Transport Class
@@ -2169,6 +2178,14 @@ Registry Name: BGP Transitive Extended Community
               RANGE REGISTRATION PROCEDURE 0x00-0xBF First Come First Served
               0xC0-0xFF IETF Review SUB-TYPE VALUE NAME 0x02 Route Target
 
+
+
+
+Vairavakkalai & VenkataramaExpires 4 July 2023                 [Page 39]
+
+Internet-Draft        BGP Classful Transport Planes        December 2022
+
+
 20.3.  MPLS OAM code points
 
    The following two code points are sought for Target FEC Stack sub-
@@ -2177,14 +2194,6 @@ Registry Name: BGP Transitive Extended Community
    *  IPv4 BGP Classful Transport
 
    *  IPv6 BGP Classful Transport
-
-
-
-
-Vairavakkalai & VenkataramaExpires 4 July 2023                 [Page 39]
-
-Internet-Draft        BGP Classful Transport Planes        December 2022
-
 
 21.  Security Considerations
 
@@ -2226,21 +2235,18 @@ Internet-Draft        BGP Classful Transport Planes        December 2022
               June 2021, <https://tools.ietf.org/html/draft-kaliraj-
               bess-bgp-sig-private-mpls-labels-01#section-6.1>.
 
-   [MULTI-NH-ATTR]
-              Vairavakkalai, Ed., "BGP MultiNexthop Attribute", 28
-              December 2021, <https://datatracker.ietf.org/doc/html/
-              draft-kaliraj-idr-multinexthop-attribute-02#section-
-              3.4.3>.
-
-
-
-
 
 
 Vairavakkalai & VenkataramaExpires 4 July 2023                 [Page 40]
 
 Internet-Draft        BGP Classful Transport Planes        December 2022
 
+
+   [MULTI-NH-ATTR]
+              Vairavakkalai, Ed., "BGP MultiNexthop Attribute", 28
+              December 2021, <https://datatracker.ietf.org/doc/html/
+              draft-kaliraj-idr-multinexthop-attribute-02#section-
+              3.4.3>.
 
    [PCEP-RSVP-COLOR]
               Rajagopalan, Ed., "Path Computation Element Protocol(PCEP)
@@ -2283,12 +2289,6 @@ Internet-Draft        BGP Classful Transport Planes        December 2022
               DOI 10.17487/RFC4760, January 2007,
               <https://www.rfc-editor.org/info/rfc4760>.
 
-   [RFC7153]  Rosen, E. and Y. Rekhter, "IANA Registries for BGP
-              Extended Communities", RFC 7153, DOI 10.17487/RFC7153,
-              March 2014, <https://www.rfc-editor.org/info/rfc7153>.
-
-
-
 
 
 
@@ -2297,6 +2297,10 @@ Vairavakkalai & VenkataramaExpires 4 July 2023                 [Page 41]
 
 Internet-Draft        BGP Classful Transport Planes        December 2022
 
+
+   [RFC7153]  Rosen, E. and Y. Rekhter, "IANA Registries for BGP
+              Extended Communities", RFC 7153, DOI 10.17487/RFC7153,
+              March 2014, <https://www.rfc-editor.org/info/rfc7153>.
 
    [RFC7911]  Walton, D., Retana, A., Chen, E., and J. Scudder,
               "Advertisement of Multiple Paths in BGP", RFC 7911,
@@ -2341,10 +2345,6 @@ Internet-Draft        BGP Classful Transport Planes        December 2022
               DOI 10.17487/RFC9012, April 2021,
               <https://www.rfc-editor.org/info/rfc9012>.
 
-   [RTC-Ext]  Zhang, Z., Ed., "Route Target Constrain Extension", 12
-              July 2020, <https://tools.ietf.org/html/draft-zzhang-idr-
-              bgp-rt-constrains-extension-00#section-2>.
-
 
 
 
@@ -2353,6 +2353,10 @@ Vairavakkalai & VenkataramaExpires 4 July 2023                 [Page 42]
 
 Internet-Draft        BGP Classful Transport Planes        December 2022
 
+
+   [RTC-Ext]  Zhang, Z., Ed., "Route Target Constrain Extension", 12
+              July 2020, <https://tools.ietf.org/html/draft-zzhang-idr-
+              bgp-rt-constrains-extension-00#section-2>.
 
    [SRTE]     Previdi, S., Ed., "Advertising Segment Routing Policies in
               BGP", 18 November 2019, <https://tools.ietf.org/html/
@@ -2395,10 +2399,6 @@ Appendix A.  Applicability to Intra AS and different Inter AS
 A.1.  Intra AS usecase
 
 A.1.1.  Topology
-
-
-
-
 
 
 

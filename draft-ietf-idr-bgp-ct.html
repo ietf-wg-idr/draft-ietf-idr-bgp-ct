@@ -3116,12 +3116,12 @@ li > p:last-of-type {
 <a href="#section-19.3.2" class="section-number selfRef">19.3.2. </a><a href="#name-bgp-ct-interop-between-mpls-an" class="section-name selfRef">BGP CT - Interop between MPLS and other forwarding technologies.</a>
           </h4>
 <p id="section-19.3.2-1"> This section describes how nodes supporting dissimilar encapsulation technologies
-              interoperate with each other when using BGP CT family.<a href="#section-19.3.2-1" class="pilcrow">¶</a></p>
+              can interoperate with each other when using BGP CT family.<a href="#section-19.3.2-1" class="pilcrow">¶</a></p>
 <section id="section-19.3.2.1">
             <h5 id="name-interop-between-mpls-and-srv">
 <a href="#section-19.3.2.1" class="section-number selfRef">19.3.2.1. </a><a href="#name-interop-between-mpls-and-srv" class="section-name selfRef">Interop between MPLS and SRv6 nodes.</a>
             </h5>
-<p id="section-19.3.2.1-1"> BGP speakers carry MPLS label and SRv6 SID in BGP CT SAFI 76 routes using 
+<p id="section-19.3.2.1-1"> BGP speakers may carry MPLS label and SRv6 SID in BGP CT SAFI 76 routes using 
            protocol encoding as described in <span><a href="#CTMultiEncap" class="xref">Carrying Multiple Encapsulation information</a> (<a href="#CTMultiEncap" class="xref">Section 7.1</a>)</span><a href="#section-19.3.2.1-1" class="pilcrow">¶</a></p>
 <p id="section-19.3.2.1-2"> MPLS Labels are carried using RFC 8277 encoding, and SRv6 SID is carried 
           using Prefix SID attribute as specified in RFC 8986<a href="#section-19.3.2.1-2" class="pilcrow">¶</a></p>
@@ -3147,68 +3147,74 @@ li > p:last-of-type {
 <p id="section-19.3.2.1-4">This example shows a provider network with a mix of devices with different 
           forwarding capabilities. R1 and R2 support forwarding both MPLS and SRv6 packets. 
           R3 supports forwarding MPLS packets only. R4 supports forwarding SRv6 packets only. 
-          All these nodes peer with Route Reflector RR1 which reflects routes between these nodes
-          with nexthop unchanged.<a href="#section-19.3.2.1-4" class="pilcrow">¶</a></p>
+          All these nodes have BGP session with Route Reflector RR1 which reflects routes between 
+          these nodes with nexthop unchanged. BGP CT family is negotiated on these sessions.<a href="#section-19.3.2.1-4" class="pilcrow">¶</a></p>
 <p id="section-19.3.2.1-5">R1 and R2 send and receive both MPLS label and SRv6 SID in the BGP CT control plane 
            routes. This allows them to be ingress and egress for both MPLS and SRv6 data planes.
            MPLS Label is carried using RFC 8277 encoding, and SRv6 SID is carried using Prefix SID 
-           attribute as specified in RFC 8986, without any transposition.<a href="#section-19.3.2.1-5" class="pilcrow">¶</a></p>
+           attribute as specified in RFC 8986, without any transposition. Either MPLS or SRv6 forwarding 
+           can be used between R1 and R2.<a href="#section-19.3.2.1-5" class="pilcrow">¶</a></p>
 <p id="section-19.3.2.1-6">R1 and R3 send and receive MPLS label in the BGP CT control plane routes using RFC 8277 
           encoding. This allows them to be ingress and egress for MPLS data plane. R1 will carry SRv6 SID 
           in Prefix-SID attribute, which will not be used by R3. In order to interoperate with MPLS only 
           device R3, R1 MUST NOT use SRv6 Transposition scheme described in RFC 8986 that overloads the 
-          RFC 8277 MPLS-Label field with SRv6 Transposition information.<a href="#section-19.3.2.1-6" class="pilcrow">¶</a></p>
+          RFC 8277 MPLS-Label field with SRv6 Transposition information. MPLS forwarding will be used between 
+          R1 and R3.<a href="#section-19.3.2.1-6" class="pilcrow">¶</a></p>
 <p id="section-19.3.2.1-7">R1 and R4 send and receive SRv6 SID in the BGP CT control plane routes using BGP Prefix-SID 
-          attribute. This allows them to be ingress and egress for SRv6 data plane. R4 will carry MPLS-Label 
-          3 (Implicit-NULL) in RFC 8277 encoding, which tells R1 not to push any MPLS label towards R4. The 
-          MPLS Label advertised by R1 will not be used by R4. SRv6 forwarding will be used between 
-          R1 and R4.<a href="#section-19.3.2.1-7" class="pilcrow">¶</a></p>
+          attribute. This allows them to be ingress and egress for SRv6 data plane. R4 will carry the 
+          special MPLS Label with value 3 (Implicit-NULL) in RFC 8277 encoding, which tells R1 not to push 
+          any MPLS label towards R4. The MPLS Label advertised by R1 in RFC 8277 NLRI will not be used by R4. 
+          SRv6 forwarding will be used between R1 and R4.<a href="#section-19.3.2.1-7" class="pilcrow">¶</a></p>
 <p id="section-19.3.2.1-8">Note in this example that R3 and R4 cannot communicate directly with each other, because they dont 
-          support a common forwarding technology<a href="#section-19.3.2.1-8" class="pilcrow">¶</a></p>
+          support a common forwarding technology.<a href="#section-19.3.2.1-8" class="pilcrow">¶</a></p>
 </section>
 <section id="section-19.3.2.2">
-            <h5 id="name-interop-between-mpls-and-ipi">
-<a href="#section-19.3.2.2" class="section-number selfRef">19.3.2.2. </a><a href="#name-interop-between-mpls-and-ipi" class="section-name selfRef">Interop between MPLS and IPIP nodes.</a>
+            <h5 id="name-interop-between-nodes-suppor">
+<a href="#section-19.3.2.2" class="section-number selfRef">19.3.2.2. </a><a href="#name-interop-between-nodes-suppor" class="section-name selfRef">Interop between nodes supporting MPLS and UDP tunneling.</a>
             </h5>
-<p id="section-19.3.2.2-1"> MPLS Labels are carried using RFC 8277 encoding, and IPIP tunnel information is carried 
-          using TEA attribute as specified in RFC 9012<a href="#section-19.3.2.2-1" class="pilcrow">¶</a></p>
-<span id="name-bgp-ct-interop-between-mpls-and-"></span><div id="BGPCT_MPLS_IPIP">
+<p id="section-19.3.2.2-1"> This section describes how nodes supporting MPLS forwarding can interoperate with
+              other nodes supporting UDP (or IP) tunneling, when using BGP CT family.<a href="#section-19.3.2.2-1" class="pilcrow">¶</a></p>
+<p id="section-19.3.2.2-2"> MPLS Labels are carried using RFC 8277 encoding, and UDP (or IP) tunneling information is carried 
+          using TEA attribute as specified in RFC 9012<a href="#section-19.3.2.2-2" class="pilcrow">¶</a></p>
+<span id="name-bgp-ct-interop-between-mpls-and-"></span><div id="BGPCT_MPLS_UDP">
 <figure id="figure-8">
-              <div class="alignLeft art-text artwork" id="section-19.3.2.2-2.1">
+              <div class="alignLeft art-text artwork" id="section-19.3.2.2-3.1">
 <pre>
 
                       RR1--+
-                             \  +-------R2  [MPLS + IPIP]
+                             \  +-------R2  [MPLS + UDP]
                               \ |
                       R1--------P-------R3  [MPLS only]
-                [MPLS + IPIP]   |
-                                +-------R4  [IPIP only]
+                [MPLS + UDP]    |
+                                +-------R4  [UDP only]
 
                   &lt;---- Bidirectional Traffic ----&gt;
 </pre>
 </div>
 <figcaption><a href="#figure-8" class="selfRef">Figure 8</a>:
-<a href="#name-bgp-ct-interop-between-mpls-and-" class="selfRef">BGP CT Interop between MPLS and IPIP nodes.</a>
+<a href="#name-bgp-ct-interop-between-mpls-and-" class="selfRef">BGP CT Interop between MPLS and UDP tunneling nodes.</a>
               </figcaption></figure>
 </div>
-<p id="section-19.3.2.2-3">In this example, R1 and R2 support forwarding both MPLS and IPIP packets. R3 supports 
-          forwarding MPLS packets only. R4 supports forwarding IPIP packets only. All these nodes peer 
-          with Route Reflector RR1 which reflects routes between these nodes with nexthop unchanged.<a href="#section-19.3.2.2-3" class="pilcrow">¶</a></p>
-<p id="section-19.3.2.2-4">R1 and R2 send and receive both MPLS label and IPIP encap info in the BGP CT control plane 
-           routes. This allows them to be ingress and egress for both MPLS and IPIP data planes.
-           MPLS Label is carried using RFC 8277 encoding. IPIP information is carried using TEA 
-           attribute as specified in RFC 9012.<a href="#section-19.3.2.2-4" class="pilcrow">¶</a></p>
-<p id="section-19.3.2.2-5">R1 and R3 send and receive MPLS label in the BGP CT control plane routes using RFC 8277 
-          encoding. This allows them to be ingress and egress for MPLS data plane. R1 will carry IPIP 
-          info in TEA attribute, which will not be used by R3. Only MPLS forwarding can be used between 
-          R1 and R3.<a href="#section-19.3.2.2-5" class="pilcrow">¶</a></p>
-<p id="section-19.3.2.2-6">R1 and R4 send and receive IPIP info in the BGP CT control plane routes using BGP TEA attribute. 
-          This allows them to be ingress and egress for IPIP data plane. R4 will carry MPLS-Label 
-          3 (Implicit-NULL) in RFC 8277 encoding, which tells R1 not to push any MPLS label towards R4. The 
-          MPLS Label advertised by R1 will not be used by R4. IPIP tunneled forwarding will be used between 
-          R1 and R4.<a href="#section-19.3.2.2-6" class="pilcrow">¶</a></p>
-<p id="section-19.3.2.2-7">Note in this example that R3 and R4 cannot communicate directly with each other, because they dont 
-          support a common forwarding technology<a href="#section-19.3.2.2-7" class="pilcrow">¶</a></p>
+<p id="section-19.3.2.2-4">In this example, R1 and R2 support forwarding both MPLS and UDP tunneled packets. R3 supports 
+          forwarding MPLS packets only. R4 supports forwarding UDP tunneled packets only. All these nodes 
+          have BGP session with Route Reflector RR1 which reflects routes between these nodes with nexthop 
+          unchanged. BGP CT family is negotiated on these sessions.<a href="#section-19.3.2.2-4" class="pilcrow">¶</a></p>
+<p id="section-19.3.2.2-5">R1 and R2 send and receive both MPLS label and UDP tunneling info in the BGP CT control plane 
+           routes. This allows them to be ingress and egress for both MPLS and UDP tunneling data planes.
+           MPLS Label is carried using RFC 8277 encoding. UDP tunneling information is carried using TEA 
+           attribute as specified in RFC 9012. Either MPLS or UDP tunneled forwarding can be used between 
+           R1 and R2.<a href="#section-19.3.2.2-5" class="pilcrow">¶</a></p>
+<p id="section-19.3.2.2-6">R1 and R3 send and receive MPLS label in the BGP CT control plane routes using RFC 8277 
+          encoding. This allows them to be ingress and egress for MPLS data plane. R1 will carry UDP tunneling 
+          info in TEA attribute, which will not be used by R3. MPLS forwarding will be used between 
+          R1 and R3.<a href="#section-19.3.2.2-6" class="pilcrow">¶</a></p>
+<p id="section-19.3.2.2-7">R1 and R4 send and receive UDP tunneling info in the BGP CT control plane routes using BGP TEA attribute. 
+          This allows them to be ingress and egress for UDP tunneled data plane. R4 will carry special MPLS Label with
+          value 3 (Implicit-NULL) in RFC 8277 encoding, which tells R1 not to push any MPLS label towards R4. The 
+          MPLS Label advertised by R1 will not be used by R4. UDP tunneled forwarding will be used between 
+          R1 and R4.<a href="#section-19.3.2.2-7" class="pilcrow">¶</a></p>
+<p id="section-19.3.2.2-8">Note in this example that R3 and R4 cannot communicate directly with each other, because they dont 
+          support a common forwarding technology<a href="#section-19.3.2.2-8" class="pilcrow">¶</a></p>
 </section>
 </section>
 </section>
