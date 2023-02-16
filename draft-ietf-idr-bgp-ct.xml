@@ -57,7 +57,7 @@
       </address>
     </author>
 
-    <date day="06" month="02" year="2023"/>
+    <date day="15" month="02" year="2023"/>
 
     <abstract>
       <t>This document specifies a mechanism, referred to as "Intent Driven
@@ -115,15 +115,15 @@
       <t>To facilitate this, the tunnels in a network can be grouped by the
       purpose they serve into a "Transport Class". These tunnels could be
       created using any signaling protocol including but not limited to LDP,
-      RSVP-TE, BGP LU or SPRING. The tunnels could also use native IP or IPv6
-      as long as they can carry MPLS payload. Tunnels may exist between
-      different pair of end points. Multiple tunnels may exist between the
-      same pair of end points.</t>
+      RSVP-TE, BGP LU or SPRING. The tunnels may use MPLS, IP or IPv6
+      forwarding and carry one of the signaled payload types (e.g. MPLS).
+      Tunnels may exist between different pair of end points. Multiple tunnels
+      may exist between the same pair of end points.</t>
 
-      <t>Thus, a Transport Class consists of tunnels created by various
-      protocols that satisfy the properties of the class. For example, a
-      "Gold" transport class may consist of tunnels that traverse the shortest
-      path with fast re-route protection. A "Silver" transport class may hold
+      <t>A Transport Class consists of tunnels created by various protocols
+      that satisfy the properties of the class. For example, a "Gold"
+      transport class may consist of tunnels that traverse the shortest path
+      with fast re-route protection. A "Silver" transport class may hold
       tunnels that traverse shortest paths without protection. A "To NbrAS
       Foo" transport class may hold tunnels that exit to neighboring AS Foo
       and so on.</t>
@@ -136,7 +136,7 @@
       hetrogeneous; each domain may use a different type of tunnel (e.g. MPLS,
       IP, GRE or SRv6) or use a differnet signaling protocol. A domain
       boundary is demarcated by a rewrite of BGP nexthop to 'self' while
-      readvertising tunnel routes in BGP CT. Examples of domain boundary are
+      readvertising BGP CT transport routes. Examples of domain boundary are
       inter-AS links and inter-region ABRs. The path uses MPLS label-switching
       when crossing domain boundaries and uses the native intra-AS tunnel of
       the desired transport class when traversing within a domain.</t>
@@ -272,7 +272,8 @@
       enable Label-Swap forwarding across domain boundaries.</t>
 
       <t>Mapping Community : BGP Community/Extended-community on a service
-      route that maps it to resolve over a Transport Class.</t>
+      route that maps it to resolve over a Transport Class. E.g. color:0:100,
+      transport-target:0:100.</t>
     </section>
 
     <section title="Transport Class">
@@ -356,7 +357,8 @@
  Transport Class ID: 4 octets
 
     The least significant 32-bits of the value field contain the 
-    "Transport Class" identifier, which is a 32-bit integer. 
+    "Transport Class" identifier, which is an unsigned non-zero 
+    32-bit integer. 
 
  The remaining 2 octets after SubType field are Reserved. They MUST 
  be set to zero on transmission, SHOULD be ignored on reception and
@@ -419,10 +421,17 @@
       Transport Class and an optional ordered list of fallback Transport
       Classes.</t>
 
-      <t>A community called as "Mapping Community" is configured for a
-      "resolution scheme". A Mapping Community maps to exactly one Resolution
-      Scheme. A Resolution Scheme comprises of one primary transport class and
-      optionally, one or more fallback transport classes.</t>
+      <t>A community known as "Mapping Community" is configured for a
+      "resolution scheme". Mapping community is a "role" and not a new type of
+      community; any BGP community or extended community may play this role. A
+      Mapping Community maps to exactly one Resolution Scheme. A Resolution
+      Scheme comprises of one primary transport class and optionally, one or
+      more fallback transport classes. The Resolution scheme is used to
+      realize the desired Intent.</t>
+
+      <t>An example of mapping community is color:0:100, described in RFC
+      9012, or the transport-target:0:100 described in section 4 in this
+      document.</t>
 
       <t>A BGP route is associated with a resolution scheme during import
       processing. The first community on the route that matches a Mapping
@@ -430,8 +439,9 @@
       effective Mapping Community for the route. The Resolution Scheme thus
       found is used when resolving the route's PNH. If a route contains more
       than one Mapping Community, it indicates that the route considers these
-      multiple Mapping Communities as equivalent. So, the first community that
-      maps to a Resolution Scheme is chosen.</t>
+      distinct Mapping Communities as equivalent in Intent. So, the first
+      community that maps to a Resolution Scheme is chosen as the effective
+      mapping community.</t>
 
       <t>A transport route received in BGP Classful Transport family SHOULD
       use a Resolution Scheme that contains the primary Transport Class
@@ -449,6 +459,15 @@
       Color:0:&lt;n&gt; MAY map to a Resolution Scheme that has primary
       Transport Class &lt;n&gt; and a fallback to best-effort Transport
       Class.</t>
+
+      <t>The Resolution Scheme mechanism not only works with SPRING transport
+      protocols to realize Intent based forwarding, but also with existing
+      tunneling technologies like RSVP TE, GRE, UDP, etc. Not assuming a
+      specific tunneling technology makes the BGP CT architecture backward and
+      forward compatible with existing and newer tunneling protocols,
+      respectively. It is compatible with SPRING, but there is no specific
+      dependency on SPRING. It is more generic and has broader
+      applicability.</t>
     </section>
 
     <section title="BGP Classful Transport Family NLRI">
@@ -558,7 +577,22 @@
 
       <section anchor="CTMultiEncap"
                title="Carrying multiple encapsulation information">
-        <t>kaliraj text</t>
+        <t>To allow interoperating with nodes supporting different forwarding
+        technologies, a BGP CT route allows carrying multiple encapsulation
+        information.</t>
+
+        <t>MPLS Label is carried using <xref target="RFC8277">RFC 8277</xref>
+        encoding. A node that does not support MPLS forwarding advertises the
+        special label 3 (Implicit Null) in the RFC 8277 MPLS Label field.</t>
+
+        <t>SRv6 SID is carried using Prefix SID attribute as specified in
+        <xref target="RFC9252">RFC 9252</xref>, without Transposition Scheme.
+        The Transposition Length is set to 0 and Transposition Offset is set
+        to 0 to indicate nothing is transposed and that the entire SRv6 SID
+        value is encoded in the SID Information Sub-TLV.</t>
+
+        <t>UDP tunneling information is carried using TEA attribute as
+        specified in <xref target="RFC9012">RFC 9012</xref>.</t>
       </section>
     </section>
 
@@ -810,7 +844,7 @@
       <section title="Coordinating between domains using different community       namespaces">
         <list>
           <t>Cooperating option-C domains may sometimes not agree on RT, RD,
-          Mapping-community or Transport Route Target values because of
+          Mapping community or Transport Route Target values because of
           differences in community namespaces (e.g. during network mergers or
           renumbering for expansion). Such deployments may deploy mechanisms
           to map and rewrite the Route Target values on domain boundaries,
@@ -988,8 +1022,8 @@
         <list>
           <t>This section describes how the number of Protocol Nexthops
           advertised to a SN or BN can be constrained using BGP Classsful
-          Transport and <xref target="RFC4684">Route Target
-          Constraints</xref>.</t>
+          Transport and <xref target="RFC4684">Route Target Constraints
+          (RTC)</xref>.</t>
 
           <t>An egress SN MAY advertise BGP CT route for RD:eSN with two Route
           Targets: transport-target:0:&lt;TC&gt; and a RT carrying
@@ -1001,7 +1035,11 @@
           &lt;eSN&gt;:&lt;TC&gt; is optional in a BGP CT network. It is
           required only if there is a requirement to prune the propagation of
           the transport route for an egress node eSN to only the set of
-          ingress nodes that need it.</t>
+          ingress nodes that need it. When only RT of
+          transport-target:0:&lt;TC&gt; is used, the pruning happens in
+          granularity of Transport Class ID (Color), and not BGP nexthop; BGP
+          CT routes will not be advertised into domains with PEs that dont
+          import its transport class.</t>
 
           <t>The transport-target:0:&lt;TC&gt; is the new type of route target
           (Transport Class RT) defined in this document. It is carried in BGP
@@ -1135,8 +1173,6 @@
     </section>
 
     <section title="SRv6 support">
-      <t>natv text</t>
-
       <t>This section describes how BGP CT may be used to set up inter domain
       tunnels of a certain Transport Class, when using Segment Routing over
       IPv6 (SRv6) data plane on the inter AS links or as an intra AS tunneling
@@ -1491,8 +1527,6 @@
     </section>
 
     <section title="Deployment considerations.">
-      <t>reshma and natv text</t>
-
       <section anchor="CTRouteVis" title="Managing Transport Route Visibility">
         <t>This section details the usage of BGP-CT RD and label allocation
         modes to calibrate the level of path visibility and the amount of
@@ -1555,62 +1589,73 @@
 
         <t>In the above example, both route churn and TE granularity are
         directly proportional to the number of CT labels received.</t>
+
+        <t>Above table demonstrates that BGP CT allows an operator to control
+        how much path visibility and forwarding diversity is desired in the
+        network, for Unicast and Anycast endpoints.</t>
       </section>
 
       <section title="Managing Intent at Service and Transport layers.">
-        <t><xref target="CTProc">CT Procedures </xref> illustrates multiple
-        domains that agree on a color name space (Agreeing Color Domains) and
-        contain tunnels with equivalent set of colors (Homogenous Color
-        Domains).</t>
+        <t><xref target="CTProc">Illustration of BGP CT Procedures </xref>
+        shows multiple domains that agree on a color name space (Agreeing
+        Color Domains) and contain tunnels with equivalent set of colors
+        (Homogenous Color Domains).</t>
 
-        <t>However in the real world, this cannot be strictly gauranteed. Two
-        domains can follow different color namespaces, these are known as
-        non-agreeing color domains. Two domains may have tunnels with unequal
-        set of colors, these are known as heterogenous color domains. This
-        section describes about how BGP-CT is deployed in such domains.</t>
+        <t>However in the real world, this may not always be gauranteed. Two
+        domains may independently manage their color namespaces, these are
+        known as Non-Agreeing Color Domains. Two domains may have tunnels with
+        unequal set of colors, these are known as Heterogenous Color
+        Domains.</t>
+
+        <t> This section describes how BGP CT is deployed in such scenarios to
+        preserve end to end Intent. Example described in this section use
+        Inter AS option C domains. But similar mechanisms will work for Inter
+        AS option A and Inter AS option B scenarios as-well.</t>
 
         <section title="Service layer Color Management ">
-          <t>It is recommended that a single namespace be followed in
-          different domains at the service layer. BGP-CT allows indirection
-          using resolution scheme to be able to maintain a single namespace in
-          the service layer even if in the transport layer the domains do not
-          agree on the same namespace.<xref target="CTMultiEncap">Carrying
-          Multiple Encapsulation information</xref></t>
+          <t>At the service layer, it is recommended that a global color
+          namespace be maintained across multiple co-operating domains. BGP CT
+          allows indirection using resolution schemes to be able to maintain a
+          global namespace in the service layer. This is possible even if each
+          domain independantly maintains its own local transport color
+          namespace.</t>
 
-          <t>As explained in <xref target="Nexthop_Resoln_Schm">Mapping
-          community</xref> carried on the service route maps to a resolution
-          scheme. A Resolution Scheme comprises of one primary transport class
-          and optionally, one or more fallback transport classes. The service
-          route mapping community can be an abstract community to map to the
-          available transport class in a particular domain.</t>
+          <t>As explained in <xref target="Nexthop_Resoln_Schm">Nexthop
+          Resolution Scheme</xref> , mapping community carried on service
+          route maps to a resolution scheme. The mapping community values for
+          the service route can be abstract and does not require to match the
+          transport color namespace. This abstract mapping commnunity value
+          representing a global service layer intent is mapped to an local
+          transport layer intent available in each domain.</t>
 
-          <t>It is recommended to keep color namespace management at service
-          layer and the transport layer decoupled from eachother. Follwing two
-          sections assume that the service layer agrees on a single
-          namespace</t>
+          <t>In this manner, it is recommended to keep color namespace
+          management at service layer and the transport layer decoupled from
+          each other. In the following sections the service layer agrees on a
+          single global namespace.</t>
         </section>
 
-        <section title="Non-Agreeing Color Domain">
-          <t>Non-agreeing color domains require a rewrite each domain boundry.
-          This rewrite helps to map one domains namespace to another</t>
+        <section title="Non-Agreeing Color Domains">
+          <t>Non-agreeing color domains require a mapping community rewrite on
+          each domain boundry. This rewrite helps to map one domain's
+          namespace to another.</t>
 
           <t>The below example illustrates how traffic is stitched and SLA is
-          preservedd when domains don't use the same namespace at the tranport
-          layer. Each domain specifies the same SLA using different color
-          values.</t>
+          preservedd when domains don't use the same namespace at the
+          transport layer. Each domain specifies the same SLA using different
+          color values.</t>
 
           <figure anchor="BGPCT_NON_AGREEING_COLOR_DOMAIN"
-                  title="Tranport Layer with Non-agreeing Color Domains ">
+                  title="Transport Layer with Non-agreeing Color Domains ">
             <artwork align="left" xml:space="preserve">
 
-          GOLD(100)              GOLD(300)               GOLD(500)
+          Gold(100)              Gold(300)               Gold(500)
          
             
-     [PE11-------ASBR11]---[ASBR21-------ASBR22]---[ASBR31-------PE31]
+     [PE11]----[ASBR11]---[ASBR21------[ASBR22]---[ASBR31-------[PE31]
             AS1                     AS2                    AS3
 
 
-          BRONZE(200)          BRONZE(400)             BRONZE(600)
+          Bronze(200)          Bronze(400)             Bronze(600)
 
             ----------- Packet Forwarding Direction --------&gt;
             </artwork>
@@ -1645,123 +1690,119 @@
           transport-target:0:500 for gold tunnels is rewritten to
           transport-target:0:300 and then advertised to ASBR22. Similarly the
           transport-target:0:300 for gold tunnels are re-written to
-          tranport-target:0:100 at ASBR21 before advertising to ASBR11. At
-          PE11, the tranport route received with tranport-target:0:100 will be
-          added to the color 100 TRDB. The service route received with mapping
-          community color:0:100500 at PE1 maps to the gold TRDB and resolves
-          over this transport route.</t>
+          transport-target:0:100 at ASBR21 before advertising to ASBR11. At
+          PE11, the transport route received with transport-target:0:100 will
+          be added to the color 100 TRDB. The service route received with
+          mapping community color:0:100500 at PE1 maps to the gold TRDB and
+          resolves over this transport route.</t>
 
           <t>Inter-domain traffic forwarding in the above topology works as
-          explained in &lt;section-19&gt;. Transport-target re-write requires
-          co-ordination of color values between domains in the transport
-          layer. This method avoids the need to re-write service route
-          mapping-community, keeping the service layer homogenous and simple
-          to manage. Co-ordinating transport-class route-target and mapping
-          community is easier than to co-ordinate colors deployed in various
-          domains.</t>
+          explained in <xref target="CTProc"/>.</t>
+
+          <t>Transport-target re-write requires co-ordination of color values
+          between domains in the transport layer. This method avoids the need
+          to re-write service route mapping community, keeping the service
+          layer homogenous and simple to manage. Co-ordinating transport-class
+          route-target between adjacent domains is easier than co-ordinating
+          service layer colors deployed in various non-adjacent domains.</t>
         </section>
 
-        <section title="Heterogeneous Agreeing Color Domain">
-          <t>Hetergenous color uses customised resolution schemes to map the
-          received transport-target resolve its NH over the available color
-          TRDB in a domain.</t>
+        <section title="Heterogeneous Agreeing Color Domains">
+          <t>In a heterogenous domains scenario, it might not be possible to
+          map a service layer intent to the matching transport color as the
+          color might not be locally available in a domain.</t>
 
-          <t>The tranport-target:0:X in BGP CT Route identifies the transport
-          class 'X' and leaks it to the correct Transport Route Database as
-          seen in &lt;section 18&gt;. It also acts as a mapping community that
-          resolves the BGP CT route strictly over transport class 'X'. In
-          heterogenous color domains this resolution scheme can be customised
-          so that routes with transport-target:0:X uses a different transport
-          class Y to resolve its nexthop. Custom resolution schemes can be
-          used to map one color to another when a color is not available in a
-          domain.</t>
+          <t>In this model, resolution schemes are customized to map the
+          received mapping community (eg: transport-target or color community)
+          to locally available TRDBs that are acceptable to realize the
+          desired intent.</t>
 
           <t>The below example illustrates how traffic is stitched, when a
           transit AS contains more shades for an SLA paths compared to Ingress
-          and Egress domains. The example shows how service routes can
-          traverse through finer shades when available and more coarse shades
+          and Egress domains. This example shows how service routes can
+          traverse through finer shades when available and take coarse shades
           otherwise.</t>
 
           <figure anchor="BGPCT_HETERGENOUS_COLOR_DOMAIN"
                   title="Tranport Layer with Heterogenous Color Domains ">
             <artwork align="left" xml:space="preserve">
+           &lt;---------- Service Routes SAFI-128 ------------------------
 
-                             Ligt.RED(101)
-                             Med.RED(102)
-        RED(100)                                        RED(100)
+                                     Gold1(101)
+                                     Gold2(102)
+          Gold(100)                                             Gold(100)
              
- [PE11 ------ ASBR11]----[ASBR21------ASBR22]----[ASBR31 ------ PE31]
-   AS1-METRO-Ingress           AS2-CORE            AS3-METRO-Egress
+    [PE11]------[ASBR11]----[ASBR21--------[ASBR22]----[ASBR31--------[PE31]
+       AS1-Metro-Ingress            AS2-Core              AS3-Metro-Egress
 
-          ----------- Packet Forwarding Direction --------&gt;
+
+                ----------- Packet Forwarding Direction --------&gt;
             </artwork>
           </figure>
 
           <t>In the above topology we have three Autonomous Systems. All the
-          nodes in the topology supports BGP CT.</t>
+          nodes in the topology support BGP CT.</t>
 
-          <t>In AS1 RED SLA is represented by color 100.</t>
+          <t>In AS1 Gold SLA is represented by color 100.</t>
 
-          <t>In AS2 RED has finer shades represented by Light Red color 101
-          and Medium Red color by 102.</t>
+          <t>In AS2 Gold has finer shades: Gold1 by color 101 and Gold2 by
+          color 102.</t>
 
-          <t>In AS3 RED SLA is represented by color 100.</t>
+          <t>In AS3 Gold SLA is represented by color 100.</t>
 
-          <t>The service route can carry the abstract mapping community that
-          maps to the required SLA in each domain. In domains where fine grain
-          tunnels are available this mapping community can be maps to the
-          required SLAs.</t>
+          <t>Service routes advertised by PE31 that need to resolve over Gold1
+          transport tunnels carry a mapping community color:0:101. In AS3 and
+          AS1 where Gold1 is not available, it is mapped to color 100 TRDB
+          using a customized resolution scheme. In AS2, Gold1 is available and
+          it maps to color 101 TRDB.</t>
 
-          <t>In AS3, the fine grain colors for RED are not available within
-          the AS but they are defined and have local TRDB in PE31. BGP CT
-          routes received with tranport-target:0:101 and
-          transport0target:0:102 are leaked to 101 TRDB and 102 TRDB
-          respectively. PE31 is provisioned with custom resolution scheme
-          which mandates routes with transport-target:0:101 and
-          transport-target:0:102 strictly resolves over transport class Red.
-          Thereby mapping fine grain color available in the core AS to coarse
-          grain color in the Edges.</t>
+          <t>To facilitate this mapping every SN/BN in all AS provision
+          required transport classes viz. 100, 101 and 102. SN and BN in AS1
+          and AS3 are provisioned with customized resolution schemes that
+          resolve routes with transport-target:0:101 or transport-target:0:102
+          strictly over color 100 TRDB.</t>
 
-          <t>PE31 is provisioned to originate BGP CT route with Light Red SLA
-          to endpoint PE31. This route is sent with NLRI RD prefix RD1:PE31
-          and route target extended community transport-target:0:101.</t>
+          <t>PE31 is provisioned to originate BGP CT route with color 101 for
+          endpoint PE31. This route is sent with NLRI RD prefix RD1:PE31 and
+          route target extended community transport-target:0:101.</t>
 
-          <t>At ASBR31 The route target "transport-target:0:101" on this BGP
-          CT route acts as Mapping Community, and instructs ABR31 to leak the
-          route to light Red TRDB. ASBR31 is provisioned with custom
-          resolution scheme that resolves the nexthop of routes carrying
-          tranport-target:0:101 to use tranport class RED. Therefore at ASBR31
-          the BGP CT route sits in Light Red TRDB but resolves over routes in
-          Red TRDB. This route is then re-advertised from Light Red TRDB to
-          ASBR22 with route-target:0:101.</t>
+          <t>At ASBR31, the route target "transport-target:0:101" on this BGP
+          CT route instructs to add the route to color 101 TRDB. ASBR31 is
+          provisioned with customized resolution scheme that resolves the
+          routes carrying mapping community transport-target:0:101 to resolve
+          using color 100 TRDB. This route is then re-advertised from color
+          101 TRDB to ASBR22 with route-target:0:101.</t>
 
-          <t>At ASBR22 BGP CT receives this route with transport-target:0:101.
-          AS2 contains fine grained colors. Light Red is color used within
-          this domain. BGP-CT with transport-target:0:101 route will be leaked
-          to Light Red TRDB and strictly resolves over routes in Light RED
-          transport class. There is no custom resolution required at ASBR22.
-          This route is re-advertised to ASBR21 with
-          tranport-target:0:101.</t>
+          <t>At ASBR22, the BGP CT routes received with transport-target:0:101
+          will be added to color 101 TRDB and strictly resolve over tunnel
+          routes in the same TRDB. This route is re-advertised to ASBR21 with
+          transport-target:0:101.</t>
 
-          <t>Similarily at ASBR21 this BGP CT route is received. Since ASBR21
-          is also part of AS2 that contains fine grained colors. The route is
-          leaked to light Red TRDB and resolved over the same TRDB. This route
-          is then re-advertised to ASBR11 with transport-target:0:101.</t>
+          <t>Similarily at ASBR21, the BGP CT routes received with
+          transport-target:0:101 will be added to color 101 TRDB and strictly
+          resolve over tunnel routes in the same TRDB. This route is
+          re-advertised to ASBR11 with transport-target:0:101.</t>
 
           <t>At ASBR11, the route target "transport-target:0:101" on this BGP
-          CT route acts as Mapping Community, and instructs ASBR11 to leak the
-          route into light Red TRDB. ASBR11 is provisioned with custom
-          resolution scheme for routes carrying tranport-target:0:101 to
-          strictly use tranport class RED to resolve its nexthop. This route
-          is then advertised to PE11 with tranport-target:0:101.</t>
+          CT route instructs to add the route to color 101 TRDB. ASBR11 is
+          provisioned with a customized resolution scheme that resolves the
+          routes carrying transport-target:0:101 to use color 100 TRDB. This
+          route is then re-advertised from color 101 TRDB to PE11 with
+          route-target:0:101.</t>
 
-          <t>In PE11, this BGP CT route with the route target
-          "transport-target:0:101" leaks the route to light Red TRDB. PE11 is
-          also provisioned with custom resolution scheme for
-          tranport-target:0:101 that will resolve the routes nexthop strictly
-          using routes in tranport class RED. At PE11 the service route
-          received with the mapping community color:0:102 resolves over this
-          BGP CT route, which uses the transport route in RED TRDB.</t>
+          <t>At PE11, the route target "transport-target:0:101" on this BGP CT
+          route instructs to add the route to color 101 TRDB. PE11 is
+          provisioned with a customized resolution scheme that resolves the
+          routes carrying transport-target:0:101 to use color 100 TRDB.</t>
+
+          <t>When PE11 receives the service route with the mapping community
+          color:0:101 it directly resolves over the BGP CT route in color 101
+          TRDB, which inturn resolves over tunnel routes in color 100
+          TRDB.</t>
+
+          <t>In this manner, PE11 can put traffic on tunnels with color 101,
+          color 102 in the core domain, and color 100 in the metro
+          domains.</t>
         </section>
       </section>
 
@@ -2303,8 +2344,9 @@
       nor distributed by the ASBRs. Transport routes are maintained in the
       ASBRs and propagated in BGP LU (SAFI 4) or BGP CT (SAFI 76).</t>
 
-      <t>Section 18 illustrates how constructs of BGP CT work in an Inter AS
-      option-C deployment. The BGP CT constructs: SAFI 76, Transport Class and
+      <t><xref target="CTProc">Illustration of CT Procedures</xref>
+      illustrates how constructs of BGP CT work in an Inter AS option-C
+      deployment. The BGP CT constructs: SAFI 76, Transport Class and
       Resolution Scheme are used in an option-C deploymnent.</t>
 
       <t>In Intra AS and Inter AS option-A, option-B scenarios, SAFI 76 may
@@ -2880,18 +2922,6 @@
         <t>In conclusion, this mechanism provides both scaling and convergence
         benefits for the MPLS network, and allows to support huge scale
         networks.</t>
-      </section>
-    </section>
-
-    <section anchor="Appendix C" numbered="true"
-             title="Compatibility with SR-PCE architecture">
-      <t>natv text</t>
-
-      <t>Describe how BGP CT Mapping community is a generalization of Color
-      Extended Community as used in SR-PCE architecture.</t>
-
-      <section numbered="true" title="Illustration.">
-        <t>text</t>
       </section>
     </section>
 
