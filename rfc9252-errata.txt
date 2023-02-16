@@ -1,7 +1,7 @@
-RFC 9252 erratta text (Ref: https://github.com/ietf-wg-idr/draft-ietf-idr-bgp-ct/issues/5)
-==========================================================================================
+RFC 9252 errata : https://www.rfc-editor.org/errata/eid7357
+================
 
-Section 4 states: 
+Original Text:
 
    To achieve efficient packing, this document allows either 1) the
    encoding of the SRv6 Service SID as a whole in the SRv6 Services TLVs
@@ -16,25 +16,47 @@ Section 4 states:
    RECOMMENDED for the specific service encodings that allow it, as
    described further in Sections 5 and 6.
 
-Section 5.1 further states: 
 
-5.1.  IPv4 VPN over SRv6 Core
+Corrected Text:
 
-   The MP_REACH_NLRI over SRv6 core is encoded according to IPv4 VPN
-   unicast over IPv6 core defined in [RFC8950].
+   To achieve efficient packing, this document allows either 1) the
+   encoding of the SRv6 Service SID as a whole in the SRv6 Services TLVs
+   or 2) the encoding of only the common part of the SRv6 SID (e.g.,
+   Locator) in the SRv6 Services TLVs and the encoding of the variable
+   (e.g., Function or Argument parts) in the existing label fields
+   specific to that service encoding.  This later form of encoding is
+   referred to as the Transposition Scheme, where the SRv6 SID Structure
+   Sub-Sub-TLV describes the sizes of the parts of the SRv6 SID and also
+   indicates the offset of the variable part along with its length in
+   the SRv6 SID value.  The use of the Transposition Scheme is
+   NOT RECOMMENDED in brownfield deployments where all participating BGP
+   speakers may not support SRv6 forwarding, see Appendix X. 
+   Transposition Scheme MAY be used if all speakers support procedures
+   described in this document, for the specific service encodings that 
+   allow it, and is encoded as described further in Sections 5 and 6.
 
-   The label field of IPv4-VPN NLRI is encoded as specified in [RFC8277]
-   with the 20-bit Label Value set to the whole or a portion of the
-   Function part of the SRv6 SID when the Transposition Scheme of
-   encoding (Section 4) is used; otherwise, it is set to Implicit NULL.
-   When using the Transposition Scheme, the Transposition Length MUST be
-   less than or equal to 20 and less than or equal to the FL.
+Appendix X:
 
-==
+   To achieve efficient packing, this document allows either 1) the
+   encoding of the SRv6 Service SID as a whole in the SRv6 Services TLVs
+   or 2) the encoding of only the common part of the SRv6 SID (e.g.,
+   Locator) in the SRv6 Services TLVs and the encoding of the variable
+   (e.g., Function or Argument parts) in the existing label fields
+   specific to that service encoding.  This later form of encoding is
+   referred to as the Transposition Scheme, where the SRv6 SID Structure
+   Sub-Sub-TLV describes the sizes of the parts of the SRv6 SID and also
+   indicates the offset of the variable part along with its length in
+   the SRv6 SID value.  The use of the Transposition Scheme is
+   NOT RECOMMENDED in brownfield deployments where all participating BGP
+   speakers may not support SRv6 forwarding, see Appendix X. 
+   Transposition Scheme MAY be used if all speakers support procedures
+   described in this document, for the specific service encodings that 
+   allow it, and is encoded as described further in Sections 5 and 6.
 
-Problem:
+Appendix X:
 
-These procedures may cause incorrect routing in the following scenario:
+   Use of Transposition Scheme procedures may cause incorrect routing 
+   in the following scenario:
 
 
                          RR1--+
@@ -48,19 +70,20 @@ These procedures may cause incorrect routing in the following scenario:
 
             Figure: BGP L3VPN Interop between MPLS and SRv6 nodes
 
-            This example shows a provider network with a mix of devices with
-            different forwarding capabilities.  R1 and R2 support forwarding both
-            MPLS and SRv6 packets. R3 supports forwarding MPLS packets only.  R4
-            supports forwarding SRv6 packets only. All these nodes have BGP
-            session with Route Reflector RR1 which reflects routes between these
-            nodes with nexthop unchanged. BGP L3VPN (SAFI 128) family is negotiated 
-            on these sessions.
+     This example shows a provider network with a mix of devices with
+     different forwarding capabilities.  R1 and R2 support forwarding 
+     both MPLS and SRv6 packets. R3 supports forwarding MPLS packets 
+     only. R4 supports forwarding SRv6 packets only. All these nodes 
+     have BGP session with Route Reflector RR1 which reflects routes 
+     between these nodes with nexthop unchanged. BGP L3VPN (SAFI 128) 
+     family is negotiated on these sessions.
             
-            If SRv6 nodes R2, R1, R4 use Transposition Scheme described in RFC 9252, it will 
-            cause misrouting at R3 because of misinterpretation of the MPLS label field. 
-            Because of Transposition scheme, RFC 8277 encoded MPLS label field is not 
-            containing a valid MPLS label. 
+     If SRv6 nodes R2, R1, R4 use Transposition Scheme described in 
+     Section 4, it will cause misrouting at R3 because of 
+     misinterpretation of the MPLS label field. Because of Transposition
+     scheme, RFC 8277 encoded MPLS label field is not containing a valid
+     MPLS label.
 
-            RFC 9252 should caution against use of Transposition Scheme in brownfield 
-            deployments where all nodes may not support SRv6.
+==
 
+Ref: https://github.com/ietf-wg-idr/draft-ietf-idr-bgp-ct/issues/5
