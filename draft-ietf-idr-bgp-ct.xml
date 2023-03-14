@@ -10,7 +10,7 @@
 <?rfc inline="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="exp" docName="draft-ietf-idr-bgp-ct-01" ipr="trust200902">
+<rfc category="exp" docName="draft-ietf-idr-bgp-ct-02" ipr="trust200902">
   <front>
     <title abbrev="BGP Classful Transport Planes">BGP Classful Transport
     Planes</title>
@@ -57,7 +57,7 @@
       </address>
     </author>
 
-    <date day="15" month="02" year="2023"/>
+    <date day="12" month="03" year="2023"/>
 
     <abstract>
       <t>This document specifies a mechanism, referred to as "Intent Driven
@@ -99,9 +99,11 @@
 
     <note title="Requirements Language">
       <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-      "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
-      document are to be interpreted as described in <xref
-      target="RFC2119">RFC 2119</xref>.</t>
+      "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+      "OPTIONAL" in this document are to be interpreted as described in BCP 14
+      <xref target="RFC2119">RFC 2119</xref> <xref target="RFC8174">RFC
+      8174</xref> when, and only when, they appear in all capitals, as shown
+      here.</t>
     </note>
   </front>
 
@@ -734,16 +736,23 @@
         <list>
           <t>On receiving a BGP Classful Transport route with a PNH that is
           not directly connected (e.g. an IBGP-route), a Mapping Community on
-          the route (the Transport Class RT) indicates which Transport Class
-          this route maps to. The routes in the associated Transport Route
-          Database are used to resolve the received PNH. If there does not
-          exist a route in the Transport Route Database matching the PNH, the
-          Classful Transport route is considered unusable and MUST NOT be
-          advertised further.</t>
+          the route (the Transport Class RT) indicates which Resolution Scheme
+          this route maps to. The resolution scheme for a Transport Class RT
+          with Transport class ID "C1" contains Transport Route Database for
+          Transport Class with same ID. In cases where Transport class "C1"
+          tunnels are not available in a domain the administrator MAY
+          customize the Resolution scheme to map to a different set of
+          transport class available in that domain.</t>
+
+          <t>The routes in the associated Transport Route Databases are used
+          to resolve the received PNH. If the resolution process does not find
+          a matching route in any of the associated Transport Route Databases,
+          the BGP CT route MUST be considered unusable for forwarding purpose
+          and be withdrawn.</t>
         </list>
       </section>
 
-      <section title="Border node readvertising Classful Transport route with nexthop       self">
+      <section title="Border node readvertising Classful Transport route with nexthop self">
         <list>
           <t>The BN allocates an MPLS label to advertise upstream in Classful
           Transport NLRI. The BN also installs an MPLS route for that label
@@ -1183,18 +1192,19 @@
       specifies the SRv6 Endpoint behaviors (END.REPLACE, END.REPLACEB6 and
       END.DB6). These are leveraged for BGP CT with SRv6 data plane.</t>
 
-      <t>The BGP Classful Transport route update for SRv6 MUST include the BGP
-      Prefix-SID attribute along with SRv6 SID information as specified in
-      <xref target="RFC9252"/>. It SHOULD NOT include SRv6 SID structure for
-      Transposition as specified in <xref target="RFC9252"/>. It should be
-      noted that prefixes carried in BGP CT family are transport layer
-      end-points, e.g. PE loopback addresses. Thus the SRv6 SID carried in a
-      BGP CT route is also a transport layer identifier.</t>
+      <t>The BGP Classful Transport route update for SRv6 MUST include an
+      attribute containing SRv6 SID information. This may be either the BGP
+      Prefix-SID attribute as specified in <xref target="RFC9252"/>or the BGP
+      MultiNexthop attribute as specified in <xref target="MULTI-NH-ATTR">BGP
+      MultiNexthop Attribute</xref> section 5.5.3.3. If the Prefix-SID
+      attribute is used, it MUST NOT include SRv6 SID structure for
+      Transposition described in <xref target="RFC9252"/>.</t>
 
-      <t>This document extends the usage of "SRv6 label route tunnel" TLV to
-      AFI=1/2 SAFI 76. "SRv6 label route tunnel" is the TLV of the BGP
-      Prefix-SID Attribute as specified in <xref
-      target="SRV6-MPLS-AGRWL"/>.</t>
+      <t>It should be noted that prefixes carried in BGP CT family are
+      transport layer end-points, e.g. PE loopback addresses. Thus the SRv6
+      SID carried in a BGP CT route is also a transport layer identifier. For
+      an illustration of BGP CT deployment in SRv6 newtorks, please refer to
+      Appendix D <xref target="AppendixD"/> .</t>
     </section>
 
     <section anchor="CTProc"
@@ -1607,7 +1617,7 @@
         unequal set of colors, these are known as Heterogenous Color
         Domains.</t>
 
-        <t> This section describes how BGP CT is deployed in such scenarios to
+        <t>This section describes how BGP CT is deployed in such scenarios to
         preserve end to end Intent. Example described in this section use
         Inter AS option C domains. But similar mechanisms will work for Inter
         AS option A and Inter AS option B scenarios as-well.</t>
@@ -1640,9 +1650,9 @@
           namespace to another.</t>
 
           <t>The below example illustrates how traffic is stitched and SLA is
-          preservedd when domains don't use the same namespace at the
-          transport layer. Each domain specifies the same SLA using different
-          color values.</t>
+          preserved when domains don't use the same namespace at the transport
+          layer. Each domain specifies the same SLA using different color
+          values.</t>
 
           <figure anchor="BGPCT_NON_AGREEING_COLOR_DOMAIN"
                   title="Transport Layer with Non-agreeing Color Domains ">
@@ -2164,6 +2174,8 @@
     <references title="Normative References">
       <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"?>
 
+      <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"?>
+
       <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8277.xml"?>
 
       <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4271.xml"?>
@@ -2296,18 +2308,6 @@
           <author fullname="Salih" initials="" role="editor" surname="K A"/>
 
           <date day="10" month="01" year="2021"/>
-        </front>
-      </reference>
-
-      <reference anchor="SRV6-MPLS-AGRWL"
-                 target="https://datatracker.ietf.org/doc/draft-agrawal-spring-srv6-mpls-interworking/05/">
-        <front>
-          <title abbrev="SRV6-INTER-DOMAIN">SRv6 and MPLS interworking</title>
-
-          <author fullname="Swadesh Agrawal" initials="" role="editor"
-                  surname="Agrawal"/>
-
-          <date day="22" month="02" year="2021"/>
         </front>
       </reference>
 
@@ -2735,7 +2735,7 @@
       </section>
     </section>
 
-    <section anchor="Appendix D" numbered="true"
+    <section anchor="Appendix C" numbered="true"
              title="Scaling using BGP MPLS Namespaces">
       <t>This section describes how scaling is achieved in an Inter domain
       MPLS network, where a domain is an AS or IGP area. Domain boundary is
@@ -2923,6 +2923,156 @@
         benefits for the MPLS network, and allows to support huge scale
         networks.</t>
       </section>
+    </section>
+
+    <section anchor="AppendixD" title="BGP CT deployment in SRv6 networks">
+      <t>This section describes BGP CT deployment in SRv6 multi-domain network
+      using Inter-AS Option C architecture.</t>
+
+      <figure anchor="BGPCTSRv6" title="BGP CT in SRv6 Only Dataplane">
+        <artwork align="left" xml:space="preserve">
+             AS1                   AS2
+  CE1---[PE1-----ASBR1]-----[ASBR2-----PE2]---CE2
+
+         -------Forwarding Direction-----&gt;
+</artwork>
+      </figure>
+
+      <t>In the above topology there are two ASs, AS1 and AS2</t>
+
+      <t>Intra-AS Nodes in AS1 and AS2 speak IBGP-CT and ISIS-SRv6 between
+      them. The Inter-AS Nodes speak EBGP-CT between them. Transport Classes
+      Gold (100) and Bronze (200) are provisioned in SNs and BNs. All BGP CT
+      advertisements in this example will carry a MPLS label value of 3
+      (Implicit Null).</t>
+
+      <t>The following SRv6 locators are provisioned<list>
+          <t>PE1-SRv6 - SRv6 Locator for PE1</t>
+
+          <t>PE2-SRv6 - SRv6 Locator for PE2</t>
+
+          <t>ASBR1-SRv6 - SRv6 Locator for ASBR1</t>
+
+          <t>ASBR2-SRv6 - SRv6 Locator for ASBR2</t>
+        </list></t>
+
+      <t>The following SRv6 End SIDs are provisioned<list>
+          <t>PE2-SRv6-gold - PE2 End SID for gold transport class</t>
+
+          <t>PE2-SRv6-bronze - PE2 End SID for bronze transport class</t>
+
+          <t>ASBR1-SRv6-gold - ASBR1 End SID for gold transport class</t>
+
+          <t>ASBR1-SRv6-bronze - ASBR1 End SID for bronze transport class</t>
+        </list></t>
+
+      <t>The above provisioned SRv6 End SIDs will be advertised via ISIS
+      between Intra-AS nodes and the established SRv6 tunnels will be
+      installed into the correct TRDB based on color. The illustrations that
+      follow, show how the import processing and BGP CT advertisements are
+      made. Firstly, PE2 advertises its SRv6 End Points to ASBR2 via IBGP-CT
+      as shown below.</t>
+
+      <figure title="BGP CT advertisements from PE2 to ASBR2">
+        <artwork align="left" xml:space="preserve">  IBGP-CT: PE2---&gt;ASBR2
+
+      RD1:PE2-SRv6-gold, 
+        transport-target:0:100,
+        Prefix-SID: PE2-SRv6-gold,
+        NH: PE2-LPBK
+
+      RD2:PE2-SRv6-bronze,
+        transport-target:0:200,
+        Prefix-SID: PE2-SRv6-bronze,
+        NH: PE2-LPBK
+</artwork>
+      </figure>
+
+      <t>When ASBR2 receives the IBGP CT advertisement from PE2, it performs
+      import processing and nexthop resolution for the SRv6 End Point
+      PE2-SRv6-gold in the gold TRDB based on its transport target. On
+      successful resolution, a route for PE2-SRv6-gold is installed in the
+      global IPv6 FIB for enabling SRv6 forwarding. The BGP-CT route for
+      RD1:PE2-SRv6-gold is further advertised towards ASBR1 via EBGP CT as
+      shown below.</t>
+
+      <figure title="BGP CT processing at ASBR2">
+        <artwork align="left" xml:space="preserve">  ASBR2: IPv6 FIB for SRv6
+
+      [BGP-CT]PE2-SRv6-gold,
+        NH: Gold SRv6-Tunnel-to-PE2
+
+      [BGP-CT]PE2-SRv6-bronze,
+        NH: Bronze SRv6-Tunnel-to-PE2
+
+
+  EBGP-CT: ASBR2---&gt;ASBR1
+
+      RD1:PE2-SRv6-gold,
+        transport-target:0:100,
+        Prefix-SID: PE2-SRv6-gold,
+        NH: ASBR2_InterAS_Link
+
+      RD2:PE2-SRv6-bronze,
+        transport-target:0:200,
+        Prefix-SID: PE2-SRv6-bronze,
+        NH: ASBR2_InterAS_Link</artwork>
+      </figure>
+
+      <t>When ASBR1 receives the EBGP CT advertisement from ASBR2, a route for
+      PE2-SRv6-gold is installed with a nexthop of ASBR1_InterAS_Link in the
+      global IPv6 FIB for enabling SRv6 forwarding. The BGP-CT route for
+      RD1:PE2-SRv6-gold is further advertised with SID ASBR1-SRv6-gold towards
+      PE1 via IBGP CT as shown below.</t>
+
+      <figure title="BGP CT processing at ASBR1">
+        <artwork align="left" xml:space="preserve">  ASBR1: IPv6 FIB for SRv6
+
+      [BGP-CT]PE2-SRv6-gold,
+        NH: ASBR2_InterAS_Link
+
+      [BGP-CT]PE2-SRv6-bronze,
+        NH: ASBR2_InterAS_Link
+
+
+  IBGP-CT: ASBR1---&gt;PE1
+
+      RD1:PE2-SRv6-gold,
+        transport-target:0:100,
+        Prefix-SID: ASBR1-SRv6-gold,
+        NH: ASBR1-LPBK
+
+      RD2:PE2-SRv6-bronze,
+        transport-target:0:200,
+        Prefix-SID: ASBR1-SRv6-bronze,
+        NH: ASBR1-LPBK</artwork>
+      </figure>
+
+      <t>When PE1 receives the IBGP CT advertisement from ASBR1, it resolves
+      the SID ASBR1-SRv6-gold in its corresponding TRDB over the SRv6 underlay
+      tunnel installed by SRv6-ISIS. Furthermore, any service routes requiring
+      intent based resolution will use the Resolution Scheme associated with
+      its Mapping Community to resolve over the PE2-SRv6-gold CT route
+      installed in the gold TRDB.</t>
+
+      <figure title="BGP CT processing at PE1">
+        <artwork align="left" xml:space="preserve">  PE1: IPv6 FIB for SRv6
+
+      [BGP-INET] SVC_PFX1, color:0:100
+        NH: PE2-SRv6-gold, Gold SRv6-Tunnel-to-ASBR1
+
+      [BGP-INET] SVC_PFX2, color:0:200
+        NH: PE2-SRv6-bronze, Bronze SRv6-Tunnel-to-ASBR1
+
+      [BGP-CT]PE2-SRv6-gold,
+        NH: Gold SRv6-Tunnel-to-ASBR1
+
+      [BGP-CT]PE2-SRv6-bronze,
+        NH: Bronze SRv6-Tunnel-to-ASBR1</artwork>
+      </figure>
+
+      <t>Similar processing is followed for the bronze transport plane as
+      well.</t>
     </section>
 
     <section anchor="Contributors" numbered="false" title="Contributors">
