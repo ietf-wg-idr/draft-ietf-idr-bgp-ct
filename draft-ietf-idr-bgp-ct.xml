@@ -2058,7 +2058,20 @@
       <t>This document makes following requests of IANA.</t>
 
       <section title="New BGP SAFI">
-        <t>New BGP SAFI code for "Classful Transport". Value 76.</t>
+        <t>Please assign a new BGP SAFI code for "Classful Transport". Value
+        76.</t>
+
+        <figure>
+          <artwork>
+Registry Group: Subsequent Address Family Identifiers (SAFI) Parameters
+
+Registry Name: SAFI Values
+
+       Value              Description
+      -------------+--------------------------
+        76            Classful-Transport SAFI
+</artwork>
+        </figure>
 
         <t>This will be used to create new AFI,SAFI pairs for IPv4, IPv6
         Classful Transport families. viz:</t>
@@ -2097,48 +2110,84 @@
             <section title="Transitive Types">
               <t>This registry contains values of the high-order octet (the
               "Type" field) of a Transitive Extended Community.<figure>
-                  <artwork>Registry Name: BGP Transitive Extended Community
-                  Types TYPE VALUE NAME + 0x0a Transitive Transport Class
-                  Extended + Community (Sub-Types are defined in the +
-                  "Transitive Transport Class Extended + Community Sub-Types"
-                  registry) </artwork>
+                  <artwork>Registry Group: Border Gateway Protocol (BGP) Extended Communities
+
+Registry Name: BGP Transitive Extended Community Types
+
+       Type Value        Name
+      --------------+---------------
+         0x0a          Transport Class
+
+  (Sub-Types are defined in the 
+  "Transitive Transport Class Extended Community Sub-Types"
+   registry) </artwork>
                 </figure></t>
             </section>
 
             <section title="Non-Transitive Types">
               <t>This registry contains values of the high-order octet (the
               "Type" field) of a Non-transitive Extended Community.<figure>
-                  <artwork> Registry Name: BGP Non-Transitive Extended
-                  Community Types TYPE VALUE NAME + 0x4a Non-Transitive
-                  Transport Class Extended + Community (Sub-Types are defined
-                  in the + "Non-Transitive Transport Class Extended +
-                  Community Sub-Types" registry)</artwork>
+                  <artwork> Registry Group: Border Gateway Protocol (BGP) Extended Communities
+
+ Registry Name: BGP Non-Transitive Extended Community Types
+
+      Type Value         Name
+     --------------+------------------
+         0x4a         Transport Class
+
+ (Sub-Types are defined in the 
+  "Non-Transitive Transport Class Extended Community Sub-Types"
+   registry) 
+ </artwork>
                 </figure></t>
             </section>
           </section>
         </section>
 
         <section title="New registries to be created">
-          <section title="Transitive &quot;Transport Class&quot; Extended Community Sub-Types Registry">
+          <section title="Transitive Transport Class Extended Community Sub-Types Registry">
             <figure>
-              <artwork> This registry contains values of the second octet (the
-              "Sub-Type" field) of an extended community when the value of the
-              first octet (the "Type" field) is 0x07. Registry Name:
-              Transitive Transport Class Extended Community Sub-Types RANGE
-              REGISTRATION PROCEDURE 0x00-0xBF First Come First Served
-              0xC0-0xFF IETF Review SUB-TYPE VALUE NAME 0x02 Route Target
+              <artwork> Registry Group: Border Gateway Protocol (BGP) Extended Communities
+
+ Registry Name: Transitive Transport Class Extended Community Sub-Types
+
+ Note: 
+    This registry contains values of the second octet (the
+    "Sub-Type" field) of an extended community when the value of the
+     first octet (the "Type" field) is 0x0a. 
+
+ Range                 Registration Procedures
+ -----------------+----------------------------
+ 0x00-0xBF           First Come First Served
+ 0xC0-0xFF           IETF Review
+
+ Sub-Type Value         Name
+ -----------------+--------------
+   0x02              Route Target
               </artwork>
             </figure>
           </section>
 
-          <section title="Non-Transitive &quot;Transport Class&quot; Extended Community Sub-Types Registry">
+          <section title="Non-Transitive Transport Class Extended Community Sub-Types Registry">
             <figure>
-              <artwork> This registry contains values of the second octet (the
-              "Sub-Type" field) of an extended community when the value of the
-              first octet (the "Type" field) is 0x47. Registry Name:
-              Non-Transitive Transport Class Extended Community Sub-Types
-              RANGE REGISTRATION PROCEDURE 0x00-0xBF First Come First Served
-              0xC0-0xFF IETF Review SUB-TYPE VALUE NAME 0x02 Route Target
+              <artwork> Registry Group: Border Gateway Protocol (BGP) Extended Communities
+
+ Registry Name: Non-Transitive Transport Class Extended Community Sub-Types
+
+ Note: 
+    This registry contains values of the second octet (the
+    "Sub-Type" field) of an extended community when the value of the
+     first octet (the "Type" field) is 0x4a. 
+
+ Range                 Registration Procedures
+ -----------------+----------------------------
+ 0x00-0xBF           First Come First Served
+ 0xC0-0xFF           IETF Review
+
+ Sub-Type Value         Name
+ -----------------+--------------
+   0x02              Route Target
+
               </artwork>
             </figure>
           </section>
@@ -2153,7 +2202,18 @@
             <t>IPv4 BGP Classful Transport</t>
 
             <t>IPv6 BGP Classful Transport</t>
-          </list></t>
+          </list><figure>
+            <artwork> Registry Group: Multiprotocol Label Switching (MPLS) Label Switched Paths (LSPs) Ping Parameters
+
+ Registry Name: Sub-TLVs for TLV Types 1, 16, and 21
+
+  Sub-Type                Name
+ -----------------+------------------------------
+   TBD              IPv4 BGP Classful Transport
+   TBD              IPv6 BGP Classful Transport
+
+              </artwork>
+          </figure></t>
       </section>
     </section>
 

@@ -3583,15 +3583,27 @@ li > p:last-of-type {
         <h3 id="name-new-bgp-safi-2">
 <a href="#section-21.1" class="section-number selfRef">21.1. </a><a href="#name-new-bgp-safi-2" class="section-name selfRef">New BGP SAFI</a>
         </h3>
-<p id="section-21.1-1">New BGP SAFI code for "Classful Transport". Value 76.<a href="#section-21.1-1" class="pilcrow">¶</a></p>
-<p id="section-21.1-2">This will be used to create new AFI,SAFI pairs for IPv4, IPv6
-        Classful Transport families. viz:<a href="#section-21.1-2" class="pilcrow">¶</a></p>
+<p id="section-21.1-1">Please assign a new BGP SAFI code for "Classful Transport". Value
+        76.<a href="#section-21.1-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-21.1-2">
+<pre>
+Registry Group: Subsequent Address Family Identifiers (SAFI) Parameters
+
+Registry Name: SAFI Values
+
+       Value              Description
+      -------------+--------------------------
+        76            Classful-Transport SAFI
+</pre><a href="#section-21.1-2" class="pilcrow">¶</a>
+</div>
+<p id="section-21.1-3">This will be used to create new AFI,SAFI pairs for IPv4, IPv6
+        Classful Transport families. viz:<a href="#section-21.1-3" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-21.1-3.1">"Inet, Classful Transport". AFI/SAFI = "1/76" for carrying IPv4
-            Classful Transport prefixes.<a href="#section-21.1-3.1" class="pilcrow">¶</a>
+<li class="normal" id="section-21.1-4.1">"Inet, Classful Transport". AFI/SAFI = "1/76" for carrying IPv4
+            Classful Transport prefixes.<a href="#section-21.1-4.1" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-21.1-3.2">"Inet6, Classful Transport". AFI/SAFI = "2/76" for carrying
-            IPv6 Classful Transport prefixes.<a href="#section-21.1-3.2" class="pilcrow">¶</a>
+          <li class="normal" id="section-21.1-4.2">"Inet6, Classful Transport". AFI/SAFI = "2/76" for carrying
+            IPv6 Classful Transport prefixes.<a href="#section-21.1-4.2" class="pilcrow">¶</a>
 </li>
         </ul>
 </section>
@@ -3630,11 +3642,17 @@ li > p:last-of-type {
 <p id="section-21.2.1.1.1-1">This registry contains values of the high-order octet (the
               "Type" field) of a Transitive Extended Community.<a href="#section-21.2.1.1.1-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-21.2.1.1.1-2">
-<pre>Registry Name: BGP Transitive Extended Community
-                  Types TYPE VALUE NAME + 0x0a Transitive Transport Class
-                  Extended + Community (Sub-Types are defined in the +
-                  "Transitive Transport Class Extended + Community Sub-Types"
-                  registry)</pre><a href="#section-21.2.1.1.1-2" class="pilcrow">¶</a>
+<pre>Registry Group: Border Gateway Protocol (BGP) Extended Communities
+
+Registry Name: BGP Transitive Extended Community Types
+
+       Type Value        Name
+      --------------+---------------
+         0x0a          Transport Class
+
+  (Sub-Types are defined in the
+  "Transitive Transport Class Extended Community Sub-Types"
+   registry)</pre><a href="#section-21.2.1.1.1-2" class="pilcrow">¶</a>
 </div>
 </section>
 <section id="section-21.2.1.1.2">
@@ -3644,11 +3662,18 @@ li > p:last-of-type {
 <p id="section-21.2.1.1.2-1">This registry contains values of the high-order octet (the
               "Type" field) of a Non-transitive Extended Community.<a href="#section-21.2.1.1.2-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-21.2.1.1.2-2">
-<pre> Registry Name: BGP Non-Transitive Extended
-                  Community Types TYPE VALUE NAME + 0x4a Non-Transitive
-                  Transport Class Extended + Community (Sub-Types are defined
-                  in the + "Non-Transitive Transport Class Extended +
-                  Community Sub-Types" registry)</pre><a href="#section-21.2.1.1.2-2" class="pilcrow">¶</a>
+<pre> Registry Group: Border Gateway Protocol (BGP) Extended Communities
+
+ Registry Name: BGP Non-Transitive Extended Community Types
+
+      Type Value         Name
+     --------------+------------------
+         0x4a         Transport Class
+
+ (Sub-Types are defined in the
+  "Non-Transitive Transport Class Extended Community Sub-Types"
+   registry)
+</pre><a href="#section-21.2.1.1.2-2" class="pilcrow">¶</a>
 </div>
 </section>
 </section>
@@ -3659,29 +3684,52 @@ li > p:last-of-type {
           </h4>
 <section id="section-21.2.2.1">
             <h5 id="name-transitive-transport-class-e">
-<a href="#section-21.2.2.1" class="section-number selfRef">21.2.2.1. </a><a href="#name-transitive-transport-class-e" class="section-name selfRef">Transitive "Transport Class" Extended Community Sub-Types Registry</a>
+<a href="#section-21.2.2.1" class="section-number selfRef">21.2.2.1. </a><a href="#name-transitive-transport-class-e" class="section-name selfRef">Transitive Transport Class Extended Community Sub-Types Registry</a>
             </h5>
 <div class="alignLeft art-text artwork" id="section-21.2.2.1-1">
-<pre> This registry contains values of the second octet (the
-              "Sub-Type" field) of an extended community when the value of the
-              first octet (the "Type" field) is 0x07. Registry Name:
-              Transitive Transport Class Extended Community Sub-Types RANGE
-              REGISTRATION PROCEDURE 0x00-0xBF First Come First Served
-              0xC0-0xFF IETF Review SUB-TYPE VALUE NAME 0x02 Route Target
+<pre> Registry Group: Border Gateway Protocol (BGP) Extended Communities
+
+ Registry Name: Transitive Transport Class Extended Community Sub-Types
+
+ Note:
+    This registry contains values of the second octet (the
+    "Sub-Type" field) of an extended community when the value of the
+     first octet (the "Type" field) is 0x0a.
+
+ Range                 Registration Procedures
+ -----------------+----------------------------
+ 0x00-0xBF           First Come First Served
+ 0xC0-0xFF           IETF Review
+
+ Sub-Type Value         Name
+ -----------------+--------------
+   0x02              Route Target
 </pre><a href="#section-21.2.2.1-1" class="pilcrow">¶</a>
 </div>
 </section>
 <section id="section-21.2.2.2">
             <h5 id="name-non-transitive-transport-cla">
-<a href="#section-21.2.2.2" class="section-number selfRef">21.2.2.2. </a><a href="#name-non-transitive-transport-cla" class="section-name selfRef">Non-Transitive "Transport Class" Extended Community Sub-Types Registry</a>
+<a href="#section-21.2.2.2" class="section-number selfRef">21.2.2.2. </a><a href="#name-non-transitive-transport-cla" class="section-name selfRef">Non-Transitive Transport Class Extended Community Sub-Types Registry</a>
             </h5>
 <div class="alignLeft art-text artwork" id="section-21.2.2.2-1">
-<pre> This registry contains values of the second octet (the
-              "Sub-Type" field) of an extended community when the value of the
-              first octet (the "Type" field) is 0x47. Registry Name:
-              Non-Transitive Transport Class Extended Community Sub-Types
-              RANGE REGISTRATION PROCEDURE 0x00-0xBF First Come First Served
-              0xC0-0xFF IETF Review SUB-TYPE VALUE NAME 0x02 Route Target
+<pre> Registry Group: Border Gateway Protocol (BGP) Extended Communities
+
+ Registry Name: Non-Transitive Transport Class Extended Community Sub-Types
+
+ Note:
+    This registry contains values of the second octet (the
+    "Sub-Type" field) of an extended community when the value of the
+     first octet (the "Type" field) is 0x4a.
+
+ Range                 Registration Procedures
+ -----------------+----------------------------
+ 0x00-0xBF           First Come First Served
+ 0xC0-0xFF           IETF Review
+
+ Sub-Type Value         Name
+ -----------------+--------------
+   0x02              Route Target
+
 </pre><a href="#section-21.2.2.2-1" class="pilcrow">¶</a>
 </div>
 </section>
@@ -3699,6 +3747,18 @@ li > p:last-of-type {
           <li class="normal" id="section-21.3-2.2">IPv6 BGP Classful Transport<a href="#section-21.3-2.2" class="pilcrow">¶</a>
 </li>
         </ul>
+<div class="alignLeft art-text artwork" id="section-21.3-3">
+<pre> Registry Group: Multiprotocol Label Switching (MPLS) Label Switched Paths (LSPs) Ping Parameters
+
+ Registry Name: Sub-TLVs for TLV Types 1, 16, and 21
+
+  Sub-Type                Name
+ -----------------+------------------------------
+   TBD              IPv4 BGP Classful Transport
+   TBD              IPv6 BGP Classful Transport
+
+</pre><a href="#section-21.3-3" class="pilcrow">¶</a>
+</div>
 </section>
 </section>
 </div>
