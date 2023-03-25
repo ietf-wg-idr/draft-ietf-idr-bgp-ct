@@ -57,7 +57,7 @@
       </address>
     </author>
 
-    <date day="12" month="03" year="2023"/>
+    <date day="25" month="03" year="2023"/>
 
     <abstract>
       <t>This document specifies a mechanism, referred to as "Intent Driven
@@ -117,7 +117,7 @@
       <t>To facilitate this, the tunnels in a network can be grouped by the
       purpose they serve into a "Transport Class". These tunnels could be
       created using any signaling protocol including but not limited to LDP,
-      RSVP-TE, BGP LU or SPRING. The tunnels may use MPLS, IP or IPv6
+      RSVP-TE, BGP LU or SPRING. The tunnels may use MPLS, IPv4 or IPv6
       forwarding and carry one of the signaled payload types (e.g. MPLS).
       Tunnels may exist between different pair of end points. Multiple tunnels
       may exist between the same pair of end points.</t>
@@ -136,7 +136,7 @@
       area. Within each domain, there is a second level underlay tunnel used
       by BGP to cross the domain. The second level underlay tunnels could be
       hetrogeneous; each domain may use a different type of tunnel (e.g. MPLS,
-      IP, GRE or SRv6) or use a differnet signaling protocol. A domain
+      IP, GRE or SRv6) and use a different signaling mechanism. A domain
       boundary is demarcated by a rewrite of BGP nexthop to 'self' while
       readvertising BGP CT transport routes. Examples of domain boundary are
       inter-AS links and inter-region ABRs. The path uses MPLS label-switching
@@ -214,7 +214,7 @@
 
       <t>TN : Transport Node, P-router.</t>
 
-      <t>BGP-VPN : VPNs built using RFC4364 mechanisms.</t>
+      <t>BGP VPN : VPNs built using RFC4364 mechanisms.</t>
 
       <t>RT : Route-Target extended community.</t>
 
@@ -273,8 +273,8 @@
       stitched together by BGP CT route readvertisements with nexthop self to
       enable Label-Swap forwarding across domain boundaries.</t>
 
-      <t>Mapping Community : BGP Community/Extended-community on a service
-      route that maps it to resolve over a Transport Class. E.g. color:0:100,
+      <t>Mapping Community : BGP Community/Extended-community on a BGP route
+      that maps it to resolve over a Transport Class. E.g. color:0:100,
       transport-target:0:100.</t>
     </section>
 
@@ -371,7 +371,7 @@
 
       <t>The "Transport class" Route Target Extended community follows the
       mechanisms for VPN route import/export as specified in <xref
-      target="RFC4364">BGP-VPN</xref> and follows the Constrained Route
+      target="RFC4364">BGP VPN</xref> and follows the Constrained Route
       Distribution mechanisms as specified in <xref target="RFC4684">Route
       Target Constraints</xref></t>
 
@@ -2399,7 +2399,7 @@ Registry Name: BGP Transitive Extended Community Types
 
     <section anchor="Appendix A" numbered="true"
              title="Applicability to Intra AS and different Inter AS deployments.">
-      <t>As described in <xref target="RFC4364">BGP-VPN</xref> Section 10, in
+      <t>As described in <xref target="RFC4364">BGP VPN</xref> Section 10, in
       an option-C network, service routes (VPN-IPv4) are neither maintained
       nor distributed by the ASBRs. Transport routes are maintained in the
       ASBRs and propagated in BGP LU (SAFI 4) or BGP CT (SAFI 76).</t>
