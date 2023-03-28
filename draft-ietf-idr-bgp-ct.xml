@@ -362,6 +362,9 @@
     "Transport Class" identifier, which is an unsigned non-zero 
     32-bit integer. 
 
+    This document reserves the Transport class ID value 0 to 
+    represent "Best Effort Transport Class ID"
+
  The remaining 2 octets after SubType field are Reserved. They MUST 
  be set to zero on transmission, SHOULD be ignored on reception and
  left unaltered.
@@ -850,7 +853,7 @@
         </list>
       </section>
 
-      <section title="Coordinating between domains using different community       namespaces">
+      <section title="Coordinating between domains using different community namespaces">
         <list>
           <t>Cooperating option-C domains may sometimes not agree on RT, RD,
           Mapping community or Transport Route Target values because of
@@ -872,6 +875,44 @@
           <t>This document defines a new format of Route-Target
           extended-community to carry Transport Class, this avoids collision
           with regular Route Target namespace used by service routes.</t>
+        </list>
+      </section>
+
+      <section title="Best effort transport class">
+        <list>
+          <t>It is possible to represent 'Best effort' SLA also as a Transport
+          class. Today BGP LU (SAFI 4) is used to extend best effort intra
+          domain tunnels to other domains. </t>
+
+          <t>Alternatively, BGP CT (SAFI 76) may be used to carry best effort
+          tunnels also. This document reserves the Transport class ID value 0
+          to represent "Best Effort Transport Class ID". However,
+          implementations SHOULD provide configuration to use a different
+          value for this purpose.</t>
+
+          <t>The 'Best Effort Transport Class ID" value is used in the
+          'Transport Class ID' field of Transport Route Target extended
+          community that is attached to the BGP CT route that advertises a
+          best effort tunnel endpoint. The route target thus formed is called
+          the "Best Effort Transport class route target".</t>
+
+          <t>When a BN or SN receives a BGP CT route with Best Effort
+          Transport class route target as the mapping community, the Best
+          effort Resolution scheme is used for resolving the BGP nexthop, and
+          the resultant route is installed in best effort transport route
+          database. if no best effort tunnel was found to resolve the BGP
+          nexthop, the BGP CT route MUST be considered unusable, and not be
+          propagated further.</t>
+
+          <t>When a BGP speaker receives an overlay route without any explicit
+          mapping community, the Best effort Resolution scheme is used for
+          resolving the BGP nexthop on the route. This behavior is backward
+          compatible to behavior of an implementation that does not follow
+          procedures described in this document.</t>
+
+          <t>Implementations MAY provide configuration to selectively install
+          BGP CT routes to the FIB, to provide reachability for control plane
+          peering towards end points in other domains.</t>
         </list>
       </section>
     </section>
@@ -2211,6 +2252,26 @@ Registry Name: BGP Transitive Extended Community Types
  -----------------+------------------------------
    TBD              IPv4 BGP Classful Transport
    TBD              IPv6 BGP Classful Transport
+
+              </artwork>
+          </figure></t>
+      </section>
+
+      <section title="Best Effort Transport Class ID">
+        <t>This document reserves the Transport class ID value 0 to represent
+        "Best Effort Transport Class ID". This is used in the 'Transport Class
+        ID' field of Transport Route Target extended community that represents
+        best effort transport class. Please create a new registry for
+        this.</t>
+
+        <t><figure>
+            <artwork> Registry Group: BGP CT Parameters
+
+ Registry Name: Transport Class ID
+
+  Value                 Name
+ -----------------+--------------------------------
+   0                Best Effort Transport Class ID
 
               </artwork>
           </figure></t>

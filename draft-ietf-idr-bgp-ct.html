@@ -1403,7 +1403,10 @@ li > p:last-of-type {
                 <p id="section-toc.1-1.10.2.8.1"><a href="#section-10.8" class="xref">10.8</a>.  <a href="#name-ingress-node-receiving-servi" class="xref">Ingress node receiving service route with Mapping Community</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.9">
-                <p id="section-toc.1-1.10.2.9.1"><a href="#section-10.9" class="xref">10.9</a>.  <a href="#name-coordinating-between-domains" class="xref">Coordinating between domains using different community       namespaces</a></p>
+                <p id="section-toc.1-1.10.2.9.1"><a href="#section-10.9" class="xref">10.9</a>.  <a href="#name-coordinating-between-domains" class="xref">Coordinating between domains using different community namespaces</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.10">
+                <p id="section-toc.1-1.10.2.10.1"><a href="#section-10.10" class="xref">10.10</a>. <a href="#name-best-effort-transport-class-2" class="xref">Best effort transport class</a></p>
 </li>
             </ul>
 </li>
@@ -1530,6 +1533,9 @@ li > p:last-of-type {
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.21.2.3">
                 <p id="section-toc.1-1.21.2.3.1"><a href="#section-21.3" class="xref">21.3</a>.  <a href="#name-mpls-oam-code-points-2" class="xref">MPLS OAM code points</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.21.2.4">
+                <p id="section-toc.1-1.21.2.4.1"><a href="#section-21.4" class="xref">21.4</a>.  <a href="#name-best-effort-transport-class-i" class="xref">Best Effort Transport Class ID</a></p>
 </li>
             </ul>
 </li>
@@ -1861,6 +1867,9 @@ li > p:last-of-type {
     The least significant 32-bits of the value field contain the
     "Transport Class" identifier, which is an unsigned non-zero
     32-bit integer.
+
+    This document reserves the Transport class ID value 0 to
+    represent "Best Effort Transport Class ID"
 
  The remaining 2 octets after SubType field are Reserved. They MUST
  be set to zero on transmission, SHOULD be ignored on reception and
@@ -2350,7 +2359,7 @@ li > p:last-of-type {
 </section>
 <section id="section-10.9">
         <h3 id="name-coordinating-between-domains">
-<a href="#section-10.9" class="section-number selfRef">10.9. </a><a href="#name-coordinating-between-domains" class="section-name selfRef">Coordinating between domains using different community       namespaces</a>
+<a href="#section-10.9" class="section-number selfRef">10.9. </a><a href="#name-coordinating-between-domains" class="section-name selfRef">Coordinating between domains using different community namespaces</a>
         </h3>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-10.9-1.1">Cooperating option-C domains may sometimes not agree on RT, RD,
@@ -2373,6 +2382,47 @@ li > p:last-of-type {
           <li class="normal ulEmpty" id="section-10.9-1.4">This document defines a new format of Route-Target
           extended-community to carry Transport Class, this avoids collision
           with regular Route Target namespace used by service routes.<a href="#section-10.9-1.4" class="pilcrow">¶</a>
+</li>
+        </ul>
+</section>
+<section id="section-10.10">
+        <h3 id="name-best-effort-transport-class-2">
+<a href="#section-10.10" class="section-number selfRef">10.10. </a><a href="#name-best-effort-transport-class-2" class="section-name selfRef">Best effort transport class</a>
+        </h3>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-10.10-1.1">It is possible to represent 'Best effort' SLA also as a Transport
+          class. Today BGP LU (SAFI 4) is used to extend best effort intra
+          domain tunnels to other domains.<a href="#section-10.10-1.1" class="pilcrow">¶</a>
+</li>
+          <li class="normal ulEmpty" id="section-10.10-1.2">Alternatively, BGP CT (SAFI 76) may be used to carry best effort
+          tunnels also. This document reserves the Transport class ID value 0
+          to represent "Best Effort Transport Class ID". However,
+          implementations SHOULD provide configuration to use a different
+          value for this purpose.<a href="#section-10.10-1.2" class="pilcrow">¶</a>
+</li>
+          <li class="normal ulEmpty" id="section-10.10-1.3">The 'Best Effort Transport Class ID" value is used in the
+          'Transport Class ID' field of Transport Route Target extended
+          community that is attached to the BGP CT route that advertises a
+          best effort tunnel endpoint. The route target thus formed is called
+          the "Best Effort Transport class route target".<a href="#section-10.10-1.3" class="pilcrow">¶</a>
+</li>
+          <li class="normal ulEmpty" id="section-10.10-1.4">When a BN or SN receives a BGP CT route with Best Effort
+          Transport class route target as the mapping community, the Best
+          effort Resolution scheme is used for resolving the BGP nexthop, and
+          the resultant route is installed in best effort transport route
+          database. if no best effort tunnel was found to resolve the BGP
+          nexthop, the BGP CT route MUST be considered unusable, and not be
+          propagated further.<a href="#section-10.10-1.4" class="pilcrow">¶</a>
+</li>
+          <li class="normal ulEmpty" id="section-10.10-1.5">When a BGP speaker receives an overlay route without any explicit
+          mapping community, the Best effort Resolution scheme is used for
+          resolving the BGP nexthop on the route. This behavior is backward
+          compatible to behavior of an implementation that does not follow
+          procedures described in this document.<a href="#section-10.10-1.5" class="pilcrow">¶</a>
+</li>
+          <li class="normal ulEmpty" id="section-10.10-1.6">Implementations MAY provide configuration to selectively install
+          BGP CT routes to the FIB, to provide reachability for control plane
+          peering towards end points in other domains.<a href="#section-10.10-1.6" class="pilcrow">¶</a>
 </li>
         </ul>
 </section>
@@ -3758,6 +3808,27 @@ Registry Name: BGP Transitive Extended Community Types
    TBD              IPv6 BGP Classful Transport
 
 </pre><a href="#section-21.3-3" class="pilcrow">¶</a>
+</div>
+</section>
+<section id="section-21.4">
+        <h3 id="name-best-effort-transport-class-i">
+<a href="#section-21.4" class="section-number selfRef">21.4. </a><a href="#name-best-effort-transport-class-i" class="section-name selfRef">Best Effort Transport Class ID</a>
+        </h3>
+<p id="section-21.4-1">This document reserves the Transport class ID value 0 to represent
+        "Best Effort Transport Class ID". This is used in the 'Transport Class
+        ID' field of Transport Route Target extended community that represents
+        best effort transport class. Please create a new registry for
+        this.<a href="#section-21.4-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-21.4-2">
+<pre> Registry Group: BGP CT Parameters
+
+ Registry Name: Transport Class ID
+
+  Value                 Name
+ -----------------+--------------------------------
+   0                Best Effort Transport Class ID
+
+</pre><a href="#section-21.4-2" class="pilcrow">¶</a>
 </div>
 </section>
 </section>
