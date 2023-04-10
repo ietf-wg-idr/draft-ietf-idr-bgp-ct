@@ -10,7 +10,7 @@
 <?rfc inline="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="exp" docName="draft-ietf-idr-bgp-ct-02" ipr="trust200902">
+<rfc category="exp" docName="draft-ietf-idr-bgp-ct-03" ipr="trust200902">
   <front>
     <title abbrev="BGP Classful Transport Planes">BGP Classful Transport
     Planes</title>
@@ -57,7 +57,7 @@
       </address>
     </author>
 
-    <date day="27" month="03" year="2023"/>
+    <date day="09" month="04" year="2023"/>
 
     <abstract>
       <t>This document specifies a mechanism, referred to as "Intent Driven
@@ -882,7 +882,7 @@
         <list>
           <t>It is possible to represent 'Best effort' SLA also as a Transport
           class. Today BGP LU (SAFI 4) is used to extend best effort intra
-          domain tunnels to other domains. </t>
+          domain tunnels to other domains.</t>
 
           <t>Alternatively, BGP CT (SAFI 76) may be used to carry best effort
           tunnels also. This document reserves the Transport class ID value 0
@@ -2251,8 +2251,8 @@ Registry Name: BGP Transitive Extended Community Types
 
   Sub-Type                Name
  -----------------+------------------------------
-   TBD              IPv4 BGP Classful Transport
-   TBD              IPv6 BGP Classful Transport
+   31744              IPv4 BGP Classful Transport
+   31745              IPv6 BGP Classful Transport
 
               </artwork>
           </figure></t>
