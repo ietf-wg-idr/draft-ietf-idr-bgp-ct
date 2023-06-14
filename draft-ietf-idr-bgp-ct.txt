@@ -4125,18 +4125,18 @@ D.2.1.  Analysis of CPR approach
 
    CPR achieves strict Intent based forwarding for the service routes.
    Fallback to best effort transport class is achieved by numbering all
-   SRv6 CPR locators at the egress SN to fall in the same subnet as the
-   SRv6 locator that uses best effort transport class.  Custom Intents
-   that provide fallback between different color transport classes can
-   be achieved by allocating a CPR prefix for each such intent
-   combination, and advertising that CPR prefix with an appropriate BGP
-   CT mapping community, that maps to a customized resolution scheme.
+   SRv6 Colorful Prefix locators at the egress SN to fall in the same
+   subnet as the SRv6 locator that uses best effort transport class.
+   Custom Intents that provide fallback between different color
+   transport classes can be achieved by allocating a Colorful Prefix for
+   each such intent combination, and advertising that Colorful Prefix
+   route with an appropriate BGP CT mapping community, that maps to a
+   customized resolution scheme.
 
    Further, IPv6 unicast family is widely deployed to carry Internet
    Service routes.  Repurposing IPv6 unicast family to carry Transport
    routes also may impact the operational complexity and security
    aspects in the network.
-
 
 
 
