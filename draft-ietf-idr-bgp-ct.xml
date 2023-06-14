@@ -3418,15 +3418,14 @@ PE1: Bronze TRDB
         <section title="Analysis of CPR approach">
           <t>In this approach, a unique service SID is allocated for each
           combination of service function (e.g. Prefix, VRF or Nexthop) and
-          SRv6 color sub-locator (aka Coloring Prefix) at the egress node.
-          This consumes "Num_Service_Functions x Num_SRv6-color-sub-locators"
-          service SIDs per egress SN. This approach can be used to support
-          differential services while minimizing SRv6 encapsulation overhead,
-          at the cost of careful SID numbering and planning. Routes for
-          Coloring Prefix that cover the color Service SIDs need to be present
-          across the transport network for the Intent based forwarding to
-          work. This keeps the transport network state a function of the
-          Coloring Prefix state.</t>
+          Intent (aka Coloring Prefix) at the egress node. This consumes
+          "Num_Service_Functions x Num_Intents" service SIDs per egress SN.
+          This approach can be used to support intent driven routing while
+          minimizing SRv6 encapsulation overhead, at the cost of careful SID
+          numbering and planning. Routes for Coloring Prefix that cover the
+          color Service SIDs need to be present across the transport network
+          for the Intent based forwarding to work. This keeps the transport
+          network state a function of the Coloring Prefix state.</t>
 
           <t>This color encoded Service SID scale impacts overall convergence
           while executing operational procedures like color sub-locator

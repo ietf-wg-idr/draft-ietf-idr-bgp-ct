@@ -4022,10 +4022,10 @@ D.2.1.  Analysis of CPR approach
 
    In this approach, a unique service SID is allocated for each
    combination of service function (e.g.  Prefix, VRF or Nexthop) and
-   SRv6 color sub-locator (aka Coloring Prefix) at the egress node.
-   This consumes "Num_Service_Functions x Num_SRv6-color-sub-locators"
-   service SIDs per egress SN.  This approach can be used to support
-   differential services while minimizing SRv6 encapsulation overhead,
+   Intent (aka Coloring Prefix) at the egress node.  This consumes
+   "Num_Service_Functions x Num_Intents" service SIDs per egress SN.
+   This approach can be used to support intent driven routing while
+   minimizing SRv6 encapsulation overhead, at the cost of careful SID
 
 
 
@@ -4034,11 +4034,10 @@ Vairavakkalai & VenkatarExpires 11 December 2023               [Page 72]
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
-   at the cost of careful SID numbering and planning.  Routes for
-   Coloring Prefix that cover the color Service SIDs need to be present
-   across the transport network for the Intent based forwarding to work.
-   This keeps the transport network state a function of the Coloring
-   Prefix state.
+   numbering and planning.  Routes for Coloring Prefix that cover the
+   color Service SIDs need to be present across the transport network
+   for the Intent based forwarding to work.  This keeps the transport
+   network state a function of the Coloring Prefix state.
 
    This color encoded Service SID scale impacts overall convergence
    while executing operational procedures like color sub-locator
@@ -4081,6 +4080,7 @@ Co-Authors
    1134
    Hungary
    Email: ietf@nop.hu
+
 
 
 
