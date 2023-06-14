@@ -39,7 +39,7 @@
       these variations are given in Appendix A. 
     ' name="description">
 <meta content="xml2rfc 3.13.0" name="generator">
-<meta content="draft-ietf-idr-bgp-ct-04" name="ietf.draft">
+<meta content="draft-ietf-idr-bgp-ct-05" name="ietf.draft">
 <!-- Generator version information:
   xml2rfc 3.13.0
     Python 3.8.9
@@ -1227,7 +1227,7 @@ li > p:last-of-type {
 <dt class="label-workgroup">Workgroup:</dt>
 <dd class="workgroup">Network Working Group</dd>
 <dt class="label-internet-draft">Internet-Draft:</dt>
-<dd class="internet-draft">draft-ietf-idr-bgp-ct-04</dd>
+<dd class="internet-draft">draft-ietf-idr-bgp-ct-05</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
 <time datetime="2023-06-09" class="published">9 June 2023</time>
@@ -2335,38 +2335,42 @@ li > p:last-of-type {
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-10.7-1.1">A pair of redundant ABRs, each acting as an RR with nexthop self,
           may choose each other as best path instead of the upstream ASBR,
-          causing a traffic forwarding loop.<a href="#section-10.7-1.1" class="pilcrow">¶</a>
+          causing a traffic forwarding loop. This happens because of following
+          the path selection rule specified in <span><a href="#RFC4456" class="xref">BGP
+          RR</a> [<a href="#RFC4456" class="xref">RFC4456</a>]</span> that tie-breaks on ROUTER-ID before CLUSTER_LIST. RFC4456
+          considers pure RR which is not in forwarding path. When RR is in
+          forwarding path and reflects routes with nexthop self, as is the
+          case for ABR BNs in a BGP transport network, this rule may cause
+          loops.<a href="#section-10.7-1.1" class="pilcrow">¶</a>
 </li>
           <li class="normal ulEmpty" id="section-10.7-1.2">Implementations SHOULD provide a way to alter the tie-breaking
-          rule specified in <span><a href="#RFC4456" class="xref">BGP RR</a> [<a href="#RFC4456" class="xref">RFC4456</a>]</span> to tie-break
-          on CLUSTER_LIST step before ROUTER-ID step, when performing path
-          selection for BGP CT routes. RFC4456 considers pure RR which is not
-          in forwarding path. When RR is in forwarding path and reflects
-          routes with nexthop self, as is the case for ABR BNs in a BGP
-          transport network, this rule may cause loops. This document suggests
-          the following modification to the BGP Decision Process Tie Breaking
-          rules (Sect. 9.1.2.2, <span>[<a href="#RFC4271" class="xref">RFC4271</a>]</span>) when doing path
-          selection for BGP CT family routes:<a href="#section-10.7-1.2" class="pilcrow">¶</a>
+          rule specified in <span><a href="#RFC4456" class="xref">BGP RR</a> [<a href="#RFC4456" class="xref">RFC4456</a>]</span> so as to
+          tie-break on CLUSTER_LIST step before ROUTER-ID step, when
+          performing path selection for BGP CT routes.<a href="#section-10.7-1.2" class="pilcrow">¶</a>
 </li>
-          <li class="normal ulEmpty" id="section-10.7-1.3">The following rule SHOULD be inserted between Steps e) and f): a
+          <li class="normal ulEmpty" id="section-10.7-1.3">This document suggests the following modification to the BGP
+          Decision Process Tie Breaking rules (Sec. 9.1.2.2, <span>[<a href="#RFC4271" class="xref">RFC4271</a>]</span>) that can be applied to path selection of BGP CT
+          family routes:<a href="#section-10.7-1.3" class="pilcrow">¶</a>
+</li>
+          <li class="normal ulEmpty" id="section-10.7-1.4">The following rule SHOULD be inserted between Steps e) and f): a
           BGP Speaker SHOULD prefer a route with the shorter CLUSTER_LIST
           length. The CLUSTER_LIST length is zero if a route does not carry
-          the CLUSTER_LIST attribute.<a href="#section-10.7-1.3" class="pilcrow">¶</a>
+          the CLUSTER_LIST attribute.<a href="#section-10.7-1.4" class="pilcrow">¶</a>
 </li>
-          <li class="normal ulEmpty" id="section-10.7-1.4">
-            <p id="section-10.7-1.4.1">Some deployment considerations can also help in avoiding this
-          problem:<a href="#section-10.7-1.4.1" class="pilcrow">¶</a></p>
+          <li class="normal ulEmpty" id="section-10.7-1.5">
+            <p id="section-10.7-1.5.1">Some deployment considerations can also help in avoiding this
+          problem:<a href="#section-10.7-1.5.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-10.7-1.4.2.1">IGP metric should be assigned such that "ABR to redundant
-              ABR" cost is inferior than "ABR to upstream ASBR" cost.<a href="#section-10.7-1.4.2.1" class="pilcrow">¶</a>
+<li class="normal" id="section-10.7-1.5.2.1">IGP metric should be assigned such that "ABR to redundant
+              ABR" cost is inferior than "ABR to upstream ASBR" cost.<a href="#section-10.7-1.5.2.1" class="pilcrow">¶</a>
 </li>
-              <li class="normal" id="section-10.7-1.4.2.2">Tunnels belonging to non best effort Transport Classes SHOULD
+              <li class="normal" id="section-10.7-1.5.2.2">Tunnels belonging to non best effort Transport Classes SHOULD
               NOT be provisioned between ABRs. This will ensure that the route
               received from an ABR with nexthop self will not be usable at a
-              redundant ABR.<a href="#section-10.7-1.4.2.2" class="pilcrow">¶</a>
+              redundant ABR.<a href="#section-10.7-1.5.2.2" class="pilcrow">¶</a>
 </li>
             </ul>
-<p id="section-10.7-1.4.3"> This avoids the possibility of such loops altogether.<a href="#section-10.7-1.4.3" class="pilcrow">¶</a></p>
+<p id="section-10.7-1.5.3"> This avoids the possibility of such loops altogether.<a href="#section-10.7-1.5.3" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -3917,7 +3921,7 @@ Registry Name: BGP Transitive Extended Community Types
 <dd class="break"></dd>
 <dt id="RFC4456">[RFC4456]</dt>
         <dd>
-<span class="refAuthor">Bates, T.</span>, <span class="refAuthor">Chen, E.</span>, and <span class="refAuthor">R. Chandra</span>, <span class="refTitle">"BGP Route Reflection: An Alternative to Full Mesh Internal BGP (IBGP)"</span>, <span class="seriesInfo">RFC 4456</span>, <span class="seriesInfo">DOI 10.17487/RFC4456</span>, <time datetime="2006-04" class="refDate">April 2006</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc4456">https://www.rfc-editor.org/info/rfc4456</a>&gt;</span>. </dd>
+<span class="refAuthor">Bates, J., Ed.</span>, <span class="refAuthor">Chen, Ed.</span>, and <span class="refAuthor">Chandra, Ed.</span>, <span class="refTitle">"BGP Route Reflection: An Alternative to Full Mesh Internal BGP (IBGP)"</span>, <time datetime="2006-04" class="refDate">April 2006</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/rfc4456#section-9">https://datatracker.ietf.org/doc/html/rfc4456#section-9</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC4684">[RFC4684]</dt>
         <dd>
@@ -4941,31 +4945,43 @@ PE1: Bronze TRDB
         <h3 id="name-color-encoded-service-sid-cp">
 <a href="#appendix-D.2" class="section-number selfRef">D.2. </a><a href="#name-color-encoded-service-sid-cp" class="section-name selfRef">Color encoded Service SID (CPR) approach</a>
         </h3>
-<p id="appendix-D.2-1">This approach uses color encoded service SRv6 SIDs, without any
-        transport SRv6 SID. This approach a.k.a CPR is defined by <span><a href="#Colorful-Prefix-Routing-SRv6" class="xref">Colorful Prefix Routing for SRv6
-        based services</a> [<a href="#Colorful-Prefix-Routing-SRv6" class="xref">Colorful-Prefix-Routing-SRv6</a>]</span> draft which uses IPv6 Unicast (AFI/SAFI = 2/1)
-        as a transport family. This approach can be achieved by applying BGP
-        CT procedures defined in this document to IPv6 unicast family.<a href="#appendix-D.2-1" class="pilcrow">¶</a></p>
+<p id="appendix-D.2-1">This approach uses color encoded service SRv6 SIDs, without a
+        separate transport SRv6 SID. It routes using "Coloring Prefix"
+        locators in the transport layer. This approach a.k.a CPR is defined by
+        <span><a href="#Colorful-Prefix-Routing-SRv6" class="xref">Colorful Prefix Routing
+        for SRv6 based services</a> [<a href="#Colorful-Prefix-Routing-SRv6" class="xref">Colorful-Prefix-Routing-SRv6</a>]</span> draft which uses IPv6 Unicast
+        (AFI/SAFI = 2/1) as a transport family. This approach can be achieved
+        by applying BGP CT procedures like resolution scheme defined in this
+        document to the IPv6 unicast family.<a href="#appendix-D.2-1" class="pilcrow">¶</a></p>
 <p id="appendix-D.2-2">In this approach, a unique service SID is allocated for each
-        combination of service function (e.g. Prefix, VRF or Nexthop) and an
-        egress SRv6 color sub-locator. This consumes "Num_Service_Functions x
-        Num_SRv6-color-sub-locators" service SIDs per egress SN. This approach
-        can be used by devices that possess limited SID stacking capabilities
-        to be able to support differential services at the cost of more state
-        in the transport network. These color Service SIDs need to be present
-        across the entire transport network for the forwarding to work. This
-        makes the transport network state a function of the service layer SID
-        state.<a href="#appendix-D.2-2" class="pilcrow">¶</a></p>
-<p id="appendix-D.2-3">This Service SID scale impacts the overall convergence while
-        executing operational procedures like color sub-locator modification,
-        where all the service routes have to be readvertised with their new
-        Service SID computed as a result of the color sub-locator change. This
-        also impacts BGP PIC (Prefix scale Independent Convergence) for the
-        egress SN failure where all Service SIDs need to be withdrawn.<a href="#appendix-D.2-3" class="pilcrow">¶</a></p>
+        combination of service function (e.g. Prefix, VRF or Nexthop) and SRv6
+        color sub-locator (aka Coloring Prefix) at the egress node. This
+        consumes "Num_Service_Functions x Num_SRv6-color-sub-locators" service
+        SIDs per egress SN. This approach can be used to support differential
+        services while minimizing SRv6 encapsulation overhead, at the cost of
+        careful SID numbering and planning. Routes for Coloring Prefix that
+        cover the color Service SIDs need to be present across the transport
+        network for the Intent based forwarding to work. This keeps the
+        transport network state a function of the Coloring Prefix state.<a href="#appendix-D.2-2" class="pilcrow">¶</a></p>
+<p id="appendix-D.2-3">This color encoded Service SID scale impacts overall convergence
+        while executing operational procedures like color sub-locator
+        modification, where all the service routes have to be readvertised
+        with their new Service SID computed as a result of the color
+        sub-locator change. However this mechanism may preserve BGP PIC
+        (Prefix scale Independent Convergence) for the egress SN failure
+        scenario where only CPR routes need to be withdrawn.<a href="#appendix-D.2-3" class="pilcrow">¶</a></p>
 <p id="appendix-D.2-4">This approach achieves strict color based forwarding for the
-        service routes. However, it cannot achieve per service route fallback
-        intent using resolution schemes as BGP CT procedures are not applied
-        to service family routes.<a href="#appendix-D.2-4" class="pilcrow">¶</a></p>
+        service routes. Fallback to best effort transport class can be
+        achieved by numbering all SRv6 CPR locators at the egress SN to fall
+        in the same subnet as the SRv6 locator that uses best effort transport
+        class. However, it cannot achieve per service route intent to fallback
+        between different colors, because BGP CT procedures like resolution
+        schemes are not applied to service family routes, and BGP CT (SAFI 76)
+        family is not used to carry CPR prefixes.<a href="#appendix-D.2-4" class="pilcrow">¶</a></p>
+<p id="appendix-D.2-5">Further, IPv6 unicast family is widely deployed to carry Internet
+        Service routes. Repurposing IPv6 unicast family to carry Transport
+        routes also may impact the operational complexity and security aspects
+        in the network.<a href="#appendix-D.2-5" class="pilcrow">¶</a></p>
 </section>
 </section>
 </div>
