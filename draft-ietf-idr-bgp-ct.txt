@@ -217,7 +217,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
    Appendix D.  BGP CT deployment in SRv6 networks . . . . . . . . .  66
      D.1.  SID stacking approach . . . . . . . . . . . . . . . . . .  66
      D.2.  Color encoded Service SID (CPR) approach  . . . . . . . .  72
-       D.2.1.  Analysis  . . . . . . . . . . . . . . . . . . . . . .  72
+       D.2.1.  Analysis of CPR approach  . . . . . . . . . . . . . .  72
 
 
 
@@ -4008,15 +4008,17 @@ D.2.  Color encoded Service SID (CPR) approach
 
    CPR is defined in Colorful Prefix Routing for SRv6 based services
    [Colorful-Prefix-Routing-SRv6] draft which uses IPv6 Unicast (AFI/
-   SAFI = 2/1) as a transport family.  CPR uses color encoded service
-   SRv6 SIDs, without a separate transport SRv6 SID.  It routes using
-   "Coloring Prefix" locators in the transport layer.
+   SAFI = 2/1) as a transport family.
 
-   The CPR approach can be achieved by applying BGP CT procedures like
-   resolution scheme defined in this document to the IPv6 unicast
-   family.
+   CPR uses color encoded service SRv6 SIDs, without a separate
+   transport SRv6 SID.  It routes using "Coloring Prefix" locators in
+   the transport layer.
 
-D.2.1.  Analysis
+   The CPR approach can be achieved by using BGP CT Nexthop Resolution
+   Scheme (Section 6) to the IPv6 unicast family routes for CPR
+   prefixes, to give them Intent-driven paths.
+
+D.2.1.  Analysis of CPR approach
 
    In this approach, a unique service SID is allocated for each
    combination of service function (e.g.  Prefix, VRF or Nexthop) and
@@ -4024,8 +4026,6 @@ D.2.1.  Analysis
    This consumes "Num_Service_Functions x Num_SRv6-color-sub-locators"
    service SIDs per egress SN.  This approach can be used to support
    differential services while minimizing SRv6 encapsulation overhead,
-   at the cost of careful SID numbering and planning.  Routes for
-   Coloring Prefix that cover the color Service SIDs need to be present
 
 
 
@@ -4034,6 +4034,8 @@ Vairavakkalai & VenkatarExpires 11 December 2023               [Page 72]
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
+   at the cost of careful SID numbering and planning.  Routes for
+   Coloring Prefix that cover the color Service SIDs need to be present
    across the transport network for the Intent based forwarding to work.
    This keeps the transport network state a function of the Coloring
    Prefix state.
@@ -4079,8 +4081,6 @@ Co-Authors
    1134
    Hungary
    Email: ietf@nop.hu
-
-
 
 
 

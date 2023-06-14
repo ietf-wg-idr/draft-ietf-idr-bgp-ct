@@ -3404,47 +3404,51 @@ PE1: Bronze TRDB
         <t>CPR is defined in <xref
         target="Colorful-Prefix-Routing-SRv6">Colorful Prefix Routing for SRv6
         based services </xref> draft which uses IPv6 Unicast (AFI/SAFI = 2/1)
-        as a transport family. CPR uses color encoded service SRv6 SIDs,
-        without a separate transport SRv6 SID. It routes using "Coloring
-        Prefix" locators in the transport layer. </t>
+        as a transport family. </t>
 
-        <t>The CPR approach can be achieved by applying BGP CT procedures like
-        resolution scheme defined in this document to the IPv6 unicast
-        family.</t>
+        <t>CPR uses color encoded service SRv6 SIDs, without a separate
+        transport SRv6 SID. It routes using "Coloring Prefix" locators in the
+        transport layer.</t>
 
-        <section title="Analysis">
-        <t>In this approach, a unique service SID is allocated for each
-        combination of service function (e.g. Prefix, VRF or Nexthop) and SRv6
-        color sub-locator (aka Coloring Prefix) at the egress node. This
-        consumes "Num_Service_Functions x Num_SRv6-color-sub-locators" service
-        SIDs per egress SN. This approach can be used to support differential
-        services while minimizing SRv6 encapsulation overhead, at the cost of
-        careful SID numbering and planning. Routes for Coloring Prefix that
-        cover the color Service SIDs need to be present across the transport
-        network for the Intent based forwarding to work. This keeps the
-        transport network state a function of the Coloring Prefix state.</t>
+        <t>The CPR approach can be achieved by using BGP CT <xref
+        target="Nexthop_Resoln_Schm">Nexthop Resolution Scheme</xref> to the
+        IPv6 unicast family routes for CPR prefixes, to give them
+        Intent-driven paths.</t>
 
-        <t>This color encoded Service SID scale impacts overall convergence
-        while executing operational procedures like color sub-locator
-        modification, where all the service routes have to be readvertised
-        with their new Service SID computed as a result of the color
-        sub-locator change. However this mechanism may preserve BGP PIC
-        (Prefix scale Independent Convergence) for the egress SN failure
-        scenario where only CPR routes need to be withdrawn.</t>
+        <section title="Analysis of CPR approach">
+          <t>In this approach, a unique service SID is allocated for each
+          combination of service function (e.g. Prefix, VRF or Nexthop) and
+          SRv6 color sub-locator (aka Coloring Prefix) at the egress node.
+          This consumes "Num_Service_Functions x Num_SRv6-color-sub-locators"
+          service SIDs per egress SN. This approach can be used to support
+          differential services while minimizing SRv6 encapsulation overhead,
+          at the cost of careful SID numbering and planning. Routes for
+          Coloring Prefix that cover the color Service SIDs need to be present
+          across the transport network for the Intent based forwarding to
+          work. This keeps the transport network state a function of the
+          Coloring Prefix state.</t>
 
-        <t>This approach achieves strict color based forwarding for the
-        service routes. Fallback to best effort transport class can be
-        achieved by numbering all SRv6 CPR locators at the egress SN to fall
-        in the same subnet as the SRv6 locator that uses best effort transport
-        class. However, it cannot achieve per service route intent to fallback
-        between different colors, because BGP CT procedures like resolution
-        schemes are not applied to service family routes, and BGP CT (SAFI 76)
-        family is not used to carry CPR prefixes.</t>
+          <t>This color encoded Service SID scale impacts overall convergence
+          while executing operational procedures like color sub-locator
+          modification, where all the service routes have to be readvertised
+          with their new Service SID computed as a result of the color
+          sub-locator change. However this mechanism may preserve BGP PIC
+          (Prefix scale Independent Convergence) for the egress SN failure
+          scenario where only CPR routes need to be withdrawn.</t>
 
-        <t>Further, IPv6 unicast family is widely deployed to carry Internet
-        Service routes. Repurposing IPv6 unicast family to carry Transport
-        routes also may impact the operational complexity and security aspects
-        in the network.</t>
+          <t>This approach achieves strict color based forwarding for the
+          service routes. Fallback to best effort transport class can be
+          achieved by numbering all SRv6 CPR locators at the egress SN to fall
+          in the same subnet as the SRv6 locator that uses best effort
+          transport class. However, it cannot achieve per service route intent
+          to fallback between different colors, because BGP CT procedures like
+          resolution schemes are not applied to service family routes, and BGP
+          CT (SAFI 76) family is not used to carry CPR prefixes.</t>
+
+          <t>Further, IPv6 unicast family is widely deployed to carry Internet
+          Service routes. Repurposing IPv6 unicast family to carry Transport
+          routes also may impact the operational complexity and security
+          aspects in the network.</t>
         </section>
       </section>
     </section>
