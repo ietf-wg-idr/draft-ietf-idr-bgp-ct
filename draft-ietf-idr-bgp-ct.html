@@ -1217,7 +1217,7 @@ li > p:last-of-type {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Vairavakkalai &amp; Venkataraman</td>
-<td class="center">Expires 11 December 2023</td>
+<td class="center">Expires 16 December 2023</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1230,12 +1230,12 @@ li > p:last-of-type {
 <dd class="internet-draft">draft-ietf-idr-bgp-ct-05</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-06-09" class="published">9 June 2023</time>
+<time datetime="2023-06-14" class="published">14 June 2023</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Experimental</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2023-12-11">11 December 2023</time></dd>
+<dd class="expires"><time datetime="2023-12-16">16 December 2023</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1314,7 +1314,7 @@ li > p:last-of-type {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 11 December 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 16 December 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -4695,28 +4695,44 @@ Registry Name: BGP Transitive Extended Community Types
         desired Intent.<a href="#appendix-D.1-6" class="pilcrow">¶</a></p>
 <p id="appendix-D.1-7">The following SRv6 locators are provisioned:<a href="#appendix-D.1-7" class="pilcrow">¶</a></p>
 <ul class="normal ulEmpty">
-<li class="normal ulEmpty" id="appendix-D.1-8.1">PE1-SRv6 : SRv6 Locator for PE1<a href="#appendix-D.1-8.1" class="pilcrow">¶</a>
+<li class="normal ulEmpty" id="appendix-D.1-8.1">PE1-SRv6 : SRv6 Locator for PE1 best effort transport class<a href="#appendix-D.1-8.1" class="pilcrow">¶</a>
 </li>
-          <li class="normal ulEmpty" id="appendix-D.1-8.2">PE2-SRv6 : SRv6 Locator for PE2<a href="#appendix-D.1-8.2" class="pilcrow">¶</a>
+          <li class="normal ulEmpty" id="appendix-D.1-8.2">PE1-SRv6-gold-loc : SRv6 Locator for PE1 gold transport
+            class<a href="#appendix-D.1-8.2" class="pilcrow">¶</a>
 </li>
-          <li class="normal ulEmpty" id="appendix-D.1-8.3">ASBR1-SRv6 : SRv6 Locator for ASBR1<a href="#appendix-D.1-8.3" class="pilcrow">¶</a>
+          <li class="normal ulEmpty" id="appendix-D.1-8.3">PE2-SRv6-bronze-loc : SRv6 Locator for PE2 bronze transport
+            class<a href="#appendix-D.1-8.3" class="pilcrow">¶</a>
 </li>
-          <li class="normal ulEmpty" id="appendix-D.1-8.4">ASBR2-SRv6 : SRv6 Locator for ASBR2<a href="#appendix-D.1-8.4" class="pilcrow">¶</a>
+          <li class="normal ulEmpty" id="appendix-D.1-8.4">ASBR1-SRv6-loc : SRv6 Locator for ASBR1 best effort transport
+            class<a href="#appendix-D.1-8.4" class="pilcrow">¶</a>
+</li>
+          <li class="normal ulEmpty" id="appendix-D.1-8.5">ASBR1-SRv6-gold-loc : SRv6 Locator for ASBR1 gold transport
+            class<a href="#appendix-D.1-8.5" class="pilcrow">¶</a>
+</li>
+          <li class="normal ulEmpty" id="appendix-D.1-8.6">ASBR1-SRv6-bronze-loc : SRv6 Locator for ASBR1 bronze transport
+            class<a href="#appendix-D.1-8.6" class="pilcrow">¶</a>
+</li>
+          <li class="normal ulEmpty" id="appendix-D.1-8.7">ASBR2-SRv6-loc : SRv6 Locator for ASBR2 best effort transport
+            class<a href="#appendix-D.1-8.7" class="pilcrow">¶</a>
+</li>
+          <li class="normal ulEmpty" id="appendix-D.1-8.8">ASBR2-SRv6-gold-loc : SRv6 Locator for ASBR2 gold transport
+            class<a href="#appendix-D.1-8.8" class="pilcrow">¶</a>
+</li>
+          <li class="normal ulEmpty" id="appendix-D.1-8.9">ASBR2-SRv6-bronze-loc : SRv6 Locator for ASBR2 bronze transport
+            class<a href="#appendix-D.1-8.9" class="pilcrow">¶</a>
 </li>
         </ul>
 <p id="appendix-D.1-9">The following transport layer SRv6 End SIDs are provisioned or
         dynamically allocated on demand:<a href="#appendix-D.1-9" class="pilcrow">¶</a></p>
 <ul class="normal ulEmpty">
-<li class="normal ulEmpty" id="appendix-D.1-10.1">PE2-SRv6-gold : PE2 End SID with behavior as PSP or USP, for
-            gold transport class.<a href="#appendix-D.1-10.1" class="pilcrow">¶</a>
+<li class="normal ulEmpty" id="appendix-D.1-10.1">PE2-SRv6-gold : PE2 End SID, for gold transport class.<a href="#appendix-D.1-10.1" class="pilcrow">¶</a>
 </li>
-          <li class="normal ulEmpty" id="appendix-D.1-10.2">PE2-SRv6-bronze : PE2 End SID with behavior as PSP or USP for
-            bronze transport class.<a href="#appendix-D.1-10.2" class="pilcrow">¶</a>
+          <li class="normal ulEmpty" id="appendix-D.1-10.2">PE2-SRv6-bronze : PE2 End SID, for bronze transport class.<a href="#appendix-D.1-10.2" class="pilcrow">¶</a>
 </li>
-          <li class="normal ulEmpty" id="appendix-D.1-10.3">ASBR2-SRv6-PE2-gold-Replace : at ASBR2 End.REPLACE SID for PE2,
-            gold transport class.<a href="#appendix-D.1-10.3" class="pilcrow">¶</a>
+          <li class="normal ulEmpty" id="appendix-D.1-10.3">ASBR2-SRv6-PE2-gold-Replace : at ASBR2 End.B6.Encaps SID for
+            PE2, gold transport class.<a href="#appendix-D.1-10.3" class="pilcrow">¶</a>
 </li>
-          <li class="normal ulEmpty" id="appendix-D.1-10.4">ASBR2-SRv6-PE2-bronze-Replace : at ASBR2 End.REPLACE SID for
+          <li class="normal ulEmpty" id="appendix-D.1-10.4">ASBR2-SRv6-PE2-bronze-Replace : at ASBR2 End.B6.Encaps SID for
             PE2, bronze transport class.<a href="#appendix-D.1-10.4" class="pilcrow">¶</a>
 </li>
           <li class="normal ulEmpty" id="appendix-D.1-10.5">ASBR1-SRv6-PE2-gold-Replace : at ASBR1 End.REPLACE SID for PE2,
@@ -4727,9 +4743,13 @@ Registry Name: BGP Transitive Extended Community Types
 </li>
         </ul>
 <p id="appendix-D.1-11">Architecturally, the forwarding semantic of End.REPLACE SID
-        operation is similar to Label SWAP operation in MPLS data plane. The
-        following illustration assumes usage of PSP behavior for the
-        PE2-SRv6-gold and PE2-SRv6-bronze transport SIDs.<a href="#appendix-D.1-11" class="pilcrow">¶</a></p>
+        operation is similar to Label SWAP operation in MPLS data plane. When
+        a route received with End SID (e.g. PE2-SRv6-gold or PE2-SRv6-bronze
+        transport SIDs) is readvertised with nexthop self, a IPv6 forwarding
+        entry is emitted with a forwarding semantic of End.B6.Encaps
+        operation, which means: Decapsulate SRv6 SID, and Encapsulate SRv6 SID
+        corresponding to the correct transport class.This can be seen in IPv6
+        FIB of ASBR2 in the following illustration:<a href="#appendix-D.1-11" class="pilcrow">¶</a></p>
 <p id="appendix-D.1-12">The following service layer SRv6 End.DT4 SIDs are provisioned:<a href="#appendix-D.1-12" class="pilcrow">¶</a></p>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="appendix-D.1-13.1">PE2-SRv6-S1-DT4 : PE2 End.DT4 SID for service S1<a href="#appendix-D.1-13.1" class="pilcrow">¶</a>
@@ -4743,22 +4763,30 @@ Registry Name: BGP Transitive Extended Community Types
         TRDBs at ASBR2 as shown below:<a href="#appendix-D.1-15" class="pilcrow">¶</a></p>
 <span id="name-trdbs-at-asbr2-2"></span><figure id="figure-17">
           <div class="alignLeft art-text artwork" id="appendix-D.1-16.1">
-<pre>  Gold TRDB routes at ASBR2:
+<pre>  Gold TRDB routes at ASBR2
 
        [ISIS SRv6] PE2-LPBK
-           NH:  Push encap for "Gold-SRv6-Tunnel-to-PE2" tunnel
+           NH:  Encap "Gold-SRv6-Tunnel-to-PE2" tunnel
 
        [ISIS SRv6] PE2-SRv6-gold
-           NH:  Push encap for "Gold-SRv6-Tunnel-to-PE2" tunnel
+           NH:  Encap "Gold-SRv6-Tunnel-to-PE2" tunnel
 
-  Bronze TRDB routes at ASBR2:
+  Bronze TRDB routes at ASBR2
 
-       [ISIS SRv6] PE2-LPBK:
-           NH: Push encap for "Bronze-SRv6-Tunnel-to-PE2" tunnel
+       [ISIS SRv6] PE2-LPBK
+           NH: Encap "Bronze-SRv6-Tunnel-to-PE2" tunnel
 
        [ISIS SRv6] PE2-SRv6-bronze:
-           NH: Push encap for "Bronze-SRv6-Tunnel-to-PE2" tunnel
+           NH: Eencap "Bronze-SRv6-Tunnel-to-PE2" tunnel
 
+
+  ASBR2: IPv6 FIB for SRv6
+
+      [ISIS SRv6] PE2-SRv6-gold,
+        NH: Encap "Gold-SRv6-Tunnel-to-PE2"
+
+      [ISIS SRv6] PE2-SRv6-bronze,
+        NH: Encap "Bronze-SRv6-Tunnel-to-PE2"
 </pre>
 </div>
 <figcaption><a href="#figure-17" class="selfRef">Figure 17</a>:
@@ -4777,14 +4805,18 @@ Registry Name: BGP Transitive Extended Community Types
 
       RD1:PE2-LPBK,
         transport-target:0:100,
-        Prefix-SID: PE2-SRv6-gold,
+        Prefix-SID: PE2-SRv6-gold
         NH: PE2-LPBK
 
       RD2:PE2-LPBK,
         transport-target:0:200,
-        Prefix-SID: PE2-SRv6-bronze,
+        Prefix-SID: PE2-SRv6-bronze
         NH: PE2-LPBK
 
+  PE2: IPv6 FIB for SRv6
+
+      [BGP CT] PE2-SRv6-S1-DT4
+        NH: Decap, Perform service S1
 </pre>
 </div>
 <figcaption><a href="#figure-18" class="selfRef">Figure 18</a>:
@@ -4804,32 +4836,28 @@ Registry Name: BGP Transitive Extended Community Types
         ASBR2-SRv6-gold-Replace.<a href="#appendix-D.1-21" class="pilcrow">¶</a></p>
 <span id="name-bgp-ct-processing-at-asbr2-2"></span><figure id="figure-19">
           <div class="alignLeft art-text artwork" id="appendix-D.1-22.1">
-<pre>  ASBR2: IPv6 FIB for SRv6
-
-      [ISIS SRv6] PE2-SRv6-gold,
-        NH: Gold-SRv6-Tunnel-to-PE2
-
-      [ISIS SRv6] PE2-SRv6-bronze,
-        NH: Bronze-SRv6-Tunnel-to-PE2
-
-      [BGP CT] ASBR2-SRv6-gold-Replace
-        NH: Gold-SRv6-Tunnel-to-PE2
-
-      [BGP CT] ASBR2-SRv6-bronze-Replace
-        NH: Bronze-SRv6-Tunnel-to-PE2
-
-
+<pre>
   EBGP CT routes from ASBR2 to ASBR1
 
       RD1:PE2-LPBK,
         transport-target:0:100,
-        Prefix-SID: ASBR2-SRv6-gold-Replace,
+        Prefix-SID: ASBR2-SRv6-PE2-gold-Replace,
         NH: ASBR2_InterAS_Link
 
       RD2:PE2-LPBK,
         transport-target:0:200,
-        Prefix-SID: ASBR2-SRv6-bronze-Replace,
+        Prefix-SID: ASBR2-SRv6-PE2-bronze-Replace,
         NH: ASBR2_InterAS_Link
+
+
+  ASBR2: IPv6 FIB for SRv6
+
+      [BGP CT] ASBR2-SRv6-PE2-gold-Replace
+        NH: Decap, Encap "Gold-SRv6-Tunnel-to-PE2"
+
+      [BGP CT] ASBR2-SRv6-PE2-bronze-Replace
+        NH: Decap, Encap "Bronze-SRv6-Tunnel-to-PE2"
+
 </pre>
 </div>
 <figcaption><a href="#figure-19" class="selfRef">Figure 19</a>:
@@ -4843,27 +4871,29 @@ Registry Name: BGP Transitive Extended Community Types
         ASBR1-SRv6-gold-Replace.<a href="#appendix-D.1-23" class="pilcrow">¶</a></p>
 <span id="name-bgp-ct-processing-at-asbr1-2"></span><figure id="figure-20">
           <div class="alignLeft art-text artwork" id="appendix-D.1-24.1">
-<pre>  ASBR1: IPv6 FIB for SRv6
-
-      [BGP CT] ASBR1-SRv6-gold-Replace,
-        NH: ASBR2_InterAS_Link
-        SID op: ReplaceSID(ASBR2-SRv6-gold-Replace)
-
-      [BGP CT] PE2-SRv6-bronze,
-        NH: ASBR2_InterAS_Link
-        SID op: ReplaceSID(ASBR2-SRv6-bronze-Replace)
-
+<pre>
   IBGP CT routes from ASBR1 to PE1
 
       RD1:PE2-LPBK,
         transport-target:0:100,
-        Prefix-SID: ASBR1-SRv6-gold-Replace,
+        Prefix-SID: ASBR1-SRv6-PE2-gold-Replace,
         NH: ASBR1-LPBK
 
       RD2:PE2-LPBK,
         transport-target:0:200,
-        Prefix-SID: ASBR1-SRv6-bronze-Replace,
-        NH: ASBR1-LPBK</pre>
+        Prefix-SID: ASBR1-SRv6-PE2-bronze-Replace,
+        NH: ASBR1-LPBK
+
+  ASBR1: IPv6 FIB for SRv6
+
+      [BGP CT] ASBR1-SRv6-PE2-gold-Replace,
+        NH: ASBR2_InterAS_Link
+        SID op: ReplaceSID(ASBR2-SRv6-PE2-gold-Replace)
+
+      [BGP CT] ASBR1-SRv6-PE2-bronze-Replace,
+        NH: ASBR2_InterAS_Link
+        SID op: ReplaceSID(ASBR2-SRv6-PE2-bronze-Replace)
+</pre>
 </div>
 <figcaption><a href="#figure-20" class="selfRef">Figure 20</a>:
 <a href="#name-bgp-ct-processing-at-asbr1-2" class="selfRef">BGP CT processing at ASBR1</a>
@@ -4879,32 +4909,34 @@ Registry Name: BGP Transitive Extended Community Types
         required at the egress PE.<a href="#appendix-D.1-26" class="pilcrow">¶</a></p>
 <span id="name-bgp-ct-processing-at-pe1-2"></span><figure id="figure-21">
           <div class="alignLeft art-text artwork" id="appendix-D.1-27.1">
-<pre>PE1: IPv6 FIB for SRv6
+<pre>
+  Gold TRDB routes at PE1
 
       [BGP CT] PE2-LPBK,
         NH: ASBR1-SRv6-gold
-        SID op: Push SID(ASBR1-SRv6-gold-Replace)
+        SID op: EncapSID(ASBR1-SRv6-PE2-gold-Replace)
+
+  Bronze TRDB routes at PE1
 
       [BGP CT] PE2-LPBK,
         NH: ASBR1-SRv6-bronze
-        SID op: Push SID(ASBR2-SRv6-bronze-Replace)
+        SID op: EncapSID(ASBR1-SRv6-PE2-bronze-Replace)
+
+  PE1: IPv6 FIB for SRv6
+
+      [BGP CT] PE2-LPBK,
+        NH: ASBR1-SRv6-gold
+        SID op: EncapSID(ASBR1-SRv6-PE2-gold-Replace)
+
+      [BGP CT] PE2-LPBK,
+        NH: ASBR1-SRv6-bronze
+        SID op: EncapSID(ASBR1-SRv6-PE2-bronze-Replace)
 
       [ISIS SRv6] ASBR1-SRv6-gold,
-        NH: Gold-SRv6-Tunnel-to-ASBR1
+        NH: Encap "Gold-SRv6-Tunnel-to-ASBR1"
 
       [ISIS SRv6] ASBR1-SRv6-bronze,
-        NH: Bronze-SRv6-Tunnel-to-ASBR1
-
-PE1: Gold TRDB
-      [BGP CT] PE2-LPBK,
-        NH: ASBR1-SRv6-gold
-        SID op: Push SID(ASBR1-SRv6-gold-Replace)
-
-PE1: Bronze TRDB
-      [BGP CT] PE2-LPBK,
-        NH: ASBR1-SRv6-bronze
-        SID op: Push SID(ASBR1-SRv6-bronze-Replace)
-
+        NH: Encap "Bronze-SRv6-Tunnel-to-ASBR1"
 </pre>
 </div>
 <figcaption><a href="#figure-21" class="selfRef">Figure 21</a>:
@@ -4914,17 +4946,15 @@ PE1: Bronze TRDB
         and Mapping Community as Color:0:100 indicating Gold SLA will use the
         Resolution Scheme associated with its Mapping Community to resolve
         over the PE2-LPBK CT route installed in the gold TRDB, and push the
-        SRv6-gold SID stack to reach PE2. This is shown below.<a href="#appendix-D.1-28" class="pilcrow">¶</a></p>
+        SRv6-gold SID stack to reach PE2.<a href="#appendix-D.1-28" class="pilcrow">¶</a></p>
+<p id="appendix-D.1-29">Similarly, any service routes received with nexthop as PE2-LPBK and
+        Mapping Community as Color:0:200 indicating Bronze SLA will use the
+        Resolution Scheme associated with its Mapping Community to resolve
+        over the PE2-LPBK CT route installed in the bronze TRDB, and push the
+        SRv6-bronze SID stack to reach PE2. This is shown below.<a href="#appendix-D.1-29" class="pilcrow">¶</a></p>
 <span id="name-service-layer-processing-2"></span><figure id="figure-22">
-          <div class="alignLeft art-text artwork" id="appendix-D.1-29.1">
-<pre>PE1: Service routes FIB
-
-      [BGP-INET] SVC_PFX1, color:0:100
-        NH: PE2-SRv6-S1-DT4, ASBR1-SRv6-gold-Repace, Gold-SRv6-Tunnel-to-ASBR1
-
-      [BGP-INET] SVC_PFX2, color:0:200
-        NH: PE2-SRv6-S1-DT4, ASBR1-SRv6-bronze-Replace, Bronze-SRv6-Tunnel-to-ASBR1
-
+          <div class="alignLeft art-text artwork" id="appendix-D.1-30.1">
+<pre>
  BGP Service routes advertisement from PE2 to PE1:
 
       SVC_PFX1,
@@ -4936,62 +4966,89 @@ PE1: Bronze TRDB
         color:0:200,
         Prefix-SID: PE2-SRv6-S1-DT4,
         NH: PE2-LPBK
+
+ PE1: Service routes FIB
+
+      [BGP-INET] SVC_PFX1, color:0:100
+        NH: EncapSID "PE2-SRv6-S1-DT4, ASBR1-SRv6-gold-Repace, Gold-SRv6-Tunnel-to-ASBR1(outer)"
+
+      [BGP-INET] SVC_PFX2, color:0:200
+        NH: EncapSID "PE2-SRv6-S1-DT4, ASBR1-SRv6-bronze-Replace, Bronze-SRv6-Tunnel-to-ASBR1(outer)"
 </pre>
 </div>
 <figcaption><a href="#figure-22" class="selfRef">Figure 22</a>:
 <a href="#name-service-layer-processing-2" class="selfRef">Service layer processing</a>
           </figcaption></figure>
-<p id="appendix-D.1-30">The operational, scaling and convergence aspects of this approach
+<p id="appendix-D.1-31">The operational, scaling and convergence aspects of this approach
         are similar to the aspects of applying BGP CT procedures to the MPLS
-        data plane.<a href="#appendix-D.1-30" class="pilcrow">¶</a></p>
+        data plane.<a href="#appendix-D.1-31" class="pilcrow">¶</a></p>
 </section>
 </div>
 <section id="appendix-D.2">
         <h3 id="name-color-encoded-service-sid-cp">
 <a href="#appendix-D.2" class="section-number selfRef">D.2. </a><a href="#name-color-encoded-service-sid-cp" class="section-name selfRef">Color encoded Service SID (CPR) approach</a>
         </h3>
-<p id="appendix-D.2-1">CPR is defined in <span><a href="#Colorful-Prefix-Routing-SRv6" class="xref">Colorful Prefix Routing for SRv6
-        based services</a> [<a href="#Colorful-Prefix-Routing-SRv6" class="xref">Colorful-Prefix-Routing-SRv6</a>]</span> draft which uses IPv6 Unicast (AFI/SAFI = 2/1)
-        as a transport family.<a href="#appendix-D.2-1" class="pilcrow">¶</a></p>
+<p id="appendix-D.2-1">CPR is defined in the document: <span><a href="#Colorful-Prefix-Routing-SRv6" class="xref">Colorful Prefix Routing for SRv6
+        based services</a> [<a href="#Colorful-Prefix-Routing-SRv6" class="xref">Colorful-Prefix-Routing-SRv6</a>]</span>, and uses IPv6 Unicast (AFI/SAFI = 2/1) as a
+        transport family.<a href="#appendix-D.2-1" class="pilcrow">¶</a></p>
 <p id="appendix-D.2-2">CPR uses color encoded service SRv6 SIDs, without a separate
-        transport SRv6 SID. It routes using "Coloring Prefix" locators in the
-        transport layer.<a href="#appendix-D.2-2" class="pilcrow">¶</a></p>
-<p id="appendix-D.2-3">BGP CT facililtates the CPR approach by providing intent-driven
-        paths for the CPR prefixes by using <span><a href="#Nexthop_Resoln_Schm" class="xref">Nexthop Resolution Scheme</a> (<a href="#Nexthop_Resoln_Schm" class="xref">Section 6</a>)</span> for the
-        IPv6 unicast family routes.<a href="#appendix-D.2-3" class="pilcrow">¶</a></p>
+        transport SRv6 SID. It routes using "Colorful Prefix" locators in the
+        transport layer, which are carried in the IPv6 Unicast BGP family.<a href="#appendix-D.2-2" class="pilcrow">¶</a></p>
+<p id="appendix-D.2-3">BGP CT facilitates the CPR approach by providing intent-driven
+        paths for the "Colorful Prefix" locator routes that carry a mapping
+        community, by using <span><a href="#Nexthop_Resoln_Schm" class="xref">Nexthop
+        Resolution Scheme</a> (<a href="#Nexthop_Resoln_Schm" class="xref">Section 6</a>)</span> for those IPv6 unicast family routes.<a href="#appendix-D.2-3" class="pilcrow">¶</a></p>
+<p id="appendix-D.2-4">By virtue of the CPR SID allocation scheme, the service SIDs
+        inherit the Intent of the corresponding Colorful Prefix route just by
+        performing longest prefix match in forwarding plane.<a href="#appendix-D.2-4" class="pilcrow">¶</a></p>
 <section id="appendix-D.2.1">
           <h4 id="name-analysis-of-cpr-approach-2">
 <a href="#appendix-D.2.1" class="section-number selfRef">D.2.1. </a><a href="#name-analysis-of-cpr-approach-2" class="section-name selfRef">Analysis of CPR approach</a>
           </h4>
-<p id="appendix-D.2.1-1">In this approach, a unique service SID is allocated for each
+<p id="appendix-D.2.1-1">The CPR approach can be used to support intent driven routing
+          while minimizing SRv6 encapsulation overhead, at the cost of careful
+          SID numbering and planning. The state in the transport network is a
+          function of total number of Colorful Prefixes.<a href="#appendix-D.2.1-1" class="pilcrow">¶</a></p>
+<p id="appendix-D.2.1-2">In the CPR approach, a unique service SID is allocated for each
           combination of service function (e.g. Prefix, VRF or Nexthop) and
-          Intent (aka Coloring Prefix) at the egress node. This consumes
-          "Num_Service_Functions x Num_Intents" service SIDs per egress SN.
-          This approach can be used to support intent driven routing while
-          minimizing SRv6 encapsulation overhead, at the cost of careful SID
-          numbering and planning. Routes for Coloring Prefix that cover the
-          color Service SIDs need to be present across the transport network
-          for the Intent based forwarding to work. This keeps the transport
-          network state a function of the Coloring Prefix state.<a href="#appendix-D.2.1-1" class="pilcrow">¶</a></p>
-<p id="appendix-D.2.1-2">This color encoded Service SID scale impacts overall convergence
-          while executing operational procedures like color sub-locator
-          modification, where all the service routes have to be readvertised
-          with their new Service SID computed as a result of the color
-          sub-locator change. However this mechanism may preserve BGP PIC
-          (Prefix scale Independent Convergence) for the egress SN failure
-          scenario where only CPR routes need to be withdrawn.<a href="#appendix-D.2.1-2" class="pilcrow">¶</a></p>
-<p id="appendix-D.2.1-3">This approach achieves strict color based forwarding for the
-          service routes. Fallback to best effort transport class can be
-          achieved by numbering all SRv6 CPR locators at the egress SN to fall
-          in the same subnet as the SRv6 locator that uses best effort
-          transport class. However, it cannot achieve per service route intent
-          to fallback between different colors, because BGP CT procedures like
-          resolution schemes are not applied to service family routes, and BGP
-          CT (SAFI 76) family is not used to carry CPR prefixes.<a href="#appendix-D.2.1-3" class="pilcrow">¶</a></p>
-<p id="appendix-D.2.1-4">Further, IPv6 unicast family is widely deployed to carry Internet
+          Intent (Coloring Prefix) at the egress node.<a href="#appendix-D.2.1-2" class="pilcrow">¶</a></p>
+<p id="appendix-D.2.1-3">Such that per egress SN,<a href="#appendix-D.2.1-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-D.2.1-4">
+<pre>
+
+         Total_Num_Color_Prefixes = Num_Intents.
+</pre><a href="#appendix-D.2.1-4" class="pilcrow">¶</a>
+</div>
+<p id="appendix-D.2.1-5">and,<a href="#appendix-D.2.1-5" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-D.2.1-6">
+<pre>
+         Total_Num_Service_SIDs = Num_Service_Functions  *  Num_Intents.
+</pre><a href="#appendix-D.2.1-6" class="pilcrow">¶</a>
+</div>
+<p id="appendix-D.2.1-7">This "Total_Num_Service_SIDs" scale may have an impact on overall
+          convergence while executing operational procedures like Colorful
+          Prefix locator modification, where all the service routes have to be
+          readvertised with their new Service SID computed as a result of the
+          Colorful Prefix locator change.<a href="#appendix-D.2.1-7" class="pilcrow">¶</a></p>
+<p id="appendix-D.2.1-8">When an egress SN signals a change of Intent on service routes,
+          that will involve per service route convergence in forwarding at the
+          ingress SN because the Intent is encoded in the service SID.<a href="#appendix-D.2.1-8" class="pilcrow">¶</a></p>
+<p id="appendix-D.2.1-9">However, the CPR mechanism preserves BGP PIC (Prefix scale
+          Independent Convergence) for the egress SN failure scenario where
+          only Colorful Prefix routes need to be withdrawn.<a href="#appendix-D.2.1-9" class="pilcrow">¶</a></p>
+<p id="appendix-D.2.1-10">CPR achieves strict Intent based forwarding for the service
+          routes. Fallback to best effort transport class is achieved by
+          numbering all SRv6 CPR locators at the egress SN to fall in the same
+          subnet as the SRv6 locator that uses best effort transport class.
+          Custom Intents that provide fallback between different color
+          transport classes can be achieved by allocating a CPR prefix for
+          each such intent combination, and advertising that CPR prefix with
+          an appropriate BGP CT mapping community, that maps to a customized
+          resolution scheme.<a href="#appendix-D.2.1-10" class="pilcrow">¶</a></p>
+<p id="appendix-D.2.1-11">Further, IPv6 unicast family is widely deployed to carry Internet
           Service routes. Repurposing IPv6 unicast family to carry Transport
           routes also may impact the operational complexity and security
-          aspects in the network.<a href="#appendix-D.2.1-4" class="pilcrow">¶</a></p>
+          aspects in the network.<a href="#appendix-D.2.1-11" class="pilcrow">¶</a></p>
 </section>
 </section>
 </section>
