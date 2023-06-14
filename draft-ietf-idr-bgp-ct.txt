@@ -217,7 +217,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
    Appendix D.  BGP CT deployment in SRv6 networks . . . . . . . . .  66
      D.1.  SID stacking approach . . . . . . . . . . . . . . . . . .  66
      D.2.  Color encoded Service SID (CPR) approach  . . . . . . . .  72
-   Contributors  . . . . . . . . . . . . . . . . . . . . . . . . . .  73
+       D.2.1.  Analysis  . . . . . . . . . . . . . . . . . . . . . .  72
 
 
 
@@ -226,6 +226,7 @@ Vairavakkalai & VenkatarExpires 11 December 2023                [Page 4]
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
+   Contributors  . . . . . . . . . . . . . . . . . . . . . . . . . .  73
      Co-Authors  . . . . . . . . . . . . . . . . . . . . . . . . . .  73
      Other Contributors  . . . . . . . . . . . . . . . . . . . . . .  74
    Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  75
@@ -267,7 +268,6 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
    The path uses MPLS label-switching when crossing domain boundaries
    and uses the native intra-AS tunnel of the desired transport class
    when traversing within a domain.
-
 
 
 
@@ -4006,14 +4006,17 @@ PE1: Service routes FIB
 
 D.2.  Color encoded Service SID (CPR) approach
 
-   This approach uses color encoded service SRv6 SIDs, without a
-   separate transport SRv6 SID.  It routes using "Coloring Prefix"
-   locators in the transport layer.  This approach a.k.a CPR is defined
-   by Colorful Prefix Routing for SRv6 based services
+   CPR is defined in Colorful Prefix Routing for SRv6 based services
    [Colorful-Prefix-Routing-SRv6] draft which uses IPv6 Unicast (AFI/
-   SAFI = 2/1) as a transport family.  This approach can be achieved by
-   applying BGP CT procedures like resolution scheme defined in this
-   document to the IPv6 unicast family.
+   SAFI = 2/1) as a transport family.  CPR uses color encoded service
+   SRv6 SIDs, without a separate transport SRv6 SID.  It routes using
+   "Coloring Prefix" locators in the transport layer.
+
+   The CPR approach can be achieved by applying BGP CT procedures like
+   resolution scheme defined in this document to the IPv6 unicast
+   family.
+
+D.2.1.  Analysis
 
    In this approach, a unique service SID is allocated for each
    combination of service function (e.g.  Prefix, VRF or Nexthop) and
@@ -4023,9 +4026,6 @@ D.2.  Color encoded Service SID (CPR) approach
    differential services while minimizing SRv6 encapsulation overhead,
    at the cost of careful SID numbering and planning.  Routes for
    Coloring Prefix that cover the color Service SIDs need to be present
-   across the transport network for the Intent based forwarding to work.
-   This keeps the transport network state a function of the Coloring
-   Prefix state.
 
 
 
@@ -4033,6 +4033,10 @@ Vairavakkalai & VenkatarExpires 11 December 2023               [Page 72]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
+
+   across the transport network for the Intent based forwarding to work.
+   This keeps the transport network state a function of the Coloring
+   Prefix state.
 
    This color encoded Service SID scale impacts overall convergence
    while executing operational procedures like color sub-locator
@@ -4077,11 +4081,7 @@ Co-Authors
    Email: ietf@nop.hu
 
 
-   Deepak J Gowda
-   Extreme Networks
-   55 Commerce Valley Drive West, Suite 300,
-   Thornhill, Toronto, Ontario L3T 7V9
-   Canada
+
 
 
 
@@ -4090,6 +4090,11 @@ Vairavakkalai & VenkatarExpires 11 December 2023               [Page 73]
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
+   Deepak J Gowda
+   Extreme Networks
+   55 Commerce Valley Drive West, Suite 300,
+   Thornhill, Toronto, Ontario L3T 7V9
+   Canada
    Email: dgowda@extremenetworks.com
 
 
@@ -4129,12 +4134,7 @@ Other Contributors
    Email: cy098d@att.com
 
 
-   Gyan Mishra
-   Verizon Inc.
-   13101 Columbia Pike
-   Silver Spring, MD 20904
-   United States of America
-   Email: gyan.s.mishra@verizon.com
+
 
 
 
@@ -4144,6 +4144,14 @@ Other Contributors
 Vairavakkalai & VenkatarExpires 11 December 2023               [Page 74]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
+
+
+   Gyan Mishra
+   Verizon Inc.
+   13101 Columbia Pike
+   Silver Spring, MD 20904
+   United States of America
+   Email: gyan.s.mishra@verizon.com
 
 
    Mazen Khaddam
@@ -4184,14 +4192,6 @@ Acknowledgements
 
 Authors' Addresses
 
-   Kaliraj Vairavakkalai (editor)
-   Juniper Networks, Inc.
-   1133 Innovation Way,
-   Sunnyvale, CA 94089
-   United States of America
-   Email: kaliraj@juniper.net
-
-
 
 
 
@@ -4202,20 +4202,20 @@ Vairavakkalai & VenkatarExpires 11 December 2023               [Page 75]
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
+   Kaliraj Vairavakkalai (editor)
+   Juniper Networks, Inc.
+   1133 Innovation Way,
+   Sunnyvale, CA 94089
+   United States of America
+   Email: kaliraj@juniper.net
+
+
    Natrajan Venkataraman (editor)
    Juniper Networks, Inc.
    1133 Innovation Way,
    Sunnyvale, CA 94089
    United States of America
    Email: natv@juniper.net
-
-
-
-
-
-
-
-
 
 
 

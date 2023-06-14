@@ -840,7 +840,7 @@
           <t>Implementations SHOULD provide a way to alter the tie-breaking
           rule specified in <xref target="RFC4456">BGP RR</xref> so as to
           tie-break on CLUSTER_LIST step before ROUTER-ID step, when
-          performing path selection for BGP CT routes. </t>
+          performing path selection for BGP CT routes.</t>
 
           <t>This document suggests the following modification to the BGP
           Decision Process Tie Breaking rules (Sec. 9.1.2.2, <xref
@@ -3208,10 +3208,10 @@ Registry Name: BGP Transitive Extended Community Types
         <figure title="TRDBs at ASBR2">
           <artwork align="left" xml:space="preserve">  Gold TRDB routes at ASBR2:
 
-       [ISIS SRv6] PE2-LPBK 
+       [ISIS SRv6] PE2-LPBK
            NH:  Push encap for "Gold-SRv6-Tunnel-to-PE2" tunnel
 
-       [ISIS SRv6] PE2-SRv6-gold 
+       [ISIS SRv6] PE2-SRv6-gold
            NH:  Push encap for "Gold-SRv6-Tunnel-to-PE2" tunnel
 
   Bronze TRDB routes at ASBR2:
@@ -3357,7 +3357,7 @@ PE1: Gold TRDB
       [BGP CT] PE2-LPBK,
         NH: ASBR1-SRv6-gold
         SID op: Push SID(ASBR1-SRv6-gold-Replace)
-            
+
 PE1: Bronze TRDB
       [BGP CT] PE2-LPBK,
         NH: ASBR1-SRv6-bronze
@@ -3401,15 +3401,18 @@ PE1: Bronze TRDB
       </section>
 
       <section title="Color encoded Service SID (CPR) approach">
-        <t>This approach uses color encoded service SRv6 SIDs, without a
-        separate transport SRv6 SID. It routes using "Coloring Prefix"
-        locators in the transport layer. This approach a.k.a CPR is defined by
-        <xref target="Colorful-Prefix-Routing-SRv6">Colorful Prefix Routing
-        for SRv6 based services </xref> draft which uses IPv6 Unicast
-        (AFI/SAFI = 2/1) as a transport family. This approach can be achieved
-        by applying BGP CT procedures like resolution scheme defined in this
-        document to the IPv6 unicast family.</t>
+        <t>CPR is defined in <xref
+        target="Colorful-Prefix-Routing-SRv6">Colorful Prefix Routing for SRv6
+        based services </xref> draft which uses IPv6 Unicast (AFI/SAFI = 2/1)
+        as a transport family. CPR uses color encoded service SRv6 SIDs,
+        without a separate transport SRv6 SID. It routes using "Coloring
+        Prefix" locators in the transport layer. </t>
 
+        <t>The CPR approach can be achieved by applying BGP CT procedures like
+        resolution scheme defined in this document to the IPv6 unicast
+        family.</t>
+
+        <section title="Analysis">
         <t>In this approach, a unique service SID is allocated for each
         combination of service function (e.g. Prefix, VRF or Nexthop) and SRv6
         color sub-locator (aka Coloring Prefix) at the egress node. This
@@ -3436,12 +3439,13 @@ PE1: Bronze TRDB
         class. However, it cannot achieve per service route intent to fallback
         between different colors, because BGP CT procedures like resolution
         schemes are not applied to service family routes, and BGP CT (SAFI 76)
-        family is not used to carry CPR prefixes. </t>
+        family is not used to carry CPR prefixes.</t>
 
         <t>Further, IPv6 unicast family is widely deployed to carry Internet
         Service routes. Repurposing IPv6 unicast family to carry Transport
         routes also may impact the operational complexity and security aspects
         in the network.</t>
+        </section>
       </section>
     </section>
 
