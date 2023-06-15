@@ -57,7 +57,7 @@
       </address>
     </author>
 
-    <date day="14" month="06" year="2023"/>
+    <date day="15" month="06" year="2023"/>
 
     <abstract>
       <t>This document specifies a mechanism, referred to as "Intent Driven
@@ -1074,7 +1074,7 @@
       </section>
 
       <section title="Using MPLS Label in MultiNexthop attribute">
-        <t>If the CE-PE link is MPLS enabled, a distinct MPLS label can also
+        <t>If the PE-CE link is MPLS enabled, a distinct MPLS label can also
         be used to identify the transport class. PE1 can allocate a MPLS Label
         L1 for the tuple "VPN Label, PNH Address, Transport class ID" and
         advertise to CE1. When MPLS packet with label L1 is received from CE1,
@@ -1097,6 +1097,15 @@
         the CE to discover what transport classes exist in the provider
         network, and which MPLS Label to encode so that traffic is forwarded
         using the desired transport class.</t>
+
+        <t>The MPLS enabled PE-CE link is considered connecting to an
+        untrusted domain. Such interfaces can be secured against MPLS label
+        spoofing by confining the interface to a specific MPLS context table
+        corresponding to the BGP peer. Such that only the route for labels
+        advertised to the CE1 are installed in the MPLS context table
+        corresponding to the CE peer. This ensures that if CE1 sends MPLS
+        packet with a label that was not advertised to the CE1, the packet
+        will be dropped.</t>
       </section>
     </section>
 
@@ -2355,6 +2364,16 @@ Registry Name: BGP Transitive Extended Community Types
       service routes. To avoid such scenarios, it is RECOMMENDED that
       implementations support keeping SAFI 4 routes in a separate transport
       RIB, distinct from service RIB that contain SAFI 1 service routes.</t>
+
+      <t>In scenarios where MPLS is enabled towards untrusted domains, e.g. a
+      CE-PE link or ASBR-ASBR inter-AS link, security can be provided against
+      MPLS label spoofing by confining the interface to a specific MPLS
+      context table. Such that MPLS routes for only the labels advertised to
+      the BGP peer are added to the MPLS context table associated with the BGP
+      peer. This walled garden approach ascertains that if the device in the
+      untrusted domain sends MPLS packet with a label that was not advertised
+      to the CE, the packet will be dropped. Only MPLS traffic with labels
+      advertised to the BGP speaker will be allowed to forward.</t>
     </section>
   </middle>
 
