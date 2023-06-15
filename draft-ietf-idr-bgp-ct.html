@@ -1768,58 +1768,70 @@ li > p:last-of-type {
       </h2>
 <p id="section-2-1">LSP: Label Switched Path.<a href="#section-2-1" class="pilcrow">¶</a></p>
 <p id="section-2-2">TE : Traffic Engineering.<a href="#section-2-2" class="pilcrow">¶</a></p>
-<p id="section-2-3">SN : Service Node. A router that sends or receives BGP Service routes
-      (e.g. SAFIs 1, 128) with self as nexthop.<a href="#section-2-3" class="pilcrow">¶</a></p>
-<p id="section-2-4">BN : Border Node. A router that sends or receives BGP Transport
-      routes (e.g. SAFI 4, 76) with self as nexthop.<a href="#section-2-4" class="pilcrow">¶</a></p>
-<p id="section-2-5">TN : Transport Node, P-router.<a href="#section-2-5" class="pilcrow">¶</a></p>
-<p id="section-2-6">BGP VPN : VPNs built using RFC4364 mechanisms.<a href="#section-2-6" class="pilcrow">¶</a></p>
-<p id="section-2-7">RT : Route-Target extended community.<a href="#section-2-7" class="pilcrow">¶</a></p>
-<p id="section-2-8">RD : Route-Distinguisher.<a href="#section-2-8" class="pilcrow">¶</a></p>
-<p id="section-2-9">VRF: Virtual Router Forwarding Table.<a href="#section-2-9" class="pilcrow">¶</a></p>
-<p id="section-2-10">CsC: Carrier serving Carrier VPN.<a href="#section-2-10" class="pilcrow">¶</a></p>
-<p id="section-2-11">PNH : Protocol-Nexthop address carried in a BGP Update message.<a href="#section-2-11" class="pilcrow">¶</a></p>
-<p id="section-2-12">EP : Endpoint, a loopback address in the network.<a href="#section-2-12" class="pilcrow">¶</a></p>
-<p id="section-2-13">SEP : Service Endpoint, the PNH of a Service route.<a href="#section-2-13" class="pilcrow">¶</a></p>
-<p id="section-2-14">LPM : Longest Prefix Match.<a href="#section-2-14" class="pilcrow">¶</a></p>
-<p id="section-2-15">SLA: Service Level Agreement.<a href="#section-2-15" class="pilcrow">¶</a></p>
-<p id="section-2-16">EPE: Egress Peer Engineering.<a href="#section-2-16" class="pilcrow">¶</a></p>
-<p id="section-2-17">UHP Label: Ultimate Hop Pop label.<a href="#section-2-17" class="pilcrow">¶</a></p>
-<p id="section-2-18">PHP Label: Penultimate Hop Pop label.<a href="#section-2-18" class="pilcrow">¶</a></p>
-<p id="section-2-19">PSP : Penultimate Segment Pop behavior for SRv6 SID.<a href="#section-2-19" class="pilcrow">¶</a></p>
-<p id="section-2-20">USP : Ultimate Segment Pop behavior for SRv6 SID.<a href="#section-2-20" class="pilcrow">¶</a></p>
-<p id="section-2-21">Intent: A set of operational goals (that a network should meet) and
+<p id="section-2-3">TC: Transport Class.<a href="#section-2-3" class="pilcrow">¶</a></p>
+<p id="section-2-4">SN : Service Node. A router that sends or receives BGP Service routes
+      (e.g. SAFIs 1, 128) with self as nexthop.<a href="#section-2-4" class="pilcrow">¶</a></p>
+<p id="section-2-5">eSN : Egress Service Node. A router that sends BGP Service routes
+      (e.g. SAFIs 1, 128) with self as nexthop.<a href="#section-2-5" class="pilcrow">¶</a></p>
+<p id="section-2-6">iSN : Ingress Service Node. A router that receives BGP Service routes
+      (e.g. SAFIs 1, 128).<a href="#section-2-6" class="pilcrow">¶</a></p>
+<p id="section-2-7">BN : Border Node. A router that sends or receives BGP Transport
+      routes (e.g. SAFI 4, 76) with self as nexthop.<a href="#section-2-7" class="pilcrow">¶</a></p>
+<p id="section-2-8">TN : Transport Node, P-router.<a href="#section-2-8" class="pilcrow">¶</a></p>
+<p id="section-2-9">BGP VPN : VPNs built using RFC4364 mechanisms.<a href="#section-2-9" class="pilcrow">¶</a></p>
+<p id="section-2-10">BGP LU: BGP Labeled Unicast family (SAFI 4)<a href="#section-2-10" class="pilcrow">¶</a></p>
+<p id="section-2-11">BGP CT: BGP Classful Transport family (SAFI 76)<a href="#section-2-11" class="pilcrow">¶</a></p>
+<p id="section-2-12">ASN: Autonomous System Number.<a href="#section-2-12" class="pilcrow">¶</a></p>
+<p id="section-2-13">RT : Route-Target extended community.<a href="#section-2-13" class="pilcrow">¶</a></p>
+<p id="section-2-14">RD : Route-Distinguisher.<a href="#section-2-14" class="pilcrow">¶</a></p>
+<p id="section-2-15">RTC : Route Target Constrain.<a href="#section-2-15" class="pilcrow">¶</a></p>
+<p id="section-2-16">VRF: Virtual Router Forwarding Table.<a href="#section-2-16" class="pilcrow">¶</a></p>
+<p id="section-2-17">CsC: Carrier serving Carrier VPN.<a href="#section-2-17" class="pilcrow">¶</a></p>
+<p id="section-2-18">PNH : Protocol-Nexthop address carried in a BGP Update message.<a href="#section-2-18" class="pilcrow">¶</a></p>
+<p id="section-2-19">FEC : Forwarding Equivalence Class.<a href="#section-2-19" class="pilcrow">¶</a></p>
+<p id="section-2-20">RSVP-TE : Resource Reservation Protocol - Traffic Engineering.<a href="#section-2-20" class="pilcrow">¶</a></p>
+<p id="section-2-21">SR : Segment Routing.<a href="#section-2-21" class="pilcrow">¶</a></p>
+<p id="section-2-22">SRTE : Segment Routing Traffic Engineering.<a href="#section-2-22" class="pilcrow">¶</a></p>
+<p id="section-2-23">SID : SR Segment Identifier.<a href="#section-2-23" class="pilcrow">¶</a></p>
+<p id="section-2-24">EP : Endpoint, a loopback address in the network.<a href="#section-2-24" class="pilcrow">¶</a></p>
+<p id="section-2-25">SEP : Service Endpoint, the PNH of a Service route.<a href="#section-2-25" class="pilcrow">¶</a></p>
+<p id="section-2-26">LPM : Longest Prefix Match.<a href="#section-2-26" class="pilcrow">¶</a></p>
+<p id="section-2-27">SLA: Service Level Agreement.<a href="#section-2-27" class="pilcrow">¶</a></p>
+<p id="section-2-28">EPE: Egress Peer Engineering.<a href="#section-2-28" class="pilcrow">¶</a></p>
+<p id="section-2-29">UHP Label: Ultimate Hop Pop label.<a href="#section-2-29" class="pilcrow">¶</a></p>
+<p id="section-2-30">PHP Label: Penultimate Hop Pop label.<a href="#section-2-30" class="pilcrow">¶</a></p>
+<p id="section-2-31">Intent: A set of operational goals (that a network should meet) and
       outcomes (that a network is supposed to deliver) defined in a
       declarative manner without specifying how to achieve or implement
-      them.<a href="#section-2-21" class="pilcrow">¶</a></p>
-<p id="section-2-22">Service Family : BGP address family used for advertising routes for
-      "data traffic" as opposed to tunnels (e.g. SAFI 1 or 128).<a href="#section-2-22" class="pilcrow">¶</a></p>
-<p id="section-2-23">Transport Family : BGP address family used for advertising tunnels,
+      them.<a href="#section-2-31" class="pilcrow">¶</a></p>
+<p id="section-2-32">Service Family : BGP address family used for advertising routes for
+      "data traffic" as opposed to tunnels (e.g. SAFI 1 or 128).<a href="#section-2-32" class="pilcrow">¶</a></p>
+<p id="section-2-33">Transport Family : BGP address family used for advertising tunnels,
       which are in turn used by service routes for resolution (e.g. SAFI 4 or
-      76).<a href="#section-2-23" class="pilcrow">¶</a></p>
-<p id="section-2-24">Transport Tunnel : A tunnel over which a service may place traffic
-      (e.g. GRE, UDP, LDP, RSVP-TE or SPRING).<a href="#section-2-24" class="pilcrow">¶</a></p>
-<p id="section-2-25">Tunnel Ingress Route: Route to Tunnel Destination/Endpoint installed
-      at the headend (ingress) of the tunnel by the tunneling protocol.<a href="#section-2-25" class="pilcrow">¶</a></p>
-<p id="section-2-26">Tunnel Domain : A domain of the network containing SNs and BNs under
+      76).<a href="#section-2-33" class="pilcrow">¶</a></p>
+<p id="section-2-34">Transport Tunnel : A tunnel over which a service may place traffic
+      (e.g. GRE, UDP, LDP, RSVP-TE or SPRING).<a href="#section-2-34" class="pilcrow">¶</a></p>
+<p id="section-2-35">Tunnel Ingress Route: Route to Tunnel Destination/Endpoint installed
+      at the headend (ingress) of the tunnel by the tunneling protocol.<a href="#section-2-35" class="pilcrow">¶</a></p>
+<p id="section-2-36">Tunnel Domain : A domain of the network containing SNs and BNs under
       a single administrative control that has tunnels between them. An
       end-to-end tunnel spanning several adjacent tunnel domains can be
-      created by "stitching" them together using labels.<a href="#section-2-26" class="pilcrow">¶</a></p>
-<p id="section-2-27">Transport Class : A group of transport tunnels offering the same
-      SLA.<a href="#section-2-27" class="pilcrow">¶</a></p>
-<p id="section-2-28">Transport Class RT : A Route-Target extended community used to
-      identify a specific Transport Class.<a href="#section-2-28" class="pilcrow">¶</a></p>
-<p id="section-2-29">Transport Route Database : At the SN and BN, a Transport Class has an
-      associated Transport Route Database that collects its tunnel ingress
-      routes.<a href="#section-2-29" class="pilcrow">¶</a></p>
-<p id="section-2-30">Transport Plane : An end to end plane consisting of transport tunnels
+      created by "stitching" them together using labels.<a href="#section-2-36" class="pilcrow">¶</a></p>
+<p id="section-2-37">Transport Class : A group of transport tunnels offering the same
+      SLA.<a href="#section-2-37" class="pilcrow">¶</a></p>
+<p id="section-2-38">Transport Class RT : A Route-Target extended community used to
+      identify a specific Transport Class.<a href="#section-2-38" class="pilcrow">¶</a></p>
+<p id="section-2-39">Transport Route Database (TRDB): At the SN and BN, a Transport Class
+      has an associated Transport Route Database that collects its tunnel
+      ingress routes.<a href="#section-2-39" class="pilcrow">¶</a></p>
+<p id="section-2-40">Transport Plane : An end to end plane consisting of transport tunnels
       belonging to the same Transport Class. Tunnels of the same Transport
       Class are stitched together by BGP CT route readvertisements with
       nexthop self to enable Label-Swap forwarding across domain
-      boundaries.<a href="#section-2-30" class="pilcrow">¶</a></p>
-<p id="section-2-31">Mapping Community : BGP Community/Extended-community on a BGP route
+      boundaries.<a href="#section-2-40" class="pilcrow">¶</a></p>
+<p id="section-2-41">Mapping Community : BGP Community/Extended-community on a BGP route
       that maps it to resolve over a Transport Class. E.g. color:0:100,
-      transport-target:0:100.<a href="#section-2-31" class="pilcrow">¶</a></p>
+      transport-target:0:100.<a href="#section-2-41" class="pilcrow">¶</a></p>
 </section>
 <section id="section-3">
       <h2 id="name-transport-class-2">
@@ -1950,23 +1962,27 @@ li > p:last-of-type {
       <h2 id="name-nexthop-resolution-scheme-2">
 <a href="#section-6" class="section-number selfRef">6. </a><a href="#name-nexthop-resolution-scheme-2" class="section-name selfRef">Nexthop Resolution Scheme</a>
       </h2>
-<p id="section-6-1">An implementation may provide an option for the service route to
+<p id="section-6-1">This section defines the Nexthop Resolution Scheme construct that is
+      used to specify how a service route or a BGP CT route can resolve its
+      nexthop using its associated Mapping Community over a specific TRDB or
+      an ordered set of TRDBs.<a href="#section-6-1" class="pilcrow">¶</a></p>
+<p id="section-6-2">An implementation may provide an option for the service route to
       resolve over less preferred Transport Classes, should the resolution
-      over preferred or "primary" Transport Class fail.<a href="#section-6-1" class="pilcrow">¶</a></p>
-<p id="section-6-2">To accomplish this, the set of service routes may be associated with
+      over preferred or "primary" Transport Class fail.<a href="#section-6-2" class="pilcrow">¶</a></p>
+<p id="section-6-3">To accomplish this, the set of service routes may be associated with
       a user-configured "Resolution Scheme" that consists of the primary
       Transport Class and an optional ordered list of fallback Transport
-      Classes.<a href="#section-6-2" class="pilcrow">¶</a></p>
-<p id="section-6-3">A community known as "Mapping Community" is configured for a
+      Classes.<a href="#section-6-3" class="pilcrow">¶</a></p>
+<p id="section-6-4">A community known as "Mapping Community" is configured for a
       "resolution scheme". Mapping community is a "role" and not a new type of
       community; any BGP community or extended community may play this role. A
       Mapping Community maps to exactly one Resolution Scheme. A Resolution
       Scheme comprises of one primary transport class and optionally, one or
-      more fallback transport classes. The Resolution scheme is used to
-      realize the desired Intent.<a href="#section-6-3" class="pilcrow">¶</a></p>
-<p id="section-6-4">An example of mapping community is color:0:100, described in <span><a href="#RFC9012" class="xref">RFC 9012</a> [<a href="#RFC9012" class="xref">RFC9012</a>]</span>, or the transport-target:0:100
-      described in section 4 in this document.<a href="#section-6-4" class="pilcrow">¶</a></p>
-<p id="section-6-5">A BGP route is associated with a resolution scheme during import
+      more fallback transport classes. The Resolution Scheme is used to
+      realize the desired Intent.<a href="#section-6-4" class="pilcrow">¶</a></p>
+<p id="section-6-5">An example of mapping community is color:0:100, described in <span><a href="#RFC9012" class="xref">RFC 9012</a> [<a href="#RFC9012" class="xref">RFC9012</a>]</span>, or the transport-target:0:100
+      described in section 4 in this document.<a href="#section-6-5" class="pilcrow">¶</a></p>
+<p id="section-6-6">A BGP route is associated with a resolution scheme during import
       processing. The first community on the route that matches a Mapping
       Community of a locally configured Resolution Scheme is considered the
       effective Mapping Community for the route. The Resolution Scheme thus
@@ -1974,14 +1990,14 @@ li > p:last-of-type {
       than one Mapping Community, it indicates that the route considers these
       distinct Mapping Communities as equivalent in Intent. So, the first
       community that maps to a Resolution Scheme is chosen as the effective
-      mapping community.<a href="#section-6-5" class="pilcrow">¶</a></p>
-<p id="section-6-6">A transport route received in BGP Classful Transport family SHOULD
+      mapping community.<a href="#section-6-6" class="pilcrow">¶</a></p>
+<p id="section-6-7">A transport route received in BGP Classful Transport family SHOULD
       use a Resolution Scheme that contains the primary Transport Class
       without any fallback to best effort tunnels. The primary Transport Class
       is identified by the Transport Class RT carried on the route. Thus,
       Transport Class RT serves as the Mapping Community for BGP CT
-      routes.<a href="#section-6-6" class="pilcrow">¶</a></p>
-<p id="section-6-7">A service route received in a BGP service family MAY map to a
+      routes.<a href="#section-6-7" class="pilcrow">¶</a></p>
+<p id="section-6-8">A service route received in a BGP service family MAY map to a
       Resolution Scheme that contains the primary Transport Class identified
       by the Mapping Community on the route and a fallback to best effort
       Transport Class. The primary Transport Class is identified by the
@@ -1989,15 +2005,15 @@ li > p:last-of-type {
       community may serve as the Mapping Community for service routes.
       Color:0:&lt;n&gt; MAY map to a Resolution Scheme that has primary
       Transport Class &lt;n&gt; and a fallback to best-effort Transport
-      Class.<a href="#section-6-7" class="pilcrow">¶</a></p>
-<p id="section-6-8">The Resolution Scheme mechanism not only works with SPRING transport
+      Class.<a href="#section-6-8" class="pilcrow">¶</a></p>
+<p id="section-6-9">The Resolution Scheme mechanism not only works with SPRING transport
       protocols to realize Intent based forwarding, but also with existing
       tunneling technologies like RSVP TE, GRE, UDP, etc. Not assuming a
       specific tunneling technology makes the BGP CT architecture backward and
       forward compatible with existing and newer tunneling protocols,
       respectively. It is compatible with SPRING, but there is no specific
       dependency on SPRING. It is more generic and has broader
-      applicability.<a href="#section-6-8" class="pilcrow">¶</a></p>
+      applicability.<a href="#section-6-9" class="pilcrow">¶</a></p>
 </section>
 </div>
 <section id="section-7">
@@ -2566,9 +2582,9 @@ li > p:last-of-type {
         extend the PE-CE BGP signalling to communicate such information to the
         CE1. In the above example, the MNH contains two Nexthop Legs,
         described by two Forwarding Instruction TLVs. Each Nexthop Leg
-        contains the PE1 nexthop address in Endpoint Identifier TLV (<span>[<a href="#MULTI-NH-ATTR" class="xref">MULTI-NH-ATTR</a>]</span> Sec 5.5.1.), the Transport class ID (Color)
-        (<span>[<a href="#MULTI-NH-ATTR" class="xref">MULTI-NH-ATTR</a>]</span> Sec 5.5.2.2.) for Gold, Bronze
-        respectively, and associated DSCP code-point (<span>[<a href="#MULTI-NH-ATTR" class="xref">MULTI-NH-ATTR</a>]</span> Sec 5.5.3.4.) to the CE1 device. This allows
+        contains the PE1 nexthop address in Endpoint Identifier TLV (<span>[<a href="#MULTI-NH-ATTR" class="xref">MULTI-NH-ATTR</a>]</span> Sec 5.4.1), the Transport class ID (Color)
+        (<span>[<a href="#MULTI-NH-ATTR" class="xref">MULTI-NH-ATTR</a>]</span> Sec 5.4.2.2.) for Gold, Bronze
+        respectively, and associated DSCP code-point (<span>[<a href="#MULTI-NH-ATTR" class="xref">MULTI-NH-ATTR</a>]</span> Sec 5.4.3.4.) to the CE1 device. This allows
         the CE to discover what transport classes exist in the provider
         network, and which DSCP codepoint to encode so that traffic is
         forwarded using the desired transport class.<a href="#section-14.1-3" class="pilcrow">¶</a></p>
@@ -2797,14 +2813,15 @@ li > p:last-of-type {
       <h2 id="name-srv6-support-2">
 <a href="#section-18" class="section-number selfRef">18. </a><a href="#name-srv6-support-2" class="section-name selfRef">SRv6 support</a>
       </h2>
-<p id="section-18-1">This section describes how BGP CT may be used to set up inter domain
-      tunnels of a certain Transport Class, when using Segment Routing over
-      IPv6 (SRv6) data plane on the inter AS links or as an intra AS tunneling
-      mechanism.<a href="#section-18-1" class="pilcrow">¶</a></p>
+<p id="section-18-1">This section describes how BGP CT family (SAFI 76) may be used to set
+      up inter domain tunnels of a certain Transport Class, when using Segment
+      Routing over IPv6 (SRv6) data plane on the inter AS links or as an intra
+      AS tunneling mechanism.<a href="#section-18-1" class="pilcrow">¶</a></p>
 <p id="section-18-2"><span>[<a href="#RFC8986" class="xref">RFC8986</a>]</span> specifies the SRv6 Endpoint behaviors (End
       USD, End.BM, End.B6.Encaps). <span>[<a href="#SRV6-INTER-DOMAIN" class="xref">SRV6-INTER-DOMAIN</a>]</span>
       specifies the SRv6 Endpoint behaviors (END.REPLACE, END.REPLACEB6 and
-      END.DB6). These are leveraged for BGP CT with SRv6 data plane.<a href="#section-18-2" class="pilcrow">¶</a></p>
+      END.DB6). These are leveraged for BGP CT routes with SRv6 data
+      plane.<a href="#section-18-2" class="pilcrow">¶</a></p>
 <p id="section-18-3">The BGP Classful Transport route update for SRv6 MUST include an
       attribute containing SRv6 SID information. This may be either the BGP
       Prefix-SID attribute as specified in <span>[<a href="#RFC9252" class="xref">RFC9252</a>]</span>or the BGP
@@ -3222,7 +3239,7 @@ li > p:last-of-type {
 <p id="section-20.1.2-7">In AS3 Gold SLA is represented by color 500 and Bronze by
           600.<a href="#section-20.1.2-7" class="pilcrow">¶</a></p>
 <p id="section-20.1.2-8">Though the color values are different, they map to tunnels with
-          the same TE characteristics in each domain.<a href="#section-20.1.2-8" class="pilcrow">¶</a></p>
+          sufficiently similar TE characteristics in each domain.<a href="#section-20.1.2-8" class="pilcrow">¶</a></p>
 <p id="section-20.1.2-9">The service route carries an abstract mapping community that maps
           to the required SLA. For example, Service routes that need to
           resolve over gold transport tunnels, carries a mapping community
@@ -3431,23 +3448,25 @@ li > p:last-of-type {
           is used by ASBR31 to publish the BGP LU routes in the corresponding
           BGP CT TRDBs.<a href="#section-20.2.1-13" class="pilcrow">¶</a></p>
 <p id="section-20.2.1-14">ASBR21 readvertises the BGP LU route for endpoint
-          ASBR11_lpbk_gold to ASBR22 with nexthop set to the unique loopback
-          ASBR21_lpbk_gold representing gold SLA. ASBR22 receives this route
-          and resolves the nexthop over the ASBR22_to_ASBR21_lpbk_gold RSVP-TE
-          tunnel. On successful resolution, ASBR22 readvertises this BGP LU
-          route to ASBR31 with nexthop self and a new label.<a href="#section-20.2.1-14" class="pilcrow">¶</a></p>
+          ASBR11_lpbk_gold to ASBR22 with nexthop set by local policy config
+          to the unique loopback ASBR21_lpbk_gold by matching the 'gold SLA'
+          community received as part BGP LU advertisement from ASBR11. ASBR22
+          receives this route and resolves the nexthop over the
+          ASBR22_to_ASBR21_lpbk_gold RSVP-TE tunnel. On successful resolution,
+          ASBR22 readvertises this BGP LU route to ASBR31 with nexthop self
+          and a new label.<a href="#section-20.2.1-14" class="pilcrow">¶</a></p>
 <p id="section-20.2.1-15">ASBR31 adds the ASBR11_lpbk_gold route received via EBGP LU from
           ASBR22 to gold TRDB based on the received 'gold SLA' community.
           ASBR31 uses this gold TRDB route to resolve the nexthop
           ASBR11_lpbk_gold received on BGP CT route with transport-target
           gold, for the prefix RD:PE11 received over the EBGP multihop CT
           session, thus preserving the end-to-end SLA. Now ASBR31 readvertises
-          RD:PE11 route with nexthop as self thus stitching with the BGP LU
-          LSP. Intradomain traffic forwarding in AS1 and AS3 follows the
-          procedures as explained in <span><a href="#CTProc" class="xref">Illustration of CT
-          Procedures</a> (<a href="#CTProc" class="xref">Section 19</a>)</span><a href="#section-20.2.1-15" class="pilcrow">¶</a></p>
-<p id="section-20.2.1-16">In cases where an SLA cannot be preserved in AS2, it can be
-          carried over available SLAs (ex: best-effort SLA) by rewriting the
+          the BGP CT route for RD:PE11 with nexthop as self thus stitching
+          with the BGP LU LSP in AS2. Intradomain traffic forwarding in AS1
+          and AS3 follows the procedures as explained in <span><a href="#CTProc" class="xref">Illustration of CT Procedures</a> (<a href="#CTProc" class="xref">Section 19</a>)</span><a href="#section-20.2.1-15" class="pilcrow">¶</a></p>
+<p id="section-20.2.1-16">In cases where an SLA cannot be preserved in AS2 because SLA
+          specific tunnels and loopbacks dont exist in AS2, traffic can be
+          carried over available SLAs (eg: best-effort SLA) by rewriting the
           nexthop to ASBR21 loopback assigned to the available SLA. This eases
           migration in case of heterogeneous color domains as-well.<a href="#section-20.2.1-16" class="pilcrow">¶</a></p>
 </section>
@@ -4021,7 +4040,7 @@ Registry Name: BGP Transitive Extended Community Types
 <dd class="break"></dd>
 <dt id="MULTI-NH-ATTR">[MULTI-NH-ATTR]</dt>
         <dd>
-<span class="refAuthor">Vairavakkalai, Ed.</span>, <span class="refTitle">"BGP MultiNexthop Attribute"</span>, <time datetime="2021-12-28" class="refDate">28 December 2021</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-kaliraj-idr-multinexthop-attribute-04#section-5.5.2.2">https://datatracker.ietf.org/doc/html/draft-kaliraj-idr-multinexthop-attribute-04#section-5.5.2.2</a>&gt;</span>. </dd>
+<span class="refAuthor">Vairavakkalai, Ed.</span>, <span class="refTitle">"BGP MultiNexthop Attribute"</span>, <time datetime="2023-06-14" class="refDate">14 June 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-kaliraj-idr-multinexthop-attribute-05">https://datatracker.ietf.org/doc/html/draft-kaliraj-idr-multinexthop-attribute-05</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="PCEP-RSVP-COLOR">[PCEP-RSVP-COLOR]</dt>
         <dd>

@@ -213,8 +213,16 @@
 
       <t>TE : Traffic Engineering.</t>
 
+      <t>TC: Transport Class.</t>
+
       <t>SN : Service Node. A router that sends or receives BGP Service routes
       (e.g. SAFIs 1, 128) with self as nexthop.</t>
+
+      <t>eSN : Egress Service Node. A router that sends BGP Service routes
+      (e.g. SAFIs 1, 128) with self as nexthop.</t>
+
+      <t>iSN : Ingress Service Node. A router that receives BGP Service routes
+      (e.g. SAFIs 1, 128).</t>
 
       <t>BN : Border Node. A router that sends or receives BGP Transport
       routes (e.g. SAFI 4, 76) with self as nexthop.</t>
@@ -223,15 +231,33 @@
 
       <t>BGP VPN : VPNs built using RFC4364 mechanisms.</t>
 
+      <t>BGP LU: BGP Labeled Unicast family (SAFI 4)</t>
+
+      <t>BGP CT: BGP Classful Transport family (SAFI 76)</t>
+
+      <t>ASN: Autonomous System Number.</t>
+
       <t>RT : Route-Target extended community.</t>
 
       <t>RD : Route-Distinguisher.</t>
+
+      <t>RTC : Route Target Constrain.</t>
 
       <t>VRF: Virtual Router Forwarding Table.</t>
 
       <t>CsC: Carrier serving Carrier VPN.</t>
 
       <t>PNH : Protocol-Nexthop address carried in a BGP Update message.</t>
+
+      <t>FEC : Forwarding Equivalence Class.</t>
+
+      <t>RSVP-TE : Resource Reservation Protocol - Traffic Engineering.</t>
+
+      <t>SR : Segment Routing.</t>
+
+      <t>SRTE : Segment Routing Traffic Engineering.</t>
+
+      <t>SID : SR Segment Identifier.</t>
 
       <t>EP : Endpoint, a loopback address in the network.</t>
 
@@ -246,10 +272,6 @@
       <t>UHP Label: Ultimate Hop Pop label.</t>
 
       <t>PHP Label: Penultimate Hop Pop label.</t>
-
-      <t>PSP : Penultimate Segment Pop behavior for SRv6 SID.</t>
-
-      <t>USP : Ultimate Segment Pop behavior for SRv6 SID.</t>
 
       <t>Intent: A set of operational goals (that a network should meet) and
       outcomes (that a network is supposed to deliver) defined in a
@@ -280,9 +302,9 @@
       <t>Transport Class RT : A Route-Target extended community used to
       identify a specific Transport Class.</t>
 
-      <t>Transport Route Database : At the SN and BN, a Transport Class has an
-      associated Transport Route Database that collects its tunnel ingress
-      routes.</t>
+      <t>Transport Route Database (TRDB): At the SN and BN, a Transport Class
+      has an associated Transport Route Database that collects its tunnel
+      ingress routes.</t>
 
       <t>Transport Plane : An end to end plane consisting of transport tunnels
       belonging to the same Transport Class. Tunnels of the same Transport
@@ -434,6 +456,11 @@
     </section>
 
     <section anchor="Nexthop_Resoln_Schm" title="Nexthop Resolution Scheme">
+      <t>This section defines the Nexthop Resolution Scheme construct that is
+      used to specify how a service route or a BGP CT route can resolve its
+      nexthop using its associated Mapping Community over a specific TRDB or
+      an ordered set of TRDBs.</t>
+
       <t>An implementation may provide an option for the service route to
       resolve over less preferred Transport Classes, should the resolution
       over preferred or "primary" Transport Class fail.</t>
@@ -448,7 +475,7 @@
       community; any BGP community or extended community may play this role. A
       Mapping Community maps to exactly one Resolution Scheme. A Resolution
       Scheme comprises of one primary transport class and optionally, one or
-      more fallback transport classes. The Resolution scheme is used to
+      more fallback transport classes. The Resolution Scheme is used to
       realize the desired Intent.</t>
 
       <t>An example of mapping community is color:0:100, described in <xref
@@ -1037,10 +1064,10 @@
         CE1. In the above example, the MNH contains two Nexthop Legs,
         described by two Forwarding Instruction TLVs. Each Nexthop Leg
         contains the PE1 nexthop address in Endpoint Identifier TLV (<xref
-        target="MULTI-NH-ATTR"/> Sec 5.5.1.), the Transport class ID (Color)
-        (<xref target="MULTI-NH-ATTR"/> Sec 5.5.2.2.) for Gold, Bronze
+        target="MULTI-NH-ATTR"/> Sec 5.4.1), the Transport class ID (Color)
+        (<xref target="MULTI-NH-ATTR"/> Sec 5.4.2.2.) for Gold, Bronze
         respectively, and associated DSCP code-point (<xref
-        target="MULTI-NH-ATTR"/> Sec 5.5.3.4.) to the CE1 device. This allows
+        target="MULTI-NH-ATTR"/> Sec 5.4.3.4.) to the CE1 device. This allows
         the CE to discover what transport classes exist in the provider
         network, and which DSCP codepoint to encode so that traffic is
         forwarded using the desired transport class.</t>
@@ -1245,15 +1272,16 @@
     </section>
 
     <section title="SRv6 support">
-      <t>This section describes how BGP CT may be used to set up inter domain
-      tunnels of a certain Transport Class, when using Segment Routing over
-      IPv6 (SRv6) data plane on the inter AS links or as an intra AS tunneling
-      mechanism.</t>
+      <t>This section describes how BGP CT family (SAFI 76) may be used to set
+      up inter domain tunnels of a certain Transport Class, when using Segment
+      Routing over IPv6 (SRv6) data plane on the inter AS links or as an intra
+      AS tunneling mechanism.</t>
 
       <t><xref target="RFC8986"/> specifies the SRv6 Endpoint behaviors (End
       USD, End.BM, End.B6.Encaps). <xref target="SRV6-INTER-DOMAIN"/>
       specifies the SRv6 Endpoint behaviors (END.REPLACE, END.REPLACEB6 and
-      END.DB6). These are leveraged for BGP CT with SRv6 data plane.</t>
+      END.DB6). These are leveraged for BGP CT routes with SRv6 data
+      plane.</t>
 
       <t>The BGP Classful Transport route update for SRv6 MUST include an
       attribute containing SRv6 SID information. This may be either the BGP
@@ -1680,7 +1708,7 @@
           600.</t>
 
           <t>Though the color values are different, they map to tunnels with
-          the same TE characteristics in each domain.</t>
+          sufficiently similar TE characteristics in each domain.</t>
 
           <t>The service route carries an abstract mapping community that maps
           to the required SLA. For example, Service routes that need to
@@ -1897,11 +1925,13 @@
           BGP CT TRDBs.</t>
 
           <t>ASBR21 readvertises the BGP LU route for endpoint
-          ASBR11_lpbk_gold to ASBR22 with nexthop set to the unique loopback
-          ASBR21_lpbk_gold representing gold SLA. ASBR22 receives this route
-          and resolves the nexthop over the ASBR22_to_ASBR21_lpbk_gold RSVP-TE
-          tunnel. On successful resolution, ASBR22 readvertises this BGP LU
-          route to ASBR31 with nexthop self and a new label.</t>
+          ASBR11_lpbk_gold to ASBR22 with nexthop set by local policy config
+          to the unique loopback ASBR21_lpbk_gold by matching the 'gold SLA'
+          community received as part BGP LU advertisement from ASBR11. ASBR22
+          receives this route and resolves the nexthop over the
+          ASBR22_to_ASBR21_lpbk_gold RSVP-TE tunnel. On successful resolution,
+          ASBR22 readvertises this BGP LU route to ASBR31 with nexthop self
+          and a new label.</t>
 
           <t>ASBR31 adds the ASBR11_lpbk_gold route received via EBGP LU from
           ASBR22 to gold TRDB based on the received 'gold SLA' community.
@@ -1909,13 +1939,14 @@
           ASBR11_lpbk_gold received on BGP CT route with transport-target
           gold, for the prefix RD:PE11 received over the EBGP multihop CT
           session, thus preserving the end-to-end SLA. Now ASBR31 readvertises
-          RD:PE11 route with nexthop as self thus stitching with the BGP LU
-          LSP. Intradomain traffic forwarding in AS1 and AS3 follows the
-          procedures as explained in <xref target="CTProc">Illustration of CT
-          Procedures</xref></t>
+          the BGP CT route for RD:PE11 with nexthop as self thus stitching
+          with the BGP LU LSP in AS2. Intradomain traffic forwarding in AS1
+          and AS3 follows the procedures as explained in <xref
+          target="CTProc">Illustration of CT Procedures</xref></t>
 
-          <t>In cases where an SLA cannot be preserved in AS2, it can be
-          carried over available SLAs (ex: best-effort SLA) by rewriting the
+          <t>In cases where an SLA cannot be preserved in AS2 because SLA
+          specific tunnels and loopbacks dont exist in AS2, traffic can be
+          carried over available SLAs (eg: best-effort SLA) by rewriting the
           nexthop to ASBR21 loopback assigned to the available SLA. This eases
           migration in case of heterogeneous color domains as-well.</t>
         </section>
@@ -2512,14 +2543,14 @@ Registry Name: BGP Transitive Extended Community Types
       </reference>
 
       <reference anchor="MULTI-NH-ATTR"
-                 target="https://datatracker.ietf.org/doc/html/draft-kaliraj-idr-multinexthop-attribute-04#section-5.5.2.2">
+                 target="https://datatracker.ietf.org/doc/html/draft-kaliraj-idr-multinexthop-attribute-05">
         <front>
           <title abbrev="MULTI-NH-ATTR">BGP MultiNexthop Attribute</title>
 
           <author fullname="Kaliraj Vairavakkalai" initials="" role="editor"
                   surname="Vairavakkalai"/>
 
-          <date day="28" month="12" year="2021"/>
+          <date day="14" month="06" year="2023"/>
         </front>
       </reference>
     </references>
@@ -3412,7 +3443,7 @@ Registry Name: BGP Transitive Extended Community Types
         and Mapping Community as Color:0:100 indicating Gold SLA will use the
         Resolution Scheme associated with its Mapping Community to resolve
         over the PE2-LPBK CT route installed in the gold TRDB, and push the
-        SRv6-gold SID stack to reach PE2. </t>
+        SRv6-gold SID stack to reach PE2.</t>
 
         <t>Similarly, any service routes received with nexthop as PE2-LPBK and
         Mapping Community as Color:0:200 indicating Bronze SLA will use the
@@ -3478,9 +3509,9 @@ Registry Name: BGP Transitive Extended Community Types
 
           <t>In the CPR approach, a unique service SID is allocated for each
           combination of service function (e.g. Prefix, VRF or Nexthop) and
-          Intent (Coloring Prefix) at the egress node. </t>
+          Intent (Coloring Prefix) at the egress node.</t>
 
-          <t>Such that per egress SN, </t>
+          <t>Such that per egress SN,</t>
 
           <figure>
             <artwork align="left" xml:space="preserve">
@@ -3506,11 +3537,11 @@ Registry Name: BGP Transitive Extended Community Types
           convergence while executing operational procedures like Colorful
           Prefix locator modification, where the affected service routes have
           to be readvertised with their new Service SID computed as a result
-          of the Colorful Prefix locator change. </t>
+          of the Colorful Prefix locator change.</t>
 
           <t>When an egress SN signals a change of Intent on service routes,
           that will involve per service route convergence in forwarding at the
-          ingress SN because the Intent is encoded in the service SID. </t>
+          ingress SN because the Intent is encoded in the service SID.</t>
 
           <t>However, the CPR mechanism preserves BGP PIC (Prefix scale
           Independent Convergence) for the egress SN failure scenario where
