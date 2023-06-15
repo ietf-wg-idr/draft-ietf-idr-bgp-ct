@@ -2262,7 +2262,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
    IBGP sessions within the domain.  ASBR11 and ASBR21 as well as ASBR22
    and ASBR31 negotiate BGP LU family on the EBGP session over directly
    connected interdomain links.  ASBR11 and ASBR31 have reachability to
-   each other's loopbacks through BGP LU.  ASBR11 and ASBR31 negotiate
+   each other’s loopbacks through BGP LU.  ASBR11 and ASBR31 negotiate
    BGP CT family over a multihop EBGP session formed using BGP LU
    reachability.
 
@@ -3900,13 +3900,13 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
    target:0:100.  This would resolve over the ISIS-SRv6 route in gold
    TRDB and pick "Gold-SRv6-Tunnel-to-PE2" tunnel.
 
-   On successful resolution, a IPv6 transit route for PE2-SRv6-gold/128
-   is installed in the global IPv6 FIB with "Gold-SRv6-Tunnel-to-PE2"
-   tunnel as nexthop, enabling SRv6 forwarding for gold SLA.  The BGP CT
-   routes for RD1:PE2-LPBK is further advertised towards ASBR1 via EBGP
-   CT as shown below.  During this readvertisement, the nexthop is set
-   to self, and SID is rewritten to ASBR2-SRv6-gold-Replace.
-
+   On successful resolution, a IPv6 transit route for ASBR2-SRv6-PE2-
+   gold-replace/128 is installed in the global IPv6 FIB with "Gold-SRv6-
+   Tunnel-to-PE2" tunnel as nexthop, enabling SRv6 forwarding for gold
+   SLA.  The BGP CT routes for RD1:PE2-LPBK is further advertised
+   towards ASBR1 via EBGP CT as shown below.  During this
+   readvertisement, the nexthop is set to self, and SID is rewritten to
+   ASBR2-SRv6-gold-Replace.
 
 
 
@@ -3946,7 +3946,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
                 Figure 19: BGP CT processing at ASBR2
 
    When ASBR1 receives this EBGP CT advertisement from ASBR2, an IPv6
-   route for ASBR2-SRv6-gold-Replace/128 is installed with a nexthop of
+   route for ASBR1-SRv6-gold-Replace/128 is installed with a nexthop of
    ASBR1_InterAS_Link in the global IPv6 FIB, enabling SRv6 forwarding
    for gold SLA.  The BGP CT route for RD1:PE2-LPBK is further
    advertised to PE1 via IBGP CT, with nexthop set to self, and SID
