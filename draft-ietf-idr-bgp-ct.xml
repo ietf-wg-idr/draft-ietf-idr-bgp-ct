@@ -3118,8 +3118,9 @@ Registry Name: BGP Transitive Extended Community Types
 
       <section anchor="SID-Stacking-Approach" title="SID stacking approach">
         <t>This approach uses stacking of service SRv6 SID over transport SRv6
-        SID. Transport layer SID of END.REPLACE* type defined in <xref
-        target="SRV6-INTER-DOMAIN"/> is carried in SAFI 76. Service SID is
+        SID. Transport layer SIDs of types End, End.B6.Encaps defined in <xref
+        target="RFC8986"/>, and type END.REPLACE* defined in <xref
+        target="SRV6-INTER-DOMAIN"/> are carried in SAFI 76. Service SID is
         carried in a service family like SAFI 1 or SAFI 128.</t>
 
         <t>In this approach, the number of Service SIDs required at the egress
@@ -3158,9 +3159,9 @@ Registry Name: BGP Transitive Extended Community Types
         desired Intent.</t>
 
         <t>The following SRv6 locators are provisioned:<list>
-            <t>PE1-SRv6 : SRv6 Locator for PE1 best effort transport class</t>
+            <t>PE2-SRv6 : SRv6 Locator for PE2 best effort transport class</t>
 
-            <t>PE1-SRv6-gold-loc : SRv6 Locator for PE1 gold transport
+            <t>PE2-SRv6-gold-loc : SRv6 Locator for PE2 gold transport
             class</t>
 
             <t>PE2-SRv6-bronze-loc : SRv6 Locator for PE2 bronze transport
@@ -3187,9 +3188,11 @@ Registry Name: BGP Transitive Extended Community Types
 
         <t>The following transport layer SRv6 End SIDs are provisioned or
         dynamically allocated on demand:<list>
-            <t>PE2-SRv6-gold : PE2 End SID, for gold transport class.</t>
+            <t>PE2-SRv6-gold : PE2 End SID from PE2-SRv6-gold-loc, for gold
+            transport class.</t>
 
-            <t>PE2-SRv6-bronze : PE2 End SID, for bronze transport class.</t>
+            <t>PE2-SRv6-bronze : PE2 End SID from PE2-SRv6-bronze-loc, for
+            bronze transport class.</t>
 
             <t>ASBR2-SRv6-PE2-gold-Replace : at ASBR2 End.B6.Encaps SID for
             PE2, gold transport class.</t>
@@ -3197,8 +3200,14 @@ Registry Name: BGP Transitive Extended Community Types
             <t>ASBR2-SRv6-PE2-bronze-Replace : at ASBR2 End.B6.Encaps SID for
             PE2, bronze transport class.</t>
 
+            <t>ASBR1-SRv6-gold : ASBR1 End SID from ASBR1-SRv6-gold-loc, for
+            gold transport class.</t>
+
             <t>ASBR1-SRv6-PE2-gold-Replace : at ASBR1 End.REPLACE SID for PE2,
             gold transport class.</t>
+
+            <t>ASBR1-SRv6-bronze : ASBR1 End SID from ASBR1-SRv6-bronze-loc,
+            for bronze transport class.</t>
 
             <t>ASBR1-SRv6-PE2-bronze-Replace : at ASBR1 End.REPLACE SID for
             PE2, bronze transport class.</t>
@@ -3209,9 +3218,10 @@ Registry Name: BGP Transitive Extended Community Types
         a route received with End SID (e.g. PE2-SRv6-gold or PE2-SRv6-bronze
         transport SIDs) is readvertised with nexthop self, a IPv6 forwarding
         entry is emitted with a forwarding semantic of End.B6.Encaps
-        operation, which means: Decapsulate SRv6 SID, and Encapsulate SRv6 SID
-        corresponding to the correct transport class.This can be seen in IPv6
-        FIB of ASBR2 in the following illustration:</t>
+        operation, which means: Update IPv6 DA with Next Segment in SRH, and
+        Encapsulate SRv6 SID corresponding to the correct transport class.
+        This can be seen in IPv6 FIB of ASBR2 during "BGP CT processing at
+        ASBR2" in the following illustration:</t>
 
         <t>The following service layer SRv6 End.DT4 SIDs are provisioned:<list>
             <t>PE2-SRv6-S1-DT4 : PE2 End.DT4 SID for service S1</t>
@@ -3314,10 +3324,10 @@ Registry Name: BGP Transitive Extended Community Types
   ASBR2: IPv6 FIB for SRv6
 
       [BGP CT] ASBR2-SRv6-PE2-gold-Replace
-        NH: Decap, Encap "Gold-SRv6-Tunnel-to-PE2"
+        NH: UpdateIPv6DA(SRH.NextSegment), Encap "Gold-SRv6-Tunnel-to-PE2"
 
       [BGP CT] ASBR2-SRv6-PE2-bronze-Replace
-        NH: Decap, Encap "Bronze-SRv6-Tunnel-to-PE2"
+        NH: UpdateIPv6DA(SRH.NextSegment), Encap "Bronze-SRv6-Tunnel-to-PE2"
 
 </artwork>
         </figure>
@@ -3426,10 +3436,10 @@ Registry Name: BGP Transitive Extended Community Types
 
  PE1: Service routes FIB
 
-      [BGP-INET] SVC_PFX1, color:0:100
+      [BGP INET] SVC_PFX1, color:0:100
         NH: EncapSID "PE2-SRv6-S1-DT4, ASBR1-SRv6-gold-Repace, Gold-SRv6-Tunnel-to-ASBR1(outer)"
 
-      [BGP-INET] SVC_PFX2, color:0:200
+      [BGP INET] SVC_PFX2, color:0:200
         NH: EncapSID "PE2-SRv6-S1-DT4, ASBR1-SRv6-bronze-Replace, Bronze-SRv6-Tunnel-to-ASBR1(outer)"
 </artwork>
         </figure>
@@ -3443,16 +3453,18 @@ Registry Name: BGP Transitive Extended Community Types
         <t>CPR is defined in the document: <xref
         target="Colorful-Prefix-Routing-SRv6">Colorful Prefix Routing for SRv6
         based services </xref>, and uses IPv6 Unicast (AFI/SAFI = 2/1) as a
-        transport family. </t>
+        transport family. CPR mechanism does not use BGP CT (SAFI 76) address
+        family.</t>
 
         <t>CPR uses color encoded service SRv6 SIDs, without a separate
         transport SRv6 SID. It routes using "Colorful Prefix" locators in the
         transport layer, which are carried in the IPv6 Unicast BGP family.</t>
 
-        <t>BGP CT facilitates the CPR approach by providing intent-driven
-        paths for the "Colorful Prefix" locator routes that carry a mapping
-        community, by using <xref target="Nexthop_Resoln_Schm">Nexthop
-        Resolution Scheme</xref> for those IPv6 unicast family routes. </t>
+        <t>BGP CT facilitates the CPR approach by providing intra domain
+        intent-driven paths for the "Colorful Prefix" locator routes that
+        carry a mapping community, by using <xref
+        target="Nexthop_Resoln_Schm">Nexthop Resolution Scheme</xref> for
+        those IPv6 unicast family routes.</t>
 
         <t>By virtue of the CPR SID allocation scheme, the service SIDs
         inherit the Intent of the corresponding Colorful Prefix route just by
@@ -3473,7 +3485,7 @@ Registry Name: BGP Transitive Extended Community Types
           <figure>
             <artwork align="left" xml:space="preserve">
 
-         Total_Num_Color_Prefixes = Num_Intents.
+     Total_Num_Color_Prefixes = Num_Intents.
 </artwork>
           </figure>
 
@@ -3481,15 +3493,20 @@ Registry Name: BGP Transitive Extended Community Types
 
           <figure>
             <artwork align="left" xml:space="preserve">
-         Total_Num_Service_SIDs = Num_Service_Functions  *  Num_Intents.
+     Total_Num_Service_SIDs = Num_Service_Functions  *  Num_Intents_Per_Service_Function.
 </artwork>
           </figure>
 
+          <t>In typical deployments, Num_Intents_Per_Service_Function may be
+          equal to 1. Some deployments may provide per route granularity
+          Intent, in such cases the value of Num_Intents_Per_Service_Function
+          and Total_Num_Service_SIDs increases proportionally.</t>
+
           <t>This "Total_Num_Service_SIDs" scale may have an impact on overall
           convergence while executing operational procedures like Colorful
-          Prefix locator modification, where all the service routes have to be
-          readvertised with their new Service SID computed as a result of the
-          Colorful Prefix locator change. </t>
+          Prefix locator modification, where the affected service routes have
+          to be readvertised with their new Service SID computed as a result
+          of the Colorful Prefix locator change. </t>
 
           <t>When an egress SN signals a change of Intent on service routes,
           that will involve per service route convergence in forwarding at the

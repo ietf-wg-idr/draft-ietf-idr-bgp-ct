@@ -3650,9 +3650,10 @@ Appendix D.  BGP CT deployment in SRv6 networks
 D.1.  SID stacking approach
 
    This approach uses stacking of service SRv6 SID over transport SRv6
-   SID.  Transport layer SID of END.REPLACE* type defined in
-   [SRV6-INTER-DOMAIN] is carried in SAFI 76.  Service SID is carried in
-   a service family like SAFI 1 or SAFI 128.
+   SID.  Transport layer SIDs of types End, End.B6.Encaps defined in
+   [RFC8986], and type END.REPLACE* defined in [SRV6-INTER-DOMAIN] are
+   carried in SAFI 76.  Service SID is carried in a service family like
+   SAFI 1 or SAFI 128.
 
    In this approach, the number of Service SIDs required at the egress
    SN is equal to service functions (e.g.  Prefix, VRF or Nexthop) and
@@ -3689,7 +3690,6 @@ D.1.  SID stacking approach
 
    The following SRv6 locators are provisioned:
 
-      PE1-SRv6 : SRv6 Locator for PE1 best effort transport class
 
 
 
@@ -3698,7 +3698,9 @@ Vairavakkalai & VenkatarExpires 16 December 2023               [Page 66]
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
-      PE1-SRv6-gold-loc : SRv6 Locator for PE1 gold transport class
+      PE2-SRv6 : SRv6 Locator for PE2 best effort transport class
+
+      PE2-SRv6-gold-loc : SRv6 Locator for PE2 gold transport class
 
       PE2-SRv6-bronze-loc : SRv6 Locator for PE2 bronze transport class
 
@@ -3721,9 +3723,11 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
    The following transport layer SRv6 End SIDs are provisioned or
    dynamically allocated on demand:
 
-      PE2-SRv6-gold : PE2 End SID, for gold transport class.
+      PE2-SRv6-gold : PE2 End SID from PE2-SRv6-gold-loc, for gold
+      transport class.
 
-      PE2-SRv6-bronze : PE2 End SID, for bronze transport class.
+      PE2-SRv6-bronze : PE2 End SID from PE2-SRv6-bronze-loc, for bronze
+      transport class.
 
       ASBR2-SRv6-PE2-gold-Replace : at ASBR2 End.B6.Encaps SID for PE2,
       gold transport class.
@@ -3731,21 +3735,17 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
       ASBR2-SRv6-PE2-bronze-Replace : at ASBR2 End.B6.Encaps SID for
       PE2, bronze transport class.
 
+      ASBR1-SRv6-gold : ASBR1 End SID from ASBR1-SRv6-gold-loc, for gold
+      transport class.
+
       ASBR1-SRv6-PE2-gold-Replace : at ASBR1 End.REPLACE SID for PE2,
       gold transport class.
 
-      ASBR1-SRv6-PE2-bronze-Replace : at ASBR1 End.REPLACE SID for PE2,
+      ASBR1-SRv6-bronze : ASBR1 End SID from ASBR1-SRv6-bronze-loc, for
       bronze transport class.
 
-   Architecturally, the forwarding semantic of End.REPLACE SID operation
-   is similar to Label SWAP operation in MPLS data plane.  When a route
-   received with End SID (e.g.  PE2-SRv6-gold or PE2-SRv6-bronze
-   transport SIDs) is readvertised with nexthop self, a IPv6 forwarding
-   entry is emitted with a forwarding semantic of End.B6.Encaps
-   operation, which means: Decapsulate SRv6 SID, and Encapsulate SRv6
-   SID corresponding to the correct transport class.This can be seen in
-   IPv6 FIB of ASBR2 in the following illustration:
-
+      ASBR1-SRv6-PE2-bronze-Replace : at ASBR1 End.REPLACE SID for PE2,
+      bronze transport class.
 
 
 
@@ -3753,6 +3753,16 @@ Vairavakkalai & VenkatarExpires 16 December 2023               [Page 67]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
+
+   Architecturally, the forwarding semantic of End.REPLACE SID operation
+   is similar to Label SWAP operation in MPLS data plane.  When a route
+   received with End SID (e.g.  PE2-SRv6-gold or PE2-SRv6-bronze
+   transport SIDs) is readvertised with nexthop self, a IPv6 forwarding
+   entry is emitted with a forwarding semantic of End.B6.Encaps
+   operation, which means: Update IPv6 DA with Next Segment in SRH, and
+   Encapsulate SRv6 SID corresponding to the correct transport class.
+   This can be seen in IPv6 FIB of ASBR2 during "BGP CT processing at
+   ASBR2" in the following illustration:
 
    The following service layer SRv6 End.DT4 SIDs are provisioned:
 
@@ -3793,6 +3803,13 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
                          Figure 17: TRDBs at ASBR2
 
+
+
+Vairavakkalai & VenkatarExpires 16 December 2023               [Page 68]
+
+Internet-Draft        BGP Classful Transport Planes            June 2023
+
+
    The illustrations that follow, show how the BGP CT route for gold
    transport plane is originated, import processing done and propagated
    through this network.  Similar processing is followed for the bronze
@@ -3801,14 +3818,6 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
    Firstly, PE2 originates BGP CT route for its transport layer
    endpoints like Loopback address with SRv6 SID information to ASBR2 as
    shown below.
-
-
-
-
-Vairavakkalai & VenkatarExpires 16 December 2023               [Page 68]
-
-Internet-Draft        BGP Classful Transport Planes            June 2023
-
 
      IBGP CT routes from PE2 to ASBR2
 
@@ -3852,42 +3861,33 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-
-
-
-
-
-
-
-
-
 Vairavakkalai & VenkatarExpires 16 December 2023               [Page 69]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
-     EBGP CT routes from ASBR2 to ASBR1
+  EBGP CT routes from ASBR2 to ASBR1
 
-         RD1:PE2-LPBK,
-           transport-target:0:100,
-           Prefix-SID: ASBR2-SRv6-PE2-gold-Replace,
-           NH: ASBR2_InterAS_Link
+      RD1:PE2-LPBK,
+        transport-target:0:100,
+        Prefix-SID: ASBR2-SRv6-PE2-gold-Replace,
+        NH: ASBR2_InterAS_Link
 
-         RD2:PE2-LPBK,
-           transport-target:0:200,
-           Prefix-SID: ASBR2-SRv6-PE2-bronze-Replace,
-           NH: ASBR2_InterAS_Link
+      RD2:PE2-LPBK,
+        transport-target:0:200,
+        Prefix-SID: ASBR2-SRv6-PE2-bronze-Replace,
+        NH: ASBR2_InterAS_Link
 
 
-     ASBR2: IPv6 FIB for SRv6
+  ASBR2: IPv6 FIB for SRv6
 
-         [BGP CT] ASBR2-SRv6-PE2-gold-Replace
-           NH: Decap, Encap "Gold-SRv6-Tunnel-to-PE2"
+      [BGP CT] ASBR2-SRv6-PE2-gold-Replace
+        NH: UpdateIPv6DA(SRH.NextSegment), Encap "Gold-SRv6-Tunnel-to-PE2"
 
-         [BGP CT] ASBR2-SRv6-PE2-bronze-Replace
-           NH: Decap, Encap "Bronze-SRv6-Tunnel-to-PE2"
+      [BGP CT] ASBR2-SRv6-PE2-bronze-Replace
+        NH: UpdateIPv6DA(SRH.NextSegment), Encap "Bronze-SRv6-Tunnel-to-PE2"
 
-                   Figure 19: BGP CT processing at ASBR2
+                Figure 19: BGP CT processing at ASBR2
 
    When ASBR1 receives this EBGP CT advertisement from ASBR2, an IPv6
    route for ASBR2-SRv6-gold-Replace/128 is installed with a nexthop of
@@ -4048,10 +4048,10 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
  PE1: Service routes FIB
 
-      [BGP-INET] SVC_PFX1, color:0:100
+      [BGP INET] SVC_PFX1, color:0:100
         NH: EncapSID "PE2-SRv6-S1-DT4, ASBR1-SRv6-gold-Repace, Gold-SRv6-Tunnel-to-ASBR1(outer)"
 
-      [BGP-INET] SVC_PFX2, color:0:200
+      [BGP INET] SVC_PFX2, color:0:200
         NH: EncapSID "PE2-SRv6-S1-DT4, ASBR1-SRv6-bronze-Replace, Bronze-SRv6-Tunnel-to-ASBR1(outer)"
 
                  Figure 22: Service layer processing
@@ -4064,22 +4064,22 @@ D.2.  Color encoded Service SID (CPR) approach
 
    CPR is defined in the document: Colorful Prefix Routing for SRv6
    based services [Colorful-Prefix-Routing-SRv6], and uses IPv6 Unicast
-   (AFI/SAFI = 2/1) as a transport family.
+   (AFI/SAFI = 2/1) as a transport family.  CPR mechanism does not use
+   BGP CT (SAFI 76) address family.
 
    CPR uses color encoded service SRv6 SIDs, without a separate
    transport SRv6 SID.  It routes using "Colorful Prefix" locators in
    the transport layer, which are carried in the IPv6 Unicast BGP
    family.
 
-   BGP CT facilitates the CPR approach by providing intent-driven paths
-   for the "Colorful Prefix" locator routes that carry a mapping
-   community, by using Nexthop Resolution Scheme (Section 6) for those
-   IPv6 unicast family routes.
+   BGP CT facilitates the CPR approach by providing intra domain intent-
+   driven paths for the "Colorful Prefix" locator routes that carry a
+   mapping community, by using Nexthop Resolution Scheme (Section 6) for
+   those IPv6 unicast family routes.
 
    By virtue of the CPR SID allocation scheme, the service SIDs inherit
    the Intent of the corresponding Colorful Prefix route just by
    performing longest prefix match in forwarding plane.
-
 
 
 
@@ -4103,17 +4103,22 @@ D.2.1.  Analysis of CPR approach
 
    Such that per egress SN,
 
-            Total_Num_Color_Prefixes = Num_Intents.
+        Total_Num_Color_Prefixes = Num_Intents.
 
    and,
 
-         Total_Num_Service_SIDs = Num_Service_Functions  *  Num_Intents.
+     Total_Num_Service_SIDs = Num_Service_Functions  *  Num_Intents_Per_Service_Function.
+
+   In typical deployments, Num_Intents_Per_Service_Function may be equal
+   to 1.  Some deployments may provide per route granularity Intent, in
+   such cases the value of Num_Intents_Per_Service_Function and
+   Total_Num_Service_SIDs increases proportionally.
 
    This "Total_Num_Service_SIDs" scale may have an impact on overall
    convergence while executing operational procedures like Colorful
-   Prefix locator modification, where all the service routes have to be
-   readvertised with their new Service SID computed as a result of the
-   Colorful Prefix locator change.
+   Prefix locator modification, where the affected service routes have
+   to be readvertised with their new Service SID computed as a result of
+   the Colorful Prefix locator change.
 
    When an egress SN signals a change of Intent on service routes, that
    will involve per service route convergence in forwarding at the
@@ -4133,11 +4138,6 @@ D.2.1.  Analysis of CPR approach
    route with an appropriate BGP CT mapping community, that maps to a
    customized resolution scheme.
 
-   Further, IPv6 unicast family is widely deployed to carry Internet
-   Service routes.  Repurposing IPv6 unicast family to carry Transport
-   routes also may impact the operational complexity and security
-   aspects in the network.
-
 
 
 
@@ -4145,6 +4145,11 @@ Vairavakkalai & VenkatarExpires 16 December 2023               [Page 74]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
+
+   Further, IPv6 unicast family is widely deployed to carry Internet
+   Service routes.  Repurposing IPv6 unicast family to carry Transport
+   routes also may impact the operational complexity and security
+   aspects in the network.
 
 Contributors
 
@@ -4186,12 +4191,7 @@ Other Contributors
    Email: balajir@juniper.net
 
 
-   Reshma Das
-   Juniper Networks, Inc.
-   1133 Innovation Way,
-   Sunnyvale, CA 94089
-   United States of America
-   Email: dreshma@juniper.net
+
 
 
 
@@ -4200,6 +4200,14 @@ Other Contributors
 Vairavakkalai & VenkatarExpires 16 December 2023               [Page 75]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
+
+
+   Reshma Das
+   Juniper Networks, Inc.
+   1133 Innovation Way,
+   Sunnyvale, CA 94089
+   United States of America
+   Email: dreshma@juniper.net
 
 
    Rajesh M
@@ -4242,20 +4250,19 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
    Email: szarecki@google.com
 
 
-   Xiaohu Xu
-   Capitalonline.
-   Beijing
-   China
-   Email: xiaohu.xu@capitalonline.net
-
-
-
 
 
 
 Vairavakkalai & VenkatarExpires 16 December 2023               [Page 76]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
+
+
+   Xiaohu Xu
+   Capitalonline.
+   Beijing
+   China
+   Email: xiaohu.xu@capitalonline.net
 
 
 Acknowledgements
@@ -4288,13 +4295,6 @@ Authors' Addresses
    Sunnyvale, CA 94089
    United States of America
    Email: natv@juniper.net
-
-
-
-
-
-
-
 
 
 
