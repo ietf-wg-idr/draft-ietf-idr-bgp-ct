@@ -1048,6 +1048,9 @@
         <t>One such indication can be in form of DSCP code point (<xref
         target="RFC2474">RFC2474</xref>) in IP header.</t>
 
+        <t>In RFC2474, a Forwarding Class maps to a PHB. The Transport class
+        construct is a PHB at transport layer.</t>
+
         <t>Let PE1 be configured to map DSCP1 to Gold Transport class, and
         DSCP2 to Bronze Transport class. Based on the DSCP code point received
         on the IP traffic from CE1, the PE1 forwards the IP packet over a Gold
@@ -1073,17 +1076,19 @@
         forwarded using the desired transport class.</t>
       </section>
 
-      <section title="Using MPLS Label in MultiNexthop attribute">
+      <section anchor="MplsCE" title="MPLS enabled CE">
         <t>If the PE-CE link is MPLS enabled, a distinct MPLS label can also
-        be used to identify the transport class. PE1 can allocate a MPLS Label
-        L1 for the tuple "VPN Label, PNH Address, Transport class ID" and
-        advertise to CE1. When MPLS packet with label L1 is received from CE1,
-        the label is Popped, VPN Label if any is pushed, and then push tunnel
-        encap information related to "PNH address, Transport class ID". PE1
-        may thus do forwarding based on MPLS label without performing any IP
-        lookup. This allows for PE1 to be a low IP FIB device and still
-        support CBF. The number of MPLS Labels will be proportional to the
-        number of unique VPN labels received.</t>
+        be used to identify the transport class. Consider an ingress PE1
+        receiving a VPN prefix RD:Pfx1 received with VPN label VL1, nexthop as
+        PE2 and a mapping community containing 'Transport class ID'. PE1 can
+        allocate a MPLS Label L1 that Swaps to BGP CT label TL1 in forwarding.
+        And PE1 advertises the label stack "VL1, L1(outer)" in the
+        MULTI_NH_ATTR to CE1. When MPLS packet with label L1 is received from
+        CE1, it is Swapped with transport label TL1. PE1 may thus do
+        forwarding based on MPLS label without performing any IP lookup. This
+        allows for PE1 to be a low IP FIB device and still support CBF. The
+        number of MPLS Labels allocated by PE1 will be proportional to the
+        number of unique BGP CT labels it receives.</t>
 
         <t>A <xref target="MULTI-NH-ATTR">BGP MultiNexthop Attribute</xref> is
         attached to a SAFI 1 service route to convey the MPLS Label
@@ -1092,20 +1097,36 @@
         contains the PE1 nexthop address in Endpoint Identifier TLV (<xref
         target="MULTI-NH-ATTR"/> Sec 5.5.1.), the Transport class ID (Color)
         (<xref target="MULTI-NH-ATTR"/> Sec 5.5.2.2.) for Gold, Bronze
-        respectively, and associated MPLS Label (<xref
-        target="MULTI-NH-ATTR"/> Sec 5.5.3.1.) to the CE1 device. This allows
-        the CE to discover what transport classes exist in the provider
-        network, and which MPLS Label to encode so that traffic is forwarded
-        using the desired transport class.</t>
+        respectively, and associated MPLS Label stacks "VL1, L1" and "VL2, L2"
+        using (<xref target="MULTI-NH-ATTR"/> Sec 5.5.3.1.) to the CE1 device.
+        This allows the CE to discover what transport classes exist in the
+        provider network, and which MPLS Label to encode so that traffic is
+        forwarded using the desired transport class.</t>
 
-        <t>The MPLS enabled PE-CE link is considered connecting to an
-        untrusted domain. Such interfaces can be secured against MPLS label
-        spoofing by confining the interface to a specific MPLS context table
-        corresponding to the BGP peer. Such that only the route for labels
-        advertised to CE1 are installed in the MPLS context table
-        corresponding to the CE1 peer. This ensures that if CE1 sends MPLS
-        packet with a label that was not advertised to the CE1, the packet
-        will be dropped.</t>
+        <section title="Secure MPLS forwarding on inter-AS link">
+          <t>The MPLS enabled PE-CE link is considered connecting to an
+          untrusted domain. Such interfaces can be secured against MPLS label
+          spoofing by a walled garden approach using "MPLS context
+          tables".</t>
+
+          <t>The PE1-CE1 interface can be confined to a specific MPLS context
+          table "A" corresponding to the BGP peer. Such that only the route
+          for transport labels advertised to CE1 are installed in MPLS context
+          table "A". Further a second MPLS context table "B" is used to
+          install label PVL1 with forwarding action "Swap VL1, Push TL1
+          towards PE2". Forwarding semantic of label L1 in context table "A"
+          is installed as "Pop, Lookup in 'A'". PE1 advertises the label stack
+          "PVL1, L1(outer)" in the MULTI_NH_ATTR to CE1.</t>
+
+          <t>This ensures that if CE1 sends MPLS packet with a label stack
+          that was not advertised to the CE1, the packet will be dropped. Also
+          the route for label L1 installed in MPLS context table can match on
+          'Bottom of stack' bit being zero, ensuring single label packets are
+          not accepted. However, the PE may not be able to perform any checks
+          based on inner payload in the MPLS packet since it performs label
+          swap forwarding. These security aspects should be considered when
+          using MPLS enabled CE devices.</t>
+        </section>
       </section>
     </section>
 
@@ -1755,11 +1776,6 @@
           map a service layer intent to the matching transport color, as the
           color might not be locally available in a domain.</t>
 
-          <t>In this model, resolution schemes are customized to map the
-          received mapping community (eg: transport-target or color community)
-          to locally available TRDBs that are acceptable to realize the
-          desired intent.</t>
-
           <t>The below example illustrates how traffic is stitched, when a
           transit AS contains more shades for an SLA paths compared to Ingress
           and Egress domains. This example shows how service routes can
@@ -1793,59 +1809,87 @@
 
           <t>In AS3 Gold SLA is represented by color 100.</t>
 
-          <t>Service routes advertised by PE31 that need to resolve over Gold1
-          transport tunnels carry a mapping community color:0:101. In AS3 and
-          AS1, where Gold1 is not available, it is mapped to color 100 TRDB
-          using a customized resolution scheme. In AS2, Gold1 is available and
-          it maps to color 101 TRDB.</t>
+          <t>This problem can be solved by two approaches, described
+          below.</t>
 
-          <t>To facilitate this mapping, every SN/BN in all AS provision
-          required transport classes viz. 100, 101 and 102. SN and BN in AS1
-          and AS3 are provisioned with customized resolution schemes that
-          resolve routes with transport-target:0:101 or transport-target:0:102
-          strictly over color 100 TRDB.</t>
+          <section title="Duplicate tunnels approach">
+            <t>In this approach, duplicate tunnels that satisfy Gold SLA are
+            configured in domains AS1 and AS3, but they are given fine grained
+            colors 101, 102.</t>
 
-          <t>PE31 is provisioned to originate BGP CT route with color 101 for
-          endpoint PE31. This route is sent with NLRI RD prefix RD1:PE31 and
-          route target extended community transport-target:0:101.</t>
+            <t>These tunnels will be installed in TRDBs corresponding to
+            transport classes of color 101, 102.</t>
 
-          <t>At ASBR31, the route target "transport-target:0:101" on this BGP
-          CT route instructs to add the route to color 101 TRDB. ASBR31 is
-          provisioned with customized resolution scheme that resolves the
-          routes carrying mapping community transport-target:0:101 to resolve
-          using color 100 TRDB. This route is then re-advertised from color
-          101 TRDB to ASBR22 with route-target:0:101.</t>
+            <t>Service routes received with mapping community (eg:
+            transport-target or color community) can resolve over these
+            tunnels in the TRDB with matching color by using resolution
+            schemes.</t>
 
-          <t>At ASBR22, the BGP CT routes received with transport-target:0:101
-          will be added to color 101 TRDB and strictly resolve over tunnel
-          routes in the same TRDB. This route is re-advertised to ASBR21 with
-          transport-target:0:101.</t>
+            <t>This approach consumes more resources in the transport and
+            forwarding layer, because of the duplicate tunnels.</t>
+          </section>
 
-          <t>Similarly, at ASBR21, the BGP CT routes received with
-          transport-target:0:101 will be added to color 101 TRDB and strictly
-          resolve over tunnel routes in the same TRDB. This route is
-          re-advertised to ASBR11 with transport-target:0:101.</t>
+          <section title="Customized Resolution schemes approach">
+            <t>In this approach, resolution schemes in domains AS1, AS3 are
+            customized to map the received mapping community (eg:
+            transport-target or color community) over available Gold SLA
+            tunnels. This conserves resource usage with no additional state in
+            transport and forwarding plane.</t>
 
-          <t>At ASBR11, the route target "transport-target:0:101" on this BGP
-          CT route instructs to add the route to color 101 TRDB. ASBR11 is
-          provisioned with a customized resolution scheme that resolves the
-          routes carrying transport-target:0:101 to use color 100 TRDB. This
-          route is then re-advertised from color 101 TRDB to PE11 with
-          route-target:0:101.</t>
+            <t>Service routes advertised by PE31 that need to resolve over
+            Gold1 transport tunnels carry a mapping community color:0:101. In
+            AS3 and AS1, where Gold1 is not available, it is mapped to color
+            100 TRDB using a customized resolution scheme. In AS2, Gold1 is
+            available and it maps to color 101 TRDB.</t>
 
-          <t>At PE11, the route target "transport-target:0:101" on this BGP CT
-          route instructs to add the route to color 101 TRDB. PE11 is
-          provisioned with a customized resolution scheme that resolves the
-          routes carrying transport-target:0:101 to use color 100 TRDB.</t>
+            <t>To facilitate this mapping, every SN/BN in all AS provision
+            required transport classes viz. 100, 101 and 102. SN and BN in AS1
+            and AS3 are provisioned with customized resolution schemes that
+            resolve routes with transport-target:0:101 or
+            transport-target:0:102 strictly over color 100 TRDB.</t>
 
-          <t>When PE11 receives the service route with the mapping community
-          color:0:101 it directly resolves over the BGP CT route in color 101
-          TRDB, which in turn resolves over tunnel routes in color 100
-          TRDB.</t>
+            <t>PE31 is provisioned to originate BGP CT route with color 101
+            for endpoint PE31. This route is sent with NLRI RD prefix RD1:PE31
+            and route target extended community transport-target:0:101.</t>
 
-          <t>In this manner, PE11 can put traffic on tunnels with color 101,
-          color 102 in the core domain, and color 100 in the metro
-          domains.</t>
+            <t>At ASBR31, the route target "transport-target:0:101" on this
+            BGP CT route instructs to add the route to color 101 TRDB. ASBR31
+            is provisioned with customized resolution scheme that resolves the
+            routes carrying mapping community transport-target:0:101 to
+            resolve using color 100 TRDB. This route is then re-advertised
+            from color 101 TRDB to ASBR22 with route-target:0:101.</t>
+
+            <t>At ASBR22, the BGP CT routes received with
+            transport-target:0:101 will be added to color 101 TRDB and
+            strictly resolve over tunnel routes in the same TRDB. This route
+            is re-advertised to ASBR21 with transport-target:0:101.</t>
+
+            <t>Similarly, at ASBR21, the BGP CT routes received with
+            transport-target:0:101 will be added to color 101 TRDB and
+            strictly resolve over tunnel routes in the same TRDB. This route
+            is re-advertised to ASBR11 with transport-target:0:101.</t>
+
+            <t>At ASBR11, the route target "transport-target:0:101" on this
+            BGP CT route instructs to add the route to color 101 TRDB. ASBR11
+            is provisioned with a customized resolution scheme that resolves
+            the routes carrying transport-target:0:101 to use color 100 TRDB.
+            This route is then re-advertised from color 101 TRDB to PE11 with
+            route-target:0:101.</t>
+
+            <t>At PE11, the route target "transport-target:0:101" on this BGP
+            CT route instructs to add the route to color 101 TRDB. PE11 is
+            provisioned with a customized resolution scheme that resolves the
+            routes carrying transport-target:0:101 to use color 100 TRDB.</t>
+
+            <t>When PE11 receives the service route with the mapping community
+            color:0:101 it directly resolves over the BGP CT route in color
+            101 TRDB, which in turn resolves over tunnel routes in color 100
+            TRDB.</t>
+
+            <t>In this manner, PE11 can put traffic on tunnels with color 101,
+            color 102 in the core domain, and color 100 in the metro
+            domains.</t>
+          </section>
         </section>
       </section>
 
@@ -2365,15 +2409,12 @@ Registry Name: BGP Transitive Extended Community Types
       implementations support keeping SAFI 4 routes in a separate transport
       RIB, distinct from service RIB that contain SAFI 1 service routes.</t>
 
-      <t>In scenarios where MPLS is enabled towards untrusted domains, e.g. a
-      CE-PE link or ASBR-ASBR inter-AS link, security can be provided against
-      MPLS label spoofing by confining the interface to a specific MPLS
-      context table. Such that MPLS routes for only the labels advertised to
-      the BGP peer are added to the MPLS context table associated with the BGP
-      peer. This walled garden approach ascertains that if the device in the
-      untrusted domain sends MPLS packet with a label that was not advertised
-      to the CE, the packet will be dropped. Only MPLS traffic with labels
-      advertised to the BGP speaker will be allowed to forward.</t>
+      <t>In scenarios where MPLS is enabled on link to a device in an
+      untrusted domain, e.g. a PE-CE link or ASBR-ASBR inter-AS link, security
+      can be provided against MPLS label spoofing by using MPLS context tables
+      as described in <xref target="MplsCE">MPLS enabled CE</xref>. Such that
+      only MPLS traffic with labels advertised to the BGP speaker are allowed
+      to forward.</t>
     </section>
   </middle>
 
@@ -3327,17 +3368,17 @@ Registry Name: BGP Transitive Extended Community Types
 
       RD1:PE2-LPBK,
         transport-target:0:100,
-        Prefix-SID: PE2-SRv6-gold 
+        Prefix-SID: PE2-SRv6-gold
         NH: PE2-LPBK
 
       RD2:PE2-LPBK,
         transport-target:0:200,
-        Prefix-SID: PE2-SRv6-bronze 
+        Prefix-SID: PE2-SRv6-bronze
         NH: PE2-LPBK
 
   PE2: IPv6 FIB for SRv6
 
-      [BGP CT] PE2-SRv6-S1-DT4       
+      [BGP CT] PE2-SRv6-S1-DT4
         NH: Decap, Perform service S1
 </artwork>
         </figure>
