@@ -4923,11 +4923,11 @@ Registry Name: BGP Transitive Extended Community Types
         transport-target:0:100. This would resolve over the ISIS-SRv6 route in
         gold TRDB and pick "Gold-SRv6-Tunnel-to-PE2" tunnel.<a href="#appendix-D.1-20" class="pilcrow">¶</a></p>
 <p id="appendix-D.1-21">On successful resolution, a IPv6 transit route for
-        PE2-SRv6-gold/128 is installed in the global IPv6 FIB with
-        "Gold-SRv6-Tunnel-to-PE2" tunnel as nexthop, enabling SRv6 forwarding
-        for gold SLA. The BGP CT routes for RD1:PE2-LPBK is further advertised
-        towards ASBR1 via EBGP CT as shown below. During this readvertisement,
-        the nexthop is set to self, and SID is rewritten to
+        ASBR2-SRv6-PE2-gold-replace/128 is installed in the global IPv6 FIB
+        with "Gold-SRv6-Tunnel-to-PE2" tunnel as nexthop, enabling SRv6
+        forwarding for gold SLA. The BGP CT routes for RD1:PE2-LPBK is further
+        advertised towards ASBR1 via EBGP CT as shown below. During this
+        readvertisement, the nexthop is set to self, and SID is rewritten to
         ASBR2-SRv6-gold-Replace.<a href="#appendix-D.1-21" class="pilcrow">¶</a></p>
 <span id="name-bgp-ct-processing-at-asbr2-2"></span><figure id="figure-19">
           <div class="alignLeft art-text artwork" id="appendix-D.1-22.1">
@@ -4959,7 +4959,7 @@ Registry Name: BGP Transitive Extended Community Types
 <a href="#name-bgp-ct-processing-at-asbr2-2" class="selfRef">BGP CT processing at ASBR2</a>
           </figcaption></figure>
 <p id="appendix-D.1-23">When ASBR1 receives this EBGP CT advertisement from ASBR2, an IPv6
-        route for ASBR2-SRv6-gold-Replace/128 is installed with a nexthop of
+        route for ASBR1-SRv6-gold-Replace/128 is installed with a nexthop of
         ASBR1_InterAS_Link in the global IPv6 FIB, enabling SRv6 forwarding
         for gold SLA. The BGP CT route for RD1:PE2-LPBK is further advertised
         to PE1 via IBGP CT, with nexthop set to self, and SID rewritten to
