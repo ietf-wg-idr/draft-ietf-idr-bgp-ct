@@ -1122,10 +1122,13 @@
           that was not advertised to the CE1, the packet will be dropped. Also
           the route for label L1 installed in MPLS context table can match on
           'Bottom of stack' bit being zero, ensuring single label packets are
-          not accepted. However, the PE may not be able to perform any checks
-          based on inner payload in the MPLS packet since it performs label
-          swap forwarding. These security aspects should be considered when
-          using MPLS enabled CE devices.</t>
+          not accepted. </t>
+
+          <t>However, the PE may not be able to perform any checks based on
+          inner payload in the MPLS packet since it performs label swap
+          forwarding. Such inner payload based checks may be offloaded to a
+          downstream node that forwards based on a full IP FIB. These security
+          aspects should be considered when using MPLS enabled CE devices.</t>
         </section>
       </section>
     </section>

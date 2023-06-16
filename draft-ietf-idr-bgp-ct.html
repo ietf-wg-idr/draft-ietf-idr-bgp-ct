@@ -2644,10 +2644,12 @@ li > p:last-of-type {
           that was not advertised to the CE1, the packet will be dropped. Also
           the route for label L1 installed in MPLS context table can match on
           'Bottom of stack' bit being zero, ensuring single label packets are
-          not accepted. However, the PE may not be able to perform any checks
-          based on inner payload in the MPLS packet since it performs label
-          swap forwarding. These security aspects should be considered when
-          using MPLS enabled CE devices.<a href="#section-14.2.1-3" class="pilcrow">¶</a></p>
+          not accepted.<a href="#section-14.2.1-3" class="pilcrow">¶</a></p>
+<p id="section-14.2.1-4">However, the PE may not be able to perform any checks based on
+          inner payload in the MPLS packet since it performs label swap
+          forwarding. Such inner payload based checks may be offloaded to a
+          downstream node that forwards based on a full IP FIB. These security
+          aspects should be considered when using MPLS enabled CE devices.<a href="#section-14.2.1-4" class="pilcrow">¶</a></p>
 </section>
 </section>
 </div>

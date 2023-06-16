@@ -1415,10 +1415,13 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
    was not advertised to the CE1, the packet will be dropped.  Also the
    route for label L1 installed in MPLS context table can match on
    'Bottom of stack' bit being zero, ensuring single label packets are
-   not accepted.  However, the PE may not be able to perform any checks
-   based on inner payload in the MPLS packet since it performs label
-   swap forwarding.  These security aspects should be considered when
-   using MPLS enabled CE devices.
+   not accepted.
+
+   However, the PE may not be able to perform any checks based on inner
+   payload in the MPLS packet since it performs label swap forwarding.
+   Such inner payload based checks may be offloaded to a downstream node
+   that forwards based on a full IP FIB.  These security aspects should
+   be considered when using MPLS enabled CE devices.
 
 15.  Scaling considerations
 
@@ -1447,9 +1450,6 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
       Where TC is the Transport Class identifier, and eSN is the IP-
       address used by SN as BGP nexthop in its service route
       advertisements.
-
-
-
 
 
 
