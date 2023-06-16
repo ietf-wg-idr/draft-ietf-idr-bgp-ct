@@ -1119,7 +1119,7 @@
           "PVL1, L1(outer)" in the MULTI_NH_ATTR to CE1.</t>
 
           <t>This ensures that if CE1 sends MPLS packet with a label stack
-          that was not advertised to the CE1, the packet will be dropped. </t>
+          that was not advertised to the CE1, the packet will be dropped.</t>
 
           <t>Further, the route for label L1 installed in MPLS context table
           "A" can match on 'Bottom of stack' bit being 'zero', and label PVL1
@@ -3563,15 +3563,15 @@ Registry Name: BGP Transitive Extended Community Types
         transport family. CPR mechanism does not use BGP CT (SAFI 76) address
         family.</t>
 
-        <t>CPR uses color encoded service SRv6 SIDs, without a separate
+        <t>CPR uses color encoded SRv6 service SIDs to determine the
+        intent-aware transport paths for the service, without a separate
         transport SRv6 SID. It routes using "Colorful Prefix" locators in the
         transport layer, which are carried in the IPv6 Unicast BGP family.</t>
 
-        <t>BGP CT facilitates the CPR approach by providing intra domain
-        intent-driven paths for the "Colorful Prefix" locator routes that
-        carry a mapping community, by using <xref
-        target="Nexthop_Resoln_Schm">Nexthop Resolution Scheme</xref> for
-        those IPv6 unicast family routes.</t>
+        <t>A Nexthop Resolution Scheme similar to that of BGP CT <xref
+        target="Nexthop_Resoln_Schm"/> is used on IPv6 unicast family to
+        resolve &ldquo;Colorful Prefix&rdquo; locator routes that carry a
+        mapping community to intent-aware paths in each domain.</t>
 
         <t>By virtue of the CPR SID allocation scheme, the service SIDs
         inherit the Intent of the corresponding Colorful Prefix route just by
@@ -3583,41 +3583,18 @@ Registry Name: BGP Transitive Extended Community Types
           SID numbering and planning. The state in the transport network is a
           function of total number of Colorful Prefixes.</t>
 
-          <t>In the CPR approach, a unique service SID is allocated for each
-          combination of service function (e.g. Prefix, VRF or Nexthop) and
-          Intent (Coloring Prefix) at the egress node.</t>
-
-          <t>Such that per egress SN,</t>
-
-          <figure>
-            <artwork align="left" xml:space="preserve">
-
-     Total_Num_Color_Prefixes = Num_Intents.
-</artwork>
-          </figure>
-
-          <t>and,</t>
-
-          <figure>
-            <artwork align="left" xml:space="preserve">
-     Total_Num_Service_SIDs = Num_Service_Functions  *  Num_Intents_Per_Service_Function.
-</artwork>
-          </figure>
-
-          <t>In typical deployments, Num_Intents_Per_Service_Function may be
-          equal to 1. Some deployments may provide per route granularity
-          Intent, in such cases the value of Num_Intents_Per_Service_Function
-          and Total_Num_Service_SIDs increases proportionally.</t>
-
-          <t>This "Total_Num_Service_SIDs" scale may have an impact on overall
-          convergence while executing operational procedures like Colorful
-          Prefix locator modification, where the affected service routes have
-          to be readvertised with their new Service SID computed as a result
-          of the Colorful Prefix locator change.</t>
+          <t>In the CPR approach, typically one service SID is allocated for
+          each service function (e.g. VRF) which is associated with a specific
+          intent. In some special scenarios, for example, when different
+          service routes in the same VRF are with different intents, a unique
+          service SID would need to be allocated for each intent associated
+          with the VRF.</t>
 
           <t>When an egress SN signals a change of Intent on service routes,
           that will involve per service route convergence in forwarding at the
-          ingress SN because the Intent is encoded in the service SID.</t>
+          ingress SN because the Intent is encoded in the service SID. This
+          forwarding convergence is implementation specific and is outside the
+          scope of this document.</t>
 
           <t>However, the CPR mechanism preserves BGP PIC (Prefix scale
           Independent Convergence) for the egress SN failure scenario where
@@ -3627,11 +3604,12 @@ Registry Name: BGP Transitive Extended Community Types
           routes. Fallback to best effort transport class is achieved by
           numbering all SRv6 Colorful Prefix locators at the egress SN to fall
           in the same subnet as the SRv6 locator that uses best effort
-          transport class. Custom Intents that provide fallback between
-          different color transport classes can be achieved by allocating a
-          Colorful Prefix for each such intent combination, and advertising
-          that Colorful Prefix route with an appropriate BGP CT mapping
-          community, that maps to a customized resolution scheme.</t>
+          transport class. Customized intent fallback between different color
+          transport classes may be achieved by allocating a CPR prefix for
+          each such intent fallback policy, and advertising that CPR prefix
+          with an appropriate mapping community, that maps to a customized
+          resolution scheme. Alternatively, the intent fallback policy may be
+          provisioned on the ingress nodes directly.</t>
 
           <t>Further, IPv6 unicast family is widely deployed to carry Internet
           Service routes. Repurposing IPv6 unicast family to carry Transport

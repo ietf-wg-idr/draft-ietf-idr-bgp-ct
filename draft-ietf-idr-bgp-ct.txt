@@ -227,8 +227,8 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
        D.2.1.  Analysis of CPR approach  . . . . . . . . . . . . . .  77
-   Contributors  . . . . . . . . . . . . . . . . . . . . . . . . . .  78
-     Co-Authors  . . . . . . . . . . . . . . . . . . . . . . . . . .  78
+   Contributors  . . . . . . . . . . . . . . . . . . . . . . . . . .  77
+     Co-Authors  . . . . . . . . . . . . . . . . . . . . . . . . . .  77
      Other Contributors  . . . . . . . . . . . . . . . . . . . . . .  78
    Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  80
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  80
@@ -4235,15 +4235,15 @@ D.2.  Color encoded Service SID (CPR) approach
    (AFI/SAFI = 2/1) as a transport family.  CPR mechanism does not use
    BGP CT (SAFI 76) address family.
 
-   CPR uses color encoded service SRv6 SIDs, without a separate
-   transport SRv6 SID.  It routes using "Colorful Prefix" locators in
-   the transport layer, which are carried in the IPv6 Unicast BGP
-   family.
+   CPR uses color encoded SRv6 service SIDs to determine the intent-
+   aware transport paths for the service, without a separate transport
+   SRv6 SID.  It routes using "Colorful Prefix" locators in the
+   transport layer, which are carried in the IPv6 Unicast BGP family.
 
-   BGP CT facilitates the CPR approach by providing intra domain intent-
-   driven paths for the "Colorful Prefix" locator routes that carry a
-   mapping community, by using Nexthop Resolution Scheme (Section 6) for
-   those IPv6 unicast family routes.
+   A Nexthop Resolution Scheme similar to that of BGP CT Section 6 is
+   used on IPv6 unicast family to resolve "Colorful Prefix" locator
+   routes that carry a mapping community to intent-aware paths in each
+   domain.
 
    By virtue of the CPR SID allocation scheme, the service SIDs inherit
    the Intent of the corresponding Colorful Prefix route just by
@@ -4265,32 +4265,18 @@ D.2.1.  Analysis of CPR approach
    numbering and planning.  The state in the transport network is a
    function of total number of Colorful Prefixes.
 
-   In the CPR approach, a unique service SID is allocated for each
-   combination of service function (e.g.  Prefix, VRF or Nexthop) and
-   Intent (Coloring Prefix) at the egress node.
-
-   Such that per egress SN,
-
-        Total_Num_Color_Prefixes = Num_Intents.
-
-   and,
-
-     Total_Num_Service_SIDs = Num_Service_Functions  *  Num_Intents_Per_Service_Function.
-
-   In typical deployments, Num_Intents_Per_Service_Function may be equal
-   to 1.  Some deployments may provide per route granularity Intent, in
-   such cases the value of Num_Intents_Per_Service_Function and
-   Total_Num_Service_SIDs increases proportionally.
-
-   This "Total_Num_Service_SIDs" scale may have an impact on overall
-   convergence while executing operational procedures like Colorful
-   Prefix locator modification, where the affected service routes have
-   to be readvertised with their new Service SID computed as a result of
-   the Colorful Prefix locator change.
+   In the CPR approach, typically one service SID is allocated for each
+   service function (e.g.  VRF) which is associated with a specific
+   intent.  In some special scenarios, for example, when different
+   service routes in the same VRF are with different intents, a unique
+   service SID would need to be allocated for each intent associated
+   with the VRF.
 
    When an egress SN signals a change of Intent on service routes, that
    will involve per service route convergence in forwarding at the
-   ingress SN because the Intent is encoded in the service SID.
+   ingress SN because the Intent is encoded in the service SID.  This
+   forwarding convergence is implementation specific and is outside the
+   scope of this document.
 
    However, the CPR mechanism preserves BGP PIC (Prefix scale
    Independent Convergence) for the egress SN failure scenario where
@@ -4300,19 +4286,12 @@ D.2.1.  Analysis of CPR approach
    Fallback to best effort transport class is achieved by numbering all
    SRv6 Colorful Prefix locators at the egress SN to fall in the same
    subnet as the SRv6 locator that uses best effort transport class.
-   Custom Intents that provide fallback between different color
-   transport classes can be achieved by allocating a Colorful Prefix for
-   each such intent combination, and advertising that Colorful Prefix
-   route with an appropriate BGP CT mapping community, that maps to a
-   customized resolution scheme.
-
-
-
-
-Vairavakkalai & VenkatarExpires 18 December 2023               [Page 77]
-
-Internet-Draft        BGP Classful Transport Planes            June 2023
-
+   Customized intent fallback between different color transport classes
+   may be achieved by allocating a CPR prefix for each such intent
+   fallback policy, and advertising that CPR prefix with an appropriate
+   mapping community, that maps to a customized resolution scheme.
+   Alternatively, the intent fallback policy may be provisioned on the
+   ingress nodes directly.
 
    Further, IPv6 unicast family is widely deployed to carry Internet
    Service routes.  Repurposing IPv6 unicast family to carry Transport
@@ -4322,6 +4301,18 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 Contributors
 
 Co-Authors
+
+
+
+
+
+
+
+
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 77]
+
+Internet-Draft        BGP Classful Transport Planes            June 2023
+
 
    Israel Means
    AT&T
@@ -4359,6 +4350,15 @@ Other Contributors
    Email: balajir@juniper.net
 
 
+   Reshma Das
+   Juniper Networks, Inc.
+   1133 Innovation Way,
+   Sunnyvale, CA 94089
+   United States of America
+   Email: dreshma@juniper.net
+
+
+
 
 
 
@@ -4368,14 +4368,6 @@ Other Contributors
 Vairavakkalai & VenkatarExpires 18 December 2023               [Page 78]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
-
-
-   Reshma Das
-   Juniper Networks, Inc.
-   1133 Innovation Way,
-   Sunnyvale, CA 94089
-   United States of America
-   Email: dreshma@juniper.net
 
 
    Rajesh M
@@ -4418,19 +4410,20 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
    Email: szarecki@google.com
 
 
+   Xiaohu Xu
+   Capitalonline.
+   Beijing
+   China
+   Email: xiaohu.xu@capitalonline.net
+
+
+
 
 
 
 Vairavakkalai & VenkatarExpires 18 December 2023               [Page 79]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
-
-
-   Xiaohu Xu
-   Capitalonline.
-   Beijing
-   China
-   Email: xiaohu.xu@capitalonline.net
 
 
 Acknowledgements
@@ -4467,6 +4460,13 @@ Authors' Addresses
    Sunnyvale, CA 94089
    United States of America
    Email: natv@juniper.net
+
+
+
+
+
+
+
 
 
 
