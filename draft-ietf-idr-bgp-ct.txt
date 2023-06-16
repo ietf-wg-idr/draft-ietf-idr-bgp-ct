@@ -5,7 +5,7 @@
 Network Working Group                              K. Vairavakkalai, Ed.
 Internet-Draft                                      N. Venkataraman, Ed.
 Intended status: Experimental                     Juniper Networks, Inc.
-Expires: 17 December 2023                                   15 June 2023
+Expires: 18 December 2023                                   16 June 2023
 
 
                      BGP Classful Transport Planes
@@ -53,7 +53,7 @@ Abstract
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023                [Page 1]
+Vairavakkalai & VenkatarExpires 18 December 2023                [Page 1]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -81,7 +81,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 17 December 2023.
+   This Internet-Draft will expire on 18 December 2023.
 
 Copyright Notice
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023                [Page 2]
+Vairavakkalai & VenkatarExpires 18 December 2023                [Page 2]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -150,10 +150,10 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
      15.3.  Limiting scope of visibility of PE loopback as PNHs  . .  28
    16. OAM considerations  . . . . . . . . . . . . . . . . . . . . .  28
    17. Applicability to Network Slicing  . . . . . . . . . . . . . .  29
-   18. SRv6 support  . . . . . . . . . . . . . . . . . . . . . . . .  29
+   18. SRv6 support  . . . . . . . . . . . . . . . . . . . . . . . .  30
    19. Illustration of BGP CT procedures in Inter AS option-C  . . .  30
      19.1.  Topology . . . . . . . . . . . . . . . . . . . . . . . .  30
-     19.2.  Service Layer route exchange . . . . . . . . . . . . . .  31
+     19.2.  Service Layer route exchange . . . . . . . . . . . . . .  32
      19.3.  Transport Layer route propagation  . . . . . . . . . . .  32
      19.4.  Data plane view  . . . . . . . . . . . . . . . . . . . .  35
        19.4.1.  Steady state . . . . . . . . . . . . . . . . . . . .  35
@@ -165,7 +165,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023                [Page 3]
+Vairavakkalai & VenkatarExpires 18 December 2023                [Page 3]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -221,7 +221,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023                [Page 4]
+Vairavakkalai & VenkatarExpires 18 December 2023                [Page 4]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -277,7 +277,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023                [Page 5]
+Vairavakkalai & VenkatarExpires 18 December 2023                [Page 5]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -333,7 +333,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023                [Page 6]
+Vairavakkalai & VenkatarExpires 18 December 2023                [Page 6]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -389,7 +389,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023                [Page 7]
+Vairavakkalai & VenkatarExpires 18 December 2023                [Page 7]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -445,7 +445,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023                [Page 8]
+Vairavakkalai & VenkatarExpires 18 December 2023                [Page 8]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -501,7 +501,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023                [Page 9]
+Vairavakkalai & VenkatarExpires 18 December 2023                [Page 9]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -557,7 +557,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 10]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 10]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -613,7 +613,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 11]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 11]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -669,7 +669,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 12]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 12]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -725,7 +725,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 13]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 13]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -781,7 +781,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 14]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 14]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -837,7 +837,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 15]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 15]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -893,7 +893,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 16]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 16]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -949,7 +949,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 17]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 17]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -1005,7 +1005,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 18]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 18]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -1061,7 +1061,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 19]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 19]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -1117,7 +1117,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 20]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 20]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -1173,7 +1173,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 21]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 21]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -1229,7 +1229,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 22]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 22]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -1285,7 +1285,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 23]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 23]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -1341,7 +1341,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 24]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 24]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -1397,7 +1397,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 25]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 25]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -1408,20 +1408,28 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
    table "A".  Further a second MPLS context table "B" is used to
    install label PVL1 with forwarding action "Swap VL1, Push TL1 towards
    PE2".  Forwarding semantic of label L1 in context table "A" is
-   installed as "Pop, Lookup in 'A'".  PE1 advertises the label stack
+   installed as "Pop, Lookup in 'B'".  PE1 advertises the label stack
    "PVL1, L1(outer)" in the MULTI_NH_ATTR to CE1.
 
    This ensures that if CE1 sends MPLS packet with a label stack that
-   was not advertised to the CE1, the packet will be dropped.  Also the
-   route for label L1 installed in MPLS context table can match on
-   'Bottom of stack' bit being zero, ensuring single label packets are
-   not accepted.
+   was not advertised to the CE1, the packet will be dropped.
 
-   However, the PE may not be able to perform any checks based on inner
-   payload in the MPLS packet since it performs label swap forwarding.
-   Such inner payload based checks may be offloaded to a downstream node
-   that forwards based on a full IP FIB.  These security aspects should
-   be considered when using MPLS enabled CE devices.
+   Further, the route for label L1 installed in MPLS context table "A"
+   can match on 'Bottom of stack' bit being 'zero', and label PVL1
+   installed in MPLS context table "B" can match on 'Bottom of stack'
+   bit being 'one', ensuring a MPLS packet is accepted from CE1 only if
+   it has no more than two labels in the label stack.
+
+   This forwarding setup gives Ingress Peer Engineering control to the
+   network, such that incoming traffic from a CE can be diverted to a
+   specific device in the network for further processing.
+
+   However, the PE itself may not be able to perform any checks based on
+   inner payload in the MPLS packet since it performs label swap
+   forwarding.  Such inner payload based checks may be offloaded to a
+   downstream node that forwards and processes inner payload, e.g. a IP
+   FIB router.  These security aspects should be considered when using
+   MPLS enabled CE devices.
 
 15.  Scaling considerations
 
@@ -1441,6 +1449,15 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 15.2.  Constrained distribution of PNHs to SNs (On Demand Nexthop)
 
+
+
+
+
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 26]
+
+Internet-Draft        BGP Classful Transport Planes            June 2023
+
+
       This section describes how the number of Protocol Nexthops
       advertised to a SN or BN can be constrained using BGP Classful
       Transport and Route Target Constraints (RTC) [RFC4684].
@@ -1450,13 +1467,6 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
       Where TC is the Transport Class identifier, and eSN is the IP-
       address used by SN as BGP nexthop in its service route
       advertisements.
-
-
-
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 26]
-
-Internet-Draft        BGP Classful Transport Planes            June 2023
-
 
       Note that such use of the IP address specific route target
       <eSN>:<TC> is optional in a BGP CT network.  It is required only
@@ -1497,6 +1507,13 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
       This mechanism provides "On Demand Nexthop" of BGP CT routes,
       which help with the scaling of MPLS forwarding state at SN and BN.
 
+
+
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 27]
+
+Internet-Draft        BGP Classful Transport Planes            June 2023
+
+
       However, the amount of state carried in RTC family may become
       proportional to the number of PNHs in the network.  To strike a
       balance, the RTC route advertisements for <Origin
@@ -1506,14 +1523,6 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
       Such a BN in the core of the network SHOULD import BGP CT routes
       with Transport-Target:0:<TC> and generate a RTC route for <Origin
       ASN>:0:<TC>/96, while not propagating the more specific RTC
-
-
-
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 27]
-
-Internet-Draft        BGP Classful Transport Planes            June 2023
-
-
       requests for specific PNHs.  This will let the BN learn transport
       routes to all eSN nodes.  But confine their propagation to
       ingress-SNs.
@@ -1546,6 +1555,21 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
    (with trailing 0 bits to make 32 bits in all) and a prefix length
    encoded as follows:
 
+
+
+
+
+
+
+
+
+
+
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 28]
+
+Internet-Draft        BGP Classful Transport Planes            June 2023
+
+
         0                   1                   2                   3
         0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
        +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -1558,17 +1582,6 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
        +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
                  Figure 2: Classful Transport IPv4 FEC
-
-
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 28]
-
-Internet-Draft        BGP Classful Transport Planes            June 2023
-
 
    The 'Target FEC Stack' sub-TLV for IPv6 Classful Transport has a Sub-
    Type of [TBD], and a length of 25.  The Value field consists of the
@@ -1606,6 +1619,13 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
    Further, the Network Slice Controller can use the Mapping Community
    on the service route to map traffic to the desired Transport Slice.
 
+
+
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 29]
+
+Internet-Draft        BGP Classful Transport Planes            June 2023
+
+
 18.  SRv6 support
 
    This section describes how BGP CT family (SAFI 76) may be used to set
@@ -1617,14 +1637,6 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
    End.B6.Encaps).  [SRV6-INTER-DOMAIN] specifies the SRv6 Endpoint
    behaviors (END.REPLACE, END.REPLACEB6 and END.DB6).  These are
    leveraged for BGP CT routes with SRv6 data plane.
-
-
-
-
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 29]
-
-Internet-Draft        BGP Classful Transport Planes            June 2023
-
 
    The BGP Classful Transport route update for SRv6 MUST include an
    attribute containing SRv6 SID information.  This may be either the
@@ -1663,6 +1675,13 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
    41.41.41.41  ------------ Traffic Direction ---------->   31.31.31.31
 
+
+
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 30]
+
+Internet-Draft        BGP Classful Transport Planes            June 2023
+
+
                    Figure 4: Multi-Domain BGP CT Network
 
    This example shows a provider network that consists of two Autonomous
@@ -1674,13 +1693,6 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
    AS2 is further divided into two regions.  So, there are three tunnel
    domains in provider space.  AS1 uses ISIS Flex-Algo intra-domain
    tunnels, whereas AS2 uses RSVP-TE intra-domain tunnels.
-
-
-
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 30]
-
-Internet-Draft        BGP Classful Transport Planes            June 2023
-
 
    The network has two Transport classes: Gold with transport class id
    100, Bronze with transport class id 200.  These transport classes are
@@ -1716,6 +1728,16 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
    These tunnels are either provisioned or auto-discovered to belong to
    transport class 100 or 200.
 
+
+
+
+
+
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 31]
+
+Internet-Draft        BGP Classful Transport Planes            June 2023
+
+
 19.2.  Service Layer route exchange
 
    Service nodes PE11, PE12 negotiate service families (SAFIs 1, 128) on
@@ -1723,20 +1745,6 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
    these service routes with nexthop unchanged over a multihop EBGP
    session between the two AS.  PE25 negotiates service families (SAFIs
    1, 128) with RR26.
-
-
-
-
-
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 31]
-
-Internet-Draft        BGP Classful Transport Planes            June 2023
-
 
    The PEs see each other as nexthop in the BGP Update for service
    family (SAFIs 1, 128) routes.  Addpath send, receive is enabled on
@@ -1778,6 +1786,14 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
    service routes.  In this example, both PEs participate in transport
    classes Gold and Bronze.  The protocol procedures are explained using
    Gold SLA plane and the Bronze SLA plane is used to highlight the path
+
+
+
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 32]
+
+Internet-Draft        BGP Classful Transport Planes            June 2023
+
+
    hiding aspects.
 
    PE11 is provisioned with transport class 100, RD value 1.1.1.1:10 and
@@ -1786,14 +1802,6 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
    tunnels.  Similarly, PE12 is provisioned with transport class 100, RD
    value 1.1.1.2:10 and a transport-target:0:100 for Gold tunnels.  And
    transport class 200, RD value 1.1.1.2:20 with transport-target:0:200
-
-
-
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 32]
-
-Internet-Draft        BGP Classful Transport Planes            June 2023
-
-
    for Bronze tunnels.  Note that in this example, the BGP CT routes
    carry only the transport class route target, and no IP address format
    route target.
@@ -1828,6 +1836,20 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
    installed at ASBR13 for B-L1 with a nexthop pointing to
    ASBR13_to_PE11_gold tunnel.
 
+
+
+
+
+
+
+
+
+
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 33]
+
+Internet-Draft        BGP Classful Transport Planes            June 2023
+
+
    Similarly, ASBR14 also receives BGP CT route for 1.1.1.1:10:1.1.1.1
    from PE11 and it resolves over the tunnel ASBR14_to_PE11_gold.  The
    route is then readvertised by ASBR14 in BGP CT family to ASBRs
@@ -1835,20 +1857,6 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
    same NLRI RD prefix 1.1.1.1:10:1.1.1.1, Label B-L2, nexthop self, and
    transport-target:0:100.  MPLS swap route is installed at ASBR14 for
    B-L1 with a nexthop pointing to ASBR14_to_PE11_gold tunnel.
-
-
-
-
-
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 33]
-
-Internet-Draft        BGP Classful Transport Planes            June 2023
-
 
    In the Bronze plane, BGP CT route with Bronze SLA to endpoint PE11 is
    originated by PE11 with a NLRI containing RD prefix
@@ -1893,15 +1901,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-
-
-
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 34]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 34]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -1957,7 +1957,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 35]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 35]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -2013,7 +2013,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 36]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 36]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -2069,7 +2069,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 37]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 37]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -2125,7 +2125,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 38]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 38]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -2181,7 +2181,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 39]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 39]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -2237,7 +2237,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 40]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 40]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -2293,7 +2293,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 41]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 41]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -2349,7 +2349,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 42]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 42]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -2405,7 +2405,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 43]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 43]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -2461,7 +2461,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 44]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 44]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -2517,7 +2517,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 45]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 45]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -2573,7 +2573,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 46]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 46]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -2629,7 +2629,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 47]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 47]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -2685,7 +2685,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 48]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 48]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -2741,7 +2741,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 49]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 49]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -2797,7 +2797,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 50]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 50]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -2853,7 +2853,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 51]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 51]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -2884,7 +2884,12 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
    security can be provided against MPLS label spoofing by using MPLS
    context tables as described in MPLS enabled CE (Section 14.2).  Such
    that only MPLS traffic with labels advertised to the BGP speaker are
-   allowed to forward.
+   allowed to forward.  However, the PE may not be able to perform any
+   checks based on inner payload in the MPLS packet since it performs
+   label swap forwarding.  Such inner payload based checks may be
+   offloaded to a downstream node that forwards and processes inner
+   payload, e.g. a IP FIB router.  These security aspects should be
+   considered when using MPLS enabled CE devices
 
 23.  References
 
@@ -2901,18 +2906,18 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
               DOI 10.17487/RFC2474, December 1998,
               <https://www.rfc-editor.org/info/rfc2474>.
 
+
+
+
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 52]
+
+Internet-Draft        BGP Classful Transport Planes            June 2023
+
+
    [RFC4271]  Rekhter, Y., Ed., Li, T., Ed., and S. Hares, Ed., "A
               Border Gateway Protocol 4 (BGP-4)", RFC 4271,
               DOI 10.17487/RFC4271, January 2006,
               <https://www.rfc-editor.org/info/rfc4271>.
-
-
-
-
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 52]
-
-Internet-Draft        BGP Classful Transport Planes            June 2023
-
 
    [RFC4360]  Sangli, S., Tappan, D., and Y. Rekhter, "BGP Extended
               Communities Attribute", RFC 4360, DOI 10.17487/RFC4360,
@@ -2958,17 +2963,17 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
 
+
+
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 53]
+
+Internet-Draft        BGP Classful Transport Planes            June 2023
+
+
    [RFC8212]  Mauch, J., Snijders, J., and G. Hankins, "Default External
               BGP (EBGP) Route Propagation Behavior without Policies",
               RFC 8212, DOI 10.17487/RFC8212, July 2017,
               <https://www.rfc-editor.org/info/rfc8212>.
-
-
-
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 53]
-
-Internet-Draft        BGP Classful Transport Planes            June 2023
-
 
    [RFC8277]  Rosen, E., "Using BGP to Bind MPLS Labels to Address
               Prefixes", RFC 8277, DOI 10.17487/RFC8277, October 2017,
@@ -3016,12 +3021,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 54]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 54]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -3077,7 +3077,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 55]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 55]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -3133,7 +3133,7 @@ A.1.1.  Topology
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 56]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 56]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -3189,7 +3189,7 @@ A.1.3.  Service Layer route exchange
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 57]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 57]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -3245,7 +3245,7 @@ A.2.2.  Transport Layer
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 58]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 58]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -3301,7 +3301,7 @@ A.2.3.  Service Layer route exchange
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 59]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 59]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -3357,7 +3357,7 @@ A.3.2.  Transport Layer
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 60]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 60]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -3413,7 +3413,7 @@ A.3.3.  Service Layer route exchange
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 61]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 61]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -3469,7 +3469,7 @@ Appendix B.  Why reuse RFC 8277 and RFC 4364?
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 62]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 62]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -3525,7 +3525,7 @@ B.1.  Update packing considerations
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 63]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 63]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -3581,7 +3581,7 @@ Appendix C.  Scaling using BGP MPLS Namespaces
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 64]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 64]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -3637,7 +3637,7 @@ C.2.  Topology
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 65]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 65]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -3693,7 +3693,7 @@ C.4.  Service Forwarding Helper, and changes to transport layer.
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 66]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 66]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -3749,7 +3749,7 @@ C.6.  Changes to Service Layer route exchange
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 67]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 67]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -3805,7 +3805,7 @@ D.1.  SID stacking approach
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 68]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 68]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -3861,7 +3861,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 69]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 69]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -3917,7 +3917,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 70]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 70]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -3973,7 +3973,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 71]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 71]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -4029,7 +4029,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 72]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 72]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -4085,7 +4085,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 73]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 73]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -4141,7 +4141,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 74]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 74]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -4197,7 +4197,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 75]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 75]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -4253,7 +4253,7 @@ D.2.  Color encoded Service SID (CPR) approach
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 76]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 76]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -4309,7 +4309,7 @@ D.2.1.  Analysis of CPR approach
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 77]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 77]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -4365,7 +4365,7 @@ Other Contributors
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 78]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 78]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -4421,7 +4421,7 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 
 
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 79]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 79]
 
 Internet-Draft        BGP Classful Transport Planes            June 2023
 
@@ -4435,13 +4435,17 @@ Internet-Draft        BGP Classful Transport Planes            June 2023
 
 Acknowledgements
 
-   The authors thank Jeff Haas, John Scudder, Susan Hares, Moses
-   Nagarajah, Navaneetha Krishnan, Ravi M R, Chandrasekar Ramachandran,
-   Shradha Hegde, Abhishek Chakraborty, Richard Roberts, Krzysztof
-   Szarkowicz, John E Drake, Srihari Sangli, Vijay Kestur, Santosh
-   Kolenchery, Robert Raszuk, Ahmed Darwish, Aravind Srinivas Srinivasa
-   Prabhakar, Moshiko Nayman, Chris Trip for the valuable discussions
-   and review comments.
+   The authors thank Jeff Haas, John Scudder, Susan Hares, Dongjie
+   (Jimmy), Moses Nagarajah, Jeffrey (Zhaohui) Zhang, Joel Harpern,
+   Jingrong Xie, Navaneetha Krishnan, Ravi M R, Chandrasekar
+   Ramachandran, Shradha Hegde, Sunil Malali, William J Britto, R
+   Shilpa, Ashish Kumar (FE), Sunil Kumar Rawat, Abhishek Chakraborty,
+   Richard Roberts, Krzysztof Szarkowicz, John E Drake, Srihari Sangli,
+   Jim Uttaro, Luay Jalil, Keyur Patel, Ketan Talaulikar, Dhananjaya
+   Rao, Swadesh Agarwal, Robert Raszuk, Ahmed Darwish, Aravind Srinivas
+   Srinivasa Prabhakar, Moshiko Nayman, Chris Trip, Vijay Kestur,
+   Santosh Kolenchery for all the valuable discussions, constructive
+   criticisms, and review comments.
 
    The decision to not reuse SAFI 128 and create a new address-family to
    carry these transport-routes was based on suggestion made by Richard
@@ -4473,8 +4477,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-Vairavakkalai & VenkatarExpires 17 December 2023               [Page 80]
+Vairavakkalai & VenkatarExpires 18 December 2023               [Page 80]
