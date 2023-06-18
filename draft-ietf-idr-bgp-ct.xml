@@ -249,6 +249,8 @@
 
       <t>PNH : Protocol-Nexthop address carried in a BGP Update message.</t>
 
+      <t>MNH : BGP MultiNexthop attribute.</t>
+
       <t>FEC : Forwarding Equivalence Class.</t>
 
       <t>RSVP-TE : Resource Reservation Protocol - Traffic Engineering.</t>
@@ -1048,16 +1050,17 @@
         <t>One such indication can be in form of DSCP code point (<xref
         target="RFC2474">RFC2474</xref>) in IP header.</t>
 
-        <t>In RFC2474, a Forwarding Class maps to a PHB. The Transport class
-        construct is a PHB at transport layer.</t>
+        <t>In RFC2474, a Forwarding Class Selector maps to a PHB (Per-hop
+        Behavior). The Transport class construct is a PHB at transport
+        layer.</t>
 
         <t>Let PE1 be configured to map DSCP1 to Gold Transport class, and
         DSCP2 to Bronze Transport class. Based on the DSCP code point received
-        on the IP traffic from CE1, the PE1 forwards the IP packet over a Gold
-        or Bronze tunnel. Thus, the forwarding is not based on just the
+        on the IP traffic from CE1, PE1 forwards the IP packet over a Gold or
+        Bronze tunnel. Thus, the forwarding is not based on just the
         destination IP address, but also the DSCP code point. This is known as
         Class Based Forwarding (CBF). Today CBF is configured at the PE1
-        devices and CE1 doesn't receive any indication in BGP signaling
+        device roles and CE1 doesn't receive any indication in BGP signaling
         regarding what DSCP code points are being offered by the provider
         network.</t>
 
@@ -1066,42 +1069,60 @@
         extend the PE-CE BGP signalling to communicate such information to the
         CE1. In the above example, the MNH contains two Nexthop Legs,
         described by two Forwarding Instruction TLVs. Each Nexthop Leg
-        contains the PE1 nexthop address in Endpoint Identifier TLV (<xref
-        target="MULTI-NH-ATTR"/> Sec 5.4.1), the Transport class ID (Color)
-        (<xref target="MULTI-NH-ATTR"/> Sec 5.4.2.2.) for Gold, Bronze
-        respectively, and associated DSCP code-point (<xref
-        target="MULTI-NH-ATTR"/> Sec 5.4.3.4.) to the CE1 device. This allows
-        the CE to discover what transport classes exist in the provider
-        network, and which DSCP codepoint to encode so that traffic is
-        forwarded using the desired transport class.</t>
+        contains PE1's peering self address in <xref target="MNH-EP">Endpoint
+        Identifier TLV</xref> , the color Gold or Bronze encoded in the <xref
+        target="MNH-TC">Transport class ID TLV</xref> , and associated DSCP
+        code point indicating Gold or Bronze transport class encoded in the
+        <xref target="MNH-ENCAP-DSCP">Payload Encapsulation Info TLV</xref> .
+        This allows the CE to discover what transport classes exist in the
+        provider network, and which DSCP codepoint to encode so that traffic
+        is forwarded using the desired transport class in the provided
+        network.</t>
       </section>
 
       <section anchor="MplsCE" title="MPLS enabled CE">
         <t>If the PE-CE link is MPLS enabled, a distinct MPLS label can also
-        be used to identify the transport class. Consider an ingress PE1
-        receiving a VPN prefix RD:Pfx1 received with VPN label VL1, nexthop as
-        PE2 and a mapping community containing 'Transport class ID'. PE1 can
-        allocate a MPLS Label L1 that Swaps to BGP CT label TL1 in forwarding.
-        And PE1 advertises the label stack "VL1, L1(outer)" in the
-        MULTI_NH_ATTR to CE1. When MPLS packet with label L1 is received from
-        CE1, it is Swapped with transport label TL1. PE1 may thus do
-        forwarding based on MPLS label without performing any IP lookup. This
-        allows for PE1 to be a low IP FIB device and still support CBF. The
-        number of MPLS Labels allocated by PE1 will be proportional to the
-        number of unique BGP CT labels it receives.</t>
+        be used to express Intent in data packets from CE. Enabling MPLS
+        forwarding on PE-CE links comes with some security implications. This
+        section gives details on these aspects. </t>
+
+        <t>Consider the ingress PE1 receiving a VPN prefix RD:Pfx1 received
+        with VPN label VL1, nexthop as PE2 and a mapping community containing
+        TC1 as 'Transport class ID'. PE1 can allocate a MPLS Label PVL1 for
+        the tuple "VPN Label, PNH Address, Transport class ID" and advertise
+        to CE1. </t>
+
+        <t>Label PVL1 may identifies a service function at any node in the
+        network, e.g. a Firewall device or egress node PE2. And, for the same
+        service prefix, a distinct label may be advertised to different CEs,
+        such that incoming traffic from different CEs to the same service
+        prefix can be diverted to a distinct devices in the network for
+        further processing. This provides Ingress Peer Engineering control to
+        the network.</t>
+
+        <t>PE1 installs a MPLS FIB route for PVL1 with nexthop as "Swap VL1,
+        Push TL1 towards PE2". TL1 is the BGP CT label received for the tuple
+        'PE2, TC1'. In forwarding, when MPLS packet with label PVL1 is
+        received from CE1, PVL1 Swaps to label VL1 and pushes the BGP CT label
+        TL1. PE1 advertises the label "PVL1" in the MULTI_NH_ATTR to CE1. PE1
+        forwards based on MPLS label without performing any IP lookup. This
+        allows for PE1 to be a low IP FIB device and still support CBF by
+        using MPLS Label inferred PHB. The number of MPLS Labels consumed at
+        PE1 for this approach will be proportional to the number of Service
+        functions and Intents that are exposed to CE1.</t>
 
         <t>A <xref target="MULTI-NH-ATTR">BGP MultiNexthop Attribute</xref> is
         attached to a SAFI 1 service route to convey the MPLS Label
         information to CE1. In the above example, the MNH contains two Nexthop
         Legs, described by two Forwarding Instruction TLVs. Each Nexthop Leg
-        contains the PE1 nexthop address in Endpoint Identifier TLV (<xref
-        target="MULTI-NH-ATTR"/> Sec 5.5.1.), the Transport class ID (Color)
-        (<xref target="MULTI-NH-ATTR"/> Sec 5.5.2.2.) for Gold, Bronze
-        respectively, and associated MPLS Label stacks "VL1, L1" and "VL2, L2"
-        using (<xref target="MULTI-NH-ATTR"/> Sec 5.5.3.1.) to the CE1 device.
-        This allows the CE to discover what transport classes exist in the
-        provider network, and which MPLS Label to encode so that traffic is
-        forwarded using the desired transport class.</t>
+        contains PE1's peering self address in <xref target="MNH-EP">Endpoint
+        Identifier TLV</xref> , the color Gold or Bronze encoded in the <xref
+        target="MNH-TC">Transport class ID TLV</xref> , and associated MPLS
+        Label "PVL1" or "PVL2" encoded in the <xref
+        target="MNH-ENCAP-MPLS">Payload Encapsulation Info TLV</xref> . This
+        allows the CE to discover what transport classes exist in the provider
+        network, and which MPLS Label to encode so that traffic is forwarded
+        using the desired transport class.</t>
 
         <section title="Secure MPLS forwarding on inter-AS link">
           <t>The MPLS enabled PE-CE link is considered connecting to an
@@ -1110,26 +1131,17 @@
           tables".</t>
 
           <t>The PE1-CE1 interface can be confined to a specific MPLS context
-          table "A" corresponding to the BGP peer. Such that only the route
-          for transport labels advertised to CE1 are installed in MPLS context
-          table "A". Further a second MPLS context table "B" is used to
-          install label PVL1 with forwarding action "Swap VL1, Push TL1
-          towards PE2". Forwarding semantic of label L1 in context table "A"
-          is installed as "Pop, Lookup in 'B'". PE1 advertises the label stack
-          "PVL1, L1(outer)" in the MULTI_NH_ATTR to CE1.</t>
+          table "A" corresponding to the BGP peer. Such that only the routes
+          for labels advertised to CE1 are installed in MPLS context table
+          "A".</t>
 
-          <t>This ensures that if CE1 sends MPLS packet with a label stack
-          that was not advertised to the CE1, the packet will be dropped.</t>
+          <t>This ensures that if CE1 sends MPLS packet with a label that was
+          not advertised to the CE1, the packet will be dropped.</t>
 
-          <t>Further, the route for label L1 installed in MPLS context table
-          "A" can match on 'Bottom of stack' bit being 'zero', and label PVL1
-          installed in MPLS context table "B" can match on 'Bottom of stack'
-          bit being 'one', ensuring a MPLS packet is accepted from CE1 only if
-          it has no more than two labels in the label stack.</t>
-
-          <t>This forwarding setup gives Ingress Peer Engineering control to
-          the network, such that incoming traffic from a CE can be diverted to
-          a specific device in the network for further processing.</t>
+          <t>Further, the routes for labels PVL1, PVL2 installed in MPLS
+          context table "A" can match on 'Bottom of stack' bit being 'one',
+          ensuring a MPLS packet is accepted from CE1 only if it has no more
+          than one label in the label stack.</t>
 
           <t>However, the PE itself may not be able to perform any checks
           based on inner payload in the MPLS packet since it performs label
@@ -2622,6 +2634,54 @@ Registry Name: BGP Transitive Extended Community Types
                  target="https://datatracker.ietf.org/doc/html/draft-kaliraj-idr-multinexthop-attribute-05">
         <front>
           <title abbrev="MULTI-NH-ATTR">BGP MultiNexthop Attribute</title>
+
+          <author fullname="Kaliraj Vairavakkalai" initials="" role="editor"
+                  surname="Vairavakkalai"/>
+
+          <date day="14" month="06" year="2023"/>
+        </front>
+      </reference>
+
+      <reference anchor="MNH-TC"
+                 target="https://www.ietf.org/archive/id/draft-kaliraj-idr-multinexthop-attribute-05.html#section-5.4.2.2">
+        <front>
+          <title abbrev="MNH-TC">BGP MultiNexthop Attribute</title>
+
+          <author fullname="Kaliraj Vairavakkalai" initials="" role="editor"
+                  surname="Vairavakkalai"/>
+
+          <date day="14" month="06" year="2023"/>
+        </front>
+      </reference>
+
+      <reference anchor="MNH-EP"
+                 target="https://www.ietf.org/archive/id/draft-kaliraj-idr-multinexthop-attribute-05.html#section-5.4.1">
+        <front>
+          <title abbrev="MNH-EP">BGP MultiNexthop Attribute</title>
+
+          <author fullname="Kaliraj Vairavakkalai" initials="" role="editor"
+                  surname="Vairavakkalai"/>
+
+          <date day="14" month="06" year="2023"/>
+        </front>
+      </reference>
+
+      <reference anchor="MNH-ENCAP-DSCP"
+                 target="https://www.ietf.org/archive/id/draft-kaliraj-idr-multinexthop-attribute-05.html#section-5.4.3.4">
+        <front>
+          <title abbrev="MNH-ENCAP-DSCP">BGP MultiNexthop Attribute</title>
+
+          <author fullname="Kaliraj Vairavakkalai" initials="" role="editor"
+                  surname="Vairavakkalai"/>
+
+          <date day="14" month="06" year="2023"/>
+        </front>
+      </reference>
+
+      <reference anchor="MNH-ENCAP-MPLS"
+                 target="https://www.ietf.org/archive/id/draft-kaliraj-idr-multinexthop-attribute-05.html#section-5.4.3.1">
+        <front>
+          <title abbrev="MNH-ENCAP-MPLS">BGP MultiNexthop Attribute</title>
 
           <author fullname="Kaliraj Vairavakkalai" initials="" role="editor"
                   surname="Vairavakkalai"/>
