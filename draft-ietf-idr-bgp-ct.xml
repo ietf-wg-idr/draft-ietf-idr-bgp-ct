@@ -10,7 +10,7 @@
 <?rfc inline="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="exp" docName="draft-ietf-idr-bgp-ct-06" ipr="trust200902">
+<rfc category="exp" docName="draft-ietf-idr-bgp-ct-07" ipr="trust200902">
   <front>
     <title abbrev="BGP Classful Transport Planes">BGP Classful Transport
     Planes</title>
@@ -57,7 +57,7 @@
       </address>
     </author>
 
-    <date day="17" month="06" year="2023"/>
+    <date day="20" month="06" year="2023"/>
 
     <abstract>
       <t>This document specifies a mechanism, referred to as "Intent Driven
@@ -3649,12 +3649,6 @@ Registry Name: BGP Transitive Extended Community Types
           service routes in the same VRF are with different intents, a unique
           service SID would need to be allocated for each intent associated
           with the VRF.</t>
-
-          <t>When an egress SN signals a change of Intent on service routes,
-          that will involve per service route convergence in forwarding at the
-          ingress SN because the Intent is encoded in the service SID. This
-          forwarding convergence is implementation specific and is outside the
-          scope of this document.</t>
 
           <t>However, the CPR mechanism preserves BGP PIC (Prefix scale
           Independent Convergence) for the egress SN failure scenario where
