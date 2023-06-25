@@ -50,6 +50,17 @@ Topology:
          - PE1-PE3 are originating BGP-CT routes for 387105 endpoints in 5 transport classes.
          - RR1 reflects the 1.9M routes to PE0
 
+Route Mix:
+===========
+
+  Transport route mix is used, each PE originates BGP CT transport routes for
+  endpoints (e.g. loopback) that are used as nexthop in BGP service route
+  updates. These BGP CT routes belong to 5 transport classes, hence each route
+  is advertised with one of the 5 transport-target extended communities, as
+  describe above, which impacts packing. Routes with same transport-target may
+  be packed together. Routes with dissimilar transport-target will not be be
+  packed in same Update.
+
 Test Methodology:
 =================
 
@@ -100,7 +111,7 @@ Image: crpd:23.1I20221101_2159_kaliraj
     5               5              387105          1935480          7851          75 sec
 
 
-  BGO CT IPv6.
+  BGP CT IPv6.
 
   Iteration       Num-TCs        Num-Endpoints    Total-Routes     In-Updates     Time
   -----------+----------------+----------------+---------------+---------------+-------
@@ -143,3 +154,13 @@ Junos Routing Image: crpd:22.4R1.5
     7         5         387105          1935480          13832         55507497    63 sec (tcp-nodelay)
     8         5         387105          1935480          13831         55507402    62 sec (tcp-nodelay)
 
+ Document History
+ =================
+
+ ----------+------------+-------------------------+----------------------------
+  Version       Date             Author                Comment
+ ----------+------------+-------------------------+----------------------------
+   1.0       12/22/2022   Kaliraj Vairavakkalai     First cut
+ ----------+------------+-------------------------+----------------------------
+   1.1       06/25/2023   Kaliraj Vairavakkalai     Sue Hares review comment
+ ----------+------------+-------------------------+----------------------------
