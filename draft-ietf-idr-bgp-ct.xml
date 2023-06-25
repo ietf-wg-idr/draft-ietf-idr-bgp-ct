@@ -10,7 +10,7 @@
 <?rfc inline="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="exp" docName="draft-ietf-idr-bgp-ct-07" ipr="trust200902">
+<rfc category="exp" docName="draft-ietf-idr-bgp-ct-08" ipr="trust200902">
   <front>
     <title abbrev="BGP Classful Transport Planes">BGP Classful Transport
     Planes</title>
@@ -57,7 +57,7 @@
       </address>
     </author>
 
-    <date day="20" month="06" year="2023"/>
+    <date day="25" month="06" year="2023"/>
 
     <abstract>
       <t>This document specifies a mechanism, referred to as "Intent Driven
@@ -1084,13 +1084,13 @@
         <t>If the PE-CE link is MPLS enabled, a distinct MPLS label can also
         be used to express Intent in data packets from CE. Enabling MPLS
         forwarding on PE-CE links comes with some security implications. This
-        section gives details on these aspects. </t>
+        section gives details on these aspects.</t>
 
         <t>Consider the ingress PE1 receiving a VPN prefix RD:Pfx1 received
         with VPN label VL1, nexthop as PE2 and a mapping community containing
         TC1 as 'Transport class ID'. PE1 can allocate a MPLS Label PVL1 for
         the tuple "VPN Label, PNH Address, Transport class ID" and advertise
-        to CE1. </t>
+        to CE1.</t>
 
         <t>Label PVL1 may identifies a service function at any node in the
         network, e.g. a Firewall device or egress node PE2. And, for the same
@@ -2503,33 +2503,38 @@ Registry Name: BGP Transitive Extended Community Types
       </reference>
 
       <reference anchor="SRTE"
-                 target="https://tools.ietf.org/html/draft-ietf-idr-segment-routing-te-policy-08">
+                 target="https://tools.ietf.org/html/draft-ietf-idr-segment-routing-te-policy-20">
         <front>
           <title>Advertising Segment Routing Policies in BGP</title>
 
-          <author fullname="Previdi" initials="S" role="editor"
-                  surname="Previdi"/>
+          <author fullname="Ketan" initials="" role="editor"
+                  surname="Talaulikar"/>
 
-          <date day="18" month="11" year="2019"/>
+          <author fullname="Previdi" initials="S" surname="Previdi"/>
+
+          <date day="28" month="01" year="2023"/>
         </front>
       </reference>
     </references>
 
     <references title="Informative References">
       <reference anchor="RTC-Ext"
-                 target="https://tools.ietf.org/html/draft-zzhang-idr-bgp-rt-constrains-extension-00#section-2">
+                 target="https://tools.ietf.org/html/draft-zzhang-idr-bgp-rt-constrains-extension-02#section-2">
         <front>
-          <title abbrev="RTC-Ext">Route Target Constrain Extensi</title>
+          <title abbrev="RTC-Ext">Generic Route Constraint Distribution
+          Mechanism for BGP</title>
 
           <author fullname="Zhaohui" initials="Z" role="editor"
                   surname="Zhang"/>
 
-          <date day="12" month="07" year="2020"/>
+          <author fullname="Jeffrey" initials="" role="editor" surname="Haas"/>
+
+          <date day="21" month="03" year="2021"/>
         </front>
       </reference>
 
       <reference anchor="Intent-Routing-Color"
-                 target="https://datatracker.ietf.org/doc/html/draft-hr-spring-intentaware-routing-using-color-00#section-6.3.2">
+                 target="https://datatracker.ietf.org/doc/html/draft-hr-spring-intentaware-routing-using-color-01#section-6.3.2">
         <front>
           <title abbrev="Intent-Routing-Color">Intent-aware Routing using
           Color</title>
@@ -2537,7 +2542,7 @@ Registry Name: BGP Transitive Extended Community Types
           <author fullname="Shraddha" initials="" role="editor"
                   surname="Hegde"/>
 
-          <date day="14" month="07" year="2022"/>
+          <date day="13" month="03" year="2022"/>
         </front>
       </reference>
 
@@ -2550,12 +2555,15 @@ Registry Name: BGP Transitive Extended Community Types
           <author fullname="Balaji" initials="" role="editor"
                   surname="Rajagopalan"/>
 
-          <date day="15" month="01" year="2021"/>
+          <author fullname="Vishnu" initials="Pavan" role="editor"
+                  surname="Beeram"/>
+
+          <date day="03" month="01" year="2023"/>
         </front>
       </reference>
 
       <reference anchor="BGP-CT-UPDATE-PACKING-TEST"
-                 target="https://raw.githubusercontent.com/ietf-wg-idr/draft-ietf-idr-bgp-ct/main/update-packing-test-results.txt">
+                 target="https://raw.githubusercontent.com/ietf-wg-idr/draft-ietf-idr-bgp-ct/1a75d4d10d4df0f1fd7dcc041c2c868704b092c7/update-packing-test-results.txt">
         <front>
           <title abbrev="BGP-CT-UPDATE-PACKING-TEST">BGP CT Update packing
           Test Results</title>
@@ -2563,7 +2571,7 @@ Registry Name: BGP Transitive Extended Community Types
           <author fullname="Kaliraj" initials="" role="editor"
                   surname="Vairavakkalai"/>
 
-          <date day="23" month="11" year="2022"/>
+          <date day="25" month="06" year="2023"/>
         </front>
       </reference>
 
@@ -2576,7 +2584,7 @@ Registry Name: BGP Transitive Extended Community Types
           <author fullname="Kaliraj" initials="" role="editor"
                   surname="Vairavakkalai"/>
 
-          <date day="11" month="06" year="2021"/>
+          <date day="07" month="08" year="2023"/>
         </front>
       </reference>
 
@@ -2594,14 +2602,14 @@ Registry Name: BGP Transitive Extended Community Types
       </reference>
 
       <reference anchor="SRV6-INTER-DOMAIN"
-                 target="https://datatracker.ietf.org/doc/html/draft-salih-spring-srv6-inter-domain-sids-02">
+                 target="https://datatracker.ietf.org/doc/html/draft-salih-spring-srv6-inter-domain-sids-03">
         <front>
           <title abbrev="SRV6-INTER-DOMAIN">SRv6 inter-domain mapping
           SIDs</title>
 
           <author fullname="Salih" initials="" role="editor" surname="K A"/>
 
-          <date day="02" month="03" year="2022"/>
+          <date day="23" month="06" year="2023"/>
         </front>
       </reference>
 
@@ -2638,7 +2646,7 @@ Registry Name: BGP Transitive Extended Community Types
           <author fullname="Kaliraj Vairavakkalai" initials="" role="editor"
                   surname="Vairavakkalai"/>
 
-          <date day="14" month="06" year="2023"/>
+          <date day="17" month="06" year="2023"/>
         </front>
       </reference>
 
@@ -2650,7 +2658,7 @@ Registry Name: BGP Transitive Extended Community Types
           <author fullname="Kaliraj Vairavakkalai" initials="" role="editor"
                   surname="Vairavakkalai"/>
 
-          <date day="14" month="06" year="2023"/>
+          <date day="17" month="06" year="2023"/>
         </front>
       </reference>
 
@@ -2662,7 +2670,7 @@ Registry Name: BGP Transitive Extended Community Types
           <author fullname="Kaliraj Vairavakkalai" initials="" role="editor"
                   surname="Vairavakkalai"/>
 
-          <date day="14" month="06" year="2023"/>
+          <date day="17" month="06" year="2023"/>
         </front>
       </reference>
 
@@ -2674,7 +2682,7 @@ Registry Name: BGP Transitive Extended Community Types
           <author fullname="Kaliraj Vairavakkalai" initials="" role="editor"
                   surname="Vairavakkalai"/>
 
-          <date day="14" month="06" year="2023"/>
+          <date day="17" month="06" year="2023"/>
         </front>
       </reference>
 
@@ -2686,7 +2694,7 @@ Registry Name: BGP Transitive Extended Community Types
           <author fullname="Kaliraj Vairavakkalai" initials="" role="editor"
                   surname="Vairavakkalai"/>
 
-          <date day="14" month="06" year="2023"/>
+          <date day="17" month="06" year="2023"/>
         </front>
       </reference>
     </references>
@@ -3909,13 +3917,14 @@ Registry Name: BGP Transitive Extended Community Types
       <t>The authors thank Jeff Haas, John Scudder, Susan Hares, Dongjie
       (Jimmy), Moses Nagarajah, Jeffrey (Zhaohui) Zhang, Joel Harpern,
       Jingrong Xie, Navaneetha Krishnan, Ravi M R, Chandrasekar Ramachandran,
-      Shradha Hegde, Sunil Malali, William J Britto, R Shilpa, Ashish Kumar
-      (FE), Sunil Kumar Rawat, Abhishek Chakraborty, Richard Roberts,
-      Krzysztof Szarkowicz, John E Drake, Srihari Sangli, Jim Uttaro, Luay
-      Jalil, Keyur Patel, Ketan Talaulikar, Dhananjaya Rao, Swadesh Agarwal,
-      Robert Raszuk, Ahmed Darwish, Aravind Srinivas Srinivasa Prabhakar,
-      Moshiko Nayman, Chris Trip, Vijay Kestur, Santosh Kolenchery for all the
-      valuable discussions, constructive criticisms, and review comments.</t>
+      Shradha Hegde, Colby Barth, Vishnu Pavan Beeram, Sunil Malali, William J
+      Britto, R Shilpa, Ashish Kumar (FE), Sunil Kumar Rawat, Abhishek
+      Chakraborty, Richard Roberts, Krzysztof Szarkowicz, John E Drake,
+      Srihari Sangli, Jim Uttaro, Luay Jalil, Keyur Patel, Ketan Talaulikar,
+      Dhananjaya Rao, Swadesh Agarwal, Robert Raszuk, Ahmed Darwish, Aravind
+      Srinivas Srinivasa Prabhakar, Moshiko Nayman, Chris Trip, Vijay Kestur,
+      Santosh Kolenchery for all the valuable discussions, constructive
+      criticisms, and review comments.</t>
 
       <t>The decision to not reuse SAFI 128 and create a new address-family to
       carry these transport-routes was based on suggestion made by Richard
