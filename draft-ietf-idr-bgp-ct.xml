@@ -10,7 +10,7 @@
 <?rfc inline="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="exp" docName="draft-ietf-idr-bgp-ct-08" ipr="trust200902">
+<rfc category="exp" docName="draft-ietf-idr-bgp-ct-09" ipr="trust200902">
   <front>
     <title abbrev="BGP Classful Transport Planes">BGP Classful Transport
     Planes</title>
@@ -57,7 +57,7 @@
       </address>
     </author>
 
-    <date day="25" month="06" year="2023"/>
+    <date day="26" month="06" year="2023"/>
 
     <abstract>
       <t>This document specifies a mechanism, referred to as "Intent Driven
@@ -2519,7 +2519,7 @@ Registry Name: BGP Transitive Extended Community Types
 
     <references title="Informative References">
       <reference anchor="RTC-Ext"
-                 target="https://tools.ietf.org/html/draft-zzhang-idr-bgp-rt-constrains-extension-02#section-2">
+                 target="https://tools.ietf.org/html/draft-zzhang-idr-bgp-rt-constrains-extension-03#section-2">
         <front>
           <title abbrev="RTC-Ext">Generic Route Constraint Distribution
           Mechanism for BGP</title>
@@ -2529,7 +2529,7 @@ Registry Name: BGP Transitive Extended Community Types
 
           <author fullname="Jeffrey" initials="" role="editor" surname="Haas"/>
 
-          <date day="21" month="03" year="2021"/>
+          <date day="26" month="06" year="2023"/>
         </front>
       </reference>
 
@@ -3637,7 +3637,7 @@ Registry Name: BGP Transitive Extended Community Types
         transport layer, which are carried in the IPv6 Unicast BGP family.</t>
 
         <t>A Nexthop Resolution Scheme similar to that of BGP CT <xref
-        target="Nexthop_Resoln_Schm"/> is used on IPv6 unicast family to
+        target="Nexthop_Resoln_Schm"/> is used on IPv6 Unicast family to
         resolve &ldquo;Colorful Prefix&rdquo; locator routes that carry a
         mapping community to intent-aware paths in each domain.</t>
 
@@ -3673,8 +3673,8 @@ Registry Name: BGP Transitive Extended Community Types
           resolution scheme. Alternatively, the intent fallback policy may be
           provisioned on the ingress nodes directly.</t>
 
-          <t>Further, IPv6 unicast family is widely deployed to carry Internet
-          Service routes. Repurposing IPv6 unicast family to carry Transport
+          <t>Further, IPv6 Unicast family is widely deployed to carry Internet
+          Service routes. Repurposing IPv6 Unicast family to carry Transport
           routes also may impact the operational complexity and security
           aspects in the network.</t>
         </section>
