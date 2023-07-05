@@ -160,7 +160,7 @@
 
       <t>TC: Transport Class.</t>
 
-      <t>SAFI: Subsequent Address Family Identifier</t>
+      <t>SAFI: Subsequent Address Family Identifier.</t>
 
       <t>SN : Service Node. A router that sends or receives BGP Service routes
       (e.g. SAFIs 1, 128) with self as nexthop.</t>
@@ -178,9 +178,9 @@
 
       <t>BGP VPN : VPNs built using RFC4364 mechanisms.</t>
 
-      <t>BGP LU: BGP Labeled Unicast family (SAFI 4)</t>
+      <t>BGP LU: BGP Labeled Unicast family (SAFI 4).</t>
 
-      <t>BGP CT: BGP Classful Transport family (SAFI 76)</t>
+      <t>BGP CT: BGP Classful Transport family (SAFI 76).</t>
 
       <t>ASN: Autonomous System Number.</t>
 
@@ -218,6 +218,8 @@
 
       <t>EPE: Egress Peer Engineering.</t>
 
+      <t>MPLS: Multi Protocol Label Switching.</t>
+
       <t>UHP Label: Ultimate Hop Pop label.</t>
 
       <t>PHP Label: Penultimate Hop Pop label.</t>
@@ -245,7 +247,8 @@
         <t>Tunnel Domain : A domain of the network containing SNs and BNs
         under a single administrative control that has tunnels between them.
         An end-to-end tunnel spanning several adjacent tunnel domains can be
-        created by "stitching" them together using labels.</t>
+        created by "stitching" them together using MPLS labels (or an
+        equivalent identifier based on the forwarding architecture).</t>
 
         <t>Transport Class : A construct to group transport tunnels offering
         the same SLA.</t>
@@ -274,16 +277,16 @@
     </section>
 
     <section title="Architecture Overview">
-      <t>This document defines<xref target="tc">"Transport Class"</xref> and
-      <xref target="Nexthop_Resoln_Schm">"Nexthop Resolution Scheme"</xref> as
+      <t>This document defines <xref target="tc">"Transport Class"</xref> and
+      <xref target="Nexthop_Resoln_Schm">"Resolution Scheme"</xref> as
       constructs to achieve end-to-end "Intent Driven Service Mapping".</t>
 
       <t>The tunneling protocols are made "Transport Class" aware. They
       publish their underlay routes for a Transport Class into an associated
       <xref target="trdb">"Transport Route Database" (TRDB)</xref>. These
       underlay routes are used to resolve overlay BGP routes. How exactly
-      these intra-domain tunneling protocols are made Transport Class aware is
-      outside the scope of this document.</t>
+      these intra-domain tunneling protocols are made Transport Class aware,
+      is outside the scope of this document.</t>
 
       <t>The underlay route in a TRDB can be advertised in BGP to extend an
       underlay tunnel to adjacent domains. A new BGP transport layer address
@@ -302,9 +305,9 @@
       <t>Service overlay routes carry sufficient indication of the desired
       Transport Classes in the form of a BGP community called the "Mapping
       community". The resolution infrastructure and the procedures for <xref
-      target="Nexthop_Resoln_Schm">"Nexthop Resolution Scheme"</xref> defined
-      in this document enable an ingress nodes to resolve overlay routes over
-      the appropriate underlay tunnels only within the scope of the Transport
+      target="Nexthop_Resoln_Schm">"Resolution Scheme"</xref> defined in this
+      document enable an ingress nodes to resolve overlay routes over the
+      appropriate underlay tunnels only within the scope of the Transport
       Classes identified by the Mapping Community. The ingress node performs a
       Longest Prefix Match (LPM) on the next hop of the overlay route within
       the TRDBs the Reslution Scheme maps to. If the service overlay route is

@@ -304,7 +304,7 @@ Internet-Draft        BGP Classful Transport Planes            July 2023
 
    TC: Transport Class.
 
-   SAFI: Subsequent Address Family Identifier
+   SAFI: Subsequent Address Family Identifier.
 
    SN : Service Node.  A router that sends or receives BGP Service
    routes (e.g.  SAFIs 1, 128) with self as nexthop.
@@ -322,9 +322,9 @@ Internet-Draft        BGP Classful Transport Planes            July 2023
 
    BGP VPN : VPNs built using RFC4364 mechanisms.
 
-   BGP LU: BGP Labeled Unicast family (SAFI 4)
+   BGP LU: BGP Labeled Unicast family (SAFI 4).
 
-   BGP CT: BGP Classful Transport family (SAFI 76)
+   BGP CT: BGP Classful Transport family (SAFI 76).
 
    ASN: Autonomous System Number.
 
@@ -370,6 +370,8 @@ Internet-Draft        BGP Classful Transport Planes            July 2023
 
    EPE: Egress Peer Engineering.
 
+   MPLS: Multi Protocol Label Switching.
+
    UHP Label: Ultimate Hop Pop label.
 
    PHP Label: Penultimate Hop Pop label.
@@ -383,8 +385,6 @@ Internet-Draft        BGP Classful Transport Planes            July 2023
 
    Service Family : BGP address family used for advertising routes for
    "data traffic" as opposed to tunnels (e.g.  SAFI 1 or 128).
-
-
 
 
 
@@ -407,7 +407,8 @@ Internet-Draft        BGP Classful Transport Planes            July 2023
    Tunnel Domain : A domain of the network containing SNs and BNs under
    a single administrative control that has tunnels between them.  An
    end-to-end tunnel spanning several adjacent tunnel domains can be
-   created by "stitching" them together using labels.
+   created by "stitching" them together using MPLS labels (or an
+   equivalent identifier based on the forwarding architecture).
 
    Transport Class : A construct to group transport tunnels offering the
    same SLA.
@@ -434,14 +435,13 @@ Internet-Draft        BGP Classful Transport Planes            July 2023
 
 3.  Architecture Overview
 
-   This document defines"Transport Class" (Section 4) and "Nexthop
-   Resolution Scheme" (Section 5) as constructs to achieve end-to-end
-   "Intent Driven Service Mapping".
+   This document defines "Transport Class" (Section 4) and "Resolution
+   Scheme" (Section 5) as constructs to achieve end-to-end "Intent
+   Driven Service Mapping".
 
-
-
-
-
+   The tunneling protocols are made "Transport Class" aware.  They
+   publish their underlay routes for a Transport Class into an
+   associated "Transport Route Database" (TRDB) (Section 4.2).  These
 
 
 
@@ -450,12 +450,9 @@ Vairavakkalai & VenkataraExpires 6 January 2024                 [Page 8]
 Internet-Draft        BGP Classful Transport Planes            July 2023
 
 
-   The tunneling protocols are made "Transport Class" aware.  They
-   publish their underlay routes for a Transport Class into an
-   associated "Transport Route Database" (TRDB) (Section 4.2).  These
    underlay routes are used to resolve overlay BGP routes.  How exactly
-   these intra-domain tunneling protocols are made Transport Class aware
-   is outside the scope of this document.
+   these intra-domain tunneling protocols are made Transport Class
+   aware, is outside the scope of this document.
 
    The underlay route in a TRDB can be advertised in BGP to extend an
    underlay tunnel to adjacent domains.  A new BGP transport layer
@@ -474,14 +471,14 @@ Internet-Draft        BGP Classful Transport Planes            July 2023
    Service overlay routes carry sufficient indication of the desired
    Transport Classes in the form of a BGP community called the "Mapping
    community".  The resolution infrastructure and the procedures for
-   "Nexthop Resolution Scheme" (Section 5) defined in this document
-   enable an ingress nodes to resolve overlay routes over the
-   appropriate underlay tunnels only within the scope of the Transport
-   Classes identified by the Mapping Community.  The ingress node
-   performs a Longest Prefix Match (LPM) on the next hop of the overlay
-   route within the TRDBs the Reslution Scheme maps to.  If the service
-   overlay route is carried in BGP, the Protocol Next Hop (PNH) is
-   carried as an attribute of the route.
+   "Resolution Scheme" (Section 5) defined in this document enable an
+   ingress nodes to resolve overlay routes over the appropriate underlay
+   tunnels only within the scope of the Transport Classes identified by
+   the Mapping Community.  The ingress node performs a Longest Prefix
+   Match (LPM) on the next hop of the overlay route within the TRDBs the
+   Reslution Scheme maps to.  If the service overlay route is carried in
+   BGP, the Protocol Next Hop (PNH) is carried as an attribute of the
+   route.
 
    The PNH of the overlay route is also referred to as "Service
    Endpoint" (SEP).  The SEP may either be located in the same domain as
@@ -496,6 +493,9 @@ Internet-Draft        BGP Classful Transport Planes            July 2023
       Model a "Transport Class" as a "TRDB" on a router and to collect
       tunnel ingress routes of a certain class.
 
+      Enable service overlay routes carrying an appropriate "Mapping
+      Community" to resolve its reachability for a SEP within the
+      resolution scope (TRDB) of an intended Transport Class.
 
 
 
@@ -505,10 +505,6 @@ Vairavakkalai & VenkataraExpires 6 January 2024                 [Page 9]
 
 Internet-Draft        BGP Classful Transport Planes            July 2023
 
-
-      Enable service overlay routes carrying an appropriate "Mapping
-      Community" to resolve its reachability for a SEP within the
-      resolution scope (TRDB) of an intended Transport Class.
 
       Advertise tunnel underlay routes present in a Transport Route
       Database in BGP without any path hiding using BGP VPN and Add-path
@@ -551,9 +547,13 @@ Internet-Draft        BGP Classful Transport Planes            July 2023
    routes, import processing based on Communities or Inter-AS source-
    peer may be used to place the route in the desired Transport Class.
 
-   When the ingress route is received via [SRTE] with "Color:Endpoint"
-   as the NLRI that encodes the Transport Class as an integer 'Color',
-   the 'Color' is mapped to a Transport Class during the import
+
+
+
+
+
+
+
 
 
 
@@ -562,6 +562,9 @@ Vairavakkalai & VenkataraExpires 6 January 2024                [Page 10]
 Internet-Draft        BGP Classful Transport Planes            July 2023
 
 
+   When the ingress route is received via [SRTE] with "Color:Endpoint"
+   as the NLRI that encodes the Transport Class as an integer 'Color',
+   the 'Color' is mapped to a Transport Class during the import
    processing.  The SRTE ingress route for this 'Endpoint' is installed
    in the corresponding TRDB.  The SRTE tunnel will be extended by a BGP
    CT advertisement with NLRI 'RD:Endpoint', Transport Class RT and a
@@ -589,9 +592,6 @@ Internet-Draft        BGP Classful Transport Planes            July 2023
    format as shown in Figure 1.
 
    This new Route Target Format has the following encoding:
-
-
-
 
 
 
@@ -2306,7 +2306,7 @@ Internet-Draft        BGP Classful Transport Planes            July 2023
    IBGP sessions within the domain.  ASBR11 and ASBR21 as well as ASBR22
    and ASBR31 negotiate BGP LU family on the EBGP session over directly
    connected interdomain links.  ASBR11 and ASBR31 have reachability to
-   each other's loopbacks through BGP LU.  ASBR11 and ASBR31 negotiate
+   each other’s loopbacks through BGP LU.  ASBR11 and ASBR31 negotiate
    BGP CT family over a multihop EBGP session formed using BGP LU
    reachability.
 
@@ -2749,8 +2749,8 @@ Internet-Draft        BGP Classful Transport Planes            July 2023
 14.2.2.1.  Transitive Transport Class Extended Community Sub-Types
            Registry
 
-   IANA is requested to add the following subregistry under the "Border
-   Gateway Protocol (BGP) Extended Communities":
+   IANA is requested to add the following subregistry under the “Border
+   Gateway Protocol (BGP) Extended Communities”:
 
   Registry Group: Border Gateway Protocol (BGP) Extended Communities
 
@@ -2773,8 +2773,8 @@ Internet-Draft        BGP Classful Transport Planes            July 2023
 14.2.2.2.  Non-Transitive Transport Class Extended Community Sub-Types
            Registry
 
-   IANA is requested to add the following subregistry under the "Border
-   Gateway Protocol (BGP) Extended Communities":
+   IANA is requested to add the following subregistry under the “Border
+   Gateway Protocol (BGP) Extended Communities”:
 
  Registry Group: Border Gateway Protocol (BGP) Extended Communities
 
@@ -4407,7 +4407,7 @@ E.2.  Color-encoded Service SID (CPR) Approach
    transport layer, which are carried in the IPv6 Unicast BGP family.
 
    A Nexthop Resolution Scheme similar to that of BGP CT Section 5 is
-   used on IPv6 Unicast family to resolve "Colorful Prefix" locator
+   used on IPv6 Unicast family to resolve “Colorful Prefix” locator
    routes that carry a mapping community to intent-aware paths in each
    domain.
 
