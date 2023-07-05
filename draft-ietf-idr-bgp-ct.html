@@ -27,25 +27,26 @@
       routes with its identified class. This new address family is called "BGP
       Classful Transport", a.k.a., BGP CT. 
     ' name="description">
-<meta content="xml2rfc 3.16.0" name="generator">
+<meta content="xml2rfc 3.13.0" name="generator">
 <meta content="draft-ietf-idr-bgp-ct-10" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.16.0
-    Python 3.11.2
+  xml2rfc 3.13.0
+    Python 3.8.9
     appdirs 1.4.4
     ConfigArgParse 1.5.3
     google-i18n-address 2.5.2
     html5lib 1.1
     intervaltree 3.1.0
     Jinja2 3.1.2
-    lxml 4.9.2
-    MarkupSafe 2.1.2
+    kitchen 1.2.6
+    lxml 4.9.0
+    MarkupSafe 2.1.1
     pycountry 22.3.5
+    pyflakes 2.4.0
     PyYAML 6.0
-    requests 2.28.2
-    setuptools 65.6.3
-    six 1.16.0
-    wcwidth 0.2.6
+    requests 2.28.1
+    setuptools 49.2.1
+    six 1.15.0
 -->
 <link href="draft-ietf-idr-bgp-ct.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -57,7 +58,7 @@
   this can be consolidated so that style settings occur only in one place, but
   for now the contents of this file consists first of the initial CSS work as
   provided to the RFC Formatter (xml2rfc) work, followed by itemized and
-  commented changes found necessary during the development of the v3
+  commented changes found necssary during the development of the v3
   formatters.
 
 */
@@ -66,12 +67,6 @@
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans'); /* Sans-serif */
 @import url('https://fonts.googleapis.com/css?family=Noto+Serif'); /* Serif (print) */
 @import url('https://fonts.googleapis.com/css?family=Roboto+Mono'); /* Monospace */
-
-:root {
-  --font-sans: 'Noto Sans', Arial, Helvetica, sans-serif;
-  --font-serif: 'Noto Serif', 'Times', 'Times New Roman', serif;
-  --font-mono: 'Roboto Mono', Courier, 'Courier New', monospace;
-}
 
 @viewport {
   zoom: 1.0;
@@ -90,7 +85,7 @@ body {
   color: #222;
   background-color: #fff;
   font-size: 14px;
-  font-family: var(--font-sans);
+  font-family: 'Noto Sans', Arial, Helvetica, sans-serif;
   line-height: 1.6;
   scroll-behavior: smooth;
 }
@@ -179,15 +174,6 @@ div {
 svg {
   display: block;
 }
-svg[font-family~="serif" i], svg [font-family~="serif" i] {
-  font-family: var(--font-serif);
-}
-svg[font-family~="sans-serif" i], svg [font-family~="sans-serif" i] {
-  font-family: var(--font-sans);
-}
-svg[font-family~="monospace" i], svg [font-family~="monospace" i] {
-  font-family: var(--font-mono);
-}
 .alignCenter.art-text {
   background-color: #f9f9f9;
   border: 1px solid #eee;
@@ -202,7 +188,6 @@ svg[font-family~="monospace" i], svg [font-family~="monospace" i] {
   margin: 1em 0;
 }
 .alignCenter > *:first-child {
-  display: table;
   border: none;
   margin: 0 auto;
 }
@@ -281,9 +266,9 @@ a.selfRef:hover {
 } */
 
 /* Figures */
-tt, code, pre {
+tt, code, pre, code {
   background-color: #f9f9f9;
-  font-family: var(--font-mono);
+  font-family: 'Roboto Mono', monospace;
 }
 pre {
   border: 1px solid #eee;
@@ -520,7 +505,7 @@ address.vcard .nameRole {
   margin-left: 0;
 }
 address.vcard .label {
-  font-family: var(--font-sans);
+  font-family: "Noto Sans",Arial,Helvetica,sans-serif;
   margin: 0.5em 0;
 }
 address.vcard .type {
@@ -683,7 +668,7 @@ hr.addr {
   figure {
     overflow: scroll;
   }
-  .breakable pre {
+  pre.breakable {
     break-inside: auto;
   }
   h1, h2, h3, h4, h5, h6 {
@@ -753,7 +738,7 @@ hr.addr {
   size: A4;
   margin-bottom: 45mm;
   padding-top: 20px;
-  /* The following is commented out here, but set appropriately by in code, as
+  /* The follwing is commented out here, but set appropriately by in code, as
      the content depends on the document */
   /*
   @top-left {
@@ -853,12 +838,12 @@ section {
 }
 
 /* prevent monospace from becoming overly large */
-tt, code, pre {
+tt, code, pre, code {
   font-size: 95%;
 }
 
 /* Fix the height/width aspect for ascii art*/
-.sourcecode pre,
+pre.sourcecode,
 .art-text pre {
   line-height: 1.12;
 }
@@ -894,7 +879,7 @@ table th.text-right {
   text-align: right;
 }
 
-/* Make the alternative author contact information look less like just another
+/* Make the alternative author contact informatio look less like just another
    author, and group it closer with the primary author contact information */
 .alternative-contact {
   margin: 0.5em 0 0.25em 0;
@@ -1076,7 +1061,6 @@ aside > p {
 /* Sourcecode margin in print, when there's no pilcrow */
 @media print {
   .artwork,
-  .artwork > pre,
   .sourcecode {
     margin-bottom: 1em;
   }
@@ -1091,15 +1075,12 @@ ol.type-A { list-style-type: upper-alpha; }
 ol.type-i { list-style-type: lower-roman; }
 ol.type-I { list-style-type: lower-roman; }
 /* Apply the print table and row borders in general, on request from the RPC,
-and increase the contrast between border and odd row background slightly */
+and increase the contrast between border and odd row background sligthtly */
 table {
   border: 1px solid #ddd;
 }
 td {
   border-top: 1px solid #ddd;
-}
-tr {
-  break-inside: avoid;
 }
 tr:nth-child(2n+1) > td {
   background-color: #f8f8f8;
@@ -1151,7 +1132,7 @@ span.break, dd.break {
     break-before: auto;
   }
 }
-/* Text in compact lists should not get extra bottom margin space,
+/* Text in compact lists should not get extra bottim margin space,
    since that would makes the list not compact */
 ul.compact p, .ulCompact p,
 ol.compact p, .olCompact p {
@@ -1176,7 +1157,7 @@ p tt, p code, li tt, li code {
 pre {
    margin-top: 0.5px;
 }
-/* Tweak the compact list text */
+/* Tweak the comact list text */
 ul.compact, .ulCompact,
 ol.compact, .olCompact,
 dl.compact, .dlCompact {
@@ -1194,7 +1175,7 @@ dd > div.artwork:first-child,
 dd > aside:first-child,
 dd > figure:first-child,
 dd > ol:first-child,
-dd > div.sourcecode:first-child,
+dd > div:first-child > pre.sourcecode,
 dd > table:first-child,
 dd > ul:first-child {
   clear: left;
@@ -1208,14 +1189,14 @@ li > p {
   margin-bottom: 0.5em
 }
 /* Don't let p margin spill out from inside list items */
-li > p:last-of-type:only-child {
+li > p:last-of-type {
   margin-bottom: 0;
 }
 </style>
 <link href="rfc-local.css" rel="stylesheet" type="text/css">
 <script type="application/javascript">async function addMetadata(){try{const e=document.styleSheets[0].cssRules;for(let t=0;t<e.length;t++)if(/#identifiers/.exec(e[t].selectorText)){const a=e[t].cssText.replace("#identifiers","#external-updates");document.styleSheets[0].insertRule(a,document.styleSheets[0].cssRules.length)}}catch(e){console.log(e)}const e=document.getElementById("external-metadata");if(e)try{var t,a="",o=function(e){const t=document.getElementsByTagName("meta");for(let a=0;a<t.length;a++)if(t[a].getAttribute("name")===e)return t[a].getAttribute("content");return""}("rfc.number");if(o){t="https://www.rfc-editor.org/rfc/rfc"+o+".json";try{const e=await fetch(t);a=await e.json()}catch(e){t=document.URL.indexOf("html")>=0?document.URL.replace(/html$/,"json"):document.URL+".json";const o=await fetch(t);a=await o.json()}}if(!a)return;e.style.display="block";const s="",d="https://datatracker.ietf.org/doc",n="https://datatracker.ietf.org/ipr/search",c="https://www.rfc-editor.org/info",l=a.doc_id.toLowerCase(),i=a.doc_id.slice(0,3).toLowerCase(),f=a.doc_id.slice(3).replace(/^0+/,""),u={status:"Status",obsoletes:"Obsoletes",obsoleted_by:"Obsoleted By",updates:"Updates",updated_by:"Updated By",see_also:"See Also",errata_url:"Errata"};let h="<dl style='overflow:hidden' id='external-updates'>";["status","obsoletes","obsoleted_by","updates","updated_by","see_also","errata_url"].forEach(e=>{if("status"==e){a[e]=a[e].toLowerCase();var t=a[e].split(" "),o=t.length,w="",p=1;for(let e=0;e<o;e++)p<o?w=w+r(t[e])+" ":w+=r(t[e]),p++;a[e]=w}else if("obsoletes"==e||"obsoleted_by"==e||"updates"==e||"updated_by"==e){var g,m="",b=1;g=a[e].length;for(let t=0;t<g;t++)a[e][t]&&(a[e][t]=String(a[e][t]).toLowerCase(),m=b<g?m+"<a href='"+s+"/rfc/".concat(a[e][t])+"'>"+a[e][t].slice(3)+"</a>, ":m+"<a href='"+s+"/rfc/".concat(a[e][t])+"'>"+a[e][t].slice(3)+"</a>",b++);a[e]=m}else if("see_also"==e){var y,L="",C=1;y=a[e].length;for(let t=0;t<y;t++)if(a[e][t]){a[e][t]=String(a[e][t]);var _=a[e][t].slice(0,3),v=a[e][t].slice(3).replace(/^0+/,"");L=C<y?"RFC"!=_?L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+_+" "+v+"</a>, ":L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+v+"</a>, ":"RFC"!=_?L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+_+" "+v+"</a>":L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+v+"</a>",C++}a[e]=L}else if("errata_url"==e){var R="";R=a[e]?R+"<a href='"+a[e]+"'>Errata exist</a> | <a href='"+d+"/"+l+"'>Datatracker</a>| <a href='"+n+"/?"+i+"="+f+"&submit="+i+"'>IPR</a> | <a href='"+c+"/"+l+"'>Info page</a>":"<a href='"+d+"/"+l+"'>Datatracker</a> | <a href='"+n+"/?"+i+"="+f+"&submit="+i+"'>IPR</a> | <a href='"+c+"/"+l+"'>Info page</a>",a[e]=R}""!=a[e]?"Errata"==u[e]?h+=`<dt>More info:</dt><dd>${a[e]}</dd>`:h+=`<dt>${u[e]}:</dt><dd>${a[e]}</dd>`:"Errata"==u[e]&&(h+=`<dt>More info:</dt><dd>${a[e]}</dd>`)}),h+="</dl>",e.innerHTML=h}catch(e){console.log(e)}else console.log("Could not locate metadata <div> element");function r(e){return e.charAt(0).toUpperCase()+e.slice(1)}}window.removeEventListener("load",addMetadata),window.addEventListener("load",addMetadata);</script>
 </head>
-<body class="xml2rfc">
+<body>
 <script src="metadata.min.js"></script>
 <table class="ears">
 <thead><tr>
@@ -1288,8 +1269,8 @@ li > p:last-of-type:only-child {
 <p id="section-note.1-1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
       "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
       "OPTIONAL" in this document are to be interpreted as described in BCP 14
-      <span><a href="#RFC2119" class="internal xref">RFC 2119</a> [<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> <span><a href="#RFC8174" class="internal xref">RFC
-      8174</a> [<a href="#RFC8174" class="cite xref">RFC8174</a>]</span> when, and only when, they appear in all capitals, as shown
+      <span><a href="#RFC2119" class="xref">RFC 2119</a> [<a href="#RFC2119" class="xref">RFC2119</a>]</span> <span><a href="#RFC8174" class="xref">RFC
+      8174</a> [<a href="#RFC8174" class="xref">RFC8174</a>]</span> when, and only when, they appear in all capitals, as shown
       here.<a href="#section-note.1-1" class="pilcrow">¶</a></p>
 </section>
 <div id="status-of-memo">
@@ -1341,343 +1322,343 @@ li > p:last-of-type:only-child {
         </h2>
 <nav class="toc"><ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1">
-            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-introduction-2" class="internal xref">Introduction</a></p>
+            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="xref">1</a>.  <a href="#name-introduction-2" class="xref">Introduction</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
-            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-terminology-2" class="internal xref">Terminology</a></p>
+            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="xref">2</a>.  <a href="#name-terminology-2" class="xref">Terminology</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.1">
-                <p id="section-toc.1-1.2.2.1.1" class="keepWithNext"><a href="#section-2.1" class="auto internal xref">2.1</a>.  <a href="#name-definitions-2" class="internal xref">Definitions</a></p>
+                <p id="section-toc.1-1.2.2.1.1" class="keepWithNext"><a href="#section-2.1" class="xref">2.1</a>.  <a href="#name-definitions-2" class="xref">Definitions</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
-            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-architecture-overview-2" class="internal xref">Architecture Overview</a></p>
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="xref">3</a>.  <a href="#name-architecture-overview-2" class="xref">Architecture Overview</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
-            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-transport-class-2" class="internal xref">Transport Class</a></p>
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="xref">4</a>.  <a href="#name-transport-class-2" class="xref">Transport Class</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
-                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-transport-class-route-target" class="internal xref">"Transport Class" Route Target Extended Community</a></p>
+                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="xref">4.1</a>.  <a href="#name-transport-class-route-target" class="xref">"Transport Class" Route Target Extended Community</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
-                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-transport-route-database-2" class="internal xref">Transport Route Database</a></p>
+                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="xref">4.2</a>.  <a href="#name-transport-route-database-2" class="xref">Transport Route Database</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
-            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-resolution-scheme-2" class="internal xref">Resolution Scheme</a></p>
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="xref">5</a>.  <a href="#name-resolution-scheme-2" class="xref">Resolution Scheme</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
-            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-bgp-classful-transport-famil" class="internal xref">BGP Classful Transport Family</a></p>
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="xref">6</a>.  <a href="#name-bgp-classful-transport-famil" class="xref">BGP Classful Transport Family</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1">
-                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="auto internal xref">6.1</a>.  <a href="#name-carrying-multiple-encapsulat" class="internal xref">Carrying multiple Encapsulation Information</a></p>
+                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="xref">6.1</a>.  <a href="#name-carrying-multiple-encapsulat" class="xref">Carrying multiple Encapsulation Information</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2">
-                <p id="section-toc.1-1.6.2.2.1"><a href="#section-6.2" class="auto internal xref">6.2</a>.  <a href="#name-comparison-with-other-famili" class="internal xref">Comparison with Other Families using RFC-8277 Encoding</a></p>
+                <p id="section-toc.1-1.6.2.2.1"><a href="#section-6.2" class="xref">6.2</a>.  <a href="#name-comparison-with-other-famili" class="xref">Comparison with Other Families using RFC-8277 Encoding</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.3">
-                <p id="section-toc.1-1.6.2.3.1"><a href="#section-6.3" class="auto internal xref">6.3</a>.  <a href="#name-usage-of-route-distinguisher" class="internal xref">Usage of Route Distinguisher and Label Allocation Modes</a></p>
+                <p id="section-toc.1-1.6.2.3.1"><a href="#section-6.3" class="xref">6.3</a>.  <a href="#name-usage-of-route-distinguisher" class="xref">Usage of Route Distinguisher and Label Allocation Modes</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
-            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-protocol-procedures-2" class="internal xref">Protocol Procedures</a></p>
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="xref">7</a>.  <a href="#name-protocol-procedures-2" class="xref">Protocol Procedures</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1">
-                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="auto internal xref">7.1</a>.  <a href="#name-preparing-the-network-to-dep" class="internal xref">Preparing the network to deploy Classful Transport planes</a></p>
+                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="xref">7.1</a>.  <a href="#name-preparing-the-network-to-dep" class="xref">Preparing the network to deploy Classful Transport planes</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2">
-                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="auto internal xref">7.2</a>.  <a href="#name-originating-classful-transpo" class="internal xref">Originating Classful Transport Routes</a></p>
+                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="xref">7.2</a>.  <a href="#name-originating-classful-transpo" class="xref">Originating Classful Transport Routes</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.3">
-                <p id="section-toc.1-1.7.2.3.1"><a href="#section-7.3" class="auto internal xref">7.3</a>.  <a href="#name-processing-classful-transpor" class="internal xref">Processing Classful Transport Routes by Ingress Nodes</a></p>
+                <p id="section-toc.1-1.7.2.3.1"><a href="#section-7.3" class="xref">7.3</a>.  <a href="#name-processing-classful-transpor" class="xref">Processing Classful Transport Routes by Ingress Nodes</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.4">
-                <p id="section-toc.1-1.7.2.4.1"><a href="#section-7.4" class="auto internal xref">7.4</a>.  <a href="#name-readvertising-classful-trans" class="internal xref">Readvertising Classful Transport Route by Border Nodes with Next Hop Self</a></p>
+                <p id="section-toc.1-1.7.2.4.1"><a href="#section-7.4" class="xref">7.4</a>.  <a href="#name-readvertising-classful-trans" class="xref">Readvertising Classful Transport Route by Border Nodes with Next Hop Self</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.5">
-                <p id="section-toc.1-1.7.2.5.1"><a href="#section-7.5" class="auto internal xref">7.5</a>.  <a href="#name-border-nodes-receiving-class" class="internal xref">Border Nodes Receiving Classful Transport Routes on EBGP</a></p>
+                <p id="section-toc.1-1.7.2.5.1"><a href="#section-7.5" class="xref">7.5</a>.  <a href="#name-border-nodes-receiving-class" class="xref">Border Nodes Receiving Classful Transport Routes on EBGP</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.6">
-                <p id="section-toc.1-1.7.2.6.1"><a href="#section-7.6" class="auto internal xref">7.6</a>.  <a href="#name-avoiding-path-hiding-through" class="internal xref">Avoiding Path Hiding Through Route Reflectors</a></p>
+                <p id="section-toc.1-1.7.2.6.1"><a href="#section-7.6" class="xref">7.6</a>.  <a href="#name-avoiding-path-hiding-through" class="xref">Avoiding Path Hiding Through Route Reflectors</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.7">
-                <p id="section-toc.1-1.7.2.7.1"><a href="#section-7.7" class="auto internal xref">7.7</a>.  <a href="#name-avoiding-loops-between-route" class="internal xref">Avoiding Loops Between Route Reflectors in Forwarding Path</a></p>
+                <p id="section-toc.1-1.7.2.7.1"><a href="#section-7.7" class="xref">7.7</a>.  <a href="#name-avoiding-loops-between-route" class="xref">Avoiding Loops Between Route Reflectors in Forwarding Path</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.8">
-                <p id="section-toc.1-1.7.2.8.1"><a href="#section-7.8" class="auto internal xref">7.8</a>.  <a href="#name-ingress-nodes-receiving-serv" class="internal xref">Ingress Nodes Receiving Service Routes with a Mapping Community</a></p>
+                <p id="section-toc.1-1.7.2.8.1"><a href="#section-7.8" class="xref">7.8</a>.  <a href="#name-ingress-nodes-receiving-serv" class="xref">Ingress Nodes Receiving Service Routes with a Mapping Community</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.9">
-                <p id="section-toc.1-1.7.2.9.1"><a href="#section-7.9" class="auto internal xref">7.9</a>.  <a href="#name-coordination-between-domains" class="internal xref">Coordination Between Domains Using Different Community Namespaces</a></p>
+                <p id="section-toc.1-1.7.2.9.1"><a href="#section-7.9" class="xref">7.9</a>.  <a href="#name-coordination-between-domains" class="xref">Coordination Between Domains Using Different Community Namespaces</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.10">
-                <p id="section-toc.1-1.7.2.10.1"><a href="#section-7.10" class="auto internal xref">7.10</a>. <a href="#name-best-effort-transport-class-2" class="internal xref">Best Effort Transport Class</a></p>
+                <p id="section-toc.1-1.7.2.10.1"><a href="#section-7.10" class="xref">7.10</a>. <a href="#name-best-effort-transport-class-2" class="xref">Best Effort Transport Class</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.11">
-                <p id="section-toc.1-1.7.2.11.1"><a href="#section-7.11" class="auto internal xref">7.11</a>. <a href="#name-interaction-with-bgp-attribu" class="internal xref">Interaction with BGP Attributes Specifying Next Hop Address and Color</a></p>
+                <p id="section-toc.1-1.7.2.11.1"><a href="#section-7.11" class="xref">7.11</a>. <a href="#name-interaction-with-bgp-attribu" class="xref">Interaction with BGP Attributes Specifying Next Hop Address and Color</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.12">
-                <p id="section-toc.1-1.7.2.12.1"><a href="#section-7.12" class="auto internal xref">7.12</a>. <a href="#name-applicability-to-flowspec-re" class="internal xref">Applicability to Flowspec Redirect to IP</a></p>
+                <p id="section-toc.1-1.7.2.12.1"><a href="#section-7.12" class="xref">7.12</a>. <a href="#name-applicability-to-flowspec-re" class="xref">Applicability to Flowspec Redirect to IP</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
-            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-scaling-considerations-2" class="internal xref">Scaling Considerations</a></p>
+            <p id="section-toc.1-1.8.1"><a href="#section-8" class="xref">8</a>.  <a href="#name-scaling-considerations-2" class="xref">Scaling Considerations</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.1">
-                <p id="section-toc.1-1.8.2.1.1"><a href="#section-8.1" class="auto internal xref">8.1</a>.  <a href="#name-avoiding-unintended-spread-o" class="internal xref">Avoiding Unintended Spread of BGP CT Routes Across Domains</a></p>
+                <p id="section-toc.1-1.8.2.1.1"><a href="#section-8.1" class="xref">8.1</a>.  <a href="#name-avoiding-unintended-spread-o" class="xref">Avoiding Unintended Spread of BGP CT Routes Across Domains</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2">
-                <p id="section-toc.1-1.8.2.2.1"><a href="#section-8.2" class="auto internal xref">8.2</a>.  <a href="#name-constrained-distribution-of-" class="internal xref">Constrained Distribution of PNHs to SNs (On-Demand Next Hop)</a></p>
+                <p id="section-toc.1-1.8.2.2.1"><a href="#section-8.2" class="xref">8.2</a>.  <a href="#name-constrained-distribution-of-" class="xref">Constrained Distribution of PNHs to SNs (On-Demand Next Hop)</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.3">
-                <p id="section-toc.1-1.8.2.3.1"><a href="#section-8.3" class="auto internal xref">8.3</a>.  <a href="#name-limiting-the-visibility-scop" class="internal xref">Limiting The Visibility Scope of PE Loopback as PNHs</a></p>
+                <p id="section-toc.1-1.8.2.3.1"><a href="#section-8.3" class="xref">8.3</a>.  <a href="#name-limiting-the-visibility-scop" class="xref">Limiting The Visibility Scope of PE Loopback as PNHs</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
-            <p id="section-toc.1-1.9.1"><a href="#section-9" class="auto internal xref">9</a>.  <a href="#name-oam-considerations-2" class="internal xref">OAM Considerations</a></p>
+            <p id="section-toc.1-1.9.1"><a href="#section-9" class="xref">9</a>.  <a href="#name-oam-considerations-2" class="xref">OAM Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
-            <p id="section-toc.1-1.10.1"><a href="#section-10" class="auto internal xref">10</a>. <a href="#name-applicability-to-network-sli" class="internal xref">Applicability to Network Slicing</a></p>
+            <p id="section-toc.1-1.10.1"><a href="#section-10" class="xref">10</a>. <a href="#name-applicability-to-network-sli" class="xref">Applicability to Network Slicing</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
-            <p id="section-toc.1-1.11.1"><a href="#section-11" class="auto internal xref">11</a>. <a href="#name-srv6-support-2" class="internal xref">SRv6 Support</a></p>
+            <p id="section-toc.1-1.11.1"><a href="#section-11" class="xref">11</a>. <a href="#name-srv6-support-2" class="xref">SRv6 Support</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
-            <p id="section-toc.1-1.12.1"><a href="#section-12" class="auto internal xref">12</a>. <a href="#name-illustration-of-bgp-ct-proce" class="internal xref">Illustration of BGP CT Procedures in Inter AS Option C</a></p>
+            <p id="section-toc.1-1.12.1"><a href="#section-12" class="xref">12</a>. <a href="#name-illustration-of-bgp-ct-proce" class="xref">Illustration of BGP CT Procedures in Inter AS Option C</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.1">
-                <p id="section-toc.1-1.12.2.1.1"><a href="#section-12.1" class="auto internal xref">12.1</a>.  <a href="#name-reference-topology-2" class="internal xref">Reference Topology</a></p>
+                <p id="section-toc.1-1.12.2.1.1"><a href="#section-12.1" class="xref">12.1</a>.  <a href="#name-reference-topology-2" class="xref">Reference Topology</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.2">
-                <p id="section-toc.1-1.12.2.2.1"><a href="#section-12.2" class="auto internal xref">12.2</a>.  <a href="#name-service-layer-route-exchange-4" class="internal xref">Service Layer Route Exchange</a></p>
+                <p id="section-toc.1-1.12.2.2.1"><a href="#section-12.2" class="xref">12.2</a>.  <a href="#name-service-layer-route-exchange-4" class="xref">Service Layer Route Exchange</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.3">
-                <p id="section-toc.1-1.12.2.3.1"><a href="#section-12.3" class="auto internal xref">12.3</a>.  <a href="#name-transport-layer-route-propag" class="internal xref">Transport Layer Route Propagation</a></p>
+                <p id="section-toc.1-1.12.2.3.1"><a href="#section-12.3" class="xref">12.3</a>.  <a href="#name-transport-layer-route-propag" class="xref">Transport Layer Route Propagation</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.4">
-                <p id="section-toc.1-1.12.2.4.1"><a href="#section-12.4" class="auto internal xref">12.4</a>.  <a href="#name-data-plane-view-2" class="internal xref">Data Plane View</a></p>
+                <p id="section-toc.1-1.12.2.4.1"><a href="#section-12.4" class="xref">12.4</a>.  <a href="#name-data-plane-view-2" class="xref">Data Plane View</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.4.2.1">
-                    <p id="section-toc.1-1.12.2.4.2.1.1"><a href="#section-12.4.1" class="auto internal xref">12.4.1</a>.  <a href="#name-steady-state-2" class="internal xref">Steady State</a></p>
+                    <p id="section-toc.1-1.12.2.4.2.1.1"><a href="#section-12.4.1" class="xref">12.4.1</a>.  <a href="#name-steady-state-2" class="xref">Steady State</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.4.2.2">
-                    <p id="section-toc.1-1.12.2.4.2.2.1"><a href="#section-12.4.2" class="auto internal xref">12.4.2</a>.  <a href="#name-local-repair-of-primary-path" class="internal xref">Local Repair of Primary Path</a></p>
+                    <p id="section-toc.1-1.12.2.4.2.2.1"><a href="#section-12.4.2" class="xref">12.4.2</a>.  <a href="#name-local-repair-of-primary-path" class="xref">Local Repair of Primary Path</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12.2.4.2.3">
-                    <p id="section-toc.1-1.12.2.4.2.3.1"><a href="#section-12.4.3" class="auto internal xref">12.4.3</a>.  <a href="#name-absorbing-failure-of-primary" class="internal xref">Absorbing Failure of Primary Path: Fallback to Best Effort Tunnels</a></p>
+                    <p id="section-toc.1-1.12.2.4.2.3.1"><a href="#section-12.4.3" class="xref">12.4.3</a>.  <a href="#name-absorbing-failure-of-primary" class="xref">Absorbing Failure of Primary Path: Fallback to Best Effort Tunnels</a></p>
 </li>
                 </ul>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13">
-            <p id="section-toc.1-1.13.1"><a href="#section-13" class="auto internal xref">13</a>. <a href="#name-deployment-considerations-2" class="internal xref">Deployment Considerations.</a></p>
+            <p id="section-toc.1-1.13.1"><a href="#section-13" class="xref">13</a>. <a href="#name-deployment-considerations-2" class="xref">Deployment Considerations.</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.1">
-                <p id="section-toc.1-1.13.2.1.1"><a href="#section-13.1" class="auto internal xref">13.1</a>.  <a href="#name-managing-intent-at-service-a" class="internal xref">Managing Intent at Service and Transport layers.</a></p>
+                <p id="section-toc.1-1.13.2.1.1"><a href="#section-13.1" class="xref">13.1</a>.  <a href="#name-managing-intent-at-service-a" class="xref">Managing Intent at Service and Transport layers.</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.1.2.1">
-                    <p id="section-toc.1-1.13.2.1.2.1.1"><a href="#section-13.1.1" class="auto internal xref">13.1.1</a>.  <a href="#name-service-layer-color-manageme" class="internal xref">Service Layer Color Management</a></p>
+                    <p id="section-toc.1-1.13.2.1.2.1.1"><a href="#section-13.1.1" class="xref">13.1.1</a>.  <a href="#name-service-layer-color-manageme" class="xref">Service Layer Color Management</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.1.2.2">
-                    <p id="section-toc.1-1.13.2.1.2.2.1"><a href="#section-13.1.2" class="auto internal xref">13.1.2</a>.  <a href="#name-non-agreeing-color-transport" class="internal xref">Non-Agreeing Color Transport Domains</a></p>
+                    <p id="section-toc.1-1.13.2.1.2.2.1"><a href="#section-13.1.2" class="xref">13.1.2</a>.  <a href="#name-non-agreeing-color-transport" class="xref">Non-Agreeing Color Transport Domains</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.1.2.3">
-                    <p id="section-toc.1-1.13.2.1.2.3.1"><a href="#section-13.1.3" class="auto internal xref">13.1.3</a>.  <a href="#name-heterogeneous-agreeing-color" class="internal xref">Heterogeneous Agreeing Color Transport Domains</a></p>
+                    <p id="section-toc.1-1.13.2.1.2.3.1"><a href="#section-13.1.3" class="xref">13.1.3</a>.  <a href="#name-heterogeneous-agreeing-color" class="xref">Heterogeneous Agreeing Color Transport Domains</a></p>
 </li>
                 </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.2">
-                <p id="section-toc.1-1.13.2.2.1"><a href="#section-13.2" class="auto internal xref">13.2</a>.  <a href="#name-migration-scenarios-2" class="internal xref">Migration Scenarios.</a></p>
+                <p id="section-toc.1-1.13.2.2.1"><a href="#section-13.2" class="xref">13.2</a>.  <a href="#name-migration-scenarios-2" class="xref">Migration Scenarios.</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.2.2.1">
-                    <p id="section-toc.1-1.13.2.2.2.1.1"><a href="#section-13.2.1" class="auto internal xref">13.2.1</a>.  <a href="#name-bgp-ct-islands-connected-via" class="internal xref">BGP CT Islands Connected via BGP LU Domain</a></p>
+                    <p id="section-toc.1-1.13.2.2.2.1.1"><a href="#section-13.2.1" class="xref">13.2.1</a>.  <a href="#name-bgp-ct-islands-connected-via" class="xref">BGP CT Islands Connected via BGP LU Domain</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.2.2.2">
-                    <p id="section-toc.1-1.13.2.2.2.2.1"><a href="#section-13.2.2" class="auto internal xref">13.2.2</a>.  <a href="#name-bgp-ct-interop-between-mpls-" class="internal xref">BGP CT - Interop between MPLS and Other Forwarding Technologies</a></p>
+                    <p id="section-toc.1-1.13.2.2.2.2.1"><a href="#section-13.2.2" class="xref">13.2.2</a>.  <a href="#name-bgp-ct-interop-between-mpls-" class="xref">BGP CT - Interop between MPLS and Other Forwarding Technologies</a></p>
 </li>
                 </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.3">
-                <p id="section-toc.1-1.13.2.3.1"><a href="#section-13.3" class="auto internal xref">13.3</a>.  <a href="#name-managing-transport-route-vis" class="internal xref">Managing Transport Route Visibility</a></p>
+                <p id="section-toc.1-1.13.2.3.1"><a href="#section-13.3" class="xref">13.3</a>.  <a href="#name-managing-transport-route-vis" class="xref">Managing Transport Route Visibility</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14">
-            <p id="section-toc.1-1.14.1"><a href="#section-14" class="auto internal xref">14</a>. <a href="#name-iana-considerations-2" class="internal xref">IANA Considerations</a></p>
+            <p id="section-toc.1-1.14.1"><a href="#section-14" class="xref">14</a>. <a href="#name-iana-considerations-2" class="xref">IANA Considerations</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.1">
-                <p id="section-toc.1-1.14.2.1.1"><a href="#section-14.1" class="auto internal xref">14.1</a>.  <a href="#name-new-bgp-safi-2" class="internal xref">New BGP SAFI</a></p>
+                <p id="section-toc.1-1.14.2.1.1"><a href="#section-14.1" class="xref">14.1</a>.  <a href="#name-new-bgp-safi-2" class="xref">New BGP SAFI</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.2">
-                <p id="section-toc.1-1.14.2.2.1"><a href="#section-14.2" class="auto internal xref">14.2</a>.  <a href="#name-new-format-for-bgp-extended-" class="internal xref">New Format for BGP Extended Community</a></p>
+                <p id="section-toc.1-1.14.2.2.1"><a href="#section-14.2" class="xref">14.2</a>.  <a href="#name-new-format-for-bgp-extended-" class="xref">New Format for BGP Extended Community</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.2.2.1">
-                    <p id="section-toc.1-1.14.2.2.2.1.1"><a href="#section-14.2.1" class="auto internal xref">14.2.1</a>.  <a href="#name-existing-registries-to-be-mo" class="internal xref">Existing Registries to be Modified</a></p>
+                    <p id="section-toc.1-1.14.2.2.2.1.1"><a href="#section-14.2.1" class="xref">14.2.1</a>.  <a href="#name-existing-registries-to-be-mo" class="xref">Existing Registries to be Modified</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.2.2.2">
-                    <p id="section-toc.1-1.14.2.2.2.2.1"><a href="#section-14.2.2" class="auto internal xref">14.2.2</a>.  <a href="#name-new-registries-2" class="internal xref">New Registries</a></p>
+                    <p id="section-toc.1-1.14.2.2.2.2.1"><a href="#section-14.2.2" class="xref">14.2.2</a>.  <a href="#name-new-registries-2" class="xref">New Registries</a></p>
 </li>
                 </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.3">
-                <p id="section-toc.1-1.14.2.3.1"><a href="#section-14.3" class="auto internal xref">14.3</a>.  <a href="#name-mpls-oam-code-points-2" class="internal xref">MPLS OAM Code Points</a></p>
+                <p id="section-toc.1-1.14.2.3.1"><a href="#section-14.3" class="xref">14.3</a>.  <a href="#name-mpls-oam-code-points-2" class="xref">MPLS OAM Code Points</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.4">
-                <p id="section-toc.1-1.14.2.4.1"><a href="#section-14.4" class="auto internal xref">14.4</a>.  <a href="#name-best-effort-transport-class-i" class="internal xref">Best Effort Transport Class ID</a></p>
+                <p id="section-toc.1-1.14.2.4.1"><a href="#section-14.4" class="xref">14.4</a>.  <a href="#name-best-effort-transport-class-i" class="xref">Best Effort Transport Class ID</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.15">
-            <p id="section-toc.1-1.15.1"><a href="#section-15" class="auto internal xref">15</a>. <a href="#name-security-considerations-2" class="internal xref">Security Considerations</a></p>
+            <p id="section-toc.1-1.15.1"><a href="#section-15" class="xref">15</a>. <a href="#name-security-considerations-2" class="xref">Security Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.16">
-            <p id="section-toc.1-1.16.1"><a href="#section-16" class="auto internal xref">16</a>. <a href="#name-references-2" class="internal xref">References</a></p>
+            <p id="section-toc.1-1.16.1"><a href="#section-16" class="xref">16</a>. <a href="#name-references-2" class="xref">References</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.16.2.1">
-                <p id="section-toc.1-1.16.2.1.1"><a href="#section-16.1" class="auto internal xref">16.1</a>.  <a href="#name-normative-references-2" class="internal xref">Normative References</a></p>
+                <p id="section-toc.1-1.16.2.1.1"><a href="#section-16.1" class="xref">16.1</a>.  <a href="#name-normative-references-2" class="xref">Normative References</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.16.2.2">
-                <p id="section-toc.1-1.16.2.2.1"><a href="#section-16.2" class="auto internal xref">16.2</a>.  <a href="#name-informative-references-2" class="internal xref">Informative References</a></p>
+                <p id="section-toc.1-1.16.2.2.1"><a href="#section-16.2" class="xref">16.2</a>.  <a href="#name-informative-references-2" class="xref">Informative References</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.17">
-            <p id="section-toc.1-1.17.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-extensibility-considerations" class="internal xref">Extensibility considerations.</a></p>
+            <p id="section-toc.1-1.17.1"><a href="#appendix-A" class="xref">Appendix A</a>.  <a href="#name-extensibility-considerations" class="xref">Extensibility considerations.</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.17.2.1">
-                <p id="section-toc.1-1.17.2.1.1"><a href="#appendix-A.1" class="auto internal xref">A.1</a>.  <a href="#name-signaling-intent-over-pe-ce-" class="internal xref">Signaling Intent over PE-CE Attachment Circuit</a></p>
+                <p id="section-toc.1-1.17.2.1.1"><a href="#appendix-A.1" class="xref">A.1</a>.  <a href="#name-signaling-intent-over-pe-ce-" class="xref">Signaling Intent over PE-CE Attachment Circuit</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.17.2.1.2.1">
-                    <p id="section-toc.1-1.17.2.1.2.1.1"><a href="#appendix-A.1.1" class="auto internal xref">A.1.1</a>.  <a href="#name-using-dscp-in-multinexthop-a" class="internal xref">Using DSCP in MultiNexthop Attribute</a></p>
+                    <p id="section-toc.1-1.17.2.1.2.1.1"><a href="#appendix-A.1.1" class="xref">A.1.1</a>.  <a href="#name-using-dscp-in-multinexthop-a" class="xref">Using DSCP in MultiNexthop Attribute</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.17.2.1.2.2">
-                    <p id="section-toc.1-1.17.2.1.2.2.1"><a href="#appendix-A.1.2" class="auto internal xref">A.1.2</a>.  <a href="#name-mpls-enabled-ce-2" class="internal xref">MPLS-enabled CE</a></p>
+                    <p id="section-toc.1-1.17.2.1.2.2.1"><a href="#appendix-A.1.2" class="xref">A.1.2</a>.  <a href="#name-mpls-enabled-ce-2" class="xref">MPLS-enabled CE</a></p>
 </li>
                 </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.17.2.2">
-                <p id="section-toc.1-1.17.2.2.1"><a href="#appendix-A.2" class="auto internal xref">A.2</a>.  <a href="#name-bgp-ct-egress-te-2" class="internal xref">BGP CT Egress TE</a></p>
+                <p id="section-toc.1-1.17.2.2.1"><a href="#appendix-A.2" class="xref">A.2</a>.  <a href="#name-bgp-ct-egress-te-2" class="xref">BGP CT Egress TE</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.18">
-            <p id="section-toc.1-1.18.1"><a href="#appendix-B" class="auto internal xref">Appendix B</a>.  <a href="#name-applicability-to-intra-as-an" class="internal xref">Applicability to Intra AS and different Inter AS deployments.</a></p>
+            <p id="section-toc.1-1.18.1"><a href="#appendix-B" class="xref">Appendix B</a>.  <a href="#name-applicability-to-intra-as-an" class="xref">Applicability to Intra AS and different Inter AS deployments.</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.18.2.1">
-                <p id="section-toc.1-1.18.2.1.1"><a href="#appendix-B.1" class="auto internal xref">B.1</a>.  <a href="#name-intra-as-usecase-2" class="internal xref">Intra AS usecase</a></p>
+                <p id="section-toc.1-1.18.2.1.1"><a href="#appendix-B.1" class="xref">B.1</a>.  <a href="#name-intra-as-usecase-2" class="xref">Intra AS usecase</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.18.2.1.2.1">
-                    <p id="section-toc.1-1.18.2.1.2.1.1"><a href="#appendix-B.1.1" class="auto internal xref">B.1.1</a>.  <a href="#name-topology-5" class="internal xref">Topology</a></p>
+                    <p id="section-toc.1-1.18.2.1.2.1.1"><a href="#appendix-B.1.1" class="xref">B.1.1</a>.  <a href="#name-topology-5" class="xref">Topology</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.18.2.1.2.2">
-                    <p id="section-toc.1-1.18.2.1.2.2.1"><a href="#appendix-B.1.2" class="auto internal xref">B.1.2</a>.  <a href="#name-transport-layer-4" class="internal xref">Transport Layer</a></p>
+                    <p id="section-toc.1-1.18.2.1.2.2.1"><a href="#appendix-B.1.2" class="xref">B.1.2</a>.  <a href="#name-transport-layer-4" class="xref">Transport Layer</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.18.2.1.2.3">
-                    <p id="section-toc.1-1.18.2.1.2.3.1"><a href="#appendix-B.1.3" class="auto internal xref">B.1.3</a>.  <a href="#name-service-layer-route-exchange-5" class="internal xref">Service Layer route exchange</a></p>
+                    <p id="section-toc.1-1.18.2.1.2.3.1"><a href="#appendix-B.1.3" class="xref">B.1.3</a>.  <a href="#name-service-layer-route-exchange-5" class="xref">Service Layer route exchange</a></p>
 </li>
                 </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.18.2.2">
-                <p id="section-toc.1-1.18.2.2.1"><a href="#appendix-B.2" class="auto internal xref">B.2</a>.  <a href="#name-inter-as-option-a-usecase-2" class="internal xref">Inter AS option-A usecase</a></p>
+                <p id="section-toc.1-1.18.2.2.1"><a href="#appendix-B.2" class="xref">B.2</a>.  <a href="#name-inter-as-option-a-usecase-2" class="xref">Inter AS option-A usecase</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.18.2.2.2.1">
-                    <p id="section-toc.1-1.18.2.2.2.1.1"><a href="#appendix-B.2.1" class="auto internal xref">B.2.1</a>.  <a href="#name-topology-6" class="internal xref">Topology</a></p>
+                    <p id="section-toc.1-1.18.2.2.2.1.1"><a href="#appendix-B.2.1" class="xref">B.2.1</a>.  <a href="#name-topology-6" class="xref">Topology</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.18.2.2.2.2">
-                    <p id="section-toc.1-1.18.2.2.2.2.1"><a href="#appendix-B.2.2" class="auto internal xref">B.2.2</a>.  <a href="#name-transport-layer-5" class="internal xref">Transport Layer</a></p>
+                    <p id="section-toc.1-1.18.2.2.2.2.1"><a href="#appendix-B.2.2" class="xref">B.2.2</a>.  <a href="#name-transport-layer-5" class="xref">Transport Layer</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.18.2.2.2.3">
-                    <p id="section-toc.1-1.18.2.2.2.3.1"><a href="#appendix-B.2.3" class="auto internal xref">B.2.3</a>.  <a href="#name-service-layer-route-exchange-6" class="internal xref">Service Layer route exchange</a></p>
+                    <p id="section-toc.1-1.18.2.2.2.3.1"><a href="#appendix-B.2.3" class="xref">B.2.3</a>.  <a href="#name-service-layer-route-exchange-6" class="xref">Service Layer route exchange</a></p>
 </li>
                 </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.18.2.3">
-                <p id="section-toc.1-1.18.2.3.1"><a href="#appendix-B.3" class="auto internal xref">B.3</a>.  <a href="#name-inter-as-option-b-usecase-2" class="internal xref">Inter AS option-B usecase</a></p>
+                <p id="section-toc.1-1.18.2.3.1"><a href="#appendix-B.3" class="xref">B.3</a>.  <a href="#name-inter-as-option-b-usecase-2" class="xref">Inter AS option-B usecase</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.18.2.3.2.1">
-                    <p id="section-toc.1-1.18.2.3.2.1.1"><a href="#appendix-B.3.1" class="auto internal xref">B.3.1</a>.  <a href="#name-topology-7" class="internal xref">Topology</a></p>
+                    <p id="section-toc.1-1.18.2.3.2.1.1"><a href="#appendix-B.3.1" class="xref">B.3.1</a>.  <a href="#name-topology-7" class="xref">Topology</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.18.2.3.2.2">
-                    <p id="section-toc.1-1.18.2.3.2.2.1"><a href="#appendix-B.3.2" class="auto internal xref">B.3.2</a>.  <a href="#name-transport-layer-6" class="internal xref">Transport Layer</a></p>
+                    <p id="section-toc.1-1.18.2.3.2.2.1"><a href="#appendix-B.3.2" class="xref">B.3.2</a>.  <a href="#name-transport-layer-6" class="xref">Transport Layer</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.18.2.3.2.3">
-                    <p id="section-toc.1-1.18.2.3.2.3.1"><a href="#appendix-B.3.3" class="auto internal xref">B.3.3</a>.  <a href="#name-service-layer-route-exchange-7" class="internal xref">Service Layer route exchange</a></p>
+                    <p id="section-toc.1-1.18.2.3.2.3.1"><a href="#appendix-B.3.3" class="xref">B.3.3</a>.  <a href="#name-service-layer-route-exchange-7" class="xref">Service Layer route exchange</a></p>
 </li>
                 </ul>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.19">
-            <p id="section-toc.1-1.19.1"><a href="#appendix-C" class="auto internal xref">Appendix C</a>.  <a href="#name-why-reuse-rfc-8277-and-rfc-4" class="internal xref">Why reuse RFC 8277 and RFC 4364?</a></p>
+            <p id="section-toc.1-1.19.1"><a href="#appendix-C" class="xref">Appendix C</a>.  <a href="#name-why-reuse-rfc-8277-and-rfc-4" class="xref">Why reuse RFC 8277 and RFC 4364?</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.19.2.1">
-                <p id="section-toc.1-1.19.2.1.1"><a href="#appendix-C.1" class="auto internal xref">C.1</a>.  <a href="#name-update-packing-consideration" class="internal xref">Update packing considerations</a></p>
+                <p id="section-toc.1-1.19.2.1.1"><a href="#appendix-C.1" class="xref">C.1</a>.  <a href="#name-update-packing-consideration" class="xref">Update packing considerations</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.20">
-            <p id="section-toc.1-1.20.1"><a href="#appendix-D" class="auto internal xref">Appendix D</a>.  <a href="#name-scaling-using-bgp-mpls-names" class="internal xref">Scaling using BGP MPLS Namespaces</a></p>
+            <p id="section-toc.1-1.20.1"><a href="#appendix-D" class="xref">Appendix D</a>.  <a href="#name-scaling-using-bgp-mpls-names" class="xref">Scaling using BGP MPLS Namespaces</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.20.2.1">
-                <p id="section-toc.1-1.20.2.1.1"><a href="#appendix-D.1" class="auto internal xref">D.1</a>.  <a href="#name-illustration-2" class="internal xref">Illustration.</a></p>
+                <p id="section-toc.1-1.20.2.1.1"><a href="#appendix-D.1" class="xref">D.1</a>.  <a href="#name-illustration-2" class="xref">Illustration.</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.20.2.2">
-                <p id="section-toc.1-1.20.2.2.1"><a href="#appendix-D.2" class="auto internal xref">D.2</a>.  <a href="#name-topology-8" class="internal xref">Topology</a></p>
+                <p id="section-toc.1-1.20.2.2.1"><a href="#appendix-D.2" class="xref">D.2</a>.  <a href="#name-topology-8" class="xref">Topology</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.20.2.3">
-                <p id="section-toc.1-1.20.2.3.1"><a href="#appendix-D.3" class="auto internal xref">D.3</a>.  <a href="#name-context-protocol-nexthop-add" class="internal xref">Context Protocol Nexthop Address (CPNH)</a></p>
+                <p id="section-toc.1-1.20.2.3.1"><a href="#appendix-D.3" class="xref">D.3</a>.  <a href="#name-context-protocol-nexthop-add" class="xref">Context Protocol Nexthop Address (CPNH)</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.20.2.4">
-                <p id="section-toc.1-1.20.2.4.1"><a href="#appendix-D.4" class="auto internal xref">D.4</a>.  <a href="#name-service-forwarding-helper-an" class="internal xref">Service Forwarding Helper, and Changes to Transport Layer.</a></p>
+                <p id="section-toc.1-1.20.2.4.1"><a href="#appendix-D.4" class="xref">D.4</a>.  <a href="#name-service-forwarding-helper-an" class="xref">Service Forwarding Helper, and Changes to Transport Layer.</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.20.2.5">
-                <p id="section-toc.1-1.20.2.5.1"><a href="#appendix-D.5" class="auto internal xref">D.5</a>.  <a href="#name-bgp-mpls-namespace-address-f" class="internal xref">BGP MPLS Namespace Address family (AFI:16399, SAFI:128)</a></p>
+                <p id="section-toc.1-1.20.2.5.1"><a href="#appendix-D.5" class="xref">D.5</a>.  <a href="#name-bgp-mpls-namespace-address-f" class="xref">BGP MPLS Namespace Address family (AFI:16399, SAFI:128)</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.20.2.6">
-                <p id="section-toc.1-1.20.2.6.1"><a href="#appendix-D.6" class="auto internal xref">D.6</a>.  <a href="#name-changes-to-service-layer-rou" class="internal xref">Changes to Service Layer Route Exchange</a></p>
+                <p id="section-toc.1-1.20.2.6.1"><a href="#appendix-D.6" class="xref">D.6</a>.  <a href="#name-changes-to-service-layer-rou" class="xref">Changes to Service Layer Route Exchange</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.20.2.7">
-                <p id="section-toc.1-1.20.2.7.1"><a href="#appendix-D.7" class="auto internal xref">D.7</a>.  <a href="#name-analysis-of-forwarding-behav" class="internal xref">Analysis of Forwarding Behavior</a></p>
+                <p id="section-toc.1-1.20.2.7.1"><a href="#appendix-D.7" class="xref">D.7</a>.  <a href="#name-analysis-of-forwarding-behav" class="xref">Analysis of Forwarding Behavior</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.21">
-            <p id="section-toc.1-1.21.1"><a href="#appendix-E" class="auto internal xref">Appendix E</a>.  <a href="#name-bgp-ct-deployment-in-srv6-ne" class="internal xref">BGP CT deployment in SRv6 networks</a></p>
+            <p id="section-toc.1-1.21.1"><a href="#appendix-E" class="xref">Appendix E</a>.  <a href="#name-bgp-ct-deployment-in-srv6-ne" class="xref">BGP CT deployment in SRv6 networks</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.21.2.1">
-                <p id="section-toc.1-1.21.2.1.1"><a href="#appendix-E.1" class="auto internal xref">E.1</a>.  <a href="#name-sid-stacking-approach-2" class="internal xref">SID stacking approach</a></p>
+                <p id="section-toc.1-1.21.2.1.1"><a href="#appendix-E.1" class="xref">E.1</a>.  <a href="#name-sid-stacking-approach-2" class="xref">SID stacking approach</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.21.2.2">
-                <p id="section-toc.1-1.21.2.2.1"><a href="#appendix-E.2" class="auto internal xref">E.2</a>.  <a href="#name-color-encoded-service-sid-cp" class="internal xref">Color-encoded Service SID (CPR) Approach</a></p>
+                <p id="section-toc.1-1.21.2.2.1"><a href="#appendix-E.2" class="xref">E.2</a>.  <a href="#name-color-encoded-service-sid-cp" class="xref">Color-encoded Service SID (CPR) Approach</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.21.2.2.2.1">
-                    <p id="section-toc.1-1.21.2.2.2.1.1"><a href="#appendix-E.2.1" class="auto internal xref">E.2.1</a>.  <a href="#name-analysis-of-cpr-approach-2" class="internal xref">Analysis of CPR Approach</a></p>
+                    <p id="section-toc.1-1.21.2.2.2.1.1"><a href="#appendix-E.2.1" class="xref">E.2.1</a>.  <a href="#name-analysis-of-cpr-approach-2" class="xref">Analysis of CPR Approach</a></p>
 </li>
                 </ul>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.22">
-            <p id="section-toc.1-1.22.1"><a href="#appendix-F" class="auto internal xref"></a><a href="#name-contributors-2" class="internal xref">Contributors</a></p>
+            <p id="section-toc.1-1.22.1"><a href="#appendix-F" class="xref"></a><a href="#name-contributors-2" class="xref">Contributors</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.22.2.1">
-                <p id="section-toc.1-1.22.2.1.1"><a href="#appendix-F.1" class="auto internal xref"></a><a href="#name-co-authors-2" class="internal xref">Co-Authors</a></p>
+                <p id="section-toc.1-1.22.2.1.1"><a href="#appendix-F.1" class="xref"></a><a href="#name-co-authors-2" class="xref">Co-Authors</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.22.2.2">
-                <p id="section-toc.1-1.22.2.2.1"><a href="#appendix-F.2" class="auto internal xref"></a><a href="#name-other-contributors-2" class="internal xref">Other Contributors</a></p>
+                <p id="section-toc.1-1.22.2.2.1"><a href="#appendix-F.2" class="xref"></a><a href="#name-other-contributors-2" class="xref">Other Contributors</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.23">
-            <p id="section-toc.1-1.23.1"><a href="#appendix-G" class="auto internal xref"></a><a href="#name-acknowledgements-2" class="internal xref">Acknowledgements</a></p>
+            <p id="section-toc.1-1.23.1"><a href="#appendix-G" class="xref"></a><a href="#name-acknowledgements-2" class="xref">Acknowledgements</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.24">
-            <p id="section-toc.1-1.24.1"><a href="#appendix-H" class="auto internal xref"></a><a href="#name-authors-addresses-2" class="internal xref">Authors' Addresses</a></p>
+            <p id="section-toc.1-1.24.1"><a href="#appendix-H" class="xref"></a><a href="#name-authors-addresses-2" class="xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -1693,7 +1674,7 @@ li > p:last-of-type:only-child {
       services are provisioned between different pairs of service endpoints
       (e.g. Provider Edge nodes), that can either be in the same domain or
       across different domains.<a href="#section-1-1" class="pilcrow">¶</a></p>
-<p id="section-1-2">This document realizes "Intent" as defined in <span>[<a href="#RFC9315" class="cite xref">RFC9315</a>]</span> and prescribes constructs and procedures that enable provider
+<p id="section-1-2">This document realizes "Intent" as defined in <span>[<a href="#RFC9315" class="xref">RFC9315</a>]</span> and prescribes constructs and procedures that enable provider
       networks to be able to forward service traffic based on service specific
       intent, end-to-end across service endpoints.<a href="#section-1-2" class="pilcrow">¶</a></p>
 <p id="section-1-3">The mechanisms described in this document achieve "Intent Driven
@@ -1734,7 +1715,7 @@ li > p:last-of-type:only-child {
       Classful Transport" that extends/stitches intent-aware intra-domain
       tunnels that belong to the same class across domain boundaries, to
       establish end-to-end intent-aware paths between service endpoints.<a href="#section-1-9" class="pilcrow">¶</a></p>
-<p id="section-1-10"><span>[<a href="#Intent-Routing-Color" class="cite xref">Intent-Routing-Color</a>]</span> describes various use cases and
+<p id="section-1-10"><span>[<a href="#Intent-Routing-Color" class="xref">Intent-Routing-Color</a>]</span> describes various use cases and
       applications of procedures described in this document.<a href="#section-1-10" class="pilcrow">¶</a></p>
 </section>
 <section id="section-2">
@@ -1745,40 +1726,41 @@ li > p:last-of-type:only-child {
 <p id="section-2-2">NLRI: Network Layer Reachability Information.<a href="#section-2-2" class="pilcrow">¶</a></p>
 <p id="section-2-3">TE : Traffic Engineering.<a href="#section-2-3" class="pilcrow">¶</a></p>
 <p id="section-2-4">TC: Transport Class.<a href="#section-2-4" class="pilcrow">¶</a></p>
-<p id="section-2-5">SAFI: Subsequent Address Family Identifier.<a href="#section-2-5" class="pilcrow">¶</a></p>
-<p id="section-2-6">SN : Service Node. A router that sends or receives BGP Service routes
-      (e.g. SAFIs 1, 128) with self as nexthop.<a href="#section-2-6" class="pilcrow">¶</a></p>
-<p id="section-2-7">eSN : Egress Service Node. A router that sends BGP Service routes
-      (e.g. SAFIs 1, 128) with self as nexthop.<a href="#section-2-7" class="pilcrow">¶</a></p>
-<p id="section-2-8">iSN : Ingress Service Node. A router that receives BGP Service routes
-      (e.g. SAFIs 1, 128).<a href="#section-2-8" class="pilcrow">¶</a></p>
-<p id="section-2-9">BN : Border Node. A router that sends or receives BGP Transport
-      routes (e.g. SAFI 4, 76) with self as nexthop.<a href="#section-2-9" class="pilcrow">¶</a></p>
-<p id="section-2-10">TN : Transport Node, P-router.<a href="#section-2-10" class="pilcrow">¶</a></p>
-<p id="section-2-11">BGP VPN : VPNs built using RFC4364 mechanisms.<a href="#section-2-11" class="pilcrow">¶</a></p>
-<p id="section-2-12">BGP LU: BGP Labeled Unicast family (SAFI 4).<a href="#section-2-12" class="pilcrow">¶</a></p>
-<p id="section-2-13">BGP CT: BGP Classful Transport family (SAFI 76).<a href="#section-2-13" class="pilcrow">¶</a></p>
-<p id="section-2-14">ASN: Autonomous System Number.<a href="#section-2-14" class="pilcrow">¶</a></p>
-<p id="section-2-15">RT : Route-Target extended community.<a href="#section-2-15" class="pilcrow">¶</a></p>
-<p id="section-2-16">RD : Route-Distinguisher.<a href="#section-2-16" class="pilcrow">¶</a></p>
-<p id="section-2-17">RTC : Route Target Constrain.<a href="#section-2-17" class="pilcrow">¶</a></p>
-<p id="section-2-18">VRF: Virtual Router Forwarding Table.<a href="#section-2-18" class="pilcrow">¶</a></p>
-<p id="section-2-19">CsC: Carrier serving Carrier VPN.<a href="#section-2-19" class="pilcrow">¶</a></p>
-<p id="section-2-20">PNH : Protocol-Nexthop address carried in a BGP Update message.<a href="#section-2-20" class="pilcrow">¶</a></p>
-<p id="section-2-21">MNH : BGP MultiNexthop attribute.<a href="#section-2-21" class="pilcrow">¶</a></p>
-<p id="section-2-22">FEC : Forwarding Equivalence Class.<a href="#section-2-22" class="pilcrow">¶</a></p>
-<p id="section-2-23">RSVP-TE : Resource Reservation Protocol - Traffic Engineering.<a href="#section-2-23" class="pilcrow">¶</a></p>
-<p id="section-2-24">SR : Segment Routing.<a href="#section-2-24" class="pilcrow">¶</a></p>
-<p id="section-2-25">SRTE : Segment Routing Traffic Engineering.<a href="#section-2-25" class="pilcrow">¶</a></p>
-<p id="section-2-26">SID : SR Segment Identifier.<a href="#section-2-26" class="pilcrow">¶</a></p>
-<p id="section-2-27">EP : Endpoint, a loopback address in the network.<a href="#section-2-27" class="pilcrow">¶</a></p>
-<p id="section-2-28">SEP : Service Endpoint, the PNH of a Service route.<a href="#section-2-28" class="pilcrow">¶</a></p>
-<p id="section-2-29">LPM : Longest Prefix Match.<a href="#section-2-29" class="pilcrow">¶</a></p>
-<p id="section-2-30">SLA: Service Level Agreement.<a href="#section-2-30" class="pilcrow">¶</a></p>
-<p id="section-2-31">EPE: Egress Peer Engineering.<a href="#section-2-31" class="pilcrow">¶</a></p>
-<p id="section-2-32">MPLS: Multi Protocol Label Switching.<a href="#section-2-32" class="pilcrow">¶</a></p>
-<p id="section-2-33">UHP Label: Ultimate Hop Pop label.<a href="#section-2-33" class="pilcrow">¶</a></p>
-<p id="section-2-34">PHP Label: Penultimate Hop Pop label.<a href="#section-2-34" class="pilcrow">¶</a></p>
+<p id="section-2-5">AFI: Address Family Identifier.<a href="#section-2-5" class="pilcrow">¶</a></p>
+<p id="section-2-6">SAFI: Subsequent Address Family Identifier.<a href="#section-2-6" class="pilcrow">¶</a></p>
+<p id="section-2-7">SN : Service Node. A router that sends or receives BGP Service routes
+      (e.g. SAFIs 1, 128) with self as next hop.<a href="#section-2-7" class="pilcrow">¶</a></p>
+<p id="section-2-8">eSN : Egress Service Node. A router that sends BGP Service routes
+      (e.g. SAFIs 1, 128) with self as next hop.<a href="#section-2-8" class="pilcrow">¶</a></p>
+<p id="section-2-9">iSN : Ingress Service Node. A router that receives BGP Service routes
+      (e.g. SAFIs 1, 128).<a href="#section-2-9" class="pilcrow">¶</a></p>
+<p id="section-2-10">BN : Border Node. A router that sends or receives BGP Transport
+      routes (e.g. SAFI 4, 76) with self as next hop.<a href="#section-2-10" class="pilcrow">¶</a></p>
+<p id="section-2-11">TN : Transport Node, P-router.<a href="#section-2-11" class="pilcrow">¶</a></p>
+<p id="section-2-12">BGP VPN : VPNs built using RFC4364 mechanisms.<a href="#section-2-12" class="pilcrow">¶</a></p>
+<p id="section-2-13">BGP LU: BGP Labeled Unicast family (SAFI 4).<a href="#section-2-13" class="pilcrow">¶</a></p>
+<p id="section-2-14">BGP CT: BGP Classful Transport family (SAFI 76).<a href="#section-2-14" class="pilcrow">¶</a></p>
+<p id="section-2-15">ASN: Autonomous System Number.<a href="#section-2-15" class="pilcrow">¶</a></p>
+<p id="section-2-16">RT : Route-Target extended community.<a href="#section-2-16" class="pilcrow">¶</a></p>
+<p id="section-2-17">RD : Route-Distinguisher.<a href="#section-2-17" class="pilcrow">¶</a></p>
+<p id="section-2-18">RTC : Route Target Constrain.<a href="#section-2-18" class="pilcrow">¶</a></p>
+<p id="section-2-19">VRF: Virtual Router Forwarding Table.<a href="#section-2-19" class="pilcrow">¶</a></p>
+<p id="section-2-20">CsC: Carrier serving Carrier VPN.<a href="#section-2-20" class="pilcrow">¶</a></p>
+<p id="section-2-21">PNH : Protocol Next hop address carried in a BGP Update message.<a href="#section-2-21" class="pilcrow">¶</a></p>
+<p id="section-2-22">MNH : BGP MultiNexthop attribute.<a href="#section-2-22" class="pilcrow">¶</a></p>
+<p id="section-2-23">FEC : Forwarding Equivalence Class.<a href="#section-2-23" class="pilcrow">¶</a></p>
+<p id="section-2-24">RSVP-TE : Resource Reservation Protocol - Traffic Engineering.<a href="#section-2-24" class="pilcrow">¶</a></p>
+<p id="section-2-25">SR : Segment Routing.<a href="#section-2-25" class="pilcrow">¶</a></p>
+<p id="section-2-26">SRTE : Segment Routing Traffic Engineering.<a href="#section-2-26" class="pilcrow">¶</a></p>
+<p id="section-2-27">SID : SR Segment Identifier.<a href="#section-2-27" class="pilcrow">¶</a></p>
+<p id="section-2-28">EP : Endpoint, a loopback address in the network.<a href="#section-2-28" class="pilcrow">¶</a></p>
+<p id="section-2-29">SEP : Service Endpoint, the PNH of a Service route.<a href="#section-2-29" class="pilcrow">¶</a></p>
+<p id="section-2-30">LPM : Longest Prefix Match.<a href="#section-2-30" class="pilcrow">¶</a></p>
+<p id="section-2-31">SLA: Service Level Agreement.<a href="#section-2-31" class="pilcrow">¶</a></p>
+<p id="section-2-32">EPE: Egress Peer Engineering.<a href="#section-2-32" class="pilcrow">¶</a></p>
+<p id="section-2-33">MPLS: Multi Protocol Label Switching.<a href="#section-2-33" class="pilcrow">¶</a></p>
+<p id="section-2-34">UHP Label: Ultimate Hop Pop label.<a href="#section-2-34" class="pilcrow">¶</a></p>
+<p id="section-2-35">PHP Label: Penultimate Hop Pop label.<a href="#section-2-35" class="pilcrow">¶</a></p>
 <section id="section-2.1">
         <h3 id="name-definitions-2">
 <a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-definitions-2" class="section-name selfRef">Definitions</a>
@@ -1818,7 +1800,7 @@ li > p:last-of-type:only-child {
 <p id="section-2.1-12">Transport Plane : An end to end plane consisting of transport
         tunnels belonging to the same Transport Class. Tunnels of the same
         Transport Class are stitched together by BGP CT route readvertisements
-        with nexthop self to enable Label-Swap forwarding across domain
+        with next hop self to enable Label-Swap forwarding across domain
         boundaries.<a href="#section-2.1-12" class="pilcrow">¶</a></p>
 </section>
 </section>
@@ -1826,12 +1808,12 @@ li > p:last-of-type:only-child {
       <h2 id="name-architecture-overview-2">
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-architecture-overview-2" class="section-name selfRef">Architecture Overview</a>
       </h2>
-<p id="section-3-1">This document defines <span><a href="#tc" class="internal xref">"Transport Class"</a> (<a href="#tc" class="auto internal xref">Section 4</a>)</span> and
-      <span><a href="#Nexthop_Resoln_Schm" class="internal xref">"Resolution Scheme"</a> (<a href="#Nexthop_Resoln_Schm" class="auto internal xref">Section 5</a>)</span> as
+<p id="section-3-1">This document defines <span><a href="#tc" class="xref">"Transport Class"</a> (<a href="#tc" class="xref">Section 4</a>)</span> and
+      <span><a href="#Nexthop_Resoln_Schm" class="xref">"Resolution Scheme"</a> (<a href="#Nexthop_Resoln_Schm" class="xref">Section 5</a>)</span> as
       constructs to achieve end-to-end "Intent Driven Service Mapping".<a href="#section-3-1" class="pilcrow">¶</a></p>
 <p id="section-3-2">The tunneling protocols are made "Transport Class" aware. They
       publish their underlay routes for a Transport Class into an associated
-      <span><a href="#trdb" class="internal xref">"Transport Route Database" (TRDB)</a> (<a href="#trdb" class="auto internal xref">Section 4.2</a>)</span>. These
+      <span><a href="#trdb" class="xref">"Transport Route Database" (TRDB)</a> (<a href="#trdb" class="xref">Section 4.2</a>)</span>. These
       underlay routes are used to resolve overlay BGP routes. How exactly
       these intra-domain tunneling protocols are made Transport Class aware,
       is outside the scope of this document.<a href="#section-3-2" class="pilcrow">¶</a></p>
@@ -1849,7 +1831,7 @@ li > p:last-of-type:only-child {
       Class" aware tunneled network.<a href="#section-3-4" class="pilcrow">¶</a></p>
 <p id="section-3-5">Service overlay routes carry sufficient indication of the desired
       Transport Classes in the form of a BGP community called the "Mapping
-      community". The resolution infrastructure and the procedures for <span><a href="#Nexthop_Resoln_Schm" class="internal xref">"Resolution Scheme"</a> (<a href="#Nexthop_Resoln_Schm" class="auto internal xref">Section 5</a>)</span> defined in this
+      community". The resolution infrastructure and the procedures for <span><a href="#Nexthop_Resoln_Schm" class="xref">"Resolution Scheme"</a> (<a href="#Nexthop_Resoln_Schm" class="xref">Section 5</a>)</span> defined in this
       document enable an ingress nodes to resolve overlay routes over the
       appropriate underlay tunnels only within the scope of the Transport
       Classes identified by the Mapping Community. The ingress node performs a
@@ -1884,6 +1866,10 @@ li > p:last-of-type:only-child {
           domain.<a href="#section-3-8.4" class="pilcrow">¶</a>
 </li>
       </ul>
+<p id="section-3-9">This document describes procedures using MPLS forwarding
+      architecture. However, these procedures would work in similar manner for
+      non-MPLS forwarding architectures as well. <a href="#SRv6-Support" class="xref">Section 11</a>
+      describes the application of BGP CT over SRv6 data plane.<a href="#section-3-9" class="pilcrow">¶</a></p>
 </section>
 <div id="tc">
 <section id="section-4">
@@ -1914,7 +1900,7 @@ li > p:last-of-type:only-child {
       RT indicates the Transport Class. For BGP LU family (SAFI 4) routes,
       import processing based on Communities or Inter-AS source-peer may be
       used to place the route in the desired Transport Class.<a href="#section-4-4" class="pilcrow">¶</a></p>
-<p id="section-4-5">When the ingress route is received via <span>[<a href="#SRTE" class="cite xref">SRTE</a>]</span> with
+<p id="section-4-5">When the ingress route is received via <span>[<a href="#SRTE" class="xref">SRTE</a>]</span> with
       "Color:Endpoint" as the NLRI that encodes the Transport Class as an
       integer 'Color', the 'Color' is mapped to a Transport Class during the
       import processing. The SRTE ingress route for this 'Endpoint' is
@@ -1923,12 +1909,12 @@ li > p:last-of-type:only-child {
       new label. The MPLS swap route thus installed for the new label will pop
       the label and forward the decapsulated traffic into the path determined
       by the SRTE route for further encapsulation.<a href="#section-4-5" class="pilcrow">¶</a></p>
-<p id="section-4-6"><span>[<a href="#RFC8664" class="cite xref">RFC8664</a>]</span> extends Path Computation Element
+<p id="section-4-6"><span>[<a href="#RFC8664" class="xref">RFC8664</a>]</span> extends Path Computation Element
       Communication Protocol (PCEP) to carry SRTE Color. This color
       association learnt from PCEP is also mapped to a Transport Class thus
       associating the PCEP driven SRTE LSP with the desired Transport
       Class.<a href="#section-4-6" class="pilcrow">¶</a></p>
-<p id="section-4-7">Similarly, <span>[<a href="#PCEP-RSVP-COLOR" class="cite xref">PCEP-RSVP-COLOR</a>]</span> extends PCEP to carry
+<p id="section-4-7">Similarly, <span>[<a href="#PCEP-RSVP-COLOR" class="xref">PCEP-RSVP-COLOR</a>]</span> extends PCEP to carry
       RSVP Color. This color association learnt from PCEP is also mapped to a
       Transport Class thus associating the PCEP driven RSVP-TE LSP with the
       desired Transport Class.<a href="#section-4-7" class="pilcrow">¶</a></p>
@@ -1940,8 +1926,8 @@ li > p:last-of-type:only-child {
 <p id="section-4.1-1">This section defines a new type of Route Target, called "Transport
         Class" Route Target Extended Community.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
 <p id="section-4.1-2">"Transport Class" Route Target Extended Community is a transitive
-        extended community <span><a href="#RFC4360" class="internal xref">EXT-COMM</a> [<a href="#RFC4360" class="cite xref">RFC4360</a>]</span> of extended
-        type, which has the format as shown in <a href="#TCExtCom" class="auto internal xref">Figure 1</a>.<a href="#section-4.1-2" class="pilcrow">¶</a></p>
+        extended community <span><a href="#RFC4360" class="xref">EXT-COMM</a> [<a href="#RFC4360" class="xref">RFC4360</a>]</span> of extended
+        type, which has the format as shown in <a href="#TCExtCom" class="xref">Figure 1</a>.<a href="#section-4.1-2" class="pilcrow">¶</a></p>
 <p id="section-4.1-3">This new Route Target Format has the following encoding:<a href="#section-4.1-3" class="pilcrow">¶</a></p>
 <div id="TCExtCom">
 <figure id="figure-1">
@@ -1958,7 +1944,7 @@ li > p:last-of-type:only-child {
 |                     Transport Class ID                        |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-      Fig 1: "Transport Class" Route Target Extended Community
+      Figure 1: "Transport Class" Route Target Extended Community
 
  Type: This 1-octet field MUST be set to 0xa
 
@@ -1978,11 +1964,11 @@ li > p:last-of-type:only-child {
 </div>
 <figcaption><a href="#figure-1" class="selfRef">Figure 1</a></figcaption></figure>
 </div>
-<p id="section-4.1-5">The VPN route import/export mecahnisms as specified in <span><a href="#RFC4364" class="internal xref">BGP VPN</a> [<a href="#RFC4364" class="cite xref">RFC4364</a>]</span> and the Constrained Route Distribution
-        mechanisms as specified in <span><a href="#RFC4684" class="internal xref">Route Target
-        Constraints</a> [<a href="#RFC4684" class="cite xref">RFC4684</a>]</span> can be applied to BGP CT routes using its Transport
+<p id="section-4.1-5">The VPN route import/export mecahnisms as specified in <span><a href="#RFC4364" class="xref">BGP VPN</a> [<a href="#RFC4364" class="xref">RFC4364</a>]</span> and the Constrained Route Distribution
+        mechanisms as specified in <span><a href="#RFC4684" class="xref">Route Target
+        Constraints</a> [<a href="#RFC4684" class="xref">RFC4684</a>]</span> can be applied to BGP CT routes using its Transport
         Class Route Target Extended community.<a href="#section-4.1-5" class="pilcrow">¶</a></p>
-<p id="section-4.1-6">A BGP speaker that implements RT Constraint <span><a href="#RFC4684" class="internal xref">Route Target Constraints</a> [<a href="#RFC4684" class="cite xref">RFC4684</a>]</span> MUST apply the RT
+<p id="section-4.1-6">A BGP speaker that implements RT Constraint <span><a href="#RFC4684" class="xref">Route Target Constraints</a> [<a href="#RFC4684" class="xref">RFC4684</a>]</span> MUST apply the RT
         Constraint procedures to the Transport Class Route Target Extended
         community as well.<a href="#section-4.1-6" class="pilcrow">¶</a></p>
 <p id="section-4.1-7">The Transport Class Route Target Extended community is carried on
@@ -2041,7 +2027,7 @@ li > p:last-of-type:only-child {
 <p id="section-5-4">Mapping community is a "role" and not a new type of community; any
       BGP community or extended community may play this role. A Mapping
       Community maps to exactly one Resolution Scheme.<a href="#section-5-4" class="pilcrow">¶</a></p>
-<p id="section-5-5">An example of mapping community is "color:0:100", described in <span>[<a href="#RFC9012" class="cite xref">RFC9012</a>]</span>, or the "transport-target:0:100" described in <a href="#tc-rt" class="auto internal xref">Section 4.1</a> in this document.<a href="#section-5-5" class="pilcrow">¶</a></p>
+<p id="section-5-5">An example of mapping community is "color:0:100", described in <span>[<a href="#RFC9012" class="xref">RFC9012</a>]</span>, or the "transport-target:0:100" described in <a href="#tc-rt" class="xref">Section 4.1</a> in this document.<a href="#section-5-5" class="pilcrow">¶</a></p>
 <p id="section-5-6">A BGP route is associated with a resolution scheme during import
       processing. The first community on the route that matches a Mapping
       Community of a locally configured Resolution Scheme is considered the
@@ -2070,18 +2056,18 @@ li > p:last-of-type:only-child {
       Family Identifier (AFI) of IPv4 or IPv6 and a new SAFI 76 "Classful
       Transport" that will applies to both IPv4 and IPv6 AFIs. These AFI/SAFI
       pair of values MUST be negotiated as per the Multiprotocol Extensions
-      capability described in section 8 of <span>[<a href="#RFC4760" class="cite xref">RFC4760</a>]</span> to be able
+      capability described in section 8 of <span>[<a href="#RFC4760" class="xref">RFC4760</a>]</span> to be able
       to send and receive BGP CT routes.<a href="#section-6-1" class="pilcrow">¶</a></p>
 <p id="section-6-2">The "Classful Transport" SAFI NLRI has similar encoding as specified
-      in section 2 of <span>[<a href="#RFC8277" class="cite xref">RFC8277</a>]</span>.<a href="#section-6-2" class="pilcrow">¶</a></p>
+      in section 2 of <span>[<a href="#RFC8277" class="xref">RFC8277</a>]</span>.<a href="#section-6-2" class="pilcrow">¶</a></p>
 <p id="section-6-3">When AFI/SAFI is 1/76, the Classful Transport NLRI Prefix consists of
       an 8-byte RD followed by an IPv4 prefix. When AFI/SAFI is 2/76, the
       Classful Transport NLRI Prefix consists of an 8-byte RD followed by an
       IPv6 prefix.<a href="#section-6-3" class="pilcrow">¶</a></p>
-<p id="section-6-4">The procedures described for SAFIs 4 or 128 in section 2 of <span>[<a href="#RFC8277" class="cite xref">RFC8277</a>]</span> apply for SAFI 76 as well. BGP CT routes may carry
+<p id="section-6-4">The procedures described for SAFIs 4 or 128 in section 2 of <span>[<a href="#RFC8277" class="xref">RFC8277</a>]</span> apply for SAFI 76 as well. BGP CT routes may carry
       multiple labels in the NLRI, by negotiating the Multiple Labels
-      Capability as described in section 2.1 of <span>[<a href="#RFC8277" class="cite xref">RFC8277</a>]</span><a href="#section-6-4" class="pilcrow">¶</a></p>
-<p id="section-6-5">For convenience, <a href="#CT-NLRI" class="auto internal xref">Figure 2</a> illustrates a BGP Classful
+      Capability as described in section 2.1 of <span>[<a href="#RFC8277" class="xref">RFC8277</a>]</span><a href="#section-6-4" class="pilcrow">¶</a></p>
+<p id="section-6-5">For convenience, <a href="#CT-NLRI" class="xref">Figure 2</a> illustrates a BGP Classful
       Transport family NLRI when a single Label is advertised (Multiple Labels
       Capability is not negotiated):<a href="#section-6-5" class="pilcrow">¶</a></p>
 <div id="CT-NLRI">
@@ -2159,7 +2145,7 @@ li > p:last-of-type:only-child {
       IPv6 address of the next hop).<a href="#section-6-9" class="pilcrow">¶</a></p>
 <p id="section-6-10">When the length of Next hop Address field is 24 (or 48) the next hop
       address is of type VPN-IPv6 with an 8-octet RD set to zero (potentially
-      followed by the link-local VPN-IPv6 address of the nexthop with an
+      followed by the link-local VPN-IPv6 address of the next hop with an
       8-octet RD set to zero).<a href="#section-6-10" class="pilcrow">¶</a></p>
 <p id="section-6-11">When the length of the Next hop Address field is 12 the next hop
       address is of type VPN-IPv4 with 8-octet RD set to zero.<a href="#section-6-11" class="pilcrow">¶</a></p>
@@ -2171,19 +2157,19 @@ li > p:last-of-type:only-child {
 <p id="section-6.1-1">To ease interoperability between nodes supporting different
         forwarding technologies, a BGP CT route allows carrying multiple
         encapsulation information.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
-<p id="section-6.1-2">An MPLS Label is carried using the encoding in <span>[<a href="#RFC8277" class="cite xref">RFC8277</a>]</span> . A node that does not support MPLS forwarding
+<p id="section-6.1-2">An MPLS Label is carried using the encoding in <span>[<a href="#RFC8277" class="xref">RFC8277</a>]</span> . A node that does not support MPLS forwarding
         advertises the special label 3 (Implicit Null) in the RFC 8277 MPLS
         Label field.<a href="#section-6.1-2" class="pilcrow">¶</a></p>
 <p id="section-6.1-3">The SID information for SR with respect to MPLS Data Plane is
         carried as specified in Prefix SID attribute defined as part of
-        section 3 in <span>[<a href="#RFC8669" class="cite xref">RFC8669</a>]</span>.<a href="#section-6.1-3" class="pilcrow">¶</a></p>
+        section 3 in <span>[<a href="#RFC8669" class="xref">RFC8669</a>]</span>.<a href="#section-6.1-3" class="pilcrow">¶</a></p>
 <p id="section-6.1-4">The SRv6 SID is carried using Prefix SID attribute as specified in
-        <span>[<a href="#RFC9252" class="cite xref">RFC9252</a>]</span>, without Transposition Scheme. The
+        <span>[<a href="#RFC9252" class="xref">RFC9252</a>]</span>, without Transposition Scheme. The
         Transposition Length is set to 0 and Transposition Offset is set to 0
         to indicate nothing is transposed and that the entire SRv6 SID value
         is encoded in the SID Information Sub-TLV.<a href="#section-6.1-4" class="pilcrow">¶</a></p>
 <p id="section-6.1-5">UDP tunneling information is carried using Tunnel Encapsulation
-        Attribute as specified in <span>[<a href="#RFC9012" class="cite xref">RFC9012</a>]</span>.<a href="#section-6.1-5" class="pilcrow">¶</a></p>
+        Attribute as specified in <span>[<a href="#RFC9012" class="xref">RFC9012</a>]</span>.<a href="#section-6.1-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <section id="section-6.2">
@@ -2203,7 +2189,7 @@ li > p:last-of-type:only-child {
         per RFC4364 procedures.<a href="#section-6.2-3" class="pilcrow">¶</a></p>
 <p id="section-6.2-4">It is worth noting that SAFI 128 has been used to carry transport
         prefixes in "L3VPN Inter-AS Carrier's carrier" scenario as defined in
-        section 10 of <span>[<a href="#RFC4364" class="cite xref">RFC4364</a>]</span>, where BGP LU/LDP prefixes in
+        section 10 of <span>[<a href="#RFC4364" class="xref">RFC4364</a>]</span>, where BGP LU/LDP prefixes in
         CsC VRF are advertised in SAFI 128 towards the remote-end client
         carrier.<a href="#section-6.2-4" class="pilcrow">¶</a></p>
 <p id="section-6.2-5">In this document, SAFI 76 (BGP CT) is used instead of reusing SAFI
@@ -2218,9 +2204,9 @@ li > p:last-of-type:only-child {
 <p id="section-6.2-6">A new SAFI also facilitates having a different readvertisement path
         of the transport family routes in a network than the service route
         readvertisement path. Service routes (Inet-VPN) are exchanged over an
-        EBGP multihop session between ASes with nexthop unchanged; whereas
+        EBGP multihop session between ASes with next hop unchanged; whereas
         Classful Transport routes are readvertised over EBGP single hop
-        sessions with "nexthop self" rewrite over inter-AS links.<a href="#section-6.2-6" class="pilcrow">¶</a></p>
+        sessions with "next hop self" rewrite over inter-AS links.<a href="#section-6.2-6" class="pilcrow">¶</a></p>
 <p id="section-6.2-7">The Classful Transport SAFI is similar in vein to BGP LU, in that
         it carries transport prefixes. The only difference is that it also
         carries in Route Target, an indication of which Transport Class the
@@ -2253,19 +2239,20 @@ li > p:last-of-type:only-child {
         originators of the same EP. This mode can be used when the ingress
         does not require full visibility of all nodes originating an EP.<a href="#section-6.3-4" class="pilcrow">¶</a></p>
 <p id="section-6.3-5">A label is allocated for a BGP CT route when it is advertised with
-        nexthop self by a SN or a BN. An implementation may use different
+        next hop self by a SN or a BN. An implementation may use different
         label allocation modes with BGP CT. The recommended label allocation
         mode is per-prefix as it provides better traffic convergence
-        properties than per-nexthop label allocation mode. Furthermore, BGP CT
-        offers two flavors for per-prefix label allocation. The first flavor
-        assigns a label for each unique "RD, EP". The second flavor assigns a
-        label for each unique "Transport Class, EP" while ignoring the RD.<a href="#section-6.3-5" class="pilcrow">¶</a></p>
+        properties than per-next hop label allocation mode. Furthermore, BGP
+        CT offers two flavors for per-prefix label allocation. The first
+        flavor assigns a label for each unique "RD, EP". The second flavor
+        assigns a label for each unique "Transport Class, EP" while ignoring
+        the RD.<a href="#section-6.3-5" class="pilcrow">¶</a></p>
 <p id="section-6.3-6">In a BGP CT network, the number of routes at an Ingress PE is a
         function of unique EPs multiplied by BNs in the ingress domain that do
-        nexthop self. BGP CT provides flexible RD and Label allocation modes
+        next hop self. BGP CT provides flexible RD and Label allocation modes
         to address operational requirements in a multi-domain network. The
         impacts on the control plane and forwarding behavior for the above
-        modes are detailed with an example in <span><a href="#CTRouteVis" class="internal xref">Managing Transport Route Visibility</a> (<a href="#CTRouteVis" class="auto internal xref">Section 13.3</a>)</span><a href="#section-6.3-6" class="pilcrow">¶</a></p>
+        modes are detailed with an example in <span><a href="#CTRouteVis" class="xref">Managing Transport Route Visibility</a> (<a href="#CTRouteVis" class="xref">Section 13.3</a>)</span><a href="#section-6.3-6" class="pilcrow">¶</a></p>
 </section>
 </section>
 <section id="section-7">
@@ -2388,7 +2375,7 @@ li > p:last-of-type:only-child {
           and is dynamic by default. A BN may provide an option to allocate a
           value from a statically carved out range. This can be achieved using
           locally configured export policy, or via mechanisms such as the ones
-          described in <span><a href="#RFC8669" class="internal xref">BGP Prefix-SID</a> [<a href="#RFC8669" class="cite xref">RFC8669</a>]</span>.<a href="#section-7.4-1.3" class="pilcrow">¶</a>
+          described in <span><a href="#RFC8669" class="xref">BGP Prefix-SID</a> [<a href="#RFC8669" class="xref">RFC8669</a>]</span>.<a href="#section-7.4-1.3" class="pilcrow">¶</a>
 </li>
         </ul>
 </section>
@@ -2418,7 +2405,7 @@ li > p:last-of-type:only-child {
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-7.6-1.1">When multiple BNs exist such that they advertise a "RD:EP" prefix
           to Route Reflectors (RRs), the RRs may hide all but one of the BNs,
-          unless <span><a href="#RFC7911" class="internal xref">ADDPATH</a> [<a href="#RFC7911" class="cite xref">RFC7911</a>]</span> is used for the
+          unless <span><a href="#RFC7911" class="xref">ADDPATH</a> [<a href="#RFC7911" class="xref">RFC7911</a>]</span> is used for the
           Classful Transport family. This is similar to L3VPN Option B
           scenarios. Hence, ADDPATH SHOULD be used for Classful Transport
           family, to avoid path-hiding through RRs.<a href="#section-7.6-1.1" class="pilcrow">¶</a>
@@ -2433,19 +2420,19 @@ li > p:last-of-type:only-child {
 <li class="normal ulEmpty" id="section-7.7-1.1">A pair of redundant ABRs, each acting as an RR with next hop
           self, may choose each other as best path instead of the upstream
           ASBR, causing a traffic forwarding loop. This happens because of
-          following the path selection rule specified in <span><a href="#RFC4456" class="internal xref">Section 9 of BGP RR</a> [<a href="#RFC4456" class="cite xref">RFC4456</a>]</span> that tie-breaks on
+          following the path selection rule specified in <span><a href="#RFC4456" class="xref">Section 9 of BGP RR</a> [<a href="#RFC4456" class="xref">RFC4456</a>]</span> that tie-breaks on
           ORIGINATOR_ID before CLUSTER_LIST. RFC4456 considers pure RR which
           is not in forwarding path. When a RR is in forwarding path and
           reflects routes with next hop self, as is the case for ABR BNs in a
           BGP transport network, this rule may cause loops.<a href="#section-7.7-1.1" class="pilcrow">¶</a>
 </li>
           <li class="normal ulEmpty" id="section-7.7-1.2">Implementations SHOULD provide a way to alter the tie-breaking
-          rule specified in <span><a href="#RFC4456" class="internal xref">Section 9 of BGP RR</a> [<a href="#RFC4456" class="cite xref">RFC4456</a>]</span>
+          rule specified in <span><a href="#RFC4456" class="xref">Section 9 of BGP RR</a> [<a href="#RFC4456" class="xref">RFC4456</a>]</span>
           so as to tie-break on CLUSTER_LIST step before ORIGINATOR_ID step,
           when performing path selection for BGP CT routes.<a href="#section-7.7-1.2" class="pilcrow">¶</a>
 </li>
           <li class="normal ulEmpty" id="section-7.7-1.3">This document suggests the following modification to the BGP
-          Decision Process Tie Breaking rules (Section. 9.1.2.2 of <span>[<a href="#RFC4271" class="cite xref">RFC4271</a>]</span>) that can be applied to path selection of BGP CT
+          Decision Process Tie Breaking rules (Section. 9.1.2.2 of <span>[<a href="#RFC4271" class="xref">RFC4271</a>]</span>) that can be applied to path selection of BGP CT
           family routes:<a href="#section-7.7-1.3" class="pilcrow">¶</a>
 </li>
           <li class="normal ulEmpty" id="section-7.7-1.4">The following rule SHOULD be inserted between Steps e) and f): a
@@ -2462,7 +2449,7 @@ li > p:last-of-type:only-child {
 </li>
               <li class="normal" id="section-7.7-1.5.2.2">Tunnels belonging to non-best effort Transport Classes SHOULD
               NOT be provisioned between ABRs. This will ensure that the route
-              received from an ABR with nexthop self will not be usable at a
+              received from an ABR with next hop self will not be usable at a
               redundant ABR.<a href="#section-7.7-1.5.2.2" class="pilcrow">¶</a>
 </li>
             </ul>
@@ -2547,8 +2534,8 @@ li > p:last-of-type:only-child {
           Transport Class Route Target as the mapping community, the Best
           effort resolution scheme is used for resolving the BGP next hop, and
           the resultant route is installed in the best effort transport route
-          database. If no best effort tunnel was found to resolve the BGP
-          nexthop, the BGP CT route MUST be considered unusable, and not be
+          database. If no best effort tunnel was found to resolve the BGP next
+          hop, the BGP CT route MUST be considered unusable, and not be
           propagated further.<a href="#section-7.10-1.4" class="pilcrow">¶</a>
 </li>
           <li class="normal ulEmpty" id="section-7.10-1.5">When a BGP speaker receives an overlay route without any explicit
@@ -2569,11 +2556,11 @@ li > p:last-of-type:only-child {
         <h3 id="name-interaction-with-bgp-attribu">
 <a href="#section-7.11" class="section-number selfRef">7.11. </a><a href="#name-interaction-with-bgp-attribu" class="section-name selfRef">Interaction with BGP Attributes Specifying Next Hop Address and Color</a>
         </h3>
-<p id="section-7.11-1">The Tunnel Encapsulation Attribute, described in <span>[<a href="#RFC9012" class="cite xref">RFC9012</a>]</span> can be used to request a specific type of tunnel
+<p id="section-7.11-1">The Tunnel Encapsulation Attribute, described in <span>[<a href="#RFC9012" class="xref">RFC9012</a>]</span> can be used to request a specific type of tunnel
         encapsulation. This attribute may apply to BGP service routes or
         transport routes, including BGP Classful Transport family routes.<a href="#section-7.11-1" class="pilcrow">¶</a></p>
-<p id="section-7.11-2">The mechanisms described in <span><a href="#MULTI-NH-ATTR" class="internal xref">BGP
-        MultiNexthop Attribute</a> [<a href="#MULTI-NH-ATTR" class="cite xref">MULTI-NH-ATTR</a>]</span> allow a BGP route to carry multiple next
+<p id="section-7.11-2">The mechanisms described in <span><a href="#MULTI-NH-ATTR" class="xref">BGP
+        MultiNexthop Attribute</a> [<a href="#MULTI-NH-ATTR" class="xref">MULTI-NH-ATTR</a>]</span> allow a BGP route to carry multiple next
         hop addresses. It also allows specifying 'Transport Class ID' as a
         qualifier for each next hop address.<a href="#section-7.11-2" class="pilcrow">¶</a></p>
 <p id="section-7.11-3">It should be noted that in such cases "Transport Class/Color" can
@@ -2604,10 +2591,10 @@ li > p:last-of-type:only-child {
         <h3 id="name-applicability-to-flowspec-re">
 <a href="#section-7.12" class="section-number selfRef">7.12. </a><a href="#name-applicability-to-flowspec-re" class="section-name selfRef">Applicability to Flowspec Redirect to IP</a>
         </h3>
-<p id="section-7.12-1">Flowspec routes using Redirect to IP nexthop is described in <span>[<a href="#FLOWSPEC-REDIR-IP" class="cite xref">FLOWSPEC-REDIR-IP</a>]</span><a href="#section-7.12-1" class="pilcrow">¶</a></p>
-<p id="section-7.12-2">Such Flowspec BGP routes with Redirect to IP nexthop MAY be
+<p id="section-7.12-1">Flowspec routes using Redirect to IP next hop is described in <span>[<a href="#FLOWSPEC-REDIR-IP" class="xref">FLOWSPEC-REDIR-IP</a>]</span><a href="#section-7.12-1" class="pilcrow">¶</a></p>
+<p id="section-7.12-2">Such Flowspec BGP routes with Redirect to IP next hop MAY be
         attached with a Mapping Community (e.g. Color:0:100), which allows
-        redirecting the flow traffic over a tunnel to the IP nexthop
+        redirecting the flow traffic over a tunnel to the IP next hop
         satisfying the desired SLA (e.g. Transport Class color 100).<a href="#section-7.12-2" class="pilcrow">¶</a></p>
 <p id="section-7.12-3">Flowspec BGP family acts as just another service that can make use
         of BGP CT architecture to achieve Flow based forwarding with SLAs.<a href="#section-7.12-3" class="pilcrow">¶</a></p>
@@ -2623,14 +2610,14 @@ li > p:last-of-type:only-child {
         </h3>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-8.1-1.1">
-            <span>[<a href="#RFC8212" class="cite xref">RFC8212</a>]</span> suggests BGP speakers require explicit
+            <span>[<a href="#RFC8212" class="xref">RFC8212</a>]</span> suggests BGP speakers require explicit
           configuration of both BGP Import and Export Policies in order to
           receive or send routes over EBGP sessions.<a href="#section-8.1-1.1" class="pilcrow">¶</a>
 </li>
           <li class="normal ulEmpty" id="section-8.1-1.2">It is recommended to follow this for BGP CT routes. It will
           prohibit unintended advertisement of transport routes throughout the
           BGP CT transport domain, which may span across multiple AS domains.
-          This will conserve usage of MPLS label and nexthop resources in the
+          This will conserve usage of MPLS label and next hop resources in the
           network. An ASBR of a domain can be provisioned to allow routes with
           only the Transport Route Targets that are required by SNs in the
           domain.<a href="#section-8.1-1.2" class="pilcrow">¶</a>
@@ -2642,15 +2629,15 @@ li > p:last-of-type:only-child {
 <a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-constrained-distribution-of-" class="section-name selfRef">Constrained Distribution of PNHs to SNs (On-Demand Next Hop)</a>
         </h3>
 <ul class="normal ulEmpty">
-<li class="normal ulEmpty" id="section-8.2-1.1">This section describes how the number of Protocol Nexthops
+<li class="normal ulEmpty" id="section-8.2-1.1">This section describes how the number of Protocol Next hops
           advertised to a SN or BN can be constrained using BGP Classful
-          Transport and <span><a href="#RFC4684" class="internal xref">Route Target Constraints
-          (RTC)</a> [<a href="#RFC4684" class="cite xref">RFC4684</a>]</span>.<a href="#section-8.2-1.1" class="pilcrow">¶</a>
+          Transport and <span><a href="#RFC4684" class="xref">Route Target Constraints
+          (RTC)</a> [<a href="#RFC4684" class="xref">RFC4684</a>]</span>.<a href="#section-8.2-1.1" class="pilcrow">¶</a>
 </li>
           <li class="normal ulEmpty" id="section-8.2-1.2">An egress SN MAY advertise BGP CT route for RD:eSN with two Route
           Targets: transport-target:0:&lt;TC&gt; and a RT carrying
           &lt;eSN&gt;:&lt;TC&gt;. Where TC is the Transport Class identifier,
-          and eSN is the IP-address used by SN as BGP nexthop in its service
+          and eSN is the IP-address used by SN as BGP next hop in its service
           route advertisements.<a href="#section-8.2-1.2" class="pilcrow">¶</a>
 </li>
           <li class="normal ulEmpty" id="section-8.2-1.3">Note that such use of the IP address specific route target
@@ -2659,7 +2646,7 @@ li > p:last-of-type:only-child {
           the transport route for an egress node eSN to only the set of
           ingress nodes that need it. When only RT of
           transport-target:0:&lt;TC&gt; is used, the pruning happens in
-          granularity of Transport Class ID (Color), and not BGP nexthop; BGP
+          granularity of Transport Class ID (Color), and not BGP next hop; BGP
           CT routes will not be advertised into domains with PEs that don't
           import its transport class.<a href="#section-8.2-1.3" class="pilcrow">¶</a>
 </li>
@@ -2670,15 +2657,15 @@ li > p:last-of-type:only-child {
           <li class="normal ulEmpty" id="section-8.2-1.5">The RT carrying &lt;eSN&gt;:&lt;TC&gt; MAY be an IP-address
           specific regular RT (BGP attribute code 16), IPv6-address specific
           RT (BGP attribute code 25), or a Wide-communities based RT (BGP
-          attribute code 34) as described in <span><a href="#RTC-Ext" class="internal xref">Route
-          Target Constrain Extension</a> [<a href="#RTC-Ext" class="cite xref">RTC-Ext</a>]</span>. This document recommends using
+          attribute code 34) as described in <span><a href="#RTC-Ext" class="xref">Route
+          Target Constrain Extension</a> [<a href="#RTC-Ext" class="xref">RTC-Ext</a>]</span>. This document recommends using
           Wide-communities based RT for the same.<a href="#section-8.2-1.5" class="pilcrow">¶</a>
 </li>
           <li class="normal ulEmpty" id="section-8.2-1.6">An ingress SN MAY import BGP CT routes with Route Target carrying
           &lt;eSN&gt;:&lt;TC&gt;. The ingress SN may learn the eSN values
           either by configuration, or it may discover them from the BGP next
           hop field in the BGP VPN service routes received from eSN. A BGP
-          ingress SN receiving a BGP service route with nexthop of eSN SHOULD
+          ingress SN receiving a BGP service route with next hop of eSN SHOULD
           generate a RTC/Extended-RTC route for Route Target prefix &lt;Origin
           ASN&gt;:&lt;eSN&gt;/[80|176] in order to learn BGP CT transport
           routes to reach eSN. This allows constrained distribution of the
@@ -2690,7 +2677,7 @@ li > p:last-of-type:only-child {
           distribution of BGP CT routes for a PNH to only the necessary BNs in
           the network, closer to the egress SN.<a href="#section-8.2-1.7" class="pilcrow">¶</a>
 </li>
-          <li class="normal ulEmpty" id="section-8.2-1.8">This mechanism provides "On Demand Nexthop" of BGP CT routes,
+          <li class="normal ulEmpty" id="section-8.2-1.8">This mechanism provides "On Demand Next hop" of BGP CT routes,
           which help with the scaling of MPLS forwarding state at SN and
           BN.<a href="#section-8.2-1.8" class="pilcrow">¶</a>
 </li>
@@ -2716,12 +2703,12 @@ li > p:last-of-type:only-child {
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-8.3-1.1">It may be even more desirable to limit the number of PNHs that
           are globally visible in the network. This is possible using
-          mechanism described in <a href="#Appendix_D" class="auto internal xref">Appendix D</a><a href="#section-8.3-1.1" class="pilcrow">¶</a>
+          mechanism described in <a href="#Appendix_D" class="xref">Appendix D</a><a href="#section-8.3-1.1" class="pilcrow">¶</a>
 </li>
           <li class="normal ulEmpty" id="section-8.3-1.2">Such that advertisement of PE loopback addresses as next-hop in
           BGP service routes is confined to the region they belong to. An
           anycast IP-address called "Context Protocol Nexthop Address" (CPNH,
-          <a href="#CPNH" class="auto internal xref">Appendix D.3</a>) abstracts the SNs in a region from other
+          <a href="#CPNH" class="xref">Appendix D.3</a>) abstracts the SNs in a region from other
           regions in the network, swapping the SN scoped service label with a
           CPNH scoped private namespace label.<a href="#section-8.3-1.2" class="pilcrow">¶</a>
 </li>
@@ -2736,13 +2723,13 @@ li > p:last-of-type:only-child {
       <h2 id="name-oam-considerations-2">
 <a href="#section-9" class="section-number selfRef">9. </a><a href="#name-oam-considerations-2" class="section-name selfRef">OAM Considerations</a>
       </h2>
-<p id="section-9-1">MPLS OAM procedures specified in <span>[<a href="#RFC8029" class="cite xref">RFC8029</a>]</span> also apply
+<p id="section-9-1">MPLS OAM procedures specified in <span>[<a href="#RFC8029" class="xref">RFC8029</a>]</span> also apply
       to BGP Classful Transport.<a href="#section-9-1" class="pilcrow">¶</a></p>
 <p id="section-9-2">The 'Target FEC Stack' sub-TLV for IPv4 Classful Transport has a
       Sub-Type of 31744, and a length of 13. The Value field consists of the
       RD advertised with the Classful Transport prefix, the IPv4 prefix (with
       trailing 0 bits to make 32 bits in all) and a prefix length encoded as
-      shown in Fig 3:<a href="#section-9-2" class="pilcrow">¶</a></p>
+      shown in Figure 3:<a href="#section-9-2" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-9-3">
 <pre>
        0                   1                   2                   3
@@ -2756,13 +2743,13 @@ li > p:last-of-type:only-child {
       | Prefix Length |                 Must Be Zero                  |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-                    Fig 3: OAM Classful Transport IPv4 FEC</pre><a href="#section-9-3" class="pilcrow">¶</a>
+                    Figure 3: OAM Classful Transport IPv4 FEC</pre><a href="#section-9-3" class="pilcrow">¶</a>
 </div>
 <p id="section-9-4">The 'Target FEC Stack' sub-TLV for IPv6 Classful Transport has a
       Sub-Type of 31745, and a length of 25. The Value field consists of the
       RD advertised with the Classful Transport prefix, the IPv6 prefix (with
       trailing 0 bits to make 128 bits in all) and a prefix length encoded as
-      shown in Fig 4:<a href="#section-9-4" class="pilcrow">¶</a></p>
+      shown in Figure 4:<a href="#section-9-4" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-9-5">
 <pre>
        0                   1                   2                   3
@@ -2779,10 +2766,10 @@ li > p:last-of-type:only-child {
       | Prefix Length |                 Must Be Zero                  |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-                   Fig 4: OAM Classful Transport IPv6 FEC</pre><a href="#section-9-5" class="pilcrow">¶</a>
+                   Figure 4: OAM Classful Transport IPv6 FEC</pre><a href="#section-9-5" class="pilcrow">¶</a>
 </div>
 <p id="section-9-6">These prefix layouts are inherited from Sections 3.2.5, 3.2.6 in
-      <span>[<a href="#RFC8029" class="cite xref">RFC8029</a>]</span><a href="#section-9-6" class="pilcrow">¶</a></p>
+      <span>[<a href="#RFC8029" class="xref">RFC8029</a>]</span><a href="#section-9-6" class="pilcrow">¶</a></p>
 </section>
 <section id="section-10">
       <h2 id="name-applicability-to-network-sli">
@@ -2794,7 +2781,7 @@ li > p:last-of-type:only-child {
       (e.g., polices/shapers) in a transport network to create an IETF Network
       Slice.<a href="#section-10-1" class="pilcrow">¶</a></p>
 <p id="section-10-2">The Transport Class construct described in this document can be used
-      to realize the "IETF Network Slice" defined in <span>[<a href="#TEAS-NS" class="cite xref">TEAS-NS</a>]</span><a href="#section-10-2" class="pilcrow">¶</a></p>
+      to realize the "IETF Network Slice" defined in <span>[<a href="#TEAS-NS" class="xref">TEAS-NS</a>]</span><a href="#section-10-2" class="pilcrow">¶</a></p>
 <p id="section-10-3">The TSC can use the Transport Class Identifier (Color value) to
       provision a transport tunnel in a specific IETF Network Slice.<a href="#section-10-3" class="pilcrow">¶</a></p>
 <p id="section-10-4">Further, the Network Slice Controller can use the Mapping Community
@@ -2810,22 +2797,22 @@ li > p:last-of-type:only-child {
       up inter domain tunnels of a certain Transport Class, when using Segment
       Routing over IPv6 (SRv6) data plane on the inter AS links or as an intra
       AS tunneling mechanism.<a href="#section-11-1" class="pilcrow">¶</a></p>
-<p id="section-11-2"><span>[<a href="#RFC8986" class="cite xref">RFC8986</a>]</span> specifies the SRv6 Endpoint behaviors (End
-      USD, End.BM, End.B6.Encaps). <span>[<a href="#SRV6-INTER-DOMAIN" class="cite xref">SRV6-INTER-DOMAIN</a>]</span>
+<p id="section-11-2"><span>[<a href="#RFC8986" class="xref">RFC8986</a>]</span> specifies the SRv6 Endpoint behaviors (End
+      USD, End.BM, End.B6.Encaps). <span>[<a href="#SRV6-INTER-DOMAIN" class="xref">SRV6-INTER-DOMAIN</a>]</span>
       specifies the SRv6 Endpoint behaviors (END.REPLACE, END.REPLACEB6 and
       END.DB6). These are leveraged for BGP CT routes with SRv6 data
       plane.<a href="#section-11-2" class="pilcrow">¶</a></p>
 <p id="section-11-3">The BGP Classful Transport route update for SRv6 MUST include an
       attribute containing SRv6 SID information. This may be either the BGP
-      Prefix-SID attribute as specified in <span>[<a href="#RFC9252" class="cite xref">RFC9252</a>]</span> or the BGP
-      MultiNexthop attribute as specified in <span><a href="#MULTI-NH-ATTR" class="internal xref">BGP
-      MultiNexthop Attribute</a> [<a href="#MULTI-NH-ATTR" class="cite xref">MULTI-NH-ATTR</a>]</span> section 5.4.3.3. If the Prefix-SID
+      Prefix-SID attribute as specified in <span>[<a href="#RFC9252" class="xref">RFC9252</a>]</span> or the BGP
+      MultiNexthop attribute as specified in <span><a href="#MULTI-NH-ATTR" class="xref">BGP
+      MultiNexthop Attribute</a> [<a href="#MULTI-NH-ATTR" class="xref">MULTI-NH-ATTR</a>]</span> section 5.4.3.3. If the Prefix-SID
       attribute is used, it MUST NOT include SRv6 SID structure for
-      Transposition described in <span>[<a href="#RFC9252" class="cite xref">RFC9252</a>]</span>.<a href="#section-11-3" class="pilcrow">¶</a></p>
+      Transposition described in <span>[<a href="#RFC9252" class="xref">RFC9252</a>]</span>.<a href="#section-11-3" class="pilcrow">¶</a></p>
 <p id="section-11-4">It should be noted that prefixes carried in BGP CT family are
       transport layer end-points, e.g. PE loopback addresses. Thus, the SRv6
       SID carried in a BGP CT route is also a transport layer identifier. For
-      an illustration of BGP CT deployment in SRv6 neworks, refer to <a href="#Appendix_E" class="auto internal xref">Appendix E</a> .<a href="#section-11-4" class="pilcrow">¶</a></p>
+      an illustration of BGP CT deployment in SRv6 neworks, refer to <a href="#Appendix_E" class="xref">Appendix E</a> .<a href="#section-11-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="CTProc">
@@ -2860,7 +2847,7 @@ li > p:last-of-type:only-child {
 41.41.41.41  ------------ Traffic Direction ----------&gt;   31.31.31.31
 
 
-         Fig 5: Reference Topology: Multi domain BGP CT Network</pre><a href="#section-12.1-1" class="pilcrow">¶</a>
+         Figure 5: Reference Topology: Multi domain BGP CT Network</pre><a href="#section-12.1-1" class="pilcrow">¶</a>
 </div>
 <p id="section-12.1-2">This example shows a provider network that consists of two ASes,
         AS1 and AS2. They are serving customers AS3, AS4 respectively. Traffic
@@ -2868,8 +2855,8 @@ li > p:last-of-type:only-child {
         SLA (e.g. mapped to Gold for this example), when traversing these
         provider networks.<a href="#section-12.1-2" class="pilcrow">¶</a></p>
 <p id="section-12.1-3">AS2 is further divided into two regions. So, there are three tunnel
-        domains in provider's space. AS1 uses <span><a href="#RFC9350" class="internal xref">ISIS
-        Flex-Algo</a> [<a href="#RFC9350" class="cite xref">RFC9350</a>]</span> intra-domain tunnels, whereas AS2 uses RSVP-TE
+        domains in provider's space. AS1 uses <span><a href="#RFC9350" class="xref">ISIS
+        Flex-Algo</a> [<a href="#RFC9350" class="xref">RFC9350</a>]</span> intra-domain tunnels, whereas AS2 uses RSVP-TE
         intra-domain tunnels.<a href="#section-12.1-3" class="pilcrow">¶</a></p>
 <p id="section-12.1-4">The network exposes two Transport Classes: "Gold" with Transport
         Class id 100, "Bronze" with Transport Class id 200. These Transport
@@ -2912,35 +2899,35 @@ li > p:last-of-type:only-child {
         </h3>
 <p id="section-12.2-1">Service nodes PE11, PE12 negotiate service families (SAFIs 1, 128)
         on the BGP session with RR16. Service helpers RR16 and RR26 exchange
-        these service routes with nexthop unchanged over a multihop EBGP
+        these service routes with next hop unchanged over a multihop EBGP
         session between the two AS. PE25 negotiates service families (AFI: 1
         and SAFIs 1, 128) with RR26.<a href="#section-12.2-1" class="pilcrow">¶</a></p>
-<p id="section-12.2-2">The PEs see each other as nexthop in the BGP Update for the service
-        family routes. Addpath send, receive is enabled on both directions on
-        the EBGP multihop session between RR16 and RR26 for SAFIs 1, 128.
-        Addpath send is negotiated in the RR to PE direction in each AS. This
-        is to avoid path hiding of service routes at RR. E.g. SAFI 1 routes
-        advertised by both PE11 and PE12. Or, SAFI 128 routes originated by
-        both PE11 and PE12 using same RD.<a href="#section-12.2-2" class="pilcrow">¶</a></p>
+<p id="section-12.2-2">The PEs see each other as next hop in the BGP Update for the
+        service family routes. Addpath send, receive is enabled on both
+        directions on the EBGP multihop session between RR16 and RR26 for
+        SAFIs 1, 128. Addpath send is negotiated in the RR to PE direction in
+        each AS. This is to avoid path hiding of service routes at RR. E.g.
+        SAFI 1 routes advertised by both PE11 and PE12. Or, SAFI 128 routes
+        originated by both PE11 and PE12 using same RD.<a href="#section-12.2-2" class="pilcrow">¶</a></p>
 <p id="section-12.2-3">Forwarding happens using service routes installed at service nodes
         PE25, PE11, PE12 only. Service routes received from CEs are not
         present in any other nodes' FIB in the network.<a href="#section-12.2-3" class="pilcrow">¶</a></p>
 <p id="section-12.2-4">As an example, CE31 advertises a route for prefix 31.31.31.31 with
-        nexthop as self to PE11, PE12. CE31 can attach a Mapping Community
+        next hop as self to PE11, PE12. CE31 can attach a Mapping Community
         Color:0:100 on this route, to indicate its request for Gold SLA. Or,
         PE11 can attach the same using locally configured policies.<a href="#section-12.2-4" class="pilcrow">¶</a></p>
 <p id="section-12.2-5">Consider, CE31 is getting VPN service from PE11. The
-        RD1:31.31.31.31 route is readvertised in SAFI 128 by PE11 with nexthop
-        self (1.1.1.1) and label V-L1, to RR16 with the Mapping Community
+        RD1:31.31.31.31 route is readvertised in SAFI 128 by PE11 with next
+        hop self (1.1.1.1) and label V-L1, to RR16 with the Mapping Community
         Color:0:100 attached. RR16 advertises this route with Addpath-ID to
-        RR26 which readvertises to PE25 with nexthop unchanged. Now, PE25 can
+        RR26 which readvertises to PE25 with next hop unchanged. Now, PE25 can
         resolve the PNH 1.1.1.1 using transport routes received in BGP CT or
         BGP LU.<a href="#section-12.2-5" class="pilcrow">¶</a></p>
 <p id="section-12.2-6">Using Addpath, service routes advertised by PE11 and PE12 for SAFIs
-        1, 128 reach PE25 via RR16, RR26 with the nexthop unchanged, as PE11
+        1, 128 reach PE25 via RR16, RR26 with the next hop unchanged, as PE11
         or PE12.<a href="#section-12.2-6" class="pilcrow">¶</a></p>
 <p id="section-12.2-7">The IP FIB at PE25 VRF will have a route for 31.31.31.31 with a
-        nexthop when resolved, that points to a Gold tunnel in ingress
+        next hop when resolved, that points to a Gold tunnel in ingress
         domain.<a href="#section-12.2-7" class="pilcrow">¶</a></p>
 </section>
 <section id="section-12.3">
@@ -2949,7 +2936,7 @@ li > p:last-of-type:only-child {
         </h3>
 <p id="section-12.3-1">Egress nodes PE11, PE12 negotiate BGP CT family with transport
         ASBRs ASBR13, ASBR14. These egress nodes originate BGP CT routes for
-        tunnel endpoint addresses, that are advertised as nexthop in BGP
+        tunnel endpoint addresses, that are advertised as next hop in BGP
         service routes. In this example, both PEs participate in transport
         classes Gold and Bronze. The protocol procedures are explained using
         Gold SLA transport plane and the Bronze SLA transport plane is used to
@@ -2978,23 +2965,23 @@ li > p:last-of-type:only-child {
         carries gold, bronze transport class routes.<a href="#section-12.3-5" class="pilcrow">¶</a></p>
 <p id="section-12.3-6">PE11 is provisioned to originate BGP CT route with Gold SLA to
         endpoint PE11. This route is sent with NLRI RD prefix
-        1.1.1.1:10:1.1.1.1, Label B-L0, nexthop 1.1.1.1 and a route target
+        1.1.1.1:10:1.1.1.1, Label B-L0, next hop 1.1.1.1 and a route target
         extended community transport-target:0:100. Label B-L0 can either be
         Implicit Null (Label 3) or an Ultimate Hop Pop (UHP) label.<a href="#section-12.3-6" class="pilcrow">¶</a></p>
 <p id="section-12.3-7">This route is received by ASBR13 and it resolves over the tunnel
         ASBR13_to_PE11_gold. The route is then readvertised by ASBR13 in BGP
         CT family to ASBRs ASBR21, ASBR22 according to export policy. This
         route is sent with same NLRI RD prefix 1.1.1.1:10:1.1.1.1, Label B-L1,
-        nexthop self, and transport-target:0:100. MPLS swap route is installed
-        at ASBR13 for B-L1 with a nexthop pointing to ASBR13_to_PE11_gold
-        tunnel.<a href="#section-12.3-7" class="pilcrow">¶</a></p>
+        next hop self, and transport-target:0:100. MPLS swap route is
+        installed at ASBR13 for B-L1 with a next hop pointing to
+        ASBR13_to_PE11_gold tunnel.<a href="#section-12.3-7" class="pilcrow">¶</a></p>
 <p id="section-12.3-8">Similarly, ASBR14 also receives BGP CT route for 1.1.1.1:10:1.1.1.1
         from PE11 and it resolves over the tunnel ASBR14_to_PE11_gold. The
         route is then readvertised by ASBR14 in BGP CT family to ASBRs ASBR21,
         ASBR22 according to export policy. This route is sent with same NLRI
-        RD prefix 1.1.1.1:10:1.1.1.1, Label B-L2, nexthop self, and
+        RD prefix 1.1.1.1:10:1.1.1.1, Label B-L2, next hop self, and
         transport-target:0:100. MPLS swap route is installed at ASBR14 for
-        B-L1 with a nexthop pointing to ASBR14_to_PE11_gold tunnel.<a href="#section-12.3-8" class="pilcrow">¶</a></p>
+        B-L1 with a next hop pointing to ASBR14_to_PE11_gold tunnel.<a href="#section-12.3-8" class="pilcrow">¶</a></p>
 <p id="section-12.3-9">In the Bronze plane, BGP CT route with Bronze SLA to endpoint PE11
         is originated by PE11 with a NLRI containing RD prefix
         1.1.1.1:20:1.1.1.1, and appropriate label. The RD allows both Gold and
@@ -3006,55 +2993,56 @@ li > p:last-of-type:only-child {
 <p id="section-12.3-10">Moving back to the Gold plane, ASBR21 receives the Gold SLA BGP CT
         routes for NLRI RD prefix 1.1.1.1:10:1.1.1.1 over the single hop EBGP
         sessions from ASBR13, ASBR14, and can compute ECMP/FRR towards them.
-        ASBR21 readvertises BGP CT route for 1.1.1.1:10:1.1.1.1 with nexthop
+        ASBR21 readvertises BGP CT route for 1.1.1.1:10:1.1.1.1 with next hop
         self (loopback address 2.2.2.1) to RR27, advertising a new label B-L3.
         MPLS swap route is installed for label B-L3 at ASBR21 to swap to
         received label B-L1, B-L2 and forward to ASBR13, ASBR14 respectively.
         RR27 readvertises this BGP CT route to ABR23, ABR24 with label and
-        nexthop unchanged.<a href="#section-12.3-10" class="pilcrow">¶</a></p>
+        next hop unchanged.<a href="#section-12.3-10" class="pilcrow">¶</a></p>
 <p id="section-12.3-11">Similarly, ASBR22 receives BGP CT route 1.1.1.1:10:1.1.1.1 over the
         single hop EBGP sessions from ASBR13, ASBR14, and readvertises with
-        nexthop self (loopback address 2.2.2.2) to RR27, advertising a new
+        next hop self (loopback address 2.2.2.2) to RR27, advertising a new
         label B-L4. MPLS swap route is installed for label B-L4 at ASBR22 to
         swap to received label B-L1, B-L2 and forward to ASBR13, ASBR14
         respectively. RR27 readvertises this BGP CT route also to ABR23, ABR24
-        with label and nexthop unchanged.<a href="#section-12.3-11" class="pilcrow">¶</a></p>
+        with label and next hop unchanged.<a href="#section-12.3-11" class="pilcrow">¶</a></p>
 <p id="section-12.3-12">Addpath is enabled for BGP CT family on the sessions between RR27
-        and ASBRs, ABRs such that routes for 1.1.1.1:10:1.1.1.1 with the
-        nexthops ASBR21 and ASBR22 are reflected to ABR23, ABR24 without any
-        path hiding. Thus giving ABR23 visibility of both available nexthops
-        for Gold SLA.<a href="#section-12.3-12" class="pilcrow">¶</a></p>
-<p id="section-12.3-13">ABR23 receives the route with nexthop 2.2.2.1, label B-L3 from
+        and ASBRs, ABRs such that routes for 1.1.1.1:10:1.1.1.1 with the next
+        hops ASBR21 and ASBR22 are reflected to ABR23, ABR24 without any path
+        hiding. Thus giving ABR23 visibility of both available next hops for
+        Gold SLA.<a href="#section-12.3-12" class="pilcrow">¶</a></p>
+<p id="section-12.3-13">ABR23 receives the route with next hop 2.2.2.1, label B-L3 from
         RR27. The route target "transport-target:0:100" on this route acts as
-        Mapping Community, and instructs ABR23 to strictly resolve the nexthop
-        using transport class 100 routes only. ABR23 is unable to find a route
-        for 2.2.2.1 with transport class 100. Thus, it considers this route
-        unusable and does not propagate it further. This prunes ASBR21 from
-        Gold SLA tunneled path.<a href="#section-12.3-13" class="pilcrow">¶</a></p>
-<p id="section-12.3-14">ABR23 also receives the route with nexthop 2.2.2.2, label B-L4 from
-        RR27. The route target "transport-target:0:100" on this route acts as
-        Mapping Community, and instructs ABR23 to strictly resolve the nexthop
-        using transport class 100 routes only. ABR23 successfully resolves the
-        nexthop to point to ABR23_to_ASBR22_gold tunnel. ABR23 readvertises
-        this BGP CT route with nexthop self (loopback address 2.2.2.3) and a
-        new label B-L5 to PE25. Swap route for B-L5 is installed by ABR23 to
-        swap to label B-L4, and forward into ABR23_to_ASBR22_gold tunnel.<a href="#section-12.3-14" class="pilcrow">¶</a></p>
+        Mapping Community, and instructs ABR23 to strictly resolve the next
+        hop using transport class 100 routes only. ABR23 is unable to find a
+        route for 2.2.2.1 with transport class 100. Thus, it considers this
+        route unusable and does not propagate it further. This prunes ASBR21
+        from Gold SLA tunneled path.<a href="#section-12.3-13" class="pilcrow">¶</a></p>
+<p id="section-12.3-14">ABR23 also receives the route with next hop 2.2.2.2, label B-L4
+        from RR27. The route target "transport-target:0:100" on this route
+        acts as Mapping Community, and instructs ABR23 to strictly resolve the
+        next hop using transport class 100 routes only. ABR23 successfully
+        resolves the next hop to point to ABR23_to_ASBR22_gold tunnel. ABR23
+        readvertises this BGP CT route with next hop self (loopback address
+        2.2.2.3) and a new label B-L5 to PE25. Swap route for B-L5 is
+        installed by ABR23 to swap to label B-L4, and forward into
+        ABR23_to_ASBR22_gold tunnel.<a href="#section-12.3-14" class="pilcrow">¶</a></p>
 <p id="section-12.3-15">PE25 receives the BGP CT route for prefix 1.1.1.1:10:1.1.1.1 with
-        label B-L5, nexthop 2.2.2.3 and transport-target:0:100 from RR26. And
-        it similarly resolves the nexthop 2.2.2.3 over transport class 100,
+        label B-L5, next hop 2.2.2.3 and transport-target:0:100 from RR26. And
+        it similarly resolves the next hop 2.2.2.3 over transport class 100,
         pushing labels associated with PE25_to_ABR23_gold tunnel.<a href="#section-12.3-15" class="pilcrow">¶</a></p>
 <p id="section-12.3-16">In this manner, the Gold transport LSP "ASBR13_to_PE11_gold" in
         egress-domain is extended by BGP CT until the ingress-node PE25 in
         ingress domain, to create an end-to-end Gold SLA path. MPLS swap
         routes are installed at ASBR13, ASBR22 and ABR23, when propagating the
-        PE11 BGP CT Gold transport class route 1.1.1.1:10:1.1.1.1 with nexthop
-        self towards PE25.<a href="#section-12.3-16" class="pilcrow">¶</a></p>
+        PE11 BGP CT Gold transport class route 1.1.1.1:10:1.1.1.1 with next
+        hop self towards PE25.<a href="#section-12.3-16" class="pilcrow">¶</a></p>
 <p id="section-12.3-17">The BGP CT LSP thus formed, originates in PE25, and terminates in
         ASBR13 (assuming PE11 advertised Implicit Null), traversing over the
         Gold underlay LSPs in each domain. ASBR13 uses UHP to stitch the BGP
         CT LSP into the "ASBR13_to_PE11_gold" LSP to traverse the last domain,
         thus satisfying Gold SLA end-to-end.<a href="#section-12.3-17" class="pilcrow">¶</a></p>
-<p id="section-12.3-18">When PE25 receives service routes from RR26 with nexthop 1.1.1.1
+<p id="section-12.3-18">When PE25 receives service routes from RR26 with next hop 1.1.1.1
         and mapping community Color:0:100, it resolves over this BGP CT route
         1.1.1.1:10:1.1.1.1. Thus pushing label B-L5, and pushing as top label
         the labels associated with PE25_to_ABR23_gold tunnel.<a href="#section-12.3-18" class="pilcrow">¶</a></p>
@@ -3109,7 +3097,7 @@ li > p:last-of-type:only-child {
 <p id="section-12.4.2-2">Assuming ASBR22_to_ASBR13 link goes down, such that traffic with
           Gold SLA going to PE11 needs repair. ASBR22 has an alternate BGP CT
           route for 1.1.1.1:10:1.1.1.1 from ASBR14. This has been
-          preprogrammed in forwarding by ASBR22 as FRR backup nexthop for
+          preprogrammed in forwarding by ASBR22 as FRR backup next hop for
           label B-L4. This allows the Gold SLA traffic to be locally repaired
           at ASBR22 without the failure event propagated in the BGP CT
           network. In this case, ingress node PE25 will not know there was a
@@ -3130,7 +3118,7 @@ li > p:last-of-type:only-child {
 <p id="section-12.4.3-3">Withdrawal for 1.1.1.1:10:1.1.1.1 allows PE25 to react to the
           loss of gold path to 1.1.1.1. Assuming PE25 is provisioned to use
           best-effort transport class as the backup path, this withdrawal of
-          BGP CT route allows PE25 to adjust the nexthop of the VPN
+          BGP CT route allows PE25 to adjust the next hop of the VPN
           Service-route to push the labels provided by the BGP LU route. That
           repairs the traffic to go via best effort path. PE25 can also be
           provisioned to use Bronze transport class as the backup path. The
@@ -3153,7 +3141,7 @@ li > p:last-of-type:only-child {
         <h3 id="name-managing-intent-at-service-a">
 <a href="#section-13.1" class="section-number selfRef">13.1. </a><a href="#name-managing-intent-at-service-a" class="section-name selfRef">Managing Intent at Service and Transport layers.</a>
         </h3>
-<p id="section-13.1-1"><span><a href="#CTProc" class="internal xref">Illustration of BGP CT Procedures</a> (<a href="#CTProc" class="auto internal xref">Section 12</a>)</span>
+<p id="section-13.1-1"><span><a href="#CTProc" class="xref">Illustration of BGP CT Procedures</a> (<a href="#CTProc" class="xref">Section 12</a>)</span>
         shows multiple domains that agree on a color name space (Agreeing
         Color Domains) and contain tunnels with equivalent set of colors
         (Homogenous Color Domains).<a href="#section-13.1-1" class="pilcrow">¶</a></p>
@@ -3176,8 +3164,8 @@ li > p:last-of-type:only-child {
           global namespace in the service layer. This is possible even if each
           domain independently maintains its own local transport color
           namespace.<a href="#section-13.1.1-1" class="pilcrow">¶</a></p>
-<p id="section-13.1.1-2">As explained in <span><a href="#Nexthop_Resoln_Schm" class="internal xref">Nexthop
-          Resolution Scheme</a> (<a href="#Nexthop_Resoln_Schm" class="auto internal xref">Section 5</a>)</span> , mapping community carried on service
+<p id="section-13.1.1-2">As explained in <span><a href="#Nexthop_Resoln_Schm" class="xref">next hop
+          Resolution Scheme</a> (<a href="#Nexthop_Resoln_Schm" class="xref">Section 5</a>)</span> , mapping community carried on service
           route maps to a resolution scheme. The mapping community values for
           the service route can be abstract and does not require to match the
           transport color namespace. This abstract mapping community value
@@ -3213,11 +3201,11 @@ li > p:last-of-type:only-child {
 
             ----------- Packet Forwarding Direction --------&gt;
 
-      Fig 6: Transport Layer with Non-agreeing Color Domains
+      Figure 6: Transport Layer with Non-agreeing Color Domains
 </pre><a href="#section-13.1.2-3" class="pilcrow">¶</a>
 </div>
-<p id="section-13.1.2-4">In the topology in Fig 6, we have three Autonomous Systems. All
-          the nodes in the topology supports BGP CT.<a href="#section-13.1.2-4" class="pilcrow">¶</a></p>
+<p id="section-13.1.2-4">In the topology in Figure 6, we have three Autonomous Systems.
+          All the nodes in the topology supports BGP CT.<a href="#section-13.1.2-4" class="pilcrow">¶</a></p>
 <p id="section-13.1.2-5">In AS1 Gold SLA is represented by color 100 and Bronze by
           200.<a href="#section-13.1.2-5" class="pilcrow">¶</a></p>
 <p id="section-13.1.2-6">In AS2 Gold SLA is represented by color 300 and Bronze by
@@ -3245,7 +3233,7 @@ li > p:last-of-type:only-child {
           mapping community color:0:100500 at PE1 maps to the gold TRDB and
           resolves over this transport route.<a href="#section-13.1.2-10" class="pilcrow">¶</a></p>
 <p id="section-13.1.2-11">Inter-domain traffic forwarding in the above topology works as
-          explained in <a href="#CTProc" class="auto internal xref">Section 12</a>.<a href="#section-13.1.2-11" class="pilcrow">¶</a></p>
+          explained in <a href="#CTProc" class="xref">Section 12</a>.<a href="#section-13.1.2-11" class="pilcrow">¶</a></p>
 <p id="section-13.1.2-12">Transport-target re-write requires co-ordination of color values
           between domains in the transport layer. This method avoids the need
           to re-write service route mapping community, keeping the service
@@ -3280,11 +3268,11 @@ li > p:last-of-type:only-child {
                 ----------- Packet Forwarding Direction --------&gt;
 
 
-        Fig 7: Tranport Layer with Heterogenous Color Domains
+        Figure 7: Tranport Layer with Heterogenous Color Domains
 </pre><a href="#section-13.1.3-3" class="pilcrow">¶</a>
 </div>
-<p id="section-13.1.3-4">In the topology in Fig 7, we have three Autonomous Systems. All
-          the nodes in the topology support BGP CT.<a href="#section-13.1.3-4" class="pilcrow">¶</a></p>
+<p id="section-13.1.3-4">In the topology in Figure 7, we have three Autonomous Systems.
+          All the nodes in the topology support BGP CT.<a href="#section-13.1.3-4" class="pilcrow">¶</a></p>
 <p id="section-13.1.3-5">In AS1 Gold SLA is represented by color 100.<a href="#section-13.1.3-5" class="pilcrow">¶</a></p>
 <p id="section-13.1.3-6">In AS2 Gold has finer shades: Gold1 by color 101 and Gold2 by
           color 102.<a href="#section-13.1.3-6" class="pilcrow">¶</a></p>
@@ -3386,7 +3374,7 @@ li > p:last-of-type:only-child {
 
             ---------Packet Forwarding Direction---------&gt;
 
-   Fig 8: BGP CT in AS1 and AS3 connected by BGP LU in AS2
+   Figure 8: BGP CT in AS1 and AS3 connected by BGP LU in AS2
 </pre><a href="#section-13.2.1-2" class="pilcrow">¶</a>
 </div>
 <p id="section-13.2.1-3">In the above topology, there are three AS domains. AS1 and AS3
@@ -3396,7 +3384,7 @@ li > p:last-of-type:only-child {
           family on IBGP sessions within the domain. ASBR11 and ASBR21 as well
           as ASBR22 and ASBR31 negotiate BGP LU family on the EBGP session
           over directly connected interdomain links. ASBR11 and ASBR31 have
-          reachability to each other’s loopbacks through BGP LU. ASBR11
+          reachability to each other's loopbacks through BGP LU. ASBR11
           and ASBR31 negotiate BGP CT family over a multihop EBGP session
           formed using BGP LU reachability.<a href="#section-13.2.1-4" class="pilcrow">¶</a></p>
 <p id="section-13.2.1-5">The following tunnels exist for Gold Transport Class<a href="#section-13.2.1-5" class="pilcrow">¶</a></p>
@@ -3422,8 +3410,8 @@ li > p:last-of-type:only-child {
 </li>
           </ul>
 <p id="section-13.2.1-9">These tunnels are provisioned to belong to Transport Classes gold
-          and bronze, and are advertised between ASBR31 and ASBR11 with
-          Nexthop self.<a href="#section-13.2.1-9" class="pilcrow">¶</a></p>
+          and bronze, and are advertised between ASBR31 and ASBR11 with Next
+          hop self.<a href="#section-13.2.1-9" class="pilcrow">¶</a></p>
 <p id="section-13.2.1-10">In AS2, that does not support BGP CT, a separate loopback may be
           used on ASBR22 and ASBR21 to represent gold and bronze SLAs viz
           ASBR22_lpbk_gold, ASBR22_lpbk_bronze, ASBR21_lpbk_gold and
@@ -3441,7 +3429,7 @@ li > p:last-of-type:only-child {
 </li>
           </ul>
 <p id="section-13.2.1-13">RD:PE11 BGP CT route is originated from PE11 towards ASBR11 with
-          transport-target gold. ASBR11 readvertises this route with nexthop
+          transport-target gold. ASBR11 readvertises this route with next hop
           set to ASBR11_lpbk_gold on the EBGP multihop session towards ASBR31.
           ASBR11 originates BGP LU route for endpoint ASBR11_lpbk_gold on EBGP
           session to ASBR21 with a 'gold SLA' community, and BGP LU route for
@@ -3449,27 +3437,27 @@ li > p:last-of-type:only-child {
           is used by ASBR31 to publish the BGP LU routes in the corresponding
           BGP CT TRDBs.<a href="#section-13.2.1-13" class="pilcrow">¶</a></p>
 <p id="section-13.2.1-14">ASBR21 readvertises the BGP LU route for endpoint
-          ASBR11_lpbk_gold to ASBR22 with nexthop set by local policy config
+          ASBR11_lpbk_gold to ASBR22 with next hop set by local policy config
           to the unique loopback ASBR21_lpbk_gold by matching the 'gold SLA'
           community received as part BGP LU advertisement from ASBR11. ASBR22
-          receives this route and resolves the nexthop over the
+          receives this route and resolves the next hop over the
           ASBR22_to_ASBR21_lpbk_gold RSVP-TE tunnel. On successful resolution,
-          ASBR22 readvertises this BGP LU route to ASBR31 with nexthop self
+          ASBR22 readvertises this BGP LU route to ASBR31 with next hop self
           and a new label.<a href="#section-13.2.1-14" class="pilcrow">¶</a></p>
 <p id="section-13.2.1-15">ASBR31 adds the ASBR11_lpbk_gold route received via EBGP LU from
           ASBR22 to gold TRDB based on the received 'gold SLA' community.
-          ASBR31 uses this gold TRDB route to resolve the nexthop
+          ASBR31 uses this gold TRDB route to resolve the next hop
           ASBR11_lpbk_gold received on BGP CT route with transport-target
           gold, for the prefix RD:PE11 received over the EBGP multihop CT
           session, thus preserving the end-to-end SLA. Now ASBR31 readvertises
-          the BGP CT route for RD:PE11 with nexthop as self thus stitching
+          the BGP CT route for RD:PE11 with next hop as self thus stitching
           with the BGP LU LSP in AS2. Intradomain traffic forwarding in AS1
-          and AS3 follows the procedures as explained in <span><a href="#CTProc" class="internal xref">Illustration of CT Procedures</a> (<a href="#CTProc" class="auto internal xref">Section 12</a>)</span><a href="#section-13.2.1-15" class="pilcrow">¶</a></p>
+          and AS3 follows the procedures as explained in <span><a href="#CTProc" class="xref">Illustration of CT Procedures</a> (<a href="#CTProc" class="xref">Section 12</a>)</span><a href="#section-13.2.1-15" class="pilcrow">¶</a></p>
 <p id="section-13.2.1-16">In cases where an SLA cannot be preserved in AS2 because SLA
           specific tunnels and loopbacks dont exist in AS2, traffic can be
           carried over available SLAs (eg: best-effort SLA) by rewriting the
-          nexthop to ASBR21 loopback assigned to the available SLA. This eases
-          migration in case of heterogeneous color domains as-well.<a href="#section-13.2.1-16" class="pilcrow">¶</a></p>
+          next hop to ASBR21 loopback assigned to the available SLA. This
+          eases migration in case of heterogeneous color domains as-well.<a href="#section-13.2.1-16" class="pilcrow">¶</a></p>
 </section>
 <section id="section-13.2.2">
           <h4 id="name-bgp-ct-interop-between-mpls-">
@@ -3483,10 +3471,10 @@ li > p:last-of-type:only-child {
 <a href="#section-13.2.2.1" class="section-number selfRef">13.2.2.1. </a><a href="#name-interop-between-mpls-and-srv" class="section-name selfRef">Interop Between MPLS and SRv6 Nodes.</a>
             </h5>
 <p id="section-13.2.2.1-1">BGP speakers may carry MPLS label and SRv6 SID in BGP CT SAFI
-            76 routes using protocol encoding as described in <span><a href="#CTMultiEncap" class="internal xref">Carrying Multiple Encapsulation
-            information</a> (<a href="#CTMultiEncap" class="auto internal xref">Section 6.1</a>)</span><a href="#section-13.2.2.1-1" class="pilcrow">¶</a></p>
+            76 routes using protocol encoding as described in <span><a href="#CTMultiEncap" class="xref">Carrying Multiple Encapsulation
+            information</a> (<a href="#CTMultiEncap" class="xref">Section 6.1</a>)</span><a href="#section-13.2.2.1-1" class="pilcrow">¶</a></p>
 <p id="section-13.2.2.1-2">MPLS Labels are carried using RFC 8277 encoding, and SRv6 SID
-            is carried using Prefix SID attribute as specified in <span>[<a href="#RFC9252" class="cite xref">RFC9252</a>]</span>.<a href="#section-13.2.2.1-2" class="pilcrow">¶</a></p>
+            is carried using Prefix SID attribute as specified in <span>[<a href="#RFC9252" class="xref">RFC9252</a>]</span>.<a href="#section-13.2.2.1-2" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-13.2.2.1-3">
 <pre>
 
@@ -3499,20 +3487,20 @@ li > p:last-of-type:only-child {
 
                   &lt;---- Bidirectional Traffic ----&gt;
 
-       Fig 9: BGP CT Interop between MPLS and SRv6 nodes</pre><a href="#section-13.2.2.1-3" class="pilcrow">¶</a>
+       Figure 9: BGP CT Interop between MPLS and SRv6 nodes</pre><a href="#section-13.2.2.1-3" class="pilcrow">¶</a>
 </div>
 <p id="section-13.2.2.1-4">This example shows a provider network with a mix of devices
             with different forwarding capabilities. R1 and R2 support
             forwarding both MPLS and SRv6 packets. R3 supports forwarding MPLS
             packets only. R4 supports forwarding SRv6 packets only. All these
             nodes have BGP session with Route Reflector RR1 which reflects
-            routes between these nodes with nexthop unchanged. BGP CT family
+            routes between these nodes with next hop unchanged. BGP CT family
             is negotiated on these sessions.<a href="#section-13.2.2.1-4" class="pilcrow">¶</a></p>
 <p id="section-13.2.2.1-5">R1 and R2 send and receive both MPLS label and SRv6 SID in the
             BGP CT control plane routes. This allows them to be ingress and
             egress for both MPLS and SRv6 data planes. MPLS label is carried
             using RFC 8277 encoding, and SRv6 SID is carried using Prefix SID
-            attribute as specified in <span>[<a href="#RFC9252" class="cite xref">RFC9252</a>]</span>, without
+            attribute as specified in <span>[<a href="#RFC9252" class="xref">RFC9252</a>]</span>, without
             Transposition Scheme. The Transposition Length is set to 0 and
             Transposition Offset is set to 0 to indicate nothing is transposed
             and that the entire SRv6 SID value is encoded in the SID
@@ -3523,7 +3511,7 @@ li > p:last-of-type:only-child {
             ingress and egress for MPLS data plane. R1 will carry SRv6 SID in
             Prefix-SID attribute, which will not be used by R3. In order to
             interoperate with MPLS only device R3, R1 MUST NOT use SRv6
-            Transposition scheme described in <span>[<a href="#RFC9252" class="cite xref">RFC9252</a>]</span>. The
+            Transposition scheme described in <span>[<a href="#RFC9252" class="xref">RFC9252</a>]</span>. The
             Transposition Length is set to 0 and Transposition Offset is set
             to 0 to indicate nothing is transposed and that the entire SRv6
             SID value is encoded in the SID Information Sub-TLV. MPLS
@@ -3551,7 +3539,7 @@ li > p:last-of-type:only-child {
             when using BGP CT family.<a href="#section-13.2.2.2-1" class="pilcrow">¶</a></p>
 <p id="section-13.2.2.2-2">MPLS Labels are carried using RFC 8277 encoding, and UDP (or
             IP) tunneling information is carried using TEA attribute or the
-            Encapsulation Extended Community as specified in <span>[<a href="#RFC9012" class="cite xref">RFC9012</a>]</span>.<a href="#section-13.2.2.2-2" class="pilcrow">¶</a></p>
+            Encapsulation Extended Community as specified in <span>[<a href="#RFC9012" class="xref">RFC9012</a>]</span>.<a href="#section-13.2.2.2-2" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-13.2.2.2-3">
 <pre>
 
@@ -3564,19 +3552,19 @@ li > p:last-of-type:only-child {
 
                   &lt;---- Bidirectional Traffic ----&gt;
 
-       Fig 10: BGP CT Interop between MPLS and UDP tunneling nodes.</pre><a href="#section-13.2.2.2-3" class="pilcrow">¶</a>
+       Figure 10: BGP CT Interop between MPLS and UDP tunneling nodes.</pre><a href="#section-13.2.2.2-3" class="pilcrow">¶</a>
 </div>
 <p id="section-13.2.2.2-4">In this example, R1 and R2 support forwarding both MPLS and UDP
             tunneled packets. R3 supports forwarding MPLS packets only. R4
             supports forwarding UDP tunneled packets only. All these nodes
             have BGP session with Route Reflector RR1 which reflects routes
-            between these nodes with nexthop unchanged. BGP CT family is
+            between these nodes with next hop unchanged. BGP CT family is
             negotiated on these sessions.<a href="#section-13.2.2.2-4" class="pilcrow">¶</a></p>
 <p id="section-13.2.2.2-5">R1 and R2 send and receive both MPLS label and UDP tunneling
             info in the BGP CT control plane routes. This allows them to be
             ingress and egress for both MPLS and UDP tunneling data planes.
             MPLS label is carried using RFC 8277 encoding. As specified in
-            <span>[<a href="#RFC9012" class="cite xref">RFC9012</a>]</span>, UDP tunneling information is carried
+            <span>[<a href="#RFC9012" class="xref">RFC9012</a>]</span>, UDP tunneling information is carried
             using TEA attribute (code 23) or the "barebones" Tunnel TLV
             carried in Encapsulation Extended Community. Either MPLS or UDP
             tunneled forwarding can be used between R1 and R2.<a href="#section-13.2.2.2-5" class="pilcrow">¶</a></p>
@@ -3635,7 +3623,7 @@ li > p:last-of-type:only-child {
        |-----AS3-----|  |-------AS2------|
 
 
- Fig 11: Managing Transport Route Visibility in Multi domain Network
+ Figure 11: Managing Transport Route Visibility in Multi domain Network
 </pre><a href="#section-13.3-3" class="pilcrow">¶</a>
 </div>
 <p id="section-13.3-4">The following table details the BGP CT route and path visibility at
@@ -3660,7 +3648,7 @@ li > p:last-of-type:only-child {
       |Anycast |BN    |Same   |RD,IP  |     2   |    2    |
       +--------+------+-------+-------+---------+---------+
 
-  Fig 12: Truth table, Route and Path Visibility at Ingress Node
+  Figure 12: Truth table, Route and Path Visibility at Ingress Node
 </pre><a href="#section-13.3-5" class="pilcrow">¶</a>
 </div>
 <p id="section-13.3-6">In the above example, both route churn and TE granularity are
@@ -3713,7 +3701,7 @@ Registry Name: SAFI Values
 <a href="#section-14.2" class="section-number selfRef">14.2. </a><a href="#name-new-format-for-bgp-extended-" class="section-name selfRef">New Format for BGP Extended Community</a>
         </h3>
 <p id="section-14.2-1">IANA is requested to assign a new Format type (Type high = 0xa) of
-        Extended Community <span><a href="#RFC4360" class="internal xref">EXT-COMM</a> [<a href="#RFC4360" class="cite xref">RFC4360</a>]</span> called
+        Extended Community <span><a href="#RFC4360" class="xref">EXT-COMM</a> [<a href="#RFC4360" class="xref">RFC4360</a>]</span> called
         "Transport Class" from the following registries:<a href="#section-14.2-1" class="pilcrow">¶</a></p>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-14.2-2.1">the "BGP Transitive Extended Community Types" registry, and<a href="#section-14.2-2.1" class="pilcrow">¶</a>
@@ -3726,7 +3714,7 @@ Registry Name: SAFI Values
         as a transitive extended community.<a href="#section-14.2-4" class="pilcrow">¶</a></p>
 <p id="section-14.2-5">The Route Target thus formed is called "Transport Class" route
         target extended community.<a href="#section-14.2-5" class="pilcrow">¶</a></p>
-<p id="section-14.2-6">Taking reference of <span>[<a href="#RFC7153" class="cite xref">RFC7153</a>]</span> , following requests
+<p id="section-14.2-6">Taking reference of <span>[<a href="#RFC7153" class="xref">RFC7153</a>]</span> , following requests
         are made:<a href="#section-14.2-6" class="pilcrow">¶</a></p>
 <section id="section-14.2.1">
           <h4 id="name-existing-registries-to-be-mo">
@@ -3788,8 +3776,8 @@ Registry Name: BGP Transitive Extended Community Types
 <a href="#section-14.2.2.1" class="section-number selfRef">14.2.2.1. </a><a href="#name-transitive-transport-class-e" class="section-name selfRef">Transitive Transport Class Extended Community Sub-Types Registry</a>
             </h5>
 <p id="section-14.2.2.1-1">IANA is requested to add the following subregistry under the
-            “Border Gateway Protocol (BGP) Extended
-            Communities”:<a href="#section-14.2.2.1-1" class="pilcrow">¶</a></p>
+            "Border Gateway Protocol (BGP) Extended
+            Communities":<a href="#section-14.2.2.1-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-14.2.2.1-2">
 <pre> Registry Group: Border Gateway Protocol (BGP) Extended Communities
 
@@ -3816,8 +3804,8 @@ Registry Name: BGP Transitive Extended Community Types
 <a href="#section-14.2.2.2" class="section-number selfRef">14.2.2.2. </a><a href="#name-non-transitive-transport-cla" class="section-name selfRef">Non-Transitive Transport Class Extended Community Sub-Types Registry</a>
             </h5>
 <p id="section-14.2.2.2-1">IANA is requested to add the following subregistry under the
-            “Border Gateway Protocol (BGP) Extended
-            Communities”:<a href="#section-14.2.2.2-1" class="pilcrow">¶</a></p>
+            "Border Gateway Protocol (BGP) Extended
+            Communities":<a href="#section-14.2.2.2-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-14.2.2.2-2">
 <pre> Registry Group: Border Gateway Protocol (BGP) Extended Communities
 
@@ -3907,7 +3895,7 @@ Registry Name: BGP Transitive Extended Community Types
 <p id="section-15-3">In scenarios where MPLS is enabled on link to a device in an
       untrusted domain, e.g. a PE-CE link or ASBR-ASBR inter-AS link, security
       can be provided against MPLS label spoofing by using MPLS context tables
-      as described in <span><a href="#MplsCE" class="internal xref">MPLS enabled CE</a> (<a href="#MplsCE" class="auto internal xref">Appendix A.1.2</a>)</span>. Such that
+      as described in <span><a href="#MplsCE" class="xref">MPLS enabled CE</a> (<a href="#MplsCE" class="xref">Appendix A.1.2</a>)</span>. Such that
       only MPLS traffic with labels advertised to the BGP speaker are allowed
       to forward. However, the PE may not be able to perform any checks based
       on inner payload in the MPLS packet since it performs label swap
@@ -4110,14 +4098,14 @@ Registry Name: BGP Transitive Extended Community Types
                       11.0.0.0                         22.0.0.0
                           ----  Traffic direction ----&gt;
 
-                     Fig 13: Example Topology with PE CE Links
+                     Figure 13: Example Topology with PE CE Links
 </pre><a href="#appendix-A.1-3" class="pilcrow">¶</a>
 </div>
 <section id="appendix-A.1.1">
           <h4 id="name-using-dscp-in-multinexthop-a">
 <a href="#appendix-A.1.1" class="section-number selfRef">A.1.1. </a><a href="#name-using-dscp-in-multinexthop-a" class="section-name selfRef">Using DSCP in MultiNexthop Attribute</a>
           </h4>
-<p id="appendix-A.1.1-1">Such an indication can be in form of DSCP code point (<span>[<a href="#RFC2474" class="cite xref">RFC2474</a>]</span>) in the IP header.<a href="#appendix-A.1.1-1" class="pilcrow">¶</a></p>
+<p id="appendix-A.1.1-1">Such an indication can be in form of DSCP code point (<span>[<a href="#RFC2474" class="xref">RFC2474</a>]</span>) in the IP header.<a href="#appendix-A.1.1-1" class="pilcrow">¶</a></p>
 <p id="appendix-A.1.1-2">In RFC2474, a Forwarding Class Selector maps to a PHB (Per-hop
           Behavior). The Transport Class construct is a PHB at transport
           layer.<a href="#appendix-A.1.1-2" class="pilcrow">¶</a></p>
@@ -4130,15 +4118,15 @@ Registry Name: BGP Transitive Extended Community Types
           the PE1 device roles and CE1 doesn't receive any indication in BGP
           signaling regarding what DSCP code points are being offered by the
           provider network.<a href="#appendix-A.1.1-3" class="pilcrow">¶</a></p>
-<p id="appendix-A.1.1-4">With a <span><a href="#MULTI-NH-ATTR" class="internal xref">BGP MultiNexthop
-          Attribute</a> [<a href="#MULTI-NH-ATTR" class="cite xref">MULTI-NH-ATTR</a>]</span> attached to a SAFI 1 service route, it is possible
+<p id="appendix-A.1.1-4">With a <span><a href="#MULTI-NH-ATTR" class="xref">BGP MultiNexthop
+          Attribute</a> [<a href="#MULTI-NH-ATTR" class="xref">MULTI-NH-ATTR</a>]</span> attached to a SAFI 1 service route, it is possible
           to extend the PE-CE BGP signalling (if used) to communicate such
           information to the CE1. In the above example, the MNH contains two
-          Nexthop Legs, described by two Forwarding Instruction TLVs. Each
-          Nexthop Leg contains PE1's peering self address in <span><a href="#MNH-EP" class="internal xref">Endpoint Identifier TLV</a> [<a href="#MNH-EP" class="cite xref">MNH-EP</a>]</span> , the color Gold or
-          Bronze encoded in the <span><a href="#MNH-TC" class="internal xref">Transport class ID
-          TLV</a> [<a href="#MNH-TC" class="cite xref">MNH-TC</a>]</span> , and associated DSCP code point indicating Gold or
-          Bronze transport class encoded in the <span><a href="#MNH-ENCAP-DSCP" class="internal xref">Payload Encapsulation Info TLV</a> [<a href="#MNH-ENCAP-DSCP" class="cite xref">MNH-ENCAP-DSCP</a>]</span> . This
+          Next hop Legs, described by two Forwarding Instruction TLVs. Each
+          Next hop Leg contains PE1's peering self address in <span><a href="#MNH-EP" class="xref">Endpoint Identifier TLV</a> [<a href="#MNH-EP" class="xref">MNH-EP</a>]</span> , the color Gold or
+          Bronze encoded in the <span><a href="#MNH-TC" class="xref">Transport class ID
+          TLV</a> [<a href="#MNH-TC" class="xref">MNH-TC</a>]</span> , and associated DSCP code point indicating Gold or
+          Bronze transport class encoded in the <span><a href="#MNH-ENCAP-DSCP" class="xref">Payload Encapsulation Info TLV</a> [<a href="#MNH-ENCAP-DSCP" class="xref">MNH-ENCAP-DSCP</a>]</span> . This
           allows the CE to discover what transport classes exist in the
           provider network, and which DSCP codepoint to encode so that traffic
           is forwarded using the desired transport class in the provided
@@ -4154,7 +4142,7 @@ Registry Name: BGP Transitive Extended Community Types
           forwarding on PE-CE links comes with some security implications.
           This section gives details on these aspects.<a href="#appendix-A.1.2-1" class="pilcrow">¶</a></p>
 <p id="appendix-A.1.2-2">Consider the ingress PE1 receiving a VPN prefix RD:Pfx1 received
-          with VPN label VL1, nexthop as PE2 and a mapping community
+          with VPN label VL1, next hop as PE2 and a mapping community
           containing TC1 as 'Transport class ID'. PE1 can allocate a MPLS
           Label PVL1 for the tuple "VPN Label, PNH Address, Transport class
           ID" and advertise to CE1.<a href="#appendix-A.1.2-2" class="pilcrow">¶</a></p>
@@ -4165,8 +4153,8 @@ Registry Name: BGP Transitive Extended Community Types
           service prefix can be diverted to a distinct devices in the network
           for further processing. This provides Ingress Peer Engineering
           control to the network.<a href="#appendix-A.1.2-3" class="pilcrow">¶</a></p>
-<p id="appendix-A.1.2-4">PE1 installs a MPLS FIB route for PVL1 with nexthop as "Swap VL1,
-          Push TL1 towards PE2". TL1 is the BGP CT label received for the
+<p id="appendix-A.1.2-4">PE1 installs a MPLS FIB route for PVL1 with next hop as "Swap
+          VL1, Push TL1 towards PE2". TL1 is the BGP CT label received for the
           tuple 'PE2, TC1'. In forwarding, when MPLS packet with label PVL1 is
           received from CE1, PVL1 Swaps to label VL1 and pushes the BGP CT
           label TL1. PE1 advertises the label "PVL1" in the MULTI_NH_ATTR to
@@ -4175,15 +4163,15 @@ Registry Name: BGP Transitive Extended Community Types
           support CBF by using MPLS Label inferred PHB. The number of MPLS
           Labels consumed at PE1 for this approach will be proportional to the
           number of Service functions and Intents that are exposed to CE1.<a href="#appendix-A.1.2-4" class="pilcrow">¶</a></p>
-<p id="appendix-A.1.2-5">A <span><a href="#MULTI-NH-ATTR" class="internal xref">BGP MultiNexthop Attribute</a> [<a href="#MULTI-NH-ATTR" class="cite xref">MULTI-NH-ATTR</a>]</span>
+<p id="appendix-A.1.2-5">A <span><a href="#MULTI-NH-ATTR" class="xref">BGP MultiNexthop Attribute</a> [<a href="#MULTI-NH-ATTR" class="xref">MULTI-NH-ATTR</a>]</span>
           is attached to a SAFI 1 service route to convey the MPLS Label
-          information to CE1. In the above example, the MNH contains two
-          Nexthop Legs, described by two Forwarding Instruction TLVs. Each
-          Nexthop Leg contains PE1's peering self address in <span><a href="#MNH-EP" class="internal xref">Endpoint Identifier TLV</a> [<a href="#MNH-EP" class="cite xref">MNH-EP</a>]</span> , the color Gold or
-          Bronze encoded in the <span><a href="#MNH-TC" class="internal xref">Transport class ID
-          TLV</a> [<a href="#MNH-TC" class="cite xref">MNH-TC</a>]</span> , and associated MPLS Label "PVL1" or "PVL2" encoded in
-          the <span><a href="#MNH-ENCAP-MPLS" class="internal xref">Payload Encapsulation Info
-          TLV</a> [<a href="#MNH-ENCAP-MPLS" class="cite xref">MNH-ENCAP-MPLS</a>]</span> . This allows the CE to discover what transport classes
+          information to CE1. In the above example, the MNH contains two Next
+          hop Legs, described by two Forwarding Instruction TLVs. Each Next
+          hop Leg contains PE1's peering self address in <span><a href="#MNH-EP" class="xref">Endpoint Identifier TLV</a> [<a href="#MNH-EP" class="xref">MNH-EP</a>]</span> , the color Gold or
+          Bronze encoded in the <span><a href="#MNH-TC" class="xref">Transport class ID
+          TLV</a> [<a href="#MNH-TC" class="xref">MNH-TC</a>]</span> , and associated MPLS Label "PVL1" or "PVL2" encoded in
+          the <span><a href="#MNH-ENCAP-MPLS" class="xref">Payload Encapsulation Info
+          TLV</a> [<a href="#MNH-ENCAP-MPLS" class="xref">MNH-ENCAP-MPLS</a>]</span> . This allows the CE to discover what transport classes
           exist in the provider network, and which MPLS Label to encode so
           that traffic is forwarded using the desired transport class.<a href="#appendix-A.1.2-5" class="pilcrow">¶</a></p>
 <section id="appendix-A.1.2.1">
@@ -4218,7 +4206,7 @@ Registry Name: BGP Transitive Extended Community Types
         <h3 id="name-bgp-ct-egress-te-2">
 <a href="#appendix-A.2" class="section-number selfRef">A.2. </a><a href="#name-bgp-ct-egress-te-2" class="section-name selfRef">BGP CT Egress TE</a>
         </h3>
-<p id="appendix-A.2-1">Mechanisms described in <span>[<a href="#BGP-LU-EPE" class="cite xref">BGP-LU-EPE</a>]</span> also applies to
+<p id="appendix-A.2-1">Mechanisms described in <span>[<a href="#BGP-LU-EPE" class="xref">BGP-LU-EPE</a>]</span> also applies to
         BGP CT family.<a href="#appendix-A.2-1" class="pilcrow">¶</a></p>
 <p id="appendix-A.2-2">The Peer/32 or Peer/128 EPE route MAY be originated in BGP CT
         family with appropriate Mapping Community (e.g.
@@ -4232,11 +4220,11 @@ Registry Name: BGP Transitive Extended Community Types
       <h2 id="name-applicability-to-intra-as-an">
 <a href="#appendix-B" class="section-number selfRef">Appendix B. </a><a href="#name-applicability-to-intra-as-an" class="section-name selfRef">Applicability to Intra AS and different Inter AS deployments.</a>
       </h2>
-<p id="appendix-B-1">As described in <span><a href="#RFC4364" class="internal xref">BGP VPN</a> [<a href="#RFC4364" class="cite xref">RFC4364</a>]</span> Section 10, in
+<p id="appendix-B-1">As described in <span><a href="#RFC4364" class="xref">BGP VPN</a> [<a href="#RFC4364" class="xref">RFC4364</a>]</span> Section 10, in
       an option-C network, service routes (VPN-IPv4) are neither maintained
       nor distributed by the ASBRs. Transport routes are maintained in the
       ASBRs and propagated in BGP LU (SAFI 4) or BGP CT (SAFI 76).<a href="#appendix-B-1" class="pilcrow">¶</a></p>
-<p id="appendix-B-2"><span><a href="#CTProc" class="internal xref">Illustration of CT Procedures</a> (<a href="#CTProc" class="auto internal xref">Section 12</a>)</span>
+<p id="appendix-B-2"><span><a href="#CTProc" class="xref">Illustration of CT Procedures</a> (<a href="#CTProc" class="xref">Section 12</a>)</span>
       illustrates how constructs of BGP CT work in an Inter AS option-C
       deployment. The BGP CT constructs: SAFI 76, Transport Class and
       Resolution Scheme are used in an option-C deployment.<a href="#appendix-B-2" class="pilcrow">¶</a></p>
@@ -4266,7 +4254,7 @@ Registry Name: BGP Transitive Extended Community Types
 
              10.21.21.21 ---- Traffic Direction ----&gt; 10.31.31.31
 
-                    Fig 14: Topology, BGP CT Intra-AS
+                    Figure 14: Topology, BGP CT Intra-AS
 </pre><a href="#appendix-B.1.1-1" class="pilcrow">¶</a>
 </div>
 <p id="appendix-B.1.1-2">This example shows a provider network Autonomous system AS1. It
@@ -4307,23 +4295,24 @@ Registry Name: BGP Transitive Extended Community Types
           </h4>
 <p id="appendix-B.1.3-1">Service nodes PE11, PE12 negotiate service families (SAFI 128) on
           the BGP session with RR11. Service helper RR11 reflects service
-          routes between the two PEs with nexthop unchanged. There are no
+          routes between the two PEs with next hop unchanged. There are no
           tunnels for transport-class 100 or 200 from RR11 to the PEs.<a href="#appendix-B.1.3-1" class="pilcrow">¶</a></p>
 <p id="appendix-B.1.3-2">Forwarding happens using service routes at service nodes PE11,
           PE12. Routes received from CEs are not present in any other nodes'
           FIB in the provider network.<a href="#appendix-B.1.3-2" class="pilcrow">¶</a></p>
-<p id="appendix-B.1.3-3">CE31 advertises a route for example prefix 10.31.31.31 with
-          nexthop self to PE12. CE31 can attach a Mapping Community
-          Color:0:100 on this route, to indicate its request for Gold SLA. Or,
-          PE11 can attach the same using locally configured policies.<a href="#appendix-B.1.3-3" class="pilcrow">¶</a></p>
+<p id="appendix-B.1.3-3">CE31 advertises a route for example prefix 10.31.31.31 with next
+          hop self to PE12. CE31 can attach a Mapping Community Color:0:100 on
+          this route, to indicate its request for Gold SLA. Or, PE11 can
+          attach the same using locally configured policies.<a href="#appendix-B.1.3-3" class="pilcrow">¶</a></p>
 <p id="appendix-B.1.3-4">Consider, CE31 is getting VPN service from PE12. The
-          RD:10.31.31.31 route is readvertised in SAFI 128 by PE12 with
-          nexthop self (10.12.12.12) and label V-L1, to RR11 with the Mapping
+          RD:10.31.31.31 route is readvertised in SAFI 128 by PE12 with next
+          hop self (10.12.12.12) and label V-L1, to RR11 with the Mapping
           Community Color:0:100 attached. This SAFI 128 route reaches PE11 via
-          RR11 with the nexthop unchanged as PE12 and label V-L1. Now PE11 can
-          resolve the PNH 10.12.12.12 using PE11_to_PE12_gold RSVP TE LSP.<a href="#appendix-B.1.3-4" class="pilcrow">¶</a></p>
+          RR11 with the next hop unchanged as PE12 and label V-L1. Now PE11
+          can resolve the PNH 10.12.12.12 using PE11_to_PE12_gold RSVP TE
+          LSP.<a href="#appendix-B.1.3-4" class="pilcrow">¶</a></p>
 <p id="appendix-B.1.3-5">The IP FIB at PE11 VRF will have a route for 10.31.31.31 with a
-          nexthop when resolved using Resolution Scheme belonging to the
+          next hop when resolved using Resolution Scheme belonging to the
           mapping community Color:0:100, points to a PE11_to_PE12_gold
           tunnel.<a href="#appendix-B.1.3-5" class="pilcrow">¶</a></p>
 <p id="appendix-B.1.3-6">BGP CT SAFI 76 is not used in this Intra AS deployment. But the
@@ -4352,7 +4341,7 @@ Registry Name: BGP Transitive Extended Community Types
 
 10.31.31.31          ---- Traffic Direction ----&gt;           10.41.41.41
 
-            Fig 15: Topology, BGP CT Inter-AS Option A
+            Figure 15: Topology, BGP CT Inter-AS Option A
 </pre><a href="#appendix-B.2.1-1" class="pilcrow">¶</a>
 </div>
 <p id="appendix-B.2.1-2">This example shows two provider network Autonomous systems AS1,
@@ -4407,28 +4396,28 @@ Registry Name: BGP Transitive Extended Community Types
           </h4>
 <p id="appendix-B.2.3-1">Service nodes PE11, ASBR11 negotiate service family (SAFI 128) on
           the BGP session with RR11. Service helper RR11 reflects service
-          routes between the PE11 and ASBR11 with nexthop unchanged.<a href="#appendix-B.2.3-1" class="pilcrow">¶</a></p>
+          routes between the PE11 and ASBR11 with next hop unchanged.<a href="#appendix-B.2.3-1" class="pilcrow">¶</a></p>
 <p id="appendix-B.2.3-2">Similarly, in AS2 PE21, ASBR21 negotiate service family (SAFI
           128) on the BGP session with RR21, which reflects service routes
-          between the PE21 and ASBR21 with nexthop unchanged.<a href="#appendix-B.2.3-2" class="pilcrow">¶</a></p>
-<p id="appendix-B.2.3-3">CE41 advertises a route for example prefix 10.41.41.41 with
-          nexthop self to PE21 VRF. CE41 can attach a Mapping Community
+          between the PE21 and ASBR21 with next hop unchanged.<a href="#appendix-B.2.3-2" class="pilcrow">¶</a></p>
+<p id="appendix-B.2.3-3">CE41 advertises a route for example prefix 10.41.41.41 with next
+          hop self to PE21 VRF. CE41 can attach a Mapping Community
           Color:0:100 on this route, to indicate its request for Gold SLA. Or,
           PE21 can attach the same using locally configured policies.<a href="#appendix-B.2.3-3" class="pilcrow">¶</a></p>
 <p id="appendix-B.2.3-4">Consider, CE41 is getting VPN service from PE21. The
-          RD:10.41.41.41 route is readvertised in SAFI 128 by PE21 with
-          nexthop self (10.21.21.21) and label V-L1, to RR21 with the Mapping
+          RD:10.41.41.41 route is readvertised in SAFI 128 by PE21 with next
+          hop self (10.21.21.21) and label V-L1, to RR21 with the Mapping
           Community Color:0:100 attached. This SAFI 128 route reaches ASBR21
-          via RR21 with the nexthop unchanged as PE21 and label V-L1. Now
+          via RR21 with the next hop unchanged as PE21 and label V-L1. Now
           ASBR21 can resolve the PNH 10.21.21.21 using ASBR21_to_PE21_gold
           SRTE LSP.<a href="#appendix-B.2.3-4" class="pilcrow">¶</a></p>
 <p id="appendix-B.2.3-5">The IP FIB at ASBR21 VRF will have a route for 10.41.41.41 with a
-          nexthop resolved using Resolution Scheme associated with mapping
+          next hop resolved using Resolution Scheme associated with mapping
           community Color:0:100, pointing to ASBR21_to_PE21_gold tunnel.<a href="#appendix-B.2.3-5" class="pilcrow">¶</a></p>
 <p id="appendix-B.2.3-6">This route is readvertised by ASBR21 on BGP session inside VRF
-          with nexthop self. EBGP session peering on interface address. ASBR21
-          acts like a CE to ASBR11, and the above mentioned process repeats in
-          AS1, until the route reaches PE11 and resolves over
+          with next hop self. EBGP session peering on interface address.
+          ASBR21 acts like a CE to ASBR11, and the above mentioned process
+          repeats in AS1, until the route reaches PE11 and resolves over
           PE11_to_ASBR11_gold RSVP TE tunnel.<a href="#appendix-B.2.3-6" class="pilcrow">¶</a></p>
 <p id="appendix-B.2.3-7">Traffic traverses as IP packet on the following legs: CE31-PE11,
           ASBR11-ASBR21, PE21-CE41. And uses MPLS forwarding inside AS1, AS2
@@ -4460,7 +4449,7 @@ Registry Name: BGP Transitive Extended Community Types
 10.31.31.31          ---- Traffic Direction ----&gt;           10.41.41.41
 
 
-                Fig 16: Topology, BGP CT Inter-AS Option B
+                Figure 16: Topology, BGP CT Inter-AS Option B
 </pre><a href="#appendix-B.3.1-1" class="pilcrow">¶</a>
 </div>
 <p id="appendix-B.3.1-2">This example shows two provider network Autonomous systems AS1,
@@ -4515,30 +4504,30 @@ Registry Name: BGP Transitive Extended Community Types
           </h4>
 <p id="appendix-B.3.3-1">Service nodes PE11, ASBR12 negotiate service family (SAFI 128) on
           the BGP session with RR13. Service helper RR13 reflects service
-          routes between the PE11 and ASBR12 with nexthop unchanged.<a href="#appendix-B.3.3-1" class="pilcrow">¶</a></p>
+          routes between the PE11 and ASBR12 with next hop unchanged.<a href="#appendix-B.3.3-1" class="pilcrow">¶</a></p>
 <p id="appendix-B.3.3-2">Similarly, in AS2 PE22, ASBR21 negotiate service family (SAFI
           128) on the BGP session with RR23, which reflects service routes
-          between the PE22 and ASBR21 with nexthop unchanged.<a href="#appendix-B.3.3-2" class="pilcrow">¶</a></p>
+          between the PE22 and ASBR21 with next hop unchanged.<a href="#appendix-B.3.3-2" class="pilcrow">¶</a></p>
 <p id="appendix-B.3.3-3">ASBR21 and ASBR12 negotiate SAFI 128 between them, and
-          readvertise L3VPN routes with nexthop self, allocating new labels.
+          readvertise L3VPN routes with next hop self, allocating new labels.
           EBGP session peering on interface address.<a href="#appendix-B.3.3-3" class="pilcrow">¶</a></p>
-<p id="appendix-B.3.3-4">CE41 advertises a route for example prefix 10.41.41.41 with
-          nexthop self to PE22 VRF. CE41 can attach a Mapping Community
+<p id="appendix-B.3.3-4">CE41 advertises a route for example prefix 10.41.41.41 with next
+          hop self to PE22 VRF. CE41 can attach a Mapping Community
           Color:0:100 on this route, to indicate its request for Gold SLA. Or,
           PE22 can attach the same using locally configured policies.<a href="#appendix-B.3.3-4" class="pilcrow">¶</a></p>
 <p id="appendix-B.3.3-5">Consider, CE41 is getting VPN service from PE22. The
-          RD:10.41.41.41 route is readvertised in SAFI 128 by PE22 with
-          nexthop self (10.22.22.22) and label V-L1, to RR23 with the Mapping
+          RD:10.41.41.41 route is readvertised in SAFI 128 by PE22 with next
+          hop self (10.22.22.22) and label V-L1, to RR23 with the Mapping
           Community Color:0:100 attached. This SAFI 128 route reaches ASBR21
-          via RR23 with the nexthop unchanged as PE22 and label V-L1. Now
+          via RR23 with the next hop unchanged as PE22 and label V-L1. Now
           ASBR21 can resolve the PNH 10.22.22.22 using ASBR21_to_PE22_gold
           SRTE LSP.<a href="#appendix-B.3.3-5" class="pilcrow">¶</a></p>
-<p id="appendix-B.3.3-6">Next, ASBR21 readvertises the RD:10.41.41.41 route with nexthop
+<p id="appendix-B.3.3-6">Next, ASBR21 readvertises the RD:10.41.41.41 route with next hop
           self to ASBR12, with a newly allocated MPLS label, V-L2. Forwarding
           for this label is installed to Swap V-L1, and Push labels for
           ASBR21_to_PE22_gold tunnel.<a href="#appendix-B.3.3-6" class="pilcrow">¶</a></p>
 <p id="appendix-B.3.3-7">ASBR12 further readvertises the RD:10.41.41.41 route via RR13 to
-          PE11 with nexthop self 10.12.12.12. PE1 resolves the nexthop
+          PE11 with next hop self 10.12.12.12. PE1 resolves the next hop
           10.12.12.12 over PE11_to_ASBR11_gold RSVP TE tunnel.<a href="#appendix-B.3.3-7" class="pilcrow">¶</a></p>
 <p id="appendix-B.3.3-8">Traffic traverses as IP packet on the following legs: CE31-PE11,
           PE21-CE41. And uses MPLS forwarding on ASBR11-ASBR21 link, and
@@ -4607,8 +4596,8 @@ Registry Name: BGP Transitive Extended Community Types
         scale than transport families like SAFI 4 or SAFI 76, which carry only
         loopbacks. Update packing mechanisms that scale for SAFI 128 routes
         will scale similarly for SAFI 76 routes also.<a href="#appendix-C.1-1" class="pilcrow">¶</a></p>
-<p id="appendix-C.1-2">The document <span><a href="#Intent-Routing-Color" class="internal xref">Intent-aware
-        Routing using Color</a> [<a href="#Intent-Routing-Color" class="cite xref">Intent-Routing-Color</a>]</span> section 6.3.2.1 suggests scaling numbers
+<p id="appendix-C.1-2">The document <span><a href="#Intent-Routing-Color" class="xref">Intent-aware
+        Routing using Color</a> [<a href="#Intent-Routing-Color" class="xref">Intent-Routing-Color</a>]</span> section 6.3.2.1 suggests scaling numbers
         for transport network where BGP CT can be deployed. Experiments were
         conducted with this scale to find the convergence time with BGP CT for
         those scaling numbers. Scenarios involving BGP CT carrying IPv4 and
@@ -4619,8 +4608,8 @@ Registry Name: BGP Transitive Extended Community Types
         cases was less than 2 minutes, This experiment proves that carrying
         transport class information as an attribute keeps BGP convergence
         within acceptable range. Details of the experiment and test results
-        are available in <span><a href="#BGP-CT-UPDATE-PACKING-TEST" class="internal xref">BGP CT
-        Update packing Test Results</a> [<a href="#BGP-CT-UPDATE-PACKING-TEST" class="cite xref">BGP-CT-UPDATE-PACKING-TEST</a>]</span>.<a href="#appendix-C.1-3" class="pilcrow">¶</a></p>
+        are available in <span><a href="#BGP-CT-UPDATE-PACKING-TEST" class="xref">BGP CT
+        Update packing Test Results</a> [<a href="#BGP-CT-UPDATE-PACKING-TEST" class="xref">BGP-CT-UPDATE-PACKING-TEST</a>]</span>.<a href="#appendix-C.1-3" class="pilcrow">¶</a></p>
 <p id="appendix-C.1-4">Further, even in today's BGP LU deployments each egress node
         originates BGP LU route for it's loopback, with some attributes like
         community identifying the originating node or region, and AIGP
@@ -4636,15 +4625,15 @@ Registry Name: BGP Transitive Extended Community Types
       </h2>
 <p id="appendix-D-1">This section describes how scaling is achieved in an Inter domain
       MPLS network, where a domain is an AS or IGP area. Domain boundary is
-      demarcated by a BN performing BGP nexthop self action on the transport
+      demarcated by a BN performing BGP next hop self action on the transport
       route.<a href="#appendix-D-1" class="pilcrow">¶</a></p>
-<p id="appendix-D-2">It considers the scenario suggested in the document <span><a href="#Intent-Routing-Color" class="internal xref">Intent-aware Routing using Color</a> [<a href="#Intent-Routing-Color" class="cite xref">Intent-Routing-Color</a>]</span>
+<p id="appendix-D-2">It considers the scenario suggested in the document <span><a href="#Intent-Routing-Color" class="xref">Intent-aware Routing using Color</a> [<a href="#Intent-Routing-Color" class="xref">Intent-Routing-Color</a>]</span>
       section 6.3.2.1. where 300K nodes exist in the network with 5 transport
       classes.<a href="#appendix-D-2" class="pilcrow">¶</a></p>
 <p id="appendix-D-3">This may result in 1.5M transport layer routes and MPLS transit
       routes in all Border Nodes in the network, which may overwhelm the
       nodes' MPLS forwarding resources.<a href="#appendix-D-3" class="pilcrow">¶</a></p>
-<p id="appendix-D-4">This section explains how mechanism described in <span>[<a href="#MPLS-NAMESPACES" class="cite xref">MPLS-NAMESPACES</a>]</span> is used to scale such a network. This
+<p id="appendix-D-4">This section explains how mechanism described in <span>[<a href="#MPLS-NAMESPACES" class="xref">MPLS-NAMESPACES</a>]</span> is used to scale such a network. This
       approach reduces the number of PNHs that are globally visible in the
       network, thus reducing forwarding resource usage network wide. Service
       route state is kept confined closer to network edge, and any churn is
@@ -4655,7 +4644,7 @@ Registry Name: BGP Transitive Extended Community Types
       nodes can remain legacy nodes, and still get the scaling and convergence
       benefits of this mechanism. This is mainly advantageous to ingress and
       egress PE devices which may be low end devices not capable of pushing
-      deep label stacks or supporting large number of ECMP nexthops. They can
+      deep label stacks or supporting large number of ECMP next hops. They can
       enjoy the scaling benefits without needing software upgrades.<a href="#appendix-D-5" class="pilcrow">¶</a></p>
 <section id="appendix-D.1">
         <h3 id="name-illustration-2">
@@ -4669,7 +4658,7 @@ Registry Name: BGP Transitive Extended Community Types
         MPLS transit routes from 1.5M to 1500. The Border Nodes and Regional
         RRs in a Region do the job of abstracting the 1000 PE loopbacks from
         the rest of the network. The rest of the network sees this region as 1
-        BGP nexthop, and not as 1000 BGP nexthops.<a href="#appendix-D.1-1" class="pilcrow">¶</a></p>
+        BGP next hop, and not as 1000 BGP next hops.<a href="#appendix-D.1-1" class="pilcrow">¶</a></p>
 </section>
 <section id="appendix-D.2">
         <h3 id="name-topology-8">
@@ -4695,7 +4684,7 @@ Registry Name: BGP Transitive Extended Community Types
 
                   &lt;---- Traffic Direction ----
 
-         Fig 17: Reference Topology, BGP MPLS Namespaces
+         Figure 17: Reference Topology, BGP MPLS Namespaces
 </pre>
 </div>
 <figcaption><a href="#figure-3" class="selfRef">Figure 3</a>:
@@ -4718,7 +4707,7 @@ Registry Name: BGP Transitive Extended Community Types
         families (SAFI 4, SAFI 76) with BN11, BN12. In Domain2, BN11 and BN12
         similarly negotiate the transport families with BN21, which in turn
         peers with BN31 and BN32. In Domain3, BN31 and BN32 peer with PEs
-        PE31..PE31000. Each of these BNs change BGP nexthop to self, when re
+        PE31..PE31000. Each of these BNs change BGP next hop to self, when re
         advertising the SAFI 4, SAFI 76 transport routes.<a href="#appendix-D.2-4" class="pilcrow">¶</a></p>
 <p id="appendix-D.2-5">When all nodes loopback addresses are visible throughout the
         network, it will result in 1.5M transport layer routes and MPLS
@@ -4762,7 +4751,7 @@ Registry Name: BGP Transitive Extended Community Types
         Label for the CPNH.<a href="#appendix-D.4-1" class="pilcrow">¶</a></p>
 <p id="appendix-D.4-2">In this way, BN11 and BN12 serve as Service Forwarding Helpers for
         CPNH1 MPLS Namespace. They attract traffic that remote devices send
-        towards the BGP nexthop CPNH1, and forward the MPLS packets received
+        towards the BGP next hop CPNH1, and forward the MPLS packets received
         with the MPLS labels belonging to the MPLS Namespace identified by
         CPNH1.<a href="#appendix-D.4-2" class="pilcrow">¶</a></p>
 <p id="appendix-D.4-3">The individual loopback addresses of the PEs need not be advertised
@@ -4794,17 +4783,17 @@ Registry Name: BGP Transitive Extended Community Types
 <a href="#appendix-D.6" class="section-number selfRef">D.6. </a><a href="#name-changes-to-service-layer-rou" class="section-name selfRef">Changes to Service Layer Route Exchange</a>
         </h3>
 <p id="appendix-D.6-1">When RR11 re-advertises to RR31 a VPN route RD:Pfx1 received with
-        label VL1 from egress PE11 in Domain1, it sets BGP nexthop to CPNH1,
+        label VL1 from egress PE11 in Domain1, it sets BGP next hop to CPNH1,
         and advertises a new label PL1. This label PL1 is allocated within the
         scope of CPNH1 namespace.<a href="#appendix-D.6-1" class="pilcrow">¶</a></p>
 <p id="appendix-D.6-2">The label PL1 is advertised to BN1, BN2 in MPLS Namespace address
-        family with a route target identifying CPNH1, and BGP nexthop PE11 and
-        label VL1 that were received from the egress PE. BN1 and BN2 resolve
-        the path to that BGP nexthop PE11 and use as nexthop for the PL1 route
-        installed in CPNH1 forwarding context.<a href="#appendix-D.6-2" class="pilcrow">¶</a></p>
+        family with a route target identifying CPNH1, and BGP next hop PE11
+        and label VL1 that were received from the egress PE. BN1 and BN2
+        resolve the path to that BGP next hop PE11 and use as next hop for the
+        PL1 route installed in CPNH1 forwarding context.<a href="#appendix-D.6-2" class="pilcrow">¶</a></p>
 <p id="appendix-D.6-3">The remote PEs in Domain3 consume the BGP updates from Domain1
-        following regular procedures for SAFI 128. When resolving the BGP
-        nexthop CPNH1, they will push the context label that lands the traffic
+        following regular procedures for SAFI 128. When resolving the BGP next
+        hop CPNH1, they will push the context label that lands the traffic
         into the correct forwarding context in one of the border nodes.<a href="#appendix-D.6-3" class="pilcrow">¶</a></p>
 </section>
 <section id="appendix-D.7">
@@ -4837,11 +4826,11 @@ Registry Name: BGP Transitive Extended Community Types
 <a href="#appendix-E.1" class="section-number selfRef">E.1. </a><a href="#name-sid-stacking-approach-2" class="section-name selfRef">SID stacking approach</a>
         </h3>
 <p id="appendix-E.1-1">This approach uses stacking of service SRv6 SID over transport SRv6
-        SID. Transport layer SIDs of types End, End.B6.Encaps defined in <span>[<a href="#RFC8986" class="cite xref">RFC8986</a>]</span>, and type END.REPLACE* defined in <span>[<a href="#SRV6-INTER-DOMAIN" class="cite xref">SRV6-INTER-DOMAIN</a>]</span> are carried in SAFI 76. Service SID is
+        SID. Transport layer SIDs of types End, End.B6.Encaps defined in <span>[<a href="#RFC8986" class="xref">RFC8986</a>]</span>, and type END.REPLACE* defined in <span>[<a href="#SRV6-INTER-DOMAIN" class="xref">SRV6-INTER-DOMAIN</a>]</span> are carried in SAFI 76. Service SID is
         carried in a service family like SAFI 1 or SAFI 128.<a href="#appendix-E.1-1" class="pilcrow">¶</a></p>
 <p id="appendix-E.1-2">In this approach, the number of Service SIDs required at the egress
-        SN is equal to service functions (e.g. Prefix, VRF or Nexthop) and the
-        number of Transport SIDs are equal to the number of transport
+        SN is equal to service functions (e.g. Prefix, VRF or Next hop) and
+        the number of Transport SIDs are equal to the number of transport
         classes.<a href="#appendix-E.1-2" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="appendix-E.1-3">
 <pre>
@@ -4853,7 +4842,7 @@ Registry Name: BGP Transitive Extended Community Types
 
            -------Forwarding Direction-----&gt;
 
-  Fig 18: Reference Topology, BGP CT in SRv6 Only Data plane
+  Figure 18: Reference Topology, BGP CT in SRv6 Only Data plane
 </pre><a href="#appendix-E.1-3" class="pilcrow">¶</a>
 </div>
 <p id="appendix-E.1-4">In the above topology, there are two AS domains, AS1 and AS2. These
@@ -4931,7 +4920,7 @@ Registry Name: BGP Transitive Extended Community Types
 <p id="appendix-E.1-11">Architecturally, the forwarding semantic of End.REPLACE SID
         operation is similar to Label SWAP operation in MPLS data plane. When
         a route received with End SID (e.g. PE2-SRv6-gold or PE2-SRv6-bronze
-        transport SIDs) is readvertised with nexthop self, a IPv6 forwarding
+        transport SIDs) is readvertised with next hop self, a IPv6 forwarding
         entry is emitted with a forwarding semantic of End.B6.Encaps
         operation, which means: Update IPv6 DA with Next Segment in SRH, and
         Encapsulate SRv6 SID corresponding to the correct transport class.
@@ -5002,16 +4991,16 @@ Registry Name: BGP Transitive Extended Community Types
 </pre><a href="#appendix-E.1-19" class="pilcrow">¶</a>
 </div>
 <p id="appendix-E.1-20">When ASBR2 receives the IBGP CT advertisement for gold route from
-        PE2, it performs import processing and nexthop resolution for the
+        PE2, it performs import processing and next hop resolution for the
         endpoint PE2-LPBK in the gold TRDB based on its
         transport-target:0:100. This would resolve over the ISIS-SRv6 route in
         gold TRDB and pick "Gold-SRv6-Tunnel-to-PE2" tunnel.<a href="#appendix-E.1-20" class="pilcrow">¶</a></p>
 <p id="appendix-E.1-21">On successful resolution, a IPv6 transit route for
         ASBR2-SRv6-PE2-gold-replace/128 is installed in the global IPv6 FIB
-        with "Gold-SRv6-Tunnel-to-PE2" tunnel as nexthop, enabling SRv6
+        with "Gold-SRv6-Tunnel-to-PE2" tunnel as next hop, enabling SRv6
         forwarding for gold SLA. The BGP CT routes for RD1:PE2-LPBK is further
         advertised towards ASBR1 via EBGP CT as shown below. During this
-        readvertisement, the nexthop is set to self, and SID is rewritten to
+        readvertisement, the next hop is set to self, and SID is rewritten to
         ASBR2-SRv6-gold-Replace.<a href="#appendix-E.1-21" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="appendix-E.1-22">
 <pre>
@@ -5039,10 +5028,10 @@ Registry Name: BGP Transitive Extended Community Types
 </pre><a href="#appendix-E.1-22" class="pilcrow">¶</a>
 </div>
 <p id="appendix-E.1-23">When ASBR1 receives this EBGP CT advertisement from ASBR2, an IPv6
-        route for ASBR1-SRv6-gold-Replace/128 is installed with a nexthop of
+        route for ASBR1-SRv6-gold-Replace/128 is installed with a next hop of
         ASBR1_InterAS_Link in the global IPv6 FIB, enabling SRv6 forwarding
         for gold SLA. The BGP CT route for RD1:PE2-LPBK is further advertised
-        to PE1 via IBGP CT, with nexthop set to self, and SID rewritten to
+        to PE1 via IBGP CT, with next hop set to self, and SID rewritten to
         ASBR1-SRv6-gold-Replace.<a href="#appendix-E.1-23" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="appendix-E.1-24">
 <pre>
@@ -5070,12 +5059,12 @@ Registry Name: BGP Transitive Extended Community Types
 </pre><a href="#appendix-E.1-24" class="pilcrow">¶</a>
 </div>
 <p id="appendix-E.1-25">When PE1 receives this IBGP CT advertisement from ASBR1, it
-        resolves the nexthop ASBR1-LPBK in the gold TRDB based on its
+        resolves the next hop ASBR1-LPBK in the gold TRDB based on its
         transport-target:0:100. This would resolve over the ISIS-SRv6 route in
         gold TRDB and pick "Gold-SRv6-Tunnel-to-ASBR1".<a href="#appendix-E.1-25" class="pilcrow">¶</a></p>
 <p id="appendix-E.1-26">This forms the end-to-end Gold SLA path from PE1 to PE2. The gold
         BGP CT route for PE2-LPBK is installed in gold TRDB, and can be used
-        for resolving service route nexthops. The Transport layer SIDs are
+        for resolving service route next hops. The Transport layer SIDs are
         replaced at each border node, which reduces the number of SID decaps
         required at the egress PE.<a href="#appendix-E.1-26" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="appendix-E.1-27">
@@ -5109,14 +5098,14 @@ Registry Name: BGP Transitive Extended Community Types
         NH: Encap "Bronze-SRv6-Tunnel-to-ASBR1"
 </pre><a href="#appendix-E.1-27" class="pilcrow">¶</a>
 </div>
-<p id="appendix-E.1-28">Furthermore, any service routes received with nexthop as PE2-LPBK
+<p id="appendix-E.1-28">Furthermore, any service routes received with next hop as PE2-LPBK
         and Mapping Community as Color:0:100 indicating Gold SLA will use the
         Resolution Scheme associated with its Mapping Community to resolve
         over the PE2-LPBK CT route installed in the gold TRDB, and push the
         SRv6-gold SID stack to reach PE2.<a href="#appendix-E.1-28" class="pilcrow">¶</a></p>
-<p id="appendix-E.1-29">Similarly, any service routes received with nexthop as PE2-LPBK and
-        Mapping Community as Color:0:200 indicating Bronze SLA will use the
-        Resolution Scheme associated with its Mapping Community to resolve
+<p id="appendix-E.1-29">Similarly, any service routes received with next hop as PE2-LPBK
+        and Mapping Community as Color:0:200 indicating Bronze SLA will use
+        the Resolution Scheme associated with its Mapping Community to resolve
         over the PE2-LPBK CT route installed in the bronze TRDB, and push the
         SRv6-bronze SID stack to reach PE2. This is shown below.<a href="#appendix-E.1-29" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="appendix-E.1-30">
@@ -5151,16 +5140,16 @@ Registry Name: BGP Transitive Extended Community Types
         <h3 id="name-color-encoded-service-sid-cp">
 <a href="#appendix-E.2" class="section-number selfRef">E.2. </a><a href="#name-color-encoded-service-sid-cp" class="section-name selfRef">Color-encoded Service SID (CPR) Approach</a>
         </h3>
-<p id="appendix-E.2-1">CPR is defined in the document: <span><a href="#Colorful-Prefix-Routing-SRv6" class="internal xref">Colorful Prefix Routing for SRv6
-        based services</a> [<a href="#Colorful-Prefix-Routing-SRv6" class="cite xref">Colorful-Prefix-Routing-SRv6</a>]</span>, and uses IPv6 Unicast (AFI/SAFI = 2/1) as a
+<p id="appendix-E.2-1">CPR is defined in the document: <span><a href="#Colorful-Prefix-Routing-SRv6" class="xref">Colorful Prefix Routing for SRv6
+        based services</a> [<a href="#Colorful-Prefix-Routing-SRv6" class="xref">Colorful-Prefix-Routing-SRv6</a>]</span>, and uses IPv6 Unicast (AFI/SAFI = 2/1) as a
         transport family. CPR mechanism does not use BGP CT (SAFI 76) address
         family.<a href="#appendix-E.2-1" class="pilcrow">¶</a></p>
 <p id="appendix-E.2-2">CPR uses color encoded SRv6 service SIDs to determine the
         intent-aware transport paths for the service, without a separate
         transport SRv6 SID. It routes using "Colorful Prefix" locators in the
         transport layer, which are carried in the IPv6 Unicast BGP family.<a href="#appendix-E.2-2" class="pilcrow">¶</a></p>
-<p id="appendix-E.2-3">A Nexthop Resolution Scheme similar to that of BGP CT <a href="#Nexthop_Resoln_Schm" class="auto internal xref">Section 5</a> is used on IPv6 Unicast family to
-        resolve “Colorful Prefix” locator routes that carry a
+<p id="appendix-E.2-3">A Next hop Resolution Scheme similar to that of BGP CT <a href="#Nexthop_Resoln_Schm" class="xref">Section 5</a> is used on IPv6 Unicast family to
+        resolve "Colorful Prefix" locator routes that carry a
         mapping community to intent-aware paths in each domain.<a href="#appendix-E.2-3" class="pilcrow">¶</a></p>
 <p id="appendix-E.2-4">By virtue of the CPR SID allocation scheme, the service SIDs
         inherit the Intent of the corresponding Colorful Prefix route just by
