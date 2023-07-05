@@ -506,11 +506,10 @@ Vairavakkalai & VenkataraExpires 6 January 2024                 [Page 9]
 Internet-Draft        BGP Classful Transport Planes            July 2023
 
 
-      Advertise tunnel underlay routes present in a Transport Route
-      Database in BGP without any path hiding using BGP VPN and Add-path
-      procedures, such that service overlay routes in the receiving
-      domains can also resolve over tunnels of the associated Transport
-      Class.
+      Advertise tunnel underlay routes present in a TRDB using BGP
+      without any path hiding using BGP VPN and Add-path procedures,
+      such that service overlay routes in the receiving domains can also
+      resolve over tunnels of the associated Transport Class.
 
       Provide a way for cooperating domains to reconcile any differences
       in extended community namespaces and interoperate between
@@ -546,6 +545,7 @@ Internet-Draft        BGP Classful Transport Planes            July 2023
    Class RT indicates the Transport Class.  For BGP LU family (SAFI 4)
    routes, import processing based on Communities or Inter-AS source-
    peer may be used to place the route in the desired Transport Class.
+
 
 
 
