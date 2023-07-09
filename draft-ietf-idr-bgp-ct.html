@@ -2924,6 +2924,10 @@ Resolution Schemes: [@ PE12 &amp; PE21]
       <h2 id="name-illustration-of-bgp-ct-proce">
 <a href="#section-12" class="section-number selfRef">12. </a><a href="#name-illustration-of-bgp-ct-proce" class="section-name selfRef">Illustration of BGP CT Procedures in Inter AS Option C</a>
       </h2>
+<p id="section-12-1">All Illustrations in this document make use of <span>[<a href="#RFC6890" class="xref">RFC6890</a>]</span> IP address ranges. The range 192.0.2.0/24 is used to
+      represent transport endpoints like loopback addresses. The range
+      203.0.113.0/24 is used to represent srevice route prefixes advertised in
+      AFI/SAFIs: 1/1 or 1/128.<a href="#section-12-1" class="pilcrow">¶</a></p>
 <section id="section-12.1">
         <h3 id="name-reference-topology-2">
 <a href="#section-12.1" class="section-number selfRef">12.1. </a><a href="#name-reference-topology-2" class="section-name selfRef">Reference Topology</a>
@@ -2949,7 +2953,7 @@ Resolution Schemes: [@ PE12 &amp; PE21]
     CE |     region-1   |   region-2       |                    |CE
    AS4              ...AS2...                       AS1          AS3
 
-172.41.41.41  ------------ Traffic Direction ----------&gt;   172.31.31.31
+203.0.113.41  ------------ Traffic Direction ----------&gt;  203.0.113.31
 
 </pre>
 </div>
@@ -3021,21 +3025,21 @@ Resolution Schemes: [@ PE12 &amp; PE21]
 <p id="section-12.2-3">Forwarding happens using service routes installed at service nodes
         PE25, PE11, PE12 only. Service routes received from CEs are not
         present in any other nodes' FIB in the network.<a href="#section-12.2-3" class="pilcrow">¶</a></p>
-<p id="section-12.2-4">As an example, CE31 advertises a route for prefix 172.16.31.31 with
+<p id="section-12.2-4">As an example, CE31 advertises a route for prefix 203.0.113.31 with
         next hop as self to PE11, PE12. CE31 can attach a Mapping Community
         Color:0:100 on this route, to indicate its request for Gold SLA. Or,
         PE11 can attach the same using locally configured policies.<a href="#section-12.2-4" class="pilcrow">¶</a></p>
 <p id="section-12.2-5">Consider, CE31 is getting VPN service from PE11. The
-        RD1:172.16.31.31 route is readvertised in AFI/SAFI 1/128 by PE11 with
-        next hop self (10.1.1.1) and label V-L1, to RR16 with the Mapping
+        RD1:203.0.113.31 route is readvertised in AFI/SAFI 1/128 by PE11 with
+        next hop self (192.0.2.11) and label V-L1, to RR16 with the Mapping
         Community Color:0:100 attached. RR16 advertises this route with
         Addpath-ID to RR26 which readvertises to PE25 with next hop unchanged.
-        Now, PE25 can resolve the PNH 10.1.1.1 using transport routes received
-        in BGP CT or BGP LU.<a href="#section-12.2-5" class="pilcrow">¶</a></p>
+        Now, PE25 can resolve the PNH 192.0.2.11 using transport routes
+        received in BGP CT or BGP LU.<a href="#section-12.2-5" class="pilcrow">¶</a></p>
 <p id="section-12.2-6">Using Addpath, service routes advertised by PE11 and PE12 for AFI:1
         SAFIs 1, 128 reach PE25 via RR16, RR26 with the next hop unchanged, as
         PE11 or PE12.<a href="#section-12.2-6" class="pilcrow">¶</a></p>
-<p id="section-12.2-7">The IP FIB at PE25 VRF will have a route for 172.16.31.31 with a
+<p id="section-12.2-7">The IP FIB at PE25 VRF will have a route for 203.0.113.31 with a
         next hop when resolved, that points to a Gold tunnel in ingress
         domain.<a href="#section-12.2-7" class="pilcrow">¶</a></p>
 </section>
@@ -3050,15 +3054,15 @@ Resolution Schemes: [@ PE12 &amp; PE21]
         classes Gold and Bronze. The protocol procedures are explained using
         Gold SLA transport plane and the Bronze SLA transport plane is used to
         highlight the path hiding aspects.<a href="#section-12.3-1" class="pilcrow">¶</a></p>
-<p id="section-12.3-2">PE11 is provisioned with transport class 100, RD value 10.1.1.1:100
-        and a transport-target:0:100 for Gold tunnels. And a Transport class
-        200 with RD value 10.1.1.1:200, and transport route target 0:200 for
-        Bronze tunnels. Similarly, PE12 is provisioned with transport class
-        100, RD value 10.1.1.2:100 and a transport-target:0:100 for Gold
-        tunnels. And transport class 200, RD value 10.1.1.2:200 with
-        transport-target:0:200 for Bronze tunnels. Note that in this example,
-        the BGP CT routes carry only the transport class route target, and no
-        IP address format route target.<a href="#section-12.3-2" class="pilcrow">¶</a></p>
+<p id="section-12.3-2">PE11 is provisioned with transport class 100, RD value
+        192.0.2.11:100 and a transport-target:0:100 for Gold tunnels. And a
+        Transport class 200 with RD value 192.0.2.11:200, and transport route
+        target 0:200 for Bronze tunnels. Similarly, PE12 is provisioned with
+        transport class 100, RD value 192.0.2.12:100 and a
+        transport-target:0:100 for Gold tunnels. And transport class 200, RD
+        value 192.0.2.12:200 with transport-target:0:200 for Bronze tunnels.
+        Note that in this example, the BGP CT routes carry only the transport
+        class route target, and no IP address format route target.<a href="#section-12.3-2" class="pilcrow">¶</a></p>
 <p id="section-12.3-3">The RD value originated by an egress node is not modified by any
         BGP speakers when the route is readvertised to the ingress node. Thus,
         the RD can be used to identify the originator (unique RD provisioned)
@@ -3074,90 +3078,92 @@ Resolution Schemes: [@ PE12 &amp; PE21]
         carries gold, bronze transport class routes.<a href="#section-12.3-5" class="pilcrow">¶</a></p>
 <p id="section-12.3-6">PE11 is provisioned to originate BGP CT route with Gold SLA to
         endpoint PE11. This route is sent with NLRI RD prefix
-        10.1.1.1:100:10.1.1.1, Label B-L0, next hop 10.1.1.1 and a route
+        192.0.2.11:100:192.0.2.11, Label B-L0, next hop 192.0.2.11 and a route
         target extended community transport-target:0:100. Label B-L0 can
         either be Implicit Null (Label 3) or an Ultimate Hop Pop (UHP)
         label.<a href="#section-12.3-6" class="pilcrow">¶</a></p>
 <p id="section-12.3-7">This route is received by ASBR13 and it resolves over the tunnel
         ASBR13_to_PE11_gold. The route is then readvertised by ASBR13 in BGP
         CT family to ASBRs ASBR21, ASBR22 according to export policy. This
-        route is sent with same NLRI RD prefix 10.1.1.1:100:10.1.1.1, Label
-        B-L1, next hop self, and transport-target:0:100. MPLS swap route is
-        installed at ASBR13 for B-L1 with a next hop pointing to
+        route is sent with same NLRI RD prefix 192.0.2.11:100:192.0.2.11,
+        Label B-L1, next hop self, and transport-target:0:100. MPLS swap route
+        is installed at ASBR13 for B-L1 with a next hop pointing to
         ASBR13_to_PE11_gold tunnel.<a href="#section-12.3-7" class="pilcrow">¶</a></p>
 <p id="section-12.3-8">Similarly, ASBR14 also receives BGP CT route for
-        10.1.1.1:100:10.1.1.1 from PE11 and it resolves over the tunnel
+        192.0.2.11:100:192.0.2.11 from PE11 and it resolves over the tunnel
         ASBR14_to_PE11_gold. The route is then readvertised by ASBR14 in BGP
         CT family to ASBRs ASBR21, ASBR22 according to export policy. This
-        route is sent with same NLRI RD prefix 10.1.1.1:100:10.1.1.1, Label
-        B-L2, next hop self, and transport-target:0:100. MPLS swap route is
-        installed at ASBR14 for B-L1 with a next hop pointing to
+        route is sent with same NLRI RD prefix 192.0.2.11:100:192.0.2.11,
+        Label B-L2, next hop self, and transport-target:0:100. MPLS swap route
+        is installed at ASBR14 for B-L1 with a next hop pointing to
         ASBR14_to_PE11_gold tunnel.<a href="#section-12.3-8" class="pilcrow">¶</a></p>
 <p id="section-12.3-9">In the Bronze plane, BGP CT route with Bronze SLA to endpoint PE11
         is originated by PE11 with a NLRI containing RD prefix
-        10.1.1.1:200:10.1.1.1, and appropriate label. The RD allows both Gold
-        and Bronze advertisements traverse path selection pinchpoints without
-        any path hiding at RRs or ASBRs. And route target extended community
-        transport-target:0:200 lets the route resolve over Bronze tunnels in
-        the network, similar to the process being described for Gold SLA
-        path.<a href="#section-12.3-9" class="pilcrow">¶</a></p>
+        192.0.2.11:200:192.0.2.11, and appropriate label. The RD allows both
+        Gold and Bronze advertisements traverse path selection pinchpoints
+        without any path hiding at RRs or ASBRs. And route target extended
+        community transport-target:0:200 lets the route resolve over Bronze
+        tunnels in the network, similar to the process being described for
+        Gold SLA path.<a href="#section-12.3-9" class="pilcrow">¶</a></p>
 <p id="section-12.3-10">Moving back to the Gold plane, ASBR21 receives the Gold SLA BGP CT
-        routes for NLRI RD prefix 10.1.1.1:100:10.1.1.1 over the single hop
-        EBGP sessions from ASBR13, ASBR14, and can compute ECMP/FRR towards
-        them. ASBR21 readvertises BGP CT route for 10.1.1.1:100:10.1.1.1 with
-        next hop self (loopback address 10.2.2.1) to RR27, advertising a new
-        label B-L3. MPLS swap route is installed for label B-L3 at ASBR21 to
-        swap to received label B-L1, B-L2 and forward to ASBR13, ASBR14
-        respectively. RR27 readvertises this BGP CT route to ABR23, ABR24 with
-        label and next hop unchanged.<a href="#section-12.3-10" class="pilcrow">¶</a></p>
-<p id="section-12.3-11">Similarly, ASBR22 receives BGP CT route 10.1.1.1:100:10.1.1.1 over
-        the single hop EBGP sessions from ASBR13, ASBR14, and readvertises
-        with next hop self (loopback address 10.2.2.2) to RR27, advertising a
-        new label B-L4. MPLS swap route is installed for label B-L4 at ASBR22
-        to swap to received label B-L1, B-L2 and forward to ASBR13, ASBR14
-        respectively. RR27 readvertises this BGP CT route also to ABR23, ABR24
-        with label and next hop unchanged.<a href="#section-12.3-11" class="pilcrow">¶</a></p>
+        routes for NLRI RD prefix 192.0.2.11:100:192.0.2.11 over the single
+        hop EBGP sessions from ASBR13, ASBR14, and can compute ECMP/FRR
+        towards them. ASBR21 readvertises BGP CT route for
+        192.0.2.11:100:192.0.2.11 with next hop self (loopback address
+        192.0.2.21) to RR27, advertising a new label B-L3. MPLS swap route is
+        installed for label B-L3 at ASBR21 to swap to received label B-L1,
+        B-L2 and forward to ASBR13, ASBR14 respectively. RR27 readvertises
+        this BGP CT route to ABR23, ABR24 with label and next hop
+        unchanged.<a href="#section-12.3-10" class="pilcrow">¶</a></p>
+<p id="section-12.3-11">Similarly, ASBR22 receives BGP CT route 192.0.2.11:100:192.0.2.11
+        over the single hop EBGP sessions from ASBR13, ASBR14, and
+        readvertises with next hop self (loopback address 192.0.2.22) to RR27,
+        advertising a new label B-L4. MPLS swap route is installed for label
+        B-L4 at ASBR22 to swap to received label B-L1, B-L2 and forward to
+        ASBR13, ASBR14 respectively. RR27 readvertises this BGP CT route also
+        to ABR23, ABR24 with label and next hop unchanged.<a href="#section-12.3-11" class="pilcrow">¶</a></p>
 <p id="section-12.3-12">Addpath is enabled for BGP CT family on the sessions between RR27
-        and ASBRs, ABRs such that routes for 10.1.1.1:100:10.1.1.1 with the
-        next hops ASBR21 and ASBR22 are reflected to ABR23, ABR24 without any
-        path hiding. Thus giving ABR23 visibility of both available next hops
-        for Gold SLA.<a href="#section-12.3-12" class="pilcrow">¶</a></p>
-<p id="section-12.3-13">ABR23 receives the route with next hop 10.2.2.1, label B-L3 from
+        and ASBRs, ABRs such that routes for 192.0.2.11:100:192.0.2.11 with
+        the next hops ASBR21 and ASBR22 are reflected to ABR23, ABR24 without
+        any path hiding. Thus giving ABR23 visibility of both available next
+        hops for Gold SLA.<a href="#section-12.3-12" class="pilcrow">¶</a></p>
+<p id="section-12.3-13">ABR23 receives the route with next hop 192.0.2.21, label B-L3 from
         RR27. The route target "transport-target:0:100" on this route acts as
         Mapping Community, and instructs ABR23 to strictly resolve the next
         hop using transport class 100 routes only. ABR23 is unable to find a
-        route for 10.2.2.1 with transport class 100. Thus, it considers this
+        route for 192.0.2.21 with transport class 100. Thus, it considers this
         route unusable and does not propagate it further. This prunes ASBR21
         from Gold SLA tunneled path.<a href="#section-12.3-13" class="pilcrow">¶</a></p>
-<p id="section-12.3-14">ABR23 also receives the route with next hop 10.2.2.2, label B-L4
+<p id="section-12.3-14">ABR23 also receives the route with next hop 192.0.2.22, label B-L4
         from RR27. The route target "transport-target:0:100" on this route
         acts as Mapping Community, and instructs ABR23 to strictly resolve the
         next hop using transport class 100 routes only. ABR23 successfully
         resolves the next hop to point to ABR23_to_ASBR22_gold tunnel. ABR23
         readvertises this BGP CT route with next hop self (loopback address
-        10.2.2.3) and a new label B-L5 to PE25. Swap route for B-L5 is
+        192.0.2.23) and a new label B-L5 to PE25. Swap route for B-L5 is
         installed by ABR23 to swap to label B-L4, and forward into
         ABR23_to_ASBR22_gold tunnel.<a href="#section-12.3-14" class="pilcrow">¶</a></p>
-<p id="section-12.3-15">PE25 receives the BGP CT route for prefix 10.1.1.1:100:10.1.1.1
-        with label B-L5, next hop 10.2.2.3 and transport-target:0:100 from
-        RR26. And it similarly resolves the next hop 10.2.2.3 over transport
+<p id="section-12.3-15">PE25 receives the BGP CT route for prefix 192.0.2.11:100:192.0.2.11
+        with label B-L5, next hop 192.0.2.23 and transport-target:0:100 from
+        RR26. And it similarly resolves the next hop 192.0.2.23 over transport
         class 100, pushing labels associated with PE25_to_ABR23_gold
         tunnel.<a href="#section-12.3-15" class="pilcrow">¶</a></p>
 <p id="section-12.3-16">In this manner, the Gold transport LSP "ASBR13_to_PE11_gold" in
         egress-domain is extended by BGP CT until the ingress-node PE25 in
         ingress domain, to create an end-to-end Gold SLA path. MPLS swap
         routes are installed at ASBR13, ASBR22 and ABR23, when propagating the
-        PE11 BGP CT Gold transport class route 10.1.1.1:100:10.1.1.1 with next
-        hop self towards PE25.<a href="#section-12.3-16" class="pilcrow">¶</a></p>
+        PE11 BGP CT Gold transport class route 192.0.2.11:100:192.0.2.11 with
+        next hop self towards PE25.<a href="#section-12.3-16" class="pilcrow">¶</a></p>
 <p id="section-12.3-17">The BGP CT LSP thus formed, originates in PE25, and terminates in
         ASBR13 (assuming PE11 advertised Implicit Null), traversing over the
         Gold underlay LSPs in each domain. ASBR13 uses UHP to stitch the BGP
         CT LSP into the "ASBR13_to_PE11_gold" LSP to traverse the last domain,
         thus satisfying Gold SLA end-to-end.<a href="#section-12.3-17" class="pilcrow">¶</a></p>
-<p id="section-12.3-18">When PE25 receives service routes from RR26 with next hop 10.1.1.1
-        and mapping community Color:0:100, it resolves over this BGP CT route
-        10.1.1.1:100:10.1.1.1. Thus pushing label B-L5, and pushing as top
-        label the labels associated with PE25_to_ABR23_gold tunnel.<a href="#section-12.3-18" class="pilcrow">¶</a></p>
+<p id="section-12.3-18">When PE25 receives service routes from RR26 with next hop
+        192.0.2.11 and mapping community Color:0:100, it resolves over this
+        BGP CT route 192.0.2.11:100:192.0.2.11. Thus pushing label B-L5, and
+        pushing as top label the labels associated with PE25_to_ABR23_gold
+        tunnel.<a href="#section-12.3-18" class="pilcrow">¶</a></p>
 </section>
 <section id="section-12.4">
         <h3 id="name-data-plane-view-2">
@@ -3169,7 +3175,7 @@ Resolution Schemes: [@ PE12 &amp; PE21]
           </h4>
 <p id="section-12.4.1-1">This section describes how the data plane looks like in steady
           state.<a href="#section-12.4.1-1" class="pilcrow">¶</a></p>
-<p id="section-12.4.1-2">CE41 transmits an IP packet with destination as 172.16.31.31. On
+<p id="section-12.4.1-2">CE41 transmits an IP packet with destination as 203.0.113.31. On
           receiving this packet, PE25 performs a lookup in the IP FIB
           associated with the CE41 interface. This lookup yields the service
           route that pushes the VPN service label V-L1, BGP CT label B-L5, and
@@ -3208,7 +3214,7 @@ Resolution Schemes: [@ PE12 &amp; PE21]
           alternate path exists.<a href="#section-12.4.2-1" class="pilcrow">¶</a></p>
 <p id="section-12.4.2-2">Assuming ASBR22_to_ASBR13 link goes down, such that traffic with
           Gold SLA going to PE11 needs repair. ASBR22 has an alternate BGP CT
-          route for 10.1.1.1:100:10.1.1.1 from ASBR14. This has been
+          route for 192.0.2.11:100:192.0.2.11 from ASBR14. This has been
           preprogrammed in forwarding by ASBR22 as FRR backup next hop for
           label B-L4. This allows the Gold SLA traffic to be locally repaired
           at ASBR22 without the failure event propagated in the BGP CT
@@ -3224,13 +3230,13 @@ Resolution Schemes: [@ PE12 &amp; PE21]
           experiences a failure, but no alternate path exists.<a href="#section-12.4.3-1" class="pilcrow">¶</a></p>
 <p id="section-12.4.3-2">Assuming tunnel ABR23_to_ASBR22_gold goes down, such that now
           end-to-end Gold path does not exist in the network. This makes the
-          BGP CT route for RD prefix 10.1.1.1:100:10.1.1.1 unusable at ABR23.
-          This makes ABR23 send a BGP withdrawal for 10.1.1.1:100:10.1.1.1 to
-          PE25.<a href="#section-12.4.3-2" class="pilcrow">¶</a></p>
-<p id="section-12.4.3-3">Withdrawal for 10.1.1.1:100:10.1.1.1 allows PE25 to react to the
-          loss of gold path to 10.1.1.1. Assuming PE25 is provisioned to use
-          best-effort transport class as the backup path, this withdrawal of
-          BGP CT route allows PE25 to adjust the next hop of the VPN
+          BGP CT route for RD prefix 192.0.2.11:100:192.0.2.11 unusable at
+          ABR23. This makes ABR23 send a BGP withdrawal for
+          192.0.2.11:100:192.0.2.11 to PE25.<a href="#section-12.4.3-2" class="pilcrow">¶</a></p>
+<p id="section-12.4.3-3">Withdrawal for 192.0.2.11:100:192.0.2.11 allows PE25 to react to
+          the loss of gold path to 192.0.2.11. Assuming PE25 is provisioned to
+          use best-effort transport class as the backup path, this withdrawal
+          of BGP CT route allows PE25 to adjust the next hop of the VPN
           Service-route to push the labels provided by the BGP LU route. That
           repairs the traffic to go via best effort path. PE25 can also be
           provisioned to use Bronze transport class as the backup path. The
@@ -4223,6 +4229,10 @@ Registry Name: BGP Transitive Extended Community Types
         <dd>
 <span class="refAuthor">Nichols, K.</span>, <span class="refAuthor">Blake, S.</span>, <span class="refAuthor">Baker, F.</span>, and <span class="refAuthor">D. Black</span>, <span class="refTitle">"Definition of the Differentiated Services Field (DS Field) in the IPv4 and IPv6 Headers"</span>, <span class="seriesInfo">RFC 2474</span>, <span class="seriesInfo">DOI 10.17487/RFC2474</span>, <time datetime="1998-12" class="refDate">December 1998</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc2474">https://www.rfc-editor.org/info/rfc2474</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="RFC6890">[RFC6890]</dt>
+        <dd>
+<span class="refAuthor">Cotton, M.</span>, <span class="refAuthor">Vegoda, L.</span>, <span class="refAuthor">Bonica, R., Ed.</span>, and <span class="refAuthor">B. Haberman</span>, <span class="refTitle">"Special-Purpose IP Address Registries"</span>, <span class="seriesInfo">BCP 153</span>, <span class="seriesInfo">RFC 6890</span>, <span class="seriesInfo">DOI 10.17487/RFC6890</span>, <time datetime="2013-04" class="refDate">April 2013</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc6890">https://www.rfc-editor.org/info/rfc6890</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC9315">[RFC9315]</dt>
         <dd>
 <span class="refAuthor">Clemm, A.</span>, <span class="refAuthor">Ciavaglia, L.</span>, <span class="refAuthor">Granville, L. Z.</span>, and <span class="refAuthor">J. Tantsura</span>, <span class="refTitle">"Intent-Based Networking - Concepts and Definitions"</span>, <span class="seriesInfo">RFC 9315</span>, <span class="seriesInfo">DOI 10.17487/RFC9315</span>, <time datetime="2022-10" class="refDate">October 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc9315">https://www.rfc-editor.org/info/rfc9315</a>&gt;</span>. </dd>
@@ -4270,7 +4280,7 @@ Registry Name: BGP Transitive Extended Community Types
                                     ---Gold-----&gt;
                       [CE1]-----[PE1]---[P]----[PE2]-----[CE2]
                                     ---Bronze---&gt;
-                172.16.11.11                             172.16.22.22
+                203.0.113.11                             203.0.113.22
                           ----  Traffic direction ----&gt;
 </pre>
 </div>
@@ -4431,7 +4441,7 @@ Registry Name: BGP Transitive Extended Community Types
                      |                             |
                AS2               ...AS1...               AS3
 
-             172.16.21.21 ---- Traffic Direction ----&gt; 172.16.31.31
+             203.0.113.21 ---- Traffic Direction ----&gt; 203.0.113.31
 </pre>
 </div>
 <figcaption><a href="#figure-15" class="selfRef">Figure 15</a>:
@@ -4483,18 +4493,18 @@ Registry Name: BGP Transitive Extended Community Types
 <p id="appendix-B.1.3-2">Forwarding happens using service routes at service nodes PE11,
           PE12. Routes received from CEs are not present in any other nodes'
           FIB in the provider network.<a href="#appendix-B.1.3-2" class="pilcrow">¶</a></p>
-<p id="appendix-B.1.3-3">CE31 advertises a route for example prefix 172.16.31.31 with next
+<p id="appendix-B.1.3-3">CE31 advertises a route for example prefix 203.0.113.31 with next
           hop self to PE12. CE31 can attach a Mapping Community Color:0:100 on
           this route, to indicate its request for Gold SLA. Or, PE11 can
           attach the same using locally configured policies.<a href="#appendix-B.1.3-3" class="pilcrow">¶</a></p>
 <p id="appendix-B.1.3-4">Consider, CE31 is getting VPN service from PE12. The
-          RD:172.16.31.31 route is readvertised in AFI/SAFI 1/128 by PE12 with
-          next hop self (10.12.12.12) and label V-L1, to RR11 with the Mapping
+          RD:203.0.113.31 route is readvertised in AFI/SAFI 1/128 by PE12 with
+          next hop self (192.0.2.12) and label V-L1, to RR11 with the Mapping
           Community Color:0:100 attached. This AFI/SAFI 1/128 route reaches
           PE11 via RR11 with the next hop unchanged as PE12 and label V-L1.
-          Now PE11 can resolve the PNH 10.12.12.12 using PE11_to_PE12_gold
-          RSVP TE LSP.<a href="#appendix-B.1.3-4" class="pilcrow">¶</a></p>
-<p id="appendix-B.1.3-5">The IP FIB at PE11 VRF will have a route for 172.16.31.31 with a
+          Now PE11 can resolve the PNH 192.0.2.12 using PE11_to_PE12_gold RSVP
+          TE LSP.<a href="#appendix-B.1.3-4" class="pilcrow">¶</a></p>
+<p id="appendix-B.1.3-5">The IP FIB at PE11 VRF will have a route for 203.0.113.31 with a
           next hop when resolved using Resolution Scheme belonging to the
           mapping community Color:0:100, points to a PE11_to_PE12_gold
           tunnel.<a href="#appendix-B.1.3-5" class="pilcrow">¶</a></p>
@@ -4524,7 +4534,7 @@ Registry Name: BGP Transitive Extended Community Types
         |                           |                           |
   AS3               ..AS1..               ..AS2..                  AS4
 
-172.16.31.31          ---- Traffic Direction ----&gt;           172.16.41.41
+203.0.113.31          ---- Traffic Direction ----&gt;           203.0.113.41
 </pre>
 </div>
 <figcaption><a href="#figure-16" class="selfRef">Figure 16</a>:
@@ -4589,18 +4599,18 @@ Registry Name: BGP Transitive Extended Community Types
 <p id="appendix-B.2.3-2">Similarly, in AS2 PE21, ASBR21 negotiate service family (AFI/SAFI
           1/128) on the BGP session with RR21, which reflects service routes
           between the PE21 and ASBR21 with next hop unchanged.<a href="#appendix-B.2.3-2" class="pilcrow">¶</a></p>
-<p id="appendix-B.2.3-3">CE41 advertises a route for example prefix 172.16.41.41 with next
+<p id="appendix-B.2.3-3">CE41 advertises a route for example prefix 203.0.113.41 with next
           hop self to PE21 VRF. CE41 can attach a Mapping Community
           Color:0:100 on this route, to indicate its request for Gold SLA. Or,
           PE21 can attach the same using locally configured policies.<a href="#appendix-B.2.3-3" class="pilcrow">¶</a></p>
 <p id="appendix-B.2.3-4">Consider, CE41 is getting VPN service from PE21. The
-          RD:172.16.41.41 route is readvertised in AFI/SAFI 1/128 by PE21 with
-          next hop self (172.16.21.21) and label V-L1, to RR21 with the
+          RD:203.0.113.41 route is readvertised in AFI/SAFI 1/128 by PE21 with
+          next hop self (203.0.113.21) and label V-L1, to RR21 with the
           Mapping Community Color:0:100 attached. This AFI/SAFI 1/128 route
           reaches ASBR21 via RR21 with the next hop unchanged as PE21 and
-          label V-L1. Now ASBR21 can resolve the PNH 172.16.21.21 using
+          label V-L1. Now ASBR21 can resolve the PNH 203.0.113.21 using
           ASBR21_to_PE21_gold SRTE LSP.<a href="#appendix-B.2.3-4" class="pilcrow">¶</a></p>
-<p id="appendix-B.2.3-5">The IP FIB at ASBR21 VRF will have a route for 172.16.41.41 with
+<p id="appendix-B.2.3-5">The IP FIB at ASBR21 VRF will have a route for 203.0.113.41 with
           a next hop resolved using Resolution Scheme associated with mapping
           community Color:0:100, pointing to ASBR21_to_PE21_gold tunnel.<a href="#appendix-B.2.3-5" class="pilcrow">¶</a></p>
 <p id="appendix-B.2.3-6">This route is readvertised by ASBR21 on BGP session inside VRF
@@ -4637,7 +4647,7 @@ Registry Name: BGP Transitive Extended Community Types
         |                           |                           |
   AS3               ..AS1..               ..AS2..                  AS4
 
-172.16.31.31          ---- Traffic Direction ----&gt;           172.16.41.41
+203.0.113.31          ---- Traffic Direction ----&gt;           203.0.113.41
 </pre>
 </div>
 <figcaption><a href="#figure-17" class="selfRef">Figure 17</a>:
@@ -4704,24 +4714,24 @@ Registry Name: BGP Transitive Extended Community Types
 <p id="appendix-B.3.3-3">ASBR21 and ASBR12 negotiate AFI/SAFI 1/128 between them, and
           readvertise L3VPN routes with next hop self, allocating new labels.
           EBGP session peering on interface address.<a href="#appendix-B.3.3-3" class="pilcrow">¶</a></p>
-<p id="appendix-B.3.3-4">CE41 advertises a route for example prefix 172.16.41.41 with next
+<p id="appendix-B.3.3-4">CE41 advertises a route for example prefix 203.0.113.41 with next
           hop self to PE22 VRF. CE41 can attach a Mapping Community
           Color:0:100 on this route, to indicate its request for Gold SLA. Or,
           PE22 can attach the same using locally configured policies.<a href="#appendix-B.3.3-4" class="pilcrow">¶</a></p>
 <p id="appendix-B.3.3-5">Consider, CE41 is getting VPN service from PE22. The
-          RD:172.16.41.41 route is readvertised in AFI/SAFI 1/128 by PE22 with
-          next hop self (10.22.22.22) and label V-L1, to RR23 with the Mapping
+          RD:203.0.113.41 route is readvertised in AFI/SAFI 1/128 by PE22 with
+          next hop self (192.0.2.22) and label V-L1, to RR23 with the Mapping
           Community Color:0:100 attached. This AFI/SAFI 1/128 route reaches
           ASBR21 via RR23 with the next hop unchanged as PE22 and label V-L1.
-          Now ASBR21 can resolve the PNH 10.22.22.22 using ASBR21_to_PE22_gold
+          Now ASBR21 can resolve the PNH 192.0.2.22 using ASBR21_to_PE22_gold
           SRTE LSP.<a href="#appendix-B.3.3-5" class="pilcrow">¶</a></p>
-<p id="appendix-B.3.3-6">Next, ASBR21 readvertises the RD:172.16.41.41 route with next hop
+<p id="appendix-B.3.3-6">Next, ASBR21 readvertises the RD:203.0.113.41 route with next hop
           self to ASBR12, with a newly allocated MPLS label, V-L2. Forwarding
           for this label is installed to Swap V-L1, and Push labels for
           ASBR21_to_PE22_gold tunnel.<a href="#appendix-B.3.3-6" class="pilcrow">¶</a></p>
-<p id="appendix-B.3.3-7">ASBR12 further readvertises the RD:172.16.41.41 route via RR13 to
-          PE11 with next hop self 10.12.12.12. PE1 resolves the next hop
-          10.12.12.12 over PE11_to_ASBR11_gold RSVP TE tunnel.<a href="#appendix-B.3.3-7" class="pilcrow">¶</a></p>
+<p id="appendix-B.3.3-7">ASBR12 further readvertises the RD:203.0.113.41 route via RR13 to
+          PE11 with next hop self 192.0.2.12. PE11 resolves the next hop
+          192.0.2.12 over PE11_to_ASBR12_gold RSVP TE tunnel.<a href="#appendix-B.3.3-7" class="pilcrow">¶</a></p>
 <p id="appendix-B.3.3-8">Traffic traverses as IP packet on the following legs: CE31-PE11,
           PE21-CE41. And uses MPLS forwarding on ASBR11-ASBR21 link, and
           inside AS1, AS2 core.<a href="#appendix-B.3.3-8" class="pilcrow">¶</a></p>
