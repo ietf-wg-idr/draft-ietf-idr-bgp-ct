@@ -230,7 +230,7 @@
         <t>Intent: A set of operational goals (that a network should meet) and
         outcomes (that a network is supposed to deliver) defined in a
         declarative manner without specifying how to achieve or implement
-        them.</t>
+        them, as defined in Section 2 of <xref target="RFC9315"/>.</t>
 
         <t>Service Family : BGP address family used for advertising routes for
         "data traffic" as opposed to tunnels (e.g. AFI/SAFIs 1/1 or
@@ -285,14 +285,15 @@
 
       <figure anchor="ArchOv" suppress-title="false"
               title="BGP CT Architecture">
-        <artwork align="left" xml:space="preserve">      Resolution Schemes: [@ PE12 &amp; PE21]                              
+        <artwork align="left" xml:space="preserve">
+      Resolution Schemes: [@ PE12 &amp; PE21]                              
       ^^^^^^^^^^^^^^^^^^^                                              
- &lt;color:0:100,(TRDB[TC-100],TRDB[TC-BE]&gt;,                              
- &lt;color:0:200,(TRDB[TC-200],TRDB[TC-BE]&gt;,                              
-  &lt;100:200,(TRDB[TC-100],TRDB[TC-200])&gt;                                
-            ^^^^              ^^^^^^                                   
-       Transport Route    Transport Class                              
-          Database                                                     
+ &lt;color:0:100,(TRDB[TC-100],TRDB[TC-BE])&gt;,  /* Scheme1 */              
+ &lt;color:0:200,(TRDB[TC-200],TRDB[TC-BE])&gt;,  /* Scheme2 */              
+   &lt;100:200,(TRDB[TC-100],TRDB[TC-200])&gt;    /* Scheme3 */              
+             ^^^^              ^^^^^^                                  
+       Transport Route DB      Transport Class                         
+                                                                       
                          [RR21]--------------&lt;&lt;---[RR11]               
                          /                          / |IP1,color:0:100 
        [PE21] &lt;&lt;--------+       | [PE12] &lt;&lt;--------+  |IP2,color:0:200 
@@ -315,9 +316,10 @@
          Route Target Extended Community             Transport Class ID
                                                                        
                                                                        
-     { PE12-IPFIB: PE21-IPFIB: BN21-MPLSFIB: BN11-MPLSFIB: }           
-     | IP1-&gt;PUSH   IP1-&gt;PUSH   L3-&gt;SWAP(L1), L1-&gt;POP,      | Forwarding
-     { (RSVP100)   (L3,SR100)  AS1-Link      PUSH(RSVP100) }           </artwork>
+     { PE21-IPFIB: BN21-MPLSFIB: BN11-MPLSFIB: PE12-IPFIB: }           
+     | IP1-&gt;PUSH   L3-&gt;SWAP(L1), L1-&gt;POP,      IP1-&gt;PUSH   | Forwarding
+     { (L3,SR100)  AS1-Link      PUSH(RSVP100) (RSVP100)   }           
+</artwork>
       </figure>
 
       <t>To achieve end-to-end "Intent Driven Service Mapping", this document

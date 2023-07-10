@@ -383,7 +383,7 @@ Internet-Draft        BGP Classful Transport Planes            July 2023
    Intent: A set of operational goals (that a network should meet) and
    outcomes (that a network is supposed to deliver) defined in a
    declarative manner without specifying how to achieve or implement
-   them.
+   them, as defined in Section 2 of [RFC9315].
 
 
 
@@ -452,12 +452,12 @@ Internet-Draft        BGP Classful Transport Planes            July 2023
 
        Resolution Schemes: [@ PE12 & PE21]
        ^^^^^^^^^^^^^^^^^^^
-  <color:0:100,(TRDB[TC-100],TRDB[TC-BE]>,
-  <color:0:200,(TRDB[TC-200],TRDB[TC-BE]>,
-   <100:200,(TRDB[TC-100],TRDB[TC-200])>
-             ^^^^              ^^^^^^
-        Transport Route    Transport Class
-           Database
+  <color:0:100,(TRDB[TC-100],TRDB[TC-BE])>,  /* Scheme1 */
+  <color:0:200,(TRDB[TC-200],TRDB[TC-BE])>,  /* Scheme2 */
+    <100:200,(TRDB[TC-100],TRDB[TC-200])>    /* Scheme3 */
+              ^^^^              ^^^^^^
+        Transport Route DB      Transport Class
+
                           [RR21]--------------<<---[RR11]
                           /                          / |IP1,color:0:100
         [PE21] <<--------+       | [PE12] <<--------+  |IP2,color:0:200
@@ -480,9 +480,9 @@ Internet-Draft        BGP Classful Transport Planes            July 2023
           Route Target Extended Community             Transport Class ID
 
 
-      { PE12-IPFIB: PE21-IPFIB: BN21-MPLSFIB: BN11-MPLSFIB: }
-      | IP1->PUSH   IP1->PUSH   L3->SWAP(L1), L1->POP,      | Forwarding
-      { (RSVP100)   (L3,SR100)  AS1-Link      PUSH(RSVP100) }
+      { PE21-IPFIB: BN21-MPLSFIB: BN11-MPLSFIB: PE12-IPFIB: }
+      | IP1->PUSH   L3->SWAP(L1), L1->POP,      IP1->PUSH   | Forwarding
+      { (L3,SR100)  AS1-Link      PUSH(RSVP100) (RSVP100)   }
 
                      Figure 1: BGP CT Architecture
 
