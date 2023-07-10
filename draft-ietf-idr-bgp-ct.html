@@ -1841,12 +1841,12 @@ li > p:last-of-type:only-child {
 
 Resolution Schemes: [@ PE12 &amp; PE21]
 ^^^^^^^^^^^^^^^^^^^
-[color:0:100,TRDB(TC-100,TC-BE)],
-[color:0:200,TRDB(TC-200,TC-BE)],
- [100:200,TRDB(TC-100,TC-200)]
-               ^^^^^^ ^^^^^^
-               Transport Classes
-
+[color:0:100,(TRDB[TC-100],TRDB[TC-BE]),
+[color:0:200,(TRDB[TC-200],TRDB[TC-BE]),
+ [100:200,(TRDB[TC-100],TRDB[TC-200])
+           ^^^^              ^^^^^^^
+     Transport Route     Transport Class
+         Database
                          [RR21]--------------&lt;&lt;---[RR11]
                          /                          / |IP1,color:0:100
        [PE21] &lt;&lt;--------+       | [PE12] &lt;&lt;--------+  |IP2,color:0:200
@@ -1867,6 +1867,7 @@ Resolution Schemes: [@ PE12 &amp; PE21]
      {   transport-target:0:200 |   transport-target:0:200 }
          ^^^^^^^^^^^^^^^^^^^^^^                        ^^^
          Route Target Extended Community             Transport Class ID
+
 </pre>
 </div>
 <figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
@@ -2031,11 +2032,10 @@ Resolution Schemes: [@ PE12 &amp; PE21]
         Table" referred in <a href="https://www.rfc-editor.org/rfc/rfc4271#section-9.1.2.1">Section
         9.1.2.1 of RFC4271</a> which is "only" used for resolving nexthop
         reachability in control plane with no footprint in forwarding plane.
-        In such implementations, the number of TRDBs are equal to the number
-        of Transport Classes configured in that node . However, an
-        implementation may choose a different methodology to realize this
-        logical construct while still adhering to the procedures defined in
-        this document.<a href="#section-4.2-3" class="pilcrow">¶</a></p>
+        In any implementation, the number of TRDBs are equal to the number of
+        Transport Classes configured on a node . However, an implementation
+        may choose a different methodology to realize this logical construct
+        while still adhering to the procedures defined in this document.<a href="#section-4.2-3" class="pilcrow">¶</a></p>
 <p id="section-4.2-4">SNs or BNs originate routes for 'Classful Transport' address family
         from the TRDB. These routes have NLRI "RD:Endpoint", Transport Class
         RT and an MPLS label (or an identifier that represents an equivalent

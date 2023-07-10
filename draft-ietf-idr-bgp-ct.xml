@@ -289,12 +289,12 @@
 
 Resolution Schemes: [@ PE12 &amp; PE21]                                    
 ^^^^^^^^^^^^^^^^^^^                                                    
-[color:0:100,TRDB(TC-100,TC-BE)],                                      
-[color:0:200,TRDB(TC-200,TC-BE)],                                      
- [100:200,TRDB(TC-100,TC-200)]                                         
-               ^^^^^^ ^^^^^^                                           
-               Transport Classes                                       
-                                                                       
+[color:0:100,(TRDB[TC-100],TRDB[TC-BE]),                               
+[color:0:200,(TRDB[TC-200],TRDB[TC-BE]),                               
+ [100:200,(TRDB[TC-100],TRDB[TC-200])                                  
+           ^^^^              ^^^^^^^                                   
+     Transport Route     Transport Class                               
+         Database                                                      
                          [RR21]--------------&lt;&lt;---[RR11]               
                          /                          / |IP1,color:0:100 
        [PE21] &lt;&lt;--------+       | [PE12] &lt;&lt;--------+  |IP2,color:0:200 
@@ -315,6 +315,7 @@ Resolution Schemes: [@ PE12 &amp; PE21]
      {   transport-target:0:200 |   transport-target:0:200 }           
          ^^^^^^^^^^^^^^^^^^^^^^                        ^^^             
          Route Target Extended Community             Transport Class ID
+
 </artwork>
       </figure>
 
@@ -476,11 +477,10 @@ Resolution Schemes: [@ PE12 &amp; PE21]
         target="https://www.rfc-editor.org/rfc/rfc4271#section-9.1.2.1">Section
         9.1.2.1 of RFC4271</eref> which is "only" used for resolving nexthop
         reachability in control plane with no footprint in forwarding plane.
-        In such implementations, the number of TRDBs are equal to the number
-        of Transport Classes configured in that node . However, an
-        implementation may choose a different methodology to realize this
-        logical construct while still adhering to the procedures defined in
-        this document.</t>
+        In any implementation, the number of TRDBs are equal to the number of
+        Transport Classes configured on a node . However, an implementation
+        may choose a different methodology to realize this logical construct
+        while still adhering to the procedures defined in this document.</t>
 
         <t>SNs or BNs originate routes for 'Classful Transport' address family
         from the TRDB. These routes have NLRI "RD:Endpoint", Transport Class
