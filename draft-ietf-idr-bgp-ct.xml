@@ -286,19 +286,22 @@
       <figure anchor="ArchOv" suppress-title="false"
               title="BGP CT Architecture">
         <artwork align="left" xml:space="preserve">
+
 Resolution Schemes: [@ PE12 &amp; PE21]                                    
 ^^^^^^^^^^^^^^^^^^^                                                    
-[color:0:100,TRDB(TC-100,TC-BE)],                                          
+[color:0:100,TRDB(TC-100,TC-BE)],                                      
 [color:0:200,TRDB(TC-200,TC-BE)],                                      
-  [100:200,TRDB(TC100,TC200)]                        
+ [100:200,TRDB(TC-100,TC-200)]                                         
+               ^^^^^^ ^^^^^^                                           
+               Transport Classes                                       
                                                                        
-                         [RR21]--------------&lt;&lt;-----[RR11]             
-                         /                          /  |IP1,color:0:100
-       [PE21] &lt;&lt;--------+       | [PE12] &lt;&lt;--------+   |IP2,color:0:200
-          \       ___           |       \    ___       |IP3,100:200    
-           \    _(   )          |        \ _(   )      ^    ^^^^^^^^^^^
-            +--(     _)--[BN21]===[BN11]--(     _)--[PE11]    Mapping  
-                (___)           |          (___)             Community 
+                         [RR21]--------------&lt;&lt;---[RR11]               
+                         /                          / |IP1,color:0:100 
+       [PE21] &lt;&lt;--------+       | [PE12] &lt;&lt;--------+  |IP2,color:0:200 
+          \       ___           |       \    ___      |IP3,100:200     
+           \    _(   )          |        \ _(   )     ^    ^^^^^^^^^^^ 
+            +--(     _)--[BN21]===[BN11]--(     _)--[PE11]   Mapping   
+                (___)           |          (___)            Community  
                           Inter-AS-Link                                
                                 |                                      
       [.......AS2:SR-TE........]|[.......AS1:RSVP-TE......]            
@@ -375,7 +378,9 @@ Resolution Schemes: [@ PE12 &amp; PE21]
 
           <t>Resolve IP3 next hop over available tunnels in TRDB for Transport
           Class 100 with fallback to TRDB for Transport Class 200.</t>
-        </list></t>
+        </list>In <xref target="ArchOv"/>, PE12 resolves IP1,IP2 and IP3
+      directly over RSVP-TE tunnels in AS1. PE21 reolves IP1,IP2 and IP3 over
+      extended BGP-CT tunnels that resolve over SR-TE tunnels in AS2.</t>
 
       <t>This document describes procedures using MPLS forwarding
       architecture. However, these procedures would work in similar manner for
@@ -463,16 +468,19 @@ Resolution Schemes: [@ PE12 &amp; PE21]
         the core transport region.</t>
 
         <t>Overlay routes that require the use of a specific Transport Class
-        confine the scope of next hop resolution to the set of routes
-        contained in the corresponding TRDB.</t>
+        confine the scope of next hop resolution to the set of underlay routes
+        within its TRDB.</t>
 
-        <t>The TRDB can be for e.g., realized as a "Routing Table" referred in
-        <eref
+        <t>An implementation may realize the TRDB for e.g., as a "Routing
+        Table" referred in <eref
         target="https://www.rfc-editor.org/rfc/rfc4271#section-9.1.2.1">Section
-        9.1.2.1 of RFC4271</eref> which is a control plane only database.
-        However, an implementation may choose a different methodology to
-        realize this logical construct while still adhering with the
-        procedures defined in this document.</t>
+        9.1.2.1 of RFC4271</eref> which is "only" used for resolving nexthop
+        reachability in control plane with no footprint in forwarding plane.
+        In such implementations, the number of TRDBs are equal to the number
+        of Transport Classes configured in that node . However, an
+        implementation may choose a different methodology to realize this
+        logical construct while still adhering to the procedures defined in
+        this document.</t>
 
         <t>SNs or BNs originate routes for 'Classful Transport' address family
         from the TRDB. These routes have NLRI "RD:Endpoint", Transport Class
