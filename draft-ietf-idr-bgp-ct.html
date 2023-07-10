@@ -1857,6 +1857,7 @@ li > p:last-of-type:only-child {
       [.......AS2:SR-TE........]|[.......AS1:RSVP-TE......]
        --------&gt;---------MPLS Forwarding---------&gt;--------
 
+
      { &lt;&lt;-RD1:PE11(L3),PNH=BN21 | &lt;&lt;-RD1:PE11(L1),PNH=BN11 }
      |   transport-target:0:100 |   transport-target:0:100 | BGP
      |                          |                          | Classful
@@ -1864,6 +1865,7 @@ li > p:last-of-type:only-child {
      {   transport-target:0:200 |   transport-target:0:200 }
          ^^^^^^^^^^^^^^^^^^^^^^                        ^^^
          Route Target Extended Community             Transport Class ID
+
 
      { PE12-IPFIB: PE21-IPFIB: BN21-MPLSFIB: BN11-MPLSFIB: }
      | IP1-&gt;PUSH   IP1-&gt;PUSH   L3-&gt;SWAP(L1), L1-&gt;POP,      | Forwarding

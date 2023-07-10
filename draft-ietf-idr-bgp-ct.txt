@@ -470,6 +470,7 @@ Internet-Draft        BGP Classful Transport Planes            July 2023
        [.......AS2:SR-TE........]|[.......AS1:RSVP-TE......]
         -------->---------MPLS Forwarding--------->--------
 
+
       { <<-RD1:PE11(L3),PNH=BN21 | <<-RD1:PE11(L1),PNH=BN11 }
       |   transport-target:0:100 |   transport-target:0:100 | BGP
       |                          |                          | Classful
@@ -477,6 +478,7 @@ Internet-Draft        BGP Classful Transport Planes            July 2023
       {   transport-target:0:200 |   transport-target:0:200 }
           ^^^^^^^^^^^^^^^^^^^^^^                        ^^^
           Route Target Extended Community             Transport Class ID
+
 
       { PE12-IPFIB: PE21-IPFIB: BN21-MPLSFIB: BN11-MPLSFIB: }
       | IP1->PUSH   IP1->PUSH   L3->SWAP(L1), L1->POP,      | Forwarding
@@ -496,8 +498,6 @@ Internet-Draft        BGP Classful Transport Planes            July 2023
 
       The "BGP Classful Transport" (Section 6) family to extend these
       constructs to adjacent domains.
-
-
 
 
 
