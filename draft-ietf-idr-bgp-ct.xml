@@ -57,7 +57,7 @@
       </address>
     </author>
 
-    <date day="08" month="07" year="2023"/>
+    <date day="10" month="07" year="2023"/>
 
     <abstract>
       <t>This document specifies a mechanism, referred to as "Intent Driven
@@ -65,7 +65,7 @@
       overlay routes, with underlay routes having specific Traffic Engineering
       (TE) characteristics, that satisfy a certain Service Level Agreement
       (SLA). The document achieves this by defining new constructs, to group
-      underlay routes with sufficienty similar TE characteristics into
+      underlay routes with sufficiently similar TE characteristics into
       identifiable classes (Transport Class), that overlay routes use as an
       ordered set to resolve reachability (Resolution Scheme) towards service
       endpoints. These constructs can be used to realize the "IETF Network
@@ -136,7 +136,7 @@
 
       <t>The constructs defined in this document are used to classify and
       group these intra-domain tunnels based on their Traffic Engineering (TE)
-      charecteristics (e.g low latency), into identifiable classes, thus
+      characteristics (e.g low latency), into identifiable classes, thus
       making them "intent-aware". These constructs enable services to express
       its desired intent using one or more identifiable classes, and to
       selectively map traffic onto "intent-aware" intra-domain tunnels only
@@ -442,7 +442,7 @@
         TE attributes they possess and the TE characteristics that the
         operator defines for that Transport Class. Due to the fact that
         multipe TE tunneling protocols exist, their TE attributes and
-        charecteristics may not be equal but sufficiently similar. Some
+        characteristics may not be equal but sufficiently similar. Some
         examples of such classifications are as follows:<list>
             <t>Tunnels (RSVP-TE, IGP FLEX-ALGO, SR-TE) with a latency no
             greater than 100ms.</t>
@@ -2482,9 +2482,9 @@ Registry Name: BGP Transitive Extended Community Types
     </section>
 
     <section anchor="Security" title="Security Considerations">
-      <t> This document defines a new BGP SAFI for AFIs 1 and 2 and therefore
+      <t>This document defines a new BGP SAFI for AFIs 1 and 2 and therefore
       does not change the underlying security issues inherent in the existing
-      BGP protocol, such as those described in <xref target="RFC4271"/>and
+      BGP protocol, such as those described in <xref target="RFC4271"/> and
       <xref target="RFC4272"/>.</t>
 
       <t>Mechanisms described in this document follow a "Walled Garden"
@@ -2493,9 +2493,9 @@ Registry Name: BGP Transitive Extended Community Types
       between BGP speakers. This mitigates the risk of advertising internal
       loopback addresses outside the administrative control of the provider
       network. Further, procedures defined in <xref
-      target="secure-propagate"/> avoid unintented propagation of BGP CT
-      routes across Inter-AS boundaries even when BGP CT family is negotiated
-      on the EBGP session.</t>
+      target="secure-propagate"/> mitigate the risk of unintented propagation
+      of BGP CT routes across Inter-AS boundaries even when BGP CT family is
+      negotiated on the EBGP session.</t>
 
       <t>Additionally, BGP sessions SHOULD be protected using TCP
       Authentication Option <xref target="RFC5925"/> and the Generalized TTL
@@ -2517,11 +2517,7 @@ Registry Name: BGP Transitive Extended Community Types
 
       <t>BGP CT routes distribute label binding using <xref target="RFC8277"/>
       for MPLS dataplane and hence its security considerations apply.
-      Similarly, BGP CT routes distribute SRv6 SIDs for IPv6 dataplanes that
-      support SRv6 and hence security considerations of Section 9.3 of <xref
-      target="RFC9252"/> apply.</t>
-
-      <t>In scenarios where MPLS is enabled on link to a device in an
+      Moreover, in scenarios where MPLS is enabled on link to a device in an
       untrusted domain, e.g. a PE-CE link or ASBR-ASBR inter-AS link, security
       can be provided against MPLS label spoofing by using MPLS context tables
       as described in <xref target="MplsCE">MPLS enabled CE</xref>. Such that
@@ -2533,13 +2529,21 @@ Registry Name: BGP Transitive Extended Community Types
       router having full FIB. These security aspects should be considered when
       using MPLS enabled CE devices.</t>
 
+      <t> </t>
+
+      <t>BGP CT routes distribute SRv6 SIDs for SRv6 dataplanes and hence
+      security considerations of Section 9.3 of <xref target="RFC9252"/>
+      apply. Moreover, SRv6 SID transposition scheme is disabled in BGP CT, as
+      described in <xref target="CTMultiEncap"/>, to mitigate the risk of
+      misinterpreting transposed SRv6 SID information as an MPLS label.</t>
+
       <t>As <xref target="RFC4272"/> discusses, BGP is vulnerable to
       traffic-diversion attacks. This SAFI routes adds a new means by which an
       attacker could cause the traffic to be diverted from its normal path.
       Potential consequences include "hijacking" of traffic (insertion of an
       undesired node in the path, which allows for inspection or modification
       of traffic, or avoidance of security controls) or denial of service
-      (directing traffic to a node that doesn't desire to receive it). </t>
+      (directing traffic to a node that doesn't desire to receive it).</t>
 
       <t>In order to mitigate the risk of the diversion of traffic from its
       intended destination, existing BGPsec solution could be extended and
@@ -2695,7 +2699,7 @@ Registry Name: BGP Transitive Extended Community Types
       </reference>
 
       <reference anchor="MPLS-NAMESPACES"
-                 target="https://datatracker.ietf.org/doc/html/draft-kaliraj-bess-bgp-sig-private-mpls-labels-05#section-6.1">
+                 target="https://datatracker.ietf.org/doc/html/draft-kaliraj-bess-bgp-sig-private-mpls-labels-06">
         <front>
           <title abbrev="MPLS namespaces">BGP signalled MPLS
           namespaces</title>
@@ -2703,7 +2707,7 @@ Registry Name: BGP Transitive Extended Community Types
           <author fullname="Kaliraj" initials="" role="editor"
                   surname="Vairavakkalai"/>
 
-          <date day="07" month="08" year="2023"/>
+          <date day="10" month="07" year="2023"/>
         </front>
       </reference>
 
@@ -2758,62 +2762,62 @@ Registry Name: BGP Transitive Extended Community Types
       </reference>
 
       <reference anchor="MULTI-NH-ATTR"
-                 target="https://datatracker.ietf.org/doc/html/draft-kaliraj-idr-multinexthop-attribute-06">
+                 target="https://datatracker.ietf.org/doc/html/draft-kaliraj-idr-multinexthop-attribute-08">
         <front>
           <title abbrev="MULTI-NH-ATTR">BGP MultiNexthop Attribute</title>
 
           <author fullname="Kaliraj Vairavakkalai" initials="" role="editor"
                   surname="Vairavakkalai"/>
 
-          <date day="17" month="06" year="2023"/>
+          <date day="10" month="07" year="2023"/>
         </front>
       </reference>
 
       <reference anchor="MNH-TC"
-                 target="https://www.ietf.org/archive/id/draft-kaliraj-idr-multinexthop-attribute-06.html#section-5.4.2.2">
+                 target="https://www.ietf.org/archive/id/draft-kaliraj-idr-multinexthop-attribute-08.html#section-5.4.2.2">
         <front>
           <title abbrev="MNH-TC">BGP MultiNexthop Attribute</title>
 
           <author fullname="Kaliraj Vairavakkalai" initials="" role="editor"
                   surname="Vairavakkalai"/>
 
-          <date day="17" month="06" year="2023"/>
+          <date day="10" month="07" year="2023"/>
         </front>
       </reference>
 
       <reference anchor="MNH-EP"
-                 target="https://www.ietf.org/archive/id/draft-kaliraj-idr-multinexthop-attribute-06.html#section-5.4.1">
+                 target="https://www.ietf.org/archive/id/draft-kaliraj-idr-multinexthop-attribute-08.html#section-5.4.1">
         <front>
           <title abbrev="MNH-EP">BGP MultiNexthop Attribute</title>
 
           <author fullname="Kaliraj Vairavakkalai" initials="" role="editor"
                   surname="Vairavakkalai"/>
 
-          <date day="17" month="06" year="2023"/>
+          <date day="10" month="07" year="2023"/>
         </front>
       </reference>
 
       <reference anchor="MNH-ENCAP-DSCP"
-                 target="https://www.ietf.org/archive/id/draft-kaliraj-idr-multinexthop-attribute-06.html#section-5.4.3.4">
+                 target="https://www.ietf.org/archive/id/draft-kaliraj-idr-multinexthop-attribute-08.html#section-5.4.3.4">
         <front>
           <title abbrev="MNH-ENCAP-DSCP">BGP MultiNexthop Attribute</title>
 
           <author fullname="Kaliraj Vairavakkalai" initials="" role="editor"
                   surname="Vairavakkalai"/>
 
-          <date day="17" month="06" year="2023"/>
+          <date day="10" month="07" year="2023"/>
         </front>
       </reference>
 
       <reference anchor="MNH-ENCAP-MPLS"
-                 target="https://www.ietf.org/archive/id/draft-kaliraj-idr-multinexthop-attribute-06.html#section-5.4.3.1">
+                 target="https://www.ietf.org/archive/id/draft-kaliraj-idr-multinexthop-attribute-08.html#section-5.4.3.1">
         <front>
           <title abbrev="MNH-ENCAP-MPLS">BGP MultiNexthop Attribute</title>
 
           <author fullname="Kaliraj Vairavakkalai" initials="" role="editor"
                   surname="Vairavakkalai"/>
 
-          <date day="17" month="06" year="2023"/>
+          <date day="10" month="07" year="2023"/>
         </front>
       </reference>
 
