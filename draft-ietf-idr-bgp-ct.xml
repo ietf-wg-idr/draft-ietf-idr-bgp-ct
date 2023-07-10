@@ -335,7 +335,7 @@
         </list><xref target="ArchOv"/>, depicts the intra-AS and inter-AS
       application of these constructs.</t>
 
-      <t>The tunneling protocols are made "Transport Class" aware. They
+      <t>The tunneling mechanisms are made "Transport Class" aware. They
       publish their underlay tunnels for a Transport Class into an associated
       <xref target="trdb">"Transport Route Database" (TRDB)</xref>. In <xref
       target="ArchOv"/>, RSVP-TE publishes its underlay tunnels into TRDBs
@@ -351,10 +351,10 @@
       for multiple loopbacks on the Egress Service Node (eSN).</t>
 
       <t>BGP CT family carries transport prefixes across tunnel domain
-      boundaries (e.g. in Inter-AS Option C networks), which is parallel to
-      BGP LU (AFI/SAFIs, 1/4, 2/4). It disseminates "Transport class"
+      boundaries (e.g., in inter-AS Option C networks), which is parallel to
+      BGP LU (AFI/SAFIs 1/4 or 2/4). It disseminates "Transport Class"
       information for the transport prefixes across the participating domains,
-      which is not possible with BGP LU. This makes the end-to-end network a
+      which is not possible with BGP LU. This makes the overall network a
       "Transport Class" aware tunneled network.</t>
 
       <t>In <xref target="ArchOv"/>, BGP CT routes are originated at BN11 in
@@ -380,8 +380,8 @@
 
           <t>Resolve IP3 next hop over available tunnels in TRDB for Transport
           Class 100 with fallback to TRDB for Transport Class 200.</t>
-        </list>In <xref target="ArchOv"/>, PE12 resolves IP1,IP2 and IP3
-      directly over RSVP-TE tunnels in AS1. PE21 reolves IP1,IP2 and IP3 over
+        </list>In <xref target="ArchOv"/>, PE12 resolves IP1, IP2, and IP3
+      directly over RSVP-TE tunnels in AS1. PE21 resolves IP1, IP2, and IP3 over
       extended BGP-CT tunnels that resolve over SR-TE tunnels in AS2.</t>
 
       <t>This document describes procedures using MPLS forwarding
