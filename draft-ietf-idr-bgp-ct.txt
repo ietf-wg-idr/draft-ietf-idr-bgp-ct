@@ -450,21 +450,13 @@ Vairavakkalai & VenkataraExpires 9 January 2024                 [Page 8]
 Internet-Draft        BGP Classful Transport Planes            July 2023
 
 
-       Resolution Schemes: [@ PE12 & PE21]
-       ^^^^^^^^^^^^^^^^^^^
-  <color:0:100,(TRDB[TC-100],TRDB[TC-BE])>,  /* Scheme1 */
-  <color:0:200,(TRDB[TC-200],TRDB[TC-BE])>,  /* Scheme2 */
-    <100:200,(TRDB[TC-100],TRDB[TC-200])>    /* Scheme3 */
-              ^^^^              ^^^^^^
-        Transport Route DB      Transport Class
-
-                          [RR21]--------------<<---[RR11]
-                          /                          / |IP1,color:0:100
-        [PE21] <<--------+       | [PE12] <<--------+  |IP2,color:0:200
-           \       ___           |       \    ___      |IP3,100:200
-            \    _(   )          |        \ _(   )     ^    ^^^^^^^^^^^
-             +--(     _)--[BN21]===[BN11]--(     _)--[PE11]   Mapping
-                 (___)           |          (___)            Community
+                 INET     [RR21]--------------<<---[RR11]
+                 Service  /                       /   | IP1, color:0:100
+        [PE21] <<--------+       | [PE12] <<-----+    | IP2, color:0:200
+           \       ___           |       \    ___     | IP3, 100:200
+            \    _(   )          |        \ _(   )    ^<<    ^^^^^^^^^^^
+             +--(     _)--[BN21]===[BN11]--(     _)--[PE11]    Mapping
+                 (___)           |          (___)             Community
                            Inter-AS-Link
                                  |
        [.......AS2:SR-TE........]|[.......AS1:RSVP-TE......]
@@ -477,12 +469,15 @@ Internet-Draft        BGP Classful Transport Planes            July 2023
       | <<-RD2:PE11(L4),PNH=BN21 | <<-RD2:PE11(L2),PNH=BN11 | Transport
       {   transport-target:0:200 |   transport-target:0:200 }
           ^^^^^^^^^^^^^^^^^^^^^^                        ^^^
-          Route Target Extended Community             Transport Class ID
+          Route Target Extended Community        Transport Class ID
 
+   at PE12 and PE21,
 
-      { PE21-IPFIB: BN21-MPLSFIB: BN11-MPLSFIB: PE12-IPFIB: }
-      | IP1->PUSH   L3->SWAP(L1), L1->POP,      IP1->PUSH   | Forwarding
-      { (L3,SR100)  AS1-Link      PUSH(RSVP100) (RSVP100)   }
+        Scheme1: color:0:100, (TRDB[TC-100], TRDB[TC-BE])
+        Scheme2: color:0:200, (TRDB[TC-200], TRDB[TC-BE])
+        Scheme3:     100:200, (TRDB[TC-100], TRDB[TC-200])
+        ^^^^^^^                ^^^^               ^^^^^^
+   Resolution Schemes   Transport Route DB    Transport Class
 
                      Figure 1: BGP CT Architecture
 
@@ -499,15 +494,17 @@ Internet-Draft        BGP Classful Transport Planes            July 2023
       The "BGP Classful Transport" (Section 6) family to extend these
       constructs to adjacent domains.
 
+   Figure 1, depicts the intra-AS and inter-AS application of these
+   constructs.
+
+
+
 
 
 Vairavakkalai & VenkataraExpires 9 January 2024                 [Page 9]
 
 Internet-Draft        BGP Classful Transport Planes            July 2023
 
-
-   Figure 1, depicts the intra-AS and inter-AS application of these
-   constructs.
 
    The tunneling protocols are made "Transport Class" aware.  They
    publish their underlay tunnels for a Transport Class into an
@@ -554,6 +551,9 @@ Internet-Draft        BGP Classful Transport Planes            July 2023
       Resolve IP2 next hop over available tunnels in TRDB for Transport
       Class 200 with fallback to TRDB for best-effort.
 
+      Resolve IP3 next hop over available tunnels in TRDB for Transport
+      Class 100 with fallback to TRDB for Transport Class 200.
+
 
 
 
@@ -561,9 +561,6 @@ Vairavakkalai & VenkataraExpires 9 January 2024                [Page 10]
 
 Internet-Draft        BGP Classful Transport Planes            July 2023
 
-
-      Resolve IP3 next hop over available tunnels in TRDB for Transport
-      Class 100 with fallback to TRDB for Transport Class 200.
 
    In Figure 1, PE12 resolves IP1,IP2 and IP3 directly over RSVP-TE
    tunnels in AS1.  PE21 reolves IP1,IP2 and IP3 over extended BGP-CT
@@ -605,11 +602,14 @@ Internet-Draft        BGP Classful Transport Planes            July 2023
    or Inter-AS source-peer may be used to place the route in the desired
    Transport Class.
 
-   When the ingress route is received via [SRTE] with "Color:Endpoint"
-   as the NLRI that encodes the Transport Class as an integer 'Color',
-   the 'Color' is mapped to a Transport Class during the import
-   processing.  The SRTE ingress route for this 'Endpoint' is installed
-   in the corresponding TRDB.  The SRTE tunnel will be extended by a BGP
+
+
+
+
+
+
+
+
 
 
 
@@ -618,6 +618,11 @@ Vairavakkalai & VenkataraExpires 9 January 2024                [Page 11]
 Internet-Draft        BGP Classful Transport Planes            July 2023
 
 
+   When the ingress route is received via [SRTE] with "Color:Endpoint"
+   as the NLRI that encodes the Transport Class as an integer 'Color',
+   the 'Color' is mapped to a Transport Class during the import
+   processing.  The SRTE ingress route for this 'Endpoint' is installed
+   in the corresponding TRDB.  The SRTE tunnel will be extended by a BGP
    CT advertisement with NLRI 'RD:Endpoint', Transport Class RT and a
    new label.  The MPLS swap route thus installed for the new label will
    pop the label and forward the decapsulated traffic into the path
@@ -662,17 +667,16 @@ Internet-Draft        BGP Classful Transport Planes            July 2023
    addresses in a TRDB belong to the "Provider Namespace" representing
    the core transport region.
 
-   Overlay routes that require the use of a specific Transport Class
-   confine the scope of next hop resolution to the set of underlay
-   routes within its TRDB.
-
-
 
 
 Vairavakkalai & VenkataraExpires 9 January 2024                [Page 12]
 
 Internet-Draft        BGP Classful Transport Planes            July 2023
 
+
+   Overlay routes that require the use of a specific Transport Class
+   confine the scope of next hop resolution to the set of underlay
+   routes within its TRDB.
 
    An implementation may realize the TRDB for e.g., as a "Routing Table"
    referred in Section 9.1.2.1 of RFC4271 (https://www.rfc-
@@ -701,10 +705,6 @@ Internet-Draft        BGP Classful Transport Planes            July 2023
    format as shown in Figure 2.
 
    This new Route Target Format has the following encoding:
-
-
-
-
 
 
 

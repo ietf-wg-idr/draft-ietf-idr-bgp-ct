@@ -286,21 +286,13 @@
       <figure anchor="ArchOv" suppress-title="false"
               title="BGP CT Architecture">
         <artwork align="left" xml:space="preserve">
-      Resolution Schemes: [@ PE12 &amp; PE21]                              
-      ^^^^^^^^^^^^^^^^^^^                                              
- &lt;color:0:100,(TRDB[TC-100],TRDB[TC-BE])&gt;,  /* Scheme1 */              
- &lt;color:0:200,(TRDB[TC-200],TRDB[TC-BE])&gt;,  /* Scheme2 */              
-   &lt;100:200,(TRDB[TC-100],TRDB[TC-200])&gt;    /* Scheme3 */              
-             ^^^^              ^^^^^^                                  
-       Transport Route DB      Transport Class                         
-                                                                       
-                         [RR21]--------------&lt;&lt;---[RR11]               
-                         /                          / |IP1,color:0:100 
-       [PE21] &lt;&lt;--------+       | [PE12] &lt;&lt;--------+  |IP2,color:0:200 
-          \       ___           |       \    ___      |IP3,100:200     
-           \    _(   )          |        \ _(   )     ^    ^^^^^^^^^^^ 
-            +--(     _)--[BN21]===[BN11]--(     _)--[PE11]   Mapping   
-                (___)           |          (___)            Community  
+                INET     [RR21]--------------&lt;&lt;---[RR11]               
+                Service  /                       /   | IP1, color:0:100
+       [PE21] &lt;&lt;--------+       | [PE12] &lt;&lt;-----+    | IP2, color:0:200
+          \       ___           |       \    ___     | IP3, 100:200    
+           \    _(   )          |        \ _(   )    ^&lt;&lt;    ^^^^^^^^^^^
+            +--(     _)--[BN21]===[BN11]--(     _)--[PE11]    Mapping  
+                (___)           |          (___)             Community 
                           Inter-AS-Link                                
                                 |                                      
       [.......AS2:SR-TE........]|[.......AS1:RSVP-TE......]            
@@ -313,12 +305,15 @@
      | &lt;&lt;-RD2:PE11(L4),PNH=BN21 | &lt;&lt;-RD2:PE11(L2),PNH=BN11 | Transport 
      {   transport-target:0:200 |   transport-target:0:200 }           
          ^^^^^^^^^^^^^^^^^^^^^^                        ^^^             
-         Route Target Extended Community             Transport Class ID
+         Route Target Extended Community        Transport Class ID     
                                                                        
+  at PE12 and PE21,                                                    
                                                                        
-     { PE21-IPFIB: BN21-MPLSFIB: BN11-MPLSFIB: PE12-IPFIB: }           
-     | IP1-&gt;PUSH   L3-&gt;SWAP(L1), L1-&gt;POP,      IP1-&gt;PUSH   | Forwarding
-     { (L3,SR100)  AS1-Link      PUSH(RSVP100) (RSVP100)   }           
+       Scheme1: color:0:100, (TRDB[TC-100], TRDB[TC-BE])               
+       Scheme2: color:0:200, (TRDB[TC-200], TRDB[TC-BE])               
+       Scheme3:     100:200, (TRDB[TC-100], TRDB[TC-200])              
+       ^^^^^^^                ^^^^               ^^^^^^                
+  Resolution Schemes   Transport Route DB    Transport Class           
 </artwork>
       </figure>
 
