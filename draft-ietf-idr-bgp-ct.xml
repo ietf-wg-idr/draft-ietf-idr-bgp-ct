@@ -66,17 +66,17 @@
       (TE) characteristics, that satisfy a certain Service Level Agreement
       (SLA). The document achieves this by defining new constructs, to group
       underlay routes with sufficienty similar TE characteristics into
-      identifiable classes (Transport Class), that overlay routes use as an
+      identifiable classes (called, Transport Classes), that overlay routes use as an
       ordered set to resolve reachability (Resolution Scheme) towards service
-      endpoints. These constructs can be used to realize the "IETF Network
+      endpoints. These constructs can be used, e.g., to realize the "IETF Network
       Slice" defined in TEAS Network Slices framework.</t>
 
       <t>This document specifies protocol procedures for BGP that enable
-      dissemination of such service mapping information in a network that may
+      dissemination of service mapping information in a network that may
       span multiple cooperating administrative domains. These domains may be
       administered either by the same provider or by closely coordinating
-      providers. A new BGP address family that leverages RFC-4364 procedures
-      and follows RFC-8277 NLRI encoding, is defined to advertise underlay
+      providers. A new BGP address family that leverages RFC 4364 procedures
+      and follows RFC 8277 NLRI encoding, is defined to advertise underlay
       routes with its identified class. This new address family is called "BGP
       Classful Transport", a.k.a., BGP CT.</t>
     </abstract>
