@@ -462,23 +462,22 @@
 
       <section anchor="trdb" title="Transport Route Database">
         <t>A Transport Route Database is a logical collection of transport
-        routes pertaining to the same Transport Class. Tunnel endpoint
-        addresses in a TRDB belong to the "Provider Namespace" representing
-        the core transport region.</t>
+        routes pertaining to the same Transport Class. In any node, every
+        Transport Class has an associated TRDB. Resolution Schemes resolve
+        next hop reachability using the transport routes within the scope of
+        the TRDBs.</t>
 
-        <t>Overlay routes that require the use of a specific Transport Class
-        confine the scope of next hop resolution to the set of underlay routes
-        within its TRDB.</t>
+        <t>Tunnel endpoint addresses in a TRDB belong to the "Provider
+        Namespace" representing the core transport region.</t>
 
         <t>An implementation may realize the TRDB for e.g., as a "Routing
         Table" referred in <eref
         target="https://www.rfc-editor.org/rfc/rfc4271#section-9.1.2.1">Section
         9.1.2.1 of RFC4271</eref> which is "only" used for resolving nexthop
         reachability in control plane with no footprint in forwarding plane.
-        In any implementation, the number of TRDBs are equal to the number of
-        Transport Classes configured on a node . However, an implementation
-        may choose a different methodology to realize this logical construct
-        while still adhering to the procedures defined in this document.</t>
+        However, an implementation may choose a different methodology to
+        realize this logical construct while still adhering to the procedures
+        defined in this document.</t>
 
         <t>SNs or BNs originate routes for 'Classful Transport' address family
         from the TRDB. These routes have NLRI "RD:Endpoint", Transport Class
@@ -1331,8 +1330,8 @@
     <section anchor="SRv6-Support" title="SRv6 Support">
       <t>This section describes how BGP CT family (e.g. AFI/SAFI 1/76) may be
       used to set up inter domain tunnels of a certain Transport Class, when
-      using Segment Routing over IPv6 (SRv6) data plane on the inter AS links
-      or as an intra AS tunneling mechanism.</t>
+      using Segment Routing over IPv6 (SRv6) data plane on the inter-AS links
+      or as an intra-AS tunneling mechanism.</t>
 
       <t><xref target="RFC8986"/> specifies the SRv6 Endpoint behaviors (End
       USD, End.BM, End.B6.Encaps). <xref target="SRV6-INTER-DOMAIN"/>
@@ -1715,8 +1714,8 @@
 
         <t>This section describes how BGP CT is deployed in such scenarios to
         preserve end to end Intent. Example described in this section use
-        Inter AS option C domains. But similar mechanisms will work for Inter
-        AS Option A and Inter AS Option B scenarios as-well.</t>
+        Inter-AS Option C domains. But similar mechanisms will work for
+        Inter-AS Option A and Inter-AS Option B scenarios as well.</t>
 
         <section title="Service Layer Color Management ">
           <t>At the service layer, it is recommended that a global color
@@ -2483,14 +2482,28 @@ Registry Name: BGP Transitive Extended Community Types
     </section>
 
     <section anchor="Security" title="Security Considerations">
-      <t>Mechanisms described in this document carry routes for loopback
-      addresses in BGP CT family (AFI/SAFI: 1/76 or 2/76), which is explicitly
-      configured and negotiated between BGP speakers. So there is no risk of
-      advertising internal loopback addresses outside the administrative
-      control of the provider network. Further, procedures defined in <xref
+      <t> This document defines a new BGP SAFI for AFIs 1 and 2 and therefore
+      does not change the underlying security issues inherent in the existing
+      BGP protocol, such as those described in <xref target="RFC4271"/>and
+      <xref target="RFC4272"/>.</t>
+
+      <t>Mechanisms described in this document follow a "Walled Garden"
+      approach to carry routes for loopback addresses in BGP CT family
+      (AFI/SAFI: 1/76 or 2/76), which is explicitly configured and negotiated
+      between BGP speakers. This mitigates the risk of advertising internal
+      loopback addresses outside the administrative control of the provider
+      network. Further, procedures defined in <xref
       target="secure-propagate"/> avoid unintented propagation of BGP CT
       routes across Inter-AS boundaries even when BGP CT family is negotiated
       on the EBGP session.</t>
+
+      <t>Additionally, BGP sessions SHOULD be protected using TCP
+      Authentication Option <xref target="RFC5925"/> and the Generalized TTL
+      Security Mechanism <xref target="RFC5082"/>. To mitigate any risk of
+      manipulating the routing information carried within a new SAFI, BGP
+      origin validation <xref target="RFC6811"/> and BGPsec <xref
+      target="RFC8205"/> could be used as means to increase assurance that the
+      information has not been falsified.</t>
 
       <t>Using a separate BGP family and new RT (Transport Class RT) minimizes
       the possibility of these routes mixing with service routes.</t>
@@ -2502,6 +2515,12 @@ Registry Name: BGP Transitive Extended Community Types
       transport RIBs, distinct from service RIB that contain SAFI 1 service
       routes.</t>
 
+      <t>BGP CT routes distribute label binding using <xref target="RFC8277"/>
+      for MPLS dataplane and hence its security considerations apply.
+      Similarly, BGP CT routes distribute SRv6 SIDs for IPv6 dataplanes that
+      support SRv6 and hence security considerations of section 9.3 of <xref
+      target="RFC9252"/> apply.</t>
+
       <t>In scenarios where MPLS is enabled on link to a device in an
       untrusted domain, e.g. a PE-CE link or ASBR-ASBR inter-AS link, security
       can be provided against MPLS label spoofing by using MPLS context tables
@@ -2512,7 +2531,23 @@ Registry Name: BGP Transitive Extended Community Types
       forwarding. Such 'inner payload' based checks may be offloaded to a
       downstream node that forwards and processes inner payload, e.g., an IP
       router having full FIB. These security aspects should be considered when
-      using MPLS enabled CE devices</t>
+      using MPLS enabled CE devices.</t>
+
+      <t>As <xref target="RFC4272"/> discusses, BGP is vulnerable to
+      traffic-diversion attacks. This SAFI routes adds a new means by which an
+      attacker could cause the traffic to be diverted from its normal path.
+      Potential consequences include "hijacking" of traffic (insertion of an
+      undesired node in the path, which allows for inspection or modification
+      of traffic, or avoidance of security controls) or denial of service
+      (directing traffic to a node that doesn't desire to receive it). </t>
+
+      <t>In order to mitigate the risk of the diversion of traffic from its
+      intended destination, existing BGPsec solution could be extended and
+      supported for this SAFI. The restriction of the applicability of this
+      SAFI to its intended well-defined scope limits the likelihood of traffic
+      diversions. Furthermore, as long as the filtering and appropriate
+      configuration mechanisms discussed above are applied diligently, risk of
+      the diversion of the traffic is eliminated.</t>
     </section>
   </middle>
 
@@ -2523,6 +2558,16 @@ Registry Name: BGP Transitive Extended Community Types
       <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"?>
 
       <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4271.xml"?>
+
+      <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4272.xml"?>
+
+      <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5082.xml"?>
+
+      <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5925.xml"?>
+
+      <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6811.xml"?>
+
+      <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8205.xml"?>
 
       <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4364.xml"?>
 
@@ -2932,23 +2977,23 @@ Registry Name: BGP Transitive Extended Community Types
     </section>
 
     <section anchor="Appendix B" numbered="true"
-             title="Applicability to Intra AS and different Inter AS deployments.">
+             title="Applicability to Intra-AS and different Inter-AS deployments.">
       <t>As described in <xref target="RFC4364">BGP VPN</xref> Section 10, in
-      an option-C network, service routes (VPN-IPv4) are neither maintained
+      an Option C network, service routes (VPN-IPv4) are neither maintained
       nor distributed by the ASBRs. Transport routes are maintained in the
       ASBRs and propagated in BGP LU or BGP CT.</t>
 
       <t><xref target="CTProc">Illustration of CT Procedures</xref>
-      illustrates how constructs of BGP CT work in an Inter AS option-C
+      illustrates how constructs of BGP CT work in an inter-AS Option C
       deployment. The BGP CT constructs: AFI/SAFI 1/76, Transport Class and
-      Resolution Scheme are used in an option-C deployment.</t>
+      Resolution Scheme are used in an inter-AS Option C deployment.</t>
 
-      <t>In Intra AS and Inter AS option-A, option-B scenarios, AFI/SAFI 1/76
+      <t>In Intra-AS and Inter-AS option A, option B scenarios, AFI/SAFI 1/76
       may not be used, but the Transport Class and Resolution Scheme
       mechanisms are used to provide service mapping.</t>
 
-      <t>This section illustrates how BGP CT constructs work in Intra AS and
-      Inter AS option-A, B deployment scenarios.</t>
+      <t>This section illustrates how BGP CT constructs work in Intra-AS and
+      Inter-AS Option A, B deployment scenarios.</t>
 
       <section title="Intra AS usecase">
         <section title="Topology">
@@ -3029,7 +3074,7 @@ Registry Name: BGP Transitive Extended Community Types
           mapping community Color:0:100, points to a PE11_to_PE12_gold
           tunnel.</t>
 
-          <t>BGP CT AFI/SAFI 1/76 is not used in this Intra AS deployment. But
+          <t>BGP CT AFI/SAFI 1/76 is not used in this Intra-AS deployment. But
           the Transport class and Resolution Scheme constructs are used to
           preserve end-to-end SLA.</t>
         </section>
@@ -3056,7 +3101,7 @@ Registry Name: BGP Transitive Extended Community Types
           <t>This example in <xref target="BGPCT_INTERAS_A"/> shows two
           provider network Autonomous systems AS1, AS2. They serve L3VPN
           customers AS3, AS4 respectively. The ASBRs ASBR11 and ASBR21 have IP
-          VRFs connected directly. The inter AS link is IP enabled with no
+          VRFs connected directly. The inter-AS link is IP enabled with no
           MPLS forwarding.</t>
 
           <t>Traffic direction being described is CE31 to CE41. CE41 may
@@ -3137,7 +3182,7 @@ Registry Name: BGP Transitive Extended Community Types
           ASBR11-ASBR21, PE21-CE41. And uses MPLS forwarding inside AS1, AS2
           core.</t>
 
-          <t>BGP CT AFI/SAFI 1/76 is not used in this Inter AS option-A
+          <t>BGP CT AFI/SAFI 1/76 is not used in this Inter-AS Option B
           deployment. But the Transport class and Resolution Scheme constructs
           are used to preserve end-to-end SLA.</t>
         </section>
@@ -3164,7 +3209,7 @@ Registry Name: BGP Transitive Extended Community Types
           <t>This example in <xref target="BGPCT_INTERAS_B"/> shows two
           provider network Autonomous systems AS1, AS2. They serve L3VPN
           customers AS3, AS4 respectively. The ASBRs ASBR12 and ASBR21 don't
-          have any IP VRFs. The inter AS link is MPLS forwarding enabled.</t>
+          have any IP VRFs. The inter-AS link is MPLS forwarding enabled.</t>
 
           <t>Traffic direction being described is CE31 to CE41. CE41 may
           request a specific SLA (e.g. Gold for this traffic), when traversing
@@ -3247,7 +3292,7 @@ Registry Name: BGP Transitive Extended Community Types
           PE21-CE41. And uses MPLS forwarding on ASBR11-ASBR21 link, and
           inside AS1, AS2 core.</t>
 
-          <t>BGP CT AFI/SAFI 1/76 is not used in this Inter AS option-B
+          <t>BGP CT AFI/SAFI 1/76 is not used in this Inter-AS Option B
           deployment. But the Transport class and Resolution Scheme constructs
           are used to preserve end-to-end SLA.</t>
         </section>
@@ -3517,13 +3562,12 @@ Registry Name: BGP Transitive Extended Community Types
       </section>
 
       <section title="Analysis of Forwarding Behavior">
-        <t>The forwarding behavior thus achieved is similar to Inter AS
-        option-b, without carrying any service routes at the border nodes.
-        Further, the MPLS namespace labels are installed in all the border
-        nodes, which allows for quicker traffic convergence in case of border
-        node failure. The number of border nodes can be increased in a scale
-        out manner, which gives a cookie cutter template to scale a network
-        region.</t>
+        <t>The forwarding behavior thus achieved is similar to Inter-AS Option
+        B, without carrying any service routes at the border nodes. Further,
+        the MPLS namespace labels are installed in all the border nodes, which
+        allows for quicker traffic convergence in case of border node failure.
+        The number of border nodes can be increased in a scale out manner,
+        which gives a cookie cutter template to scale a network region.</t>
 
         <t>In conclusion, this mechanism provides both scaling and convergence
         benefits for the MPLS network, and allows to support huge scale
