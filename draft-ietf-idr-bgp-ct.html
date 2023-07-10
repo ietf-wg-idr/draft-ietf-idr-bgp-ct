@@ -1837,16 +1837,14 @@ li > p:last-of-type:only-child {
 <span id="name-bgp-ct-architecture-2"></span><div id="ArchOv">
 <figure id="figure-1">
         <div class="alignLeft art-text artwork" id="section-3-2.1">
-<pre>
-
-Resolution Schemes: [@ PE12 &amp; PE21]
-^^^^^^^^^^^^^^^^^^^
-[color:0:100,(TRDB[TC-100],TRDB[TC-BE]),
-[color:0:200,(TRDB[TC-200],TRDB[TC-BE]),
- [100:200,(TRDB[TC-100],TRDB[TC-200])
-           ^^^^              ^^^^^^^
-     Transport Route     Transport Class
-         Database
+<pre>      Resolution Schemes: [@ PE12 &amp; PE21]
+      ^^^^^^^^^^^^^^^^^^^
+ &lt;color:0:100,(TRDB[TC-100],TRDB[TC-BE]&gt;,
+ &lt;color:0:200,(TRDB[TC-200],TRDB[TC-BE]&gt;,
+  &lt;100:200,(TRDB[TC-100],TRDB[TC-200])&gt;
+            ^^^^              ^^^^^^
+       Transport Route    Transport Class
+          Database
                          [RR21]--------------&lt;&lt;---[RR11]
                          /                          / |IP1,color:0:100
        [PE21] &lt;&lt;--------+       | [PE12] &lt;&lt;--------+  |IP2,color:0:200
@@ -1857,7 +1855,6 @@ Resolution Schemes: [@ PE12 &amp; PE21]
                           Inter-AS-Link
                                 |
       [.......AS2:SR-TE........]|[.......AS1:RSVP-TE......]
-
        --------&gt;---------MPLS Forwarding---------&gt;--------
 
      { &lt;&lt;-RD1:PE11(L3),PNH=BN21 | &lt;&lt;-RD1:PE11(L1),PNH=BN11 }
@@ -1868,7 +1865,9 @@ Resolution Schemes: [@ PE12 &amp; PE21]
          ^^^^^^^^^^^^^^^^^^^^^^                        ^^^
          Route Target Extended Community             Transport Class ID
 
-</pre>
+     { PE12-IPFIB: PE21-IPFIB: BN21-MPLSFIB: BN11-MPLSFIB: }
+     | IP1-&gt;PUSH   IP1-&gt;PUSH   L3-&gt;SWAP(L1), L1-&gt;POP,      | Forwarding
+     { (RSVP100)   (L3,SR100)  AS1-Link      PUSH(RSVP100) }</pre>
 </div>
 <figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
 <a href="#name-bgp-ct-architecture-2" class="selfRef">BGP CT Architecture</a>
