@@ -57,7 +57,7 @@
       </address>
     </author>
 
-    <date day="10" month="07" year="2023"/>
+    <date day="14" month="07" year="2023"/>
 
     <abstract>
       <t>This document specifies a mechanism, referred to as "Intent Driven
@@ -294,34 +294,34 @@
       <figure anchor="ArchOv" suppress-title="false"
               title="BGP CT Architecture">
         <artwork align="left" xml:space="preserve">
-                INET     [RR21]--------------&lt;&lt;---[RR11]               
+                INET     [RR21]--------------&lt;&lt;---[RR11]
                 Service  /                       /   | IP1, color:0:100
        [PE21] &lt;&lt;--------+       | [PE12] &lt;&lt;-----+    | IP2, color:0:200
-          \       ___           |       \    ___     | IP3, 100:200    
+          \       ___           |       \    ___     | IP3, 100:200
            \    _(   )          |        \ _(   )    ^&lt;&lt;    ^^^^^^^^^^^
-            +--(     _)--[BN21]===[BN11]--(     _)--[PE11]    Mapping  
-                (___)           |          (___)             Community 
-                          Inter-AS-Link                                
-                                |                                      
-      [.......AS2:SR-TE........]|[.......AS1:RSVP-TE......]            
-       --------&gt;---------MPLS Forwarding---------&gt;--------             
-                                                                       
-          [PE21]--&lt;&lt;--[BN21]          [BN21]--&lt;&lt;--[BN11]               
-     { &lt;&lt;-RD1:PE11(L3),PNH=BN21 | &lt;&lt;-RD1:PE11(L1),PNH=BN11 }           
-     |   transport-target:0:100 |   transport-target:0:100 | BGP       
-     |                          |                          | Classful  
-     | &lt;&lt;-RD2:PE11(L4),PNH=BN21 | &lt;&lt;-RD2:PE11(L2),PNH=BN11 | Transport 
-     {   transport-target:0:200 |   transport-target:0:200 }           
-         ^^^^^^^^^^^^^^^^^^^^^^                        ^^^             
-         Route Target Extended Community        Transport Class ID     
-                                                                       
-  at PE12 and PE21,                                                    
-                                                                       
-       Scheme1: color:0:100, (TRDB[TC-100], TRDB[TC-BE])               
-       Scheme2: color:0:200, (TRDB[TC-200], TRDB[TC-BE])               
-       Scheme3:     100:200, (TRDB[TC-100], TRDB[TC-200])              
-       ^^^^^^^                ^^^^               ^^^^^^                
-  Resolution Schemes   Transport Route DB    Transport Class           
+            +--(     _)--[BN21]===[BN11]--(     _)--[PE11]    Mapping
+                (___)           |          (___)             Community
+                          Inter-AS-Link
+                                |
+      [.......AS2:SR-TE........]|[.......AS1:RSVP-TE......]
+       --------&gt;---------MPLS Forwarding---------&gt;--------
+
+          [PE21]--&lt;&lt;--[BN21]          [BN21]--&lt;&lt;--[BN11]
+     { &lt;&lt;-RD1:PE11(L3),PNH=BN21 | &lt;&lt;-RD1:PE11(L1),PNH=BN11 }
+     |   transport-target:0:100 |   transport-target:0:100 | BGP
+     |                          |                          | Classful
+     | &lt;&lt;-RD2:PE11(L4),PNH=BN21 | &lt;&lt;-RD2:PE11(L2),PNH=BN11 | Transport
+     {   transport-target:0:200 |   transport-target:0:200 }
+         ^^^^^^^^^^^^^^^^^^^^^^                        ^^^
+         Route Target Extended Community        Transport Class ID
+
+  at PE12 and PE21,
+
+       Scheme1: color:0:100, (TRDB[TC-100], TRDB[TC-BE])
+       Scheme2: color:0:200, (TRDB[TC-200], TRDB[TC-BE])
+       Scheme3:     100:200, (TRDB[TC-100], TRDB[TC-200])
+       ^^^^^^^                ^^^^               ^^^^^^
+  Resolution Schemes   Transport Route DB    Transport Class
 </artwork>
       </figure>
 
@@ -611,107 +611,58 @@
     <section anchor="ct-family" title="BGP Classful Transport Family">
       <t>The BGP Classful Transport (BGP CT) family will use the existing
       Address Family Identifier (AFI) of IPv4 or IPv6 and a new SAFI 76
-      "Classful Transport" that will applies to both IPv4 and IPv6 AFIs. These
-      AFI/SAFI pair of values MUST be negotiated as per the Multiprotocol
+      "Classful Transport" that will applies to both IPv4 and IPv6 AFIs. </t>
+
+      <t>The AFI/SAFI 1/76 MUST be negotiated as per the Multiprotocol
       Extensions capability described in Section 8 of <xref target="RFC4760"/>
-      to be able to send and receive BGP CT routes.</t>
+      to be able to send and receive BGP CT routes for IPv4 endpoint
+      prefixes.</t>
 
-      <t>The "Classful Transport" SAFI NLRI has similar encoding as specified
-      in Section 2 of <xref target="RFC8277"/>.</t>
+      <t>The AFI/SAFI 2/76 MUST be negotiated as per the Multiprotocol
+      Extensions capability described in Section 8 of <xref target="RFC4760"/>
+      to be able to send and receive BGP CT routes for IPv6 endpoint
+      prefixes.</t>
 
-      <t>When AFI/SAFI is 1/76, the Classful Transport NLRI Prefix consists of
-      an 8-byte RD followed by an IPv4 prefix. When AFI/SAFI is 2/76, the
-      Classful Transport NLRI Prefix consists of an 8-byte RD followed by an
-      IPv6 prefix.</t>
+      <section anchor="ct-nlri" title="NLRI Encoding">
+        <t>The "Classful Transport" SAFI NLRI has same encoding as specified
+        in Section 2 of <xref target="RFC8277"/>.</t>
 
-      <t>The procedures described for AFI/SAFIs 1/4 or 1/128 and AFI/SAFIs 2/4
-      or 2/128 in Section 2 of <xref target="RFC8277"/> apply for AFI/SAFI
-      1/76 and AFI/SAFI 2/76 respectively as well. BGP CT routes may carry
-      multiple labels in the NLRI, by negotiating the Multiple Labels
-      Capability as described in Section 2.1 of <xref target="RFC8277"/></t>
+        <t>When AFI/SAFI is 1/76, the Classful Transport NLRI Prefix consists
+        of an 8-byte RD followed by an IPv4 prefix. When AFI/SAFI is 2/76, the
+        Classful Transport NLRI Prefix consists of an 8-byte RD followed by an
+        IPv6 prefix.</t>
 
-      <t>For convenience, <xref target="CT-NLRI"/> illustrates a BGP Classful
-      Transport family NLRI when a single Label is advertised (Multiple Labels
-      Capability is not negotiated):</t>
+        <t>The procedures described for AFI/SAFIs 1/4 or 1/128 in Section 2 of
+        <xref target="RFC8277"/> apply for AFI/SAFI 1/76 also. The procedures
+        described for AFI/SAFIs 2/4 or 2/128 in Section 2 of <xref
+        target="RFC8277"/> apply for AFI/SAFI 2/76 also.</t>
 
-      <figure anchor="CT-NLRI" suppress-title="false"
-              title="AFI/SAFI 1/76 or 2/76 &quot;BGP Classful Transport&quot; NLRI Format">
-        <artwork align="left" xml:space="preserve">
-      0                   1                   2                   3
-      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     |    Length     |                 Label                 |Rsrv |S|
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     ~                     Route Distinguisher (8 bytes)             |
-     |                                                               |
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-     |                     IPv4/IPv6 Prefix                          ~
-     |                                                               |
-     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+        <t>BGP CT routes may carry multiple labels in the NLRI, by negotiating
+        the Multiple Labels Capability as described in Section 2.1 of <xref
+        target="RFC8277"/></t>
 
- Length: 1 octet
+        <t>Attributes on a Classful Transport route include the Transport
+        Class Route Target extended community, which is used to associate the
+        route with the correct TRDBs on SNs and BNs in the network and either
+        an IPv4 or an IPv6 next hop.</t>
+      </section>
 
-    This field specifies the length in bits of the remainder of the NLRI field.
+      <section anchor="ct-nhop" title="Next Hop Encoding">
+        <t>When the length of the Next hop Address field is 4 the next hop
+        address is of type IPv4 address.</t>
 
-    Note that the length will always be the sum of 20 (number of bits
-    in Label field), plus 3 (number of bits in Rsrv field), plus 1
-    (number of bits in S field), plus the length in bits of the
-    Prefix (RD:IP prefix).
+        <t>When the length of Next hop Address field is 16 (or 32) the next
+        hop address is of type IPv6 address (potentially followed by the
+        link-local IPv6 address of the next hop).</t>
 
-    In an MP_REACH_NLRI attribute whose SAFI is 76, the Prefix
-    (RD + IP prefix) will be 96 bits or less if the AFI is 1
-    and will be 192 bits or less if the AFI is 2.
+        <t>When the length of Next hop Address field is 24 (or 48) the next
+        hop address is of type VPN-IPv6 with an 8-octet RD set to zero
+        (potentially followed by the link-local VPN-IPv6 address of the next
+        hop with an 8-octet RD set to zero).</t>
 
-    As specified in [RFC4760], the actual length of the NLRI field
-    will be the number of bits specified in the Length field, rounded
-    up to the nearest integral number of octets.
-
- Label:
-
-     The Label field is a 20-bit field containing an MPLS label value
-     (see [RFC3032]).
-
- Rsrv:
-
-     This 3-bit field SHOULD be set to zero on transmission and MUST be
-     ignored on reception.
-
- S:
-     When single label is advertised, this 1-bit field MUST be set to
-     one on transmission and MUST be ignored on reception.
-
-
- Route Distinguisher:
-
-     An 8-octet RD as defined in [RFC4364 Sec 4.2].
-
- IPv4/IPv6 Prefix:
-
-    IPv4 prefix, if AFI/SAFI 1/76.
-    IPv6 prefix, if AFI/SAFI 2/76.
-
-</artwork>
-      </figure>
-
-      <t>Attributes on a Classful Transport route include the Transport Class
-      Route Target extended community, which is used to associate the route
-      with the correct TRDBs on SNs and BNs in the network and either an IPv4
-      or an IPv6 next hop.</t>
-
-      <t>When the length of the Next hop Address field is 4 the next hop
-      address is of type IPv4 address.</t>
-
-      <t>When the length of Next hop Address field is 16 (or 32) the next hop
-      address is of type IPv6 address (potentially followed by the link-local
-      IPv6 address of the next hop).</t>
-
-      <t>When the length of Next hop Address field is 24 (or 48) the next hop
-      address is of type VPN-IPv6 with an 8-octet RD set to zero (potentially
-      followed by the link-local VPN-IPv6 address of the next hop with an
-      8-octet RD set to zero).</t>
-
-      <t>When the length of the Next hop Address field is 12 the next hop
-      address is of type VPN-IPv4 with 8-octet RD set to zero.</t>
+        <t>When the length of the Next hop Address field is 12 the next hop
+        address is of type VPN-IPv4 with 8-octet RD set to zero.</t>
+      </section>
 
       <section anchor="CTMultiEncap"
                title="Carrying multiple Encapsulation Information">
