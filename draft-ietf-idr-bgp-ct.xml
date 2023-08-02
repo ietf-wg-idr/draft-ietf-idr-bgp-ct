@@ -119,8 +119,8 @@
         </list></t>
 
       <t>The constructs and procedures defined in this document apply
-      homogenously to intra-AS as well as inter-AS Option A, Option B and
-      Option C <xref target="RFC4364"/> style deployments in provider
+      homogeneously to intra-AS as well as inter-AS Option A, Option B and
+      Option C <xref target="RFC4364"/> Section 10-style deployments in provider
       networks.</t>
 
       <t>Provider networks that are deployed using such styles, provision
@@ -132,7 +132,7 @@
       (IPv4), or Internet Protocol version 6 (IPv6).</t>
 
       <t>The mechanisms defined in this document are agnostic to the tunneling
-      technologies. These can be applied homogenously to intra-domain
+      technologies. These can be applied homogeneously to intra-domain
       tunneling technologies used in brownfield networks (e.g. MPLS Traffic
       Engineering (TE)) as well as greenfield networks (e.g. Segment Routing
       (SR)).</t>
@@ -201,7 +201,7 @@
 
       <t>CsC: Carrier serving Carrier VPN</t>
 
-      <t>PNH: Protocol Next hop address carried in a BGP Update message</t>
+      <t>PNH: Protocol Next Hop address carried in a BGP Update message</t>
 
       <t>MNH: BGP MultiNexthop attribute</t>
 
@@ -369,12 +369,12 @@
 
       <t>Overlay routes carry sufficient indication of the desired Transport
       Classes using a BGP community which assumes the role of as a "Mapping
-      community". A Resolution Scheme is identified by its "Mapping
+      Community". A Resolution Scheme is identified by its "Mapping
       Community", where its configuration can either be auto-generated or done
       manually.</t>
 
       <t>The following text illustrates BGP CT having the property of
-      providing tiered fallback options at a per route granularity. In <xref
+      providing tiered fallback options at a per-route granularity. In <xref
       target="ArchOv"/>, the Resolution Schemes are shown and the following
       next hop resolutions are done by PE12 and PE21:<list>
           <t>Resolve IP1 next hop over available tunnels in TRDB for Transport
@@ -390,7 +390,7 @@
       over extended BGP-CT tunnels that resolve over SR-TE tunnels in AS2.</t>
 
       <t>This document describes procedures using MPLS forwarding
-      architecture. However, these procedures would work in similar manner for
+      architecture. However, these procedures would work in a similar manner for
       non-MPLS forwarding architectures as well. <xref target="SRv6-Support"/>
       describes the application of BGP CT over SRv6 data plane.</t>
     </section>
@@ -450,7 +450,7 @@
         <t>TE tunnels can be classified within a Transport Class based on the
         TE attributes they possess and the TE characteristics that the
         operator defines for that Transport Class. Due to the fact that
-        multipe TE tunneling protocols exist, their TE attributes and
+        multiple TE tunneling protocols exist, their TE attributes and
         characteristics may not be equal but sufficiently similar. Some
         examples of such classifications are as follows:<list>
             <t>Tunnels (RSVP-TE, IGP FLEX-ALGO, SR-TE) with a latency no
@@ -491,7 +491,7 @@
         <t>SNs or BNs originate routes for 'Classful Transport' address family
         from the TRDB. These routes have NLRI "RD:Endpoint", Transport Class
         RT and an MPLS label (or an identifier that represents an equivalent
-        of a label in a different forwarding archietecture). 'Classful
+        of a label in a different forwarding architecture). 'Classful
         Transport' family routes received with Transport Class RT are imported
         into its corresponding TRDB.</t>
       </section>
@@ -535,7 +535,7 @@
     represent "Best Effort Transport Class ID".</artwork>
         </figure>
 
-        <t>The VPN route import/export mecahnisms as specified in <xref
+        <t>The VPN route import/export mechanisms as specified in <xref
         target="RFC4364">BGP VPN</xref> and the Constrained Route Distribution
         mechanisms as specified in <xref target="RFC4684">Route Target
         Constraints</xref> can be applied to BGP CT routes using its Transport
@@ -648,19 +648,19 @@
       </section>
 
       <section anchor="ct-nhop" title="Next Hop Encoding">
-        <t>When the length of the Next hop Address field is 4 the next hop
+        <t>When the length of the Next hop Address field is 4, the next hop
         address is of type IPv4 address.</t>
 
-        <t>When the length of Next hop Address field is 16 (or 32) the next
+        <t>When the length of Next hop Address field is 16 (or 32), the next
         hop address is of type IPv6 address (potentially followed by the
         link-local IPv6 address of the next hop).</t>
 
-        <t>When the length of Next hop Address field is 24 (or 48) the next
+        <t>When the length of Next hop Address field is 24 (or 48), the next
         hop address is of type VPN-IPv6 with an 8-octet RD set to zero
         (potentially followed by the link-local VPN-IPv6 address of the next
         hop with an 8-octet RD set to zero).</t>
 
-        <t>When the length of the Next hop Address field is 12 the next hop
+        <t>When the length of the Next hop Address field is 12, the next hop
         address is of type VPN-IPv4 with 8-octet RD set to zero.</t>
       </section>
 
@@ -837,7 +837,7 @@
 
             <t>Unique RD SHOULD be used by the originator of a Classful
             Transport route to disambiguate the multiple BGP advertisements
-            for a transport endpoint. An adminstrator may use duplicate RDs
+            for a transport endpoint. An administrator may use duplicate RDs
             based on local choice, understanding the impact on path diversity
             and troubleshooting, as described in <xref
             target="rd-lbl-usage"/>.</t>
@@ -1289,7 +1289,7 @@
 
     <section anchor="SRv6-Support" title="SRv6 Support">
       <t>This section describes how BGP CT family (e.g. AFI/SAFI 1/76) may be
-      used to set up inter domain tunnels of a certain Transport Class, when
+      used to set up interdomain tunnels of a certain Transport Class, when
       using Segment Routing over IPv6 (SRv6) data plane on the inter-AS links
       or as an intra-AS tunneling mechanism.</t>
 
@@ -1310,7 +1310,7 @@
       <t>It should be noted that prefixes carried in BGP CT family are
       transport layer end-points, e.g. PE loopback addresses. Thus, the SRv6
       SID carried in a BGP CT route is also a transport layer identifier. For
-      an illustration of BGP CT deployment in SRv6 neworks, refer to <xref
+      an illustration of BGP CT deployment in SRv6 networks, refer to <xref
       target="Appendix E"/> .</t>
     </section>
 
@@ -1319,7 +1319,7 @@
       <t>All Illustrations in this document make use of <xref
       target="RFC6890"/> IP address ranges. The range 192.0.2.0/24 is used to
       represent transport endpoints like loopback addresses. The range
-      203.0.113.0/24 is used to represent srevice route prefixes advertised in
+      203.0.113.0/24 is used to represent service route prefixes advertised in
       AFI/SAFIs: 1/1 or 1/128.</t>
 
       <section title="Reference Topology">
@@ -1441,7 +1441,7 @@
         ASBRs ASBR13, ASBR14. These egress nodes originate BGP CT routes for
         tunnel endpoint addresses, that are advertised as next hop in BGP
         service routes. In this example, both PEs participate in transport
-        classes Gold and Bronze. The protocol procedures are explained using
+        classes Gold and Bronze. The protocol procedures are explained using the
         Gold SLA transport plane and the Bronze SLA transport plane is used to
         highlight the path hiding aspects.</t>
 
@@ -1469,7 +1469,7 @@
         ABR24 negotiate BGP CT family with Ingress node PE25 in region 1. BGP
         LU family is also negotiated on these sessions alongside BGP CT
         family. BGP LU carries "best effort" transport class routes, BGP CT
-        carries gold, bronze transport class routes.</t>
+        carries Gold, Bronze transport class routes.</t>
 
         <t>PE11 is provisioned to originate BGP CT route with Gold SLA to
         endpoint PE11. This route is sent with NLRI RD prefix
@@ -1486,11 +1486,11 @@
         is installed at ASBR13 for B-L1 with a next hop pointing to
         ASBR13_to_PE11_gold tunnel.</t>
 
-        <t>Similarly, ASBR14 also receives BGP CT route for
+        <t>Similarly, ASBR14 also receives a BGP CT route for
         192.0.2.11:100:192.0.2.11 from PE11 and it resolves over the tunnel
         ASBR14_to_PE11_gold. The route is then readvertised by ASBR14 in BGP
         CT family to ASBRs ASBR21, ASBR22 according to export policy. This
-        route is sent with same NLRI RD prefix 192.0.2.11:100:192.0.2.11,
+        route is sent with the same NLRI RD prefix 192.0.2.11:100:192.0.2.11,
         Label B-L2, next hop self, and transport-target:0:100. MPLS swap route
         is installed at ASBR14 for B-L1 with a next hop pointing to
         ASBR14_to_PE11_gold tunnel.</t>
@@ -1498,7 +1498,7 @@
         <t>In the Bronze plane, BGP CT route with Bronze SLA to endpoint PE11
         is originated by PE11 with a NLRI containing RD prefix
         192.0.2.11:200:192.0.2.11, and appropriate label. The RD allows both
-        Gold and Bronze advertisements traverse path selection pinchpoints
+        Gold and Bronze advertisements to traverse path selection pinchpoints
         without any path hiding at RRs or ASBRs. And route target extended
         community transport-target:0:200 lets the route resolve over Bronze
         tunnels in the network, similar to the process being described for
@@ -1509,7 +1509,7 @@
         hop EBGP sessions from ASBR13, ASBR14, and can compute ECMP/FRR
         towards them. ASBR21 readvertises BGP CT route for
         192.0.2.11:100:192.0.2.11 with next hop self (loopback address
-        192.0.2.21) to RR27, advertising a new label B-L3. MPLS swap route is
+        192.0.2.21) to RR27, advertising a new label B-L3. An MPLS swap route is
         installed for label B-L3 at ASBR21 to swap to received label B-L1,
         B-L2 and forward to ASBR13, ASBR14 respectively. RR27 readvertises
         this BGP CT route to ABR23, ABR24 with label and next hop
@@ -1518,7 +1518,7 @@
         <t>Similarly, ASBR22 receives BGP CT route 192.0.2.11:100:192.0.2.11
         over the single hop EBGP sessions from ASBR13, ASBR14, and
         readvertises with next hop self (loopback address 192.0.2.22) to RR27,
-        advertising a new label B-L4. MPLS swap route is installed for label
+        advertising a new label B-L4. An MPLS swap route is installed for label
         B-L4 at ASBR22 to swap to received label B-L1, B-L2 and forward to
         ASBR13, ASBR14 respectively. RR27 readvertises this BGP CT route also
         to ABR23, ABR24 with label and next hop unchanged.</t>
@@ -1526,7 +1526,7 @@
         <t>Addpath is enabled for BGP CT family on the sessions between RR27
         and ASBRs, ABRs such that routes for 192.0.2.11:100:192.0.2.11 with
         the next hops ASBR21 and ASBR22 are reflected to ABR23, ABR24 without
-        any path hiding. Thus giving ABR23 visibility of both available next
+        any path hiding. Thus, ABR23 is given visibility of both available next
         hops for Gold SLA.</t>
 
         <t>ABR23 receives the route with next hop 192.0.2.21, label B-L3 from
@@ -1568,14 +1568,14 @@
 
         <t>When PE25 receives service routes from RR26 with next hop
         192.0.2.11 and mapping community Color:0:100, it resolves over this
-        BGP CT route 192.0.2.11:100:192.0.2.11. Thus pushing label B-L5, and
+        BGP CT route 192.0.2.11:100:192.0.2.11. Thus, pushing label B-L5, and
         pushing as top label the labels associated with PE25_to_ABR23_gold
         tunnel.</t>
       </section>
 
       <section title="Data Plane View">
         <section title="Steady State">
-          <t>This section describes how the data plane looks like in steady
+          <t>This section describes how the data plane looks in steady
           state.</t>
 
           <t>CE41 transmits an IP packet with destination as 203.0.113.31. On
@@ -1583,13 +1583,13 @@
           associated with the CE41 interface. This lookup yields the service
           route that pushes the VPN service label V-L1, BGP CT label B-L5, and
           labels for PE25_to_ABR23_gold tunnel. Thus, PE25 encapsulates the IP
-          packet in MPLS packet with label V-L1(innermost), B-L5, and top
+          packet in an MPLS packet with label V-L1(innermost), B-L5, and top
           label as PE25_to_ABR23_gold tunnel. This MPLS packet is thus
           transmitted to ABR23 using Gold SLA.</t>
 
           <t>ABR23 decapsulates the packet received on PE25_to_ABR23_gold
           tunnel as required, and finds the MPLS packet with label B-L5. It
-          performs lookup for label B-L5 in the global MPLS FIB. This yields
+          performs a lookup for label B-L5 in the global MPLS FIB. This yields
           the route that swaps label B-L5 with label B-L4, and pushes the top
           label provided by ABR23_to_ASBR22_gold tunnel. Thus, ABR23 transmits
           the MPLS packet with label B-L4 to ASBR22, on a tunnel that
@@ -1597,7 +1597,7 @@
 
           <t>ASBR22 similarly performs a lookup for label B-L4 in global MPLS
           FIB, finds the route that swaps label B-L4 with label B-L2, and
-          forwards to ASBR13 over the directly connected MPLS enabled
+          forwards to ASBR13 over the directly connected MPLS-enabled
           interface. This interface is a common resource not dedicated to any
           specific transport class, in this example.</t>
 
@@ -1630,21 +1630,21 @@
         </section>
 
         <section title="Absorbing Failure of Primary Path: Fallback to Best Effort Tunnels ">
-          <t>This section describes how the data plane reacts when gold path
+          <t>This section describes how the data plane reacts when a Gold path
           experiences a failure, but no alternate path exists.</t>
 
-          <t>Assuming tunnel ABR23_to_ASBR22_gold goes down, such that now
-          end-to-end Gold path does not exist in the network. This makes the
-          BGP CT route for RD prefix 192.0.2.11:100:192.0.2.11 unusable at
+          <t>Assume tunnel ABR23_to_ASBR22_gold goes down, such that now no
+          end-to-end Gold path exists in the network. This makes the
+          BGP CT route for RD prefix 192.0.2.11:100:192.0.2.11 is unusable at
           ABR23. This makes ABR23 send a BGP withdrawal for
           192.0.2.11:100:192.0.2.11 to PE25.</t>
 
-          <t>Withdrawal for 192.0.2.11:100:192.0.2.11 allows PE25 to react to
-          the loss of gold path to 192.0.2.11. Assuming PE25 is provisioned to
+          <t>The withdrawal for 192.0.2.11:100:192.0.2.11 allows PE25 to react to
+          the loss of the Gold path to 192.0.2.11. Assuming PE25 is provisioned to
           use best-effort transport class as the backup path, this withdrawal
           of BGP CT route allows PE25 to adjust the next hop of the VPN
           Service-route to push the labels provided by the BGP LU route. That
-          repairs the traffic to go via best effort path. PE25 can also be
+          repairs the traffic to go via the best effort path. PE25 can also be
           provisioned to use Bronze transport class as the backup path. The
           repair will happen in similar manner in that case as-well.</t>
 
@@ -1666,14 +1666,14 @@
         Color Domains) and contain tunnels with equivalent set of colors
         (Homogenous Color Domains).</t>
 
-        <t>However in the real world, this may not always be guaranteed. Two
-        domains may independently manage their color namespaces, these are
+        <t>However, in the real world, this may not always be guaranteed. Two
+        domains may independently manage their color namespaces; these are
         known as Non-Agreeing Color Domains. Two domains may have tunnels with
-        unequal set of colors, these are known as Heterogeneous Color
+        unequal sets of colors; these are known as Heterogeneous Color
         Domains.</t>
 
         <t>This section describes how BGP CT is deployed in such scenarios to
-        preserve end to end Intent. Example described in this section use
+        preserve end-to-end Intent. Examples described in this section use
         Inter-AS Option C domains. But similar mechanisms will work for
         Inter-AS Option A and Inter-AS Option B scenarios as well.</t>
 
@@ -1729,7 +1729,7 @@
 
           <t>In the above topology shown in <xref
           target="BGPCT_NON_AGREEING_COLOR_DOMAIN"/>, we have three Autonomous
-          Systems. All the nodes in the topology supports BGP CT.</t>
+          Systems. All the nodes in the topology support BGP CT.</t>
 
           <t>In AS1 Gold SLA is represented by color 100 and Bronze by
           200.</t>
@@ -1780,7 +1780,7 @@
           color might not be locally available in a domain.</t>
 
           <t>The below example illustrates how traffic is stitched, when a
-          transit AS contains more shades for an SLA paths compared to Ingress
+          transit AS contains more shades for an SLA path compared to Ingress
           and Egress domains. This example shows how service routes can
           traverse through finer shades when available and take coarse shades
           otherwise.</t>
