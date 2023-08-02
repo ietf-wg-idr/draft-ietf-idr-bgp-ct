@@ -1289,7 +1289,7 @@
 
     <section anchor="SRv6-Support" title="SRv6 Support">
       <t>This section describes how BGP CT family (e.g. AFI/SAFI 1/76) may be
-      used to set up interdomain tunnels of a certain Transport Class, when
+      used to set up inter-domain tunnels of a certain Transport Class, when
       using Segment Routing over IPv6 (SRv6) data plane on the inter-AS links
       or as an intra-AS tunneling mechanism.</t>
 
@@ -1663,7 +1663,7 @@
       <section title="Managing Intent at Service and Transport layers.">
         <t><xref target="CTProc">Illustration of BGP CT Procedures </xref>
         shows multiple domains that agree on a color name space (Agreeing
-        Color Domains) and contain tunnels with equivalent set of colors
+        Color Domains) and contain tunnels with equivalent sets of colors
         (Homogenous Color Domains).</t>
 
         <t>However, in the real world, this may not always be guaranteed. Two
@@ -1685,10 +1685,10 @@
           domain independently maintains its own local transport color
           namespace.</t>
 
-          <t>As explained in <xref target="Nexthop_Resoln_Schm">next hop
-          Resolution Scheme</xref> , mapping community carried on service
+          <t>As explained in <xref target="Nexthop_Resoln_Schm">Next Hop
+          Resolution Scheme</xref> , a mapping community carried on a service
           route maps to a resolution scheme. The mapping community values for
-          the service route can be abstract and does not require to match the
+          the service route can be abstract and are not required to match the
           transport color namespace. This abstract mapping community value
           representing a global service layer intent is mapped to a local
           transport layer intent available in each domain.</t>
@@ -1705,7 +1705,7 @@
           each domain boundary. This rewrite helps to map one domain's
           namespace to another.</t>
 
-          <t>The below example illustrates how traffic is stitched and SLA is
+          <t>The following example illustrates how traffic is stitched and SLA is
           preserved when domains don't use the same namespace at the transport
           layer. Each domain specifies the same SLA using different color
           values.</t>
@@ -1745,7 +1745,7 @@
 
           <t>The service route carries an abstract mapping community that maps
           to the required SLA. For example, Service routes that need to
-          resolve over gold transport tunnels, carries a mapping community
+          resolve over Gold transport tunnels, carry a mapping community
           color:0:100500. In AS3 it maps to a resolution scheme containing
           TRDB with color 500 whereas in AS2 it maps to a TRDB with color 300
           and in AS1 it maps to a TRDB with color 100. Co-ordination is needed
@@ -1754,13 +1754,13 @@
 
           <t>At the AS boundary, the transport-class route-target is rewritten
           for the BGP CT routes. In the above topology, At ASBR31 the
-          transport-target:0:500 for gold tunnels is rewritten to
+          transport-target:0:500 for Gold tunnels is rewritten to
           transport-target:0:300 and then advertised to ASBR22. Similarly, the
-          transport-target:0:300 for gold tunnels are re-written to
+          transport-target:0:300 for Gold tunnels are re-written to
           transport-target:0:100 at ASBR21 before advertising to ASBR11. At
           PE11, the transport route received with transport-target:0:100 will
           be added to the color 100 TRDB. The service route received with
-          mapping community color:0:100500 at PE1 maps to the gold TRDB and
+          mapping community color:0:100500 at PE1 maps to the Gold TRDB and
           resolves over this transport route.</t>
 
           <t>Inter-domain traffic forwarding in the above topology works as
@@ -1768,7 +1768,7 @@
 
           <t>Transport-target re-write requires co-ordination of color values
           between domains in the transport layer. This method avoids the need
-          to re-write service route mapping community, keeping the service
+          to re-write service route mapping communities, keeping the service
           layer homogenous and simple to manage. Coordinating Transport Class
           RT between adjacent domains is easier than coordinating service
           layer colors deployed in various non-adjacent domains.</t>
@@ -1779,14 +1779,14 @@
           map a service layer intent to the matching transport color, as the
           color might not be locally available in a domain.</t>
 
-          <t>The below example illustrates how traffic is stitched, when a
+          <t>The following example illustrates how traffic is stitched, when a
           transit AS contains more shades for an SLA path compared to Ingress
           and Egress domains. This example shows how service routes can
           traverse through finer shades when available and take coarse shades
           otherwise.</t>
 
           <figure anchor="BGPCT_HETERO_COLOR_DOMAIN" suppress-title="false"
-                  title="Tranport Layer with Heterogenous Color Domains ">
+                  title="Transport Layer with Heterogenous Color Domains ">
             <artwork align="left" xml:space="preserve">
            &lt;---------- Service Routes AFI/SAFI 1/128 ------------------------
 
@@ -1802,7 +1802,7 @@
 </artwork>
           </figure>
 
-          <t>In the above topology show in <xref
+          <t>In the preceding topology shown in <xref
           target="BGPCT_HETERO_COLOR_DOMAIN"/>, we have three Autonomous
           Systems. All the nodes in the topology support BGP CT.</t>
 
@@ -1813,8 +1813,7 @@
 
           <t>In AS3 Gold SLA is represented by color 100.</t>
 
-          <t>This problem can be solved by two approaches, described
-          below.</t>
+          <t>This problem can be solved by the two following approaches:</t>
 
           <section title="Duplicate Tunnels Approach">
             <t>In this approach, duplicate tunnels that satisfy Gold SLA are
@@ -1926,7 +1925,7 @@
           sessions within the domain. Nodes in AS1 and AS3 negotiate BGP CT
           family on IBGP sessions within the domain. ASBR11 and ASBR21 as well
           as ASBR22 and ASBR31 negotiate BGP LU family on the EBGP session
-          over directly connected interdomain links. ASBR11 and ASBR31 have
+          over directly connected inter-domain links. ASBR11 and ASBR31 have
           reachability to each other&rsquo;s loopbacks through BGP LU. ASBR11
           and ASBR31 negotiate BGP CT family over a multihop EBGP session
           formed using BGP LU reachability.</t>
@@ -2007,7 +2006,7 @@
           eases migration in case of heterogeneous color domains as-well.</t>
         </section>
 
-        <section title="BGP CT - Interop between MPLS and Other Forwarding Technologies ">
+        <section title="BGP CT - Interoperability between MPLS and Other Forwarding Technologies ">
           <t>This section describes how nodes supporting dissimilar
           encapsulation technologies can interoperate with each other when
           using BGP CT family.</t>
