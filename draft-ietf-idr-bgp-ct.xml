@@ -1282,7 +1282,7 @@
       <t>The TSC can use the Transport Class Identifier (Color value) to
       provision a transport tunnel in a specific IETF Network Slice.</t>
 
-      <t>Further, the Network Slice Controller can use the Mapping Community
+      <t>Furthermore, the Network Slice Controller can use the Mapping Community
       on the service route to map traffic to the desired IETF Network
       Slice.</t>
     </section>
@@ -1823,7 +1823,7 @@
             <t>These tunnels will be installed in TRDBs corresponding to
             transport classes of color 101, 102.</t>
 
-            <t>Service routes received with mapping community (eg:
+            <t>Service routes received with mapping community (e.g.:
             transport-target or color community) can resolve over these
             tunnels in the TRDB with matching color by using resolution
             schemes.</t>
@@ -1837,7 +1837,7 @@
             customized to map the received mapping community (e.g.,
             transport-target or color community) over available Gold SLA
             tunnels. This conserves resource usage with no additional state in
-            transport and forwarding plane.</t>
+            the transport or forwarding planes.</t>
 
             <t>Service routes advertised by PE31 that need to resolve over
             Gold1 transport tunnels carry a mapping community color:0:101. In
@@ -1845,8 +1845,8 @@
             100 TRDB using a customized resolution scheme. In AS2, Gold1 is
             available and it maps to color 101 TRDB.</t>
 
-            <t>To facilitate this mapping, every SN/BN in all AS provision
-            required transport classes viz. 100, 101 and 102. SN and BN in AS1
+            <t>To facilitate this mapping, every SN/BN in all AS provisioning
+            required transport classes, viz. 100, 101 and 102. SN and BN in AS1
             and AS3 are provisioned with customized resolution schemes that
             resolve routes with transport-target:0:101 or
             transport-target:0:102 strictly over color 100 TRDB.</t>
@@ -1917,8 +1917,8 @@
 </artwork>
           </figure>
 
-          <t>In the above topology shown in <xref target="BGPCTIsles"/>, there
-          are three AS domains. AS1 and AS3 supports BGP CT, while AS2 does
+          <t>In the preceding topology shown in <xref target="BGPCTIsles"/>, there
+          are three AS domains. AS1 and AS3 support BGP CT, while AS2 does
           not support BGP CT.</t>
 
           <t>Nodes in AS1, AS2, and AS3 negotiate BGP LU family on IBGP
@@ -1940,7 +1940,7 @@
               <t>ASBR31_to_PE31_gold - SRTE tunnel</t>
             </list></t>
 
-          <t>Following tunnels exist for Bronze Transport Class<list>
+          <t>The following tunnels exist for Bronze Transport Class<list>
               <t>PE11_to_ASBR11_bronze - RSVP-TE tunnel</t>
 
               <t>ASBR11_to_PE11_bronze - RSVP-TE tunnel</t>
@@ -1950,16 +1950,16 @@
               <t>ASBR31_to_PE31_bronze - SRTE tunnel</t>
             </list></t>
 
-          <t>These tunnels are provisioned to belong to Transport Classes gold
-          and bronze, and are advertised between ASBR31 and ASBR11 with Next
+          <t>These tunnels are provisioned to belong to Transport Classes Gold
+          and Bronze, and are advertised between ASBR31 and ASBR11 with Next
           hop self.</t>
 
           <t>In AS2, that does not support BGP CT, a separate loopback may be
-          used on ASBR22 and ASBR21 to represent gold and bronze SLAs viz
+          used on ASBR22 and ASBR21 to represent Gold and Bronze SLAs, viz.
           ASBR22_lpbk_gold, ASBR22_lpbk_bronze, ASBR21_lpbk_gold and
           ASBR21_lpbk_bronze.</t>
 
-          <t>Further, the following tunnels exist in AS2 to satisfy the
+          <t>Furthermore, the following tunnels exist in AS2 to satisfy the
           different SLAs, using per SLA loopback endpoints:<list>
               <t>ASBR21_to_ASBR22_lpbk_gold - RSVP-TE tunnel</t>
 
@@ -1971,7 +1971,7 @@
             </list></t>
 
           <t>RD:PE11 BGP CT route is originated from PE11 towards ASBR11 with
-          transport-target gold. ASBR11 readvertises this route with next hop
+          transport-target 'gold.' ASBR11 readvertises this route with next hop
           set to ASBR11_lpbk_gold on the EBGP multihop session towards ASBR31.
           ASBR11 originates BGP LU route for endpoint ASBR11_lpbk_gold on EBGP
           session to ASBR21 with a 'gold SLA' community, and BGP LU route for
@@ -1982,26 +1982,26 @@
           <t>ASBR21 readvertises the BGP LU route for endpoint
           ASBR11_lpbk_gold to ASBR22 with next hop set by local policy config
           to the unique loopback ASBR21_lpbk_gold by matching the 'gold SLA'
-          community received as part BGP LU advertisement from ASBR11. ASBR22
+          community received as part of BGP LU advertisement from ASBR11. ASBR22
           receives this route and resolves the next hop over the
           ASBR22_to_ASBR21_lpbk_gold RSVP-TE tunnel. On successful resolution,
           ASBR22 readvertises this BGP LU route to ASBR31 with next hop self
           and a new label.</t>
 
           <t>ASBR31 adds the ASBR11_lpbk_gold route received via EBGP LU from
-          ASBR22 to gold TRDB based on the received 'gold SLA' community.
-          ASBR31 uses this gold TRDB route to resolve the next hop
+          ASBR22 to 'gold' TRDB based on the received 'gold SLA' community.
+          ASBR31 uses this 'gold' TRDB route to resolve the next hop
           ASBR11_lpbk_gold received on BGP CT route with transport-target
-          gold, for the prefix RD:PE11 received over the EBGP multihop CT
+          'gold,' for the prefix RD:PE11 received over the EBGP multihop CT
           session, thus preserving the end-to-end SLA. Now ASBR31 readvertises
           the BGP CT route for RD:PE11 with next hop as self thus stitching
-          with the BGP LU LSP in AS2. Intradomain traffic forwarding in AS1
+          with the BGP LU LSP in AS2. Intra-domain traffic forwarding in AS1
           and AS3 follows the procedures as explained in <xref
           target="CTProc">Illustration of CT Procedures</xref></t>
 
           <t>In cases where an SLA cannot be preserved in AS2 because SLA
-          specific tunnels and loopbacks dont exist in AS2, traffic can be
-          carried over available SLAs (eg: best-effort SLA) by rewriting the
+          specific tunnels and loopbacks don't exist in AS2, traffic can be
+          carried over available SLAs (e.g.: best-effort SLA) by rewriting the
           next hop to ASBR21 loopback assigned to the available SLA. This
           eases migration in case of heterogeneous color domains as-well.</t>
         </section>
@@ -2451,7 +2451,7 @@ Registry Name: BGP Transitive Extended Community Types
       (AFI/SAFI: 1/76 or 2/76), which is explicitly configured and negotiated
       between BGP speakers. This mitigates the risk of advertising internal
       loopback addresses outside the administrative control of the provider
-      network. Further, procedures defined in <xref
+      network. Furthermore, procedures defined in <xref
       target="secure-propagate"/> mitigate the risk of unintented propagation
       of BGP CT routes across Inter-AS boundaries even when BGP CT family is
       negotiated on the EBGP session.</t>
@@ -2927,7 +2927,7 @@ Registry Name: BGP Transitive Extended Community Types
             <t>This ensures that if CE1 sends MPLS packet with a label that
             was not advertised to the CE1, the packet will be dropped.</t>
 
-            <t>Further, the routes for labels PVL1, PVL2 installed in MPLS
+            <t>Furthermore, the routes for labels PVL1, PVL2 installed in MPLS
             context table "A" can match on 'Bottom of stack' bit being 'one',
             ensuring a MPLS packet is accepted from CE1 only if it has no more
             than one label in the label stack.</t>
@@ -3353,7 +3353,7 @@ Registry Name: BGP Transitive Extended Community Types
         are available in <xref target="BGP-CT-UPDATE-PACKING-TEST">BGP CT
         Update packing Test Results </xref>.</t>
 
-        <t>Further, even in today's BGP LU deployments each egress node
+        <t>Furthermore, even in today's BGP LU deployments each egress node
         originates BGP LU route for it's loopback, with some attributes like
         community identifying the originating node or region, and AIGP
         attribute. These attributes may be unique per egress node, thus do not
@@ -3540,7 +3540,7 @@ Registry Name: BGP Transitive Extended Community Types
 
       <section title="Analysis of Forwarding Behavior">
         <t>The forwarding behavior thus achieved is similar to Inter-AS Option
-        B, without carrying any service routes at the border nodes. Further,
+        B, without carrying any service routes at the border nodes. Furthermore,
         the MPLS namespace labels are installed in all the border nodes, which
         allows for quicker traffic convergence in case of border node failure.
         The number of border nodes can be increased in a scale out manner,
@@ -3943,7 +3943,7 @@ Registry Name: BGP Transitive Extended Community Types
           resolution scheme. Alternatively, the intent fallback policy may be
           provisioned on the ingress nodes directly.</t>
 
-          <t>Further, IPv6 Unicast family is widely deployed to carry Internet
+          <t>Furthermore, IPv6 Unicast family is widely deployed to carry Internet
           Service routes. Repurposing IPv6 Unicast family to carry Transport
           routes also may impact the operational complexity and security
           aspects in the network.</t>
