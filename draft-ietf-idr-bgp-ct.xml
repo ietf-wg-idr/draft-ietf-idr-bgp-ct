@@ -1221,7 +1221,7 @@
       Sub-Type of 31744, and a length of 13. The Value field consists of the
       RD advertised with the Classful Transport prefix, the IPv4 prefix (with
       trailing 0 bits to make 32 bits in all) and a prefix length encoded as
-      shown in below in <xref target="FECv4"/>.</t>
+      shown in <xref target="FECv4"/>.</t>
 
       <figure anchor="FECv4" suppress-title="false"
               title="Classful Transport IPv4 FEC">
@@ -2149,8 +2149,8 @@
         modes to calibrate the level of path visibility and the amount of
         route churn in a multi-domain network.</t>
 
-        <t>Consider a multi-domain BGP CT network as illustrated in the <xref
-        target="MultiDomainNetwork"/> below.</t>
+        <t>Consider a multi-domain BGP CT network as illustrated in the following <xref
+        target="MultiDomainNetwork"/>:</t>
 
         <figure anchor="MultiDomainNetwork" suppress-title="false"
                 title="Managing Transport Route Visibility in Multi Domain Network">
@@ -3677,7 +3677,7 @@ Registry Name: BGP Transitive Extended Community Types
         color.</t>
 
         <t>The SRv6 tunnel ingress routes are published in the Gold and Bronze
-        TRDBs at ASBR2 as shown below:</t>
+        TRDBs at ASBR2 as follows:</t>
 
         <figure suppress-title="true" title="TRDBs at ASBR2">
           <artwork align="left" xml:space="preserve">  Gold TRDB routes at ASBR2
@@ -3714,7 +3714,7 @@ Registry Name: BGP Transitive Extended Community Types
 
         <t>Firstly, PE2 originates BGP CT route for its transport layer
         endpoints like Loopback address with SRv6 SID information to ASBR2 as
-        shown below.</t>
+        follows:</t>
 
         <figure suppress-title="true"
                 title="BGP CT advertisements from PE2 to ASBR2">
@@ -3747,7 +3747,7 @@ Registry Name: BGP Transitive Extended Community Types
         ASBR2-SRv6-PE2-gold-replace/128 is installed in the global IPv6 FIB
         with "Gold-SRv6-Tunnel-to-PE2" tunnel as next hop, enabling SRv6
         forwarding for gold SLA. The BGP CT routes for RD1:PE2-LPBK is further
-        advertised towards ASBR1 via EBGP CT as shown below. During this
+        advertised towards ASBR1 via EBGP CT as follows. During this
         readvertisement, the next hop is set to self, and SID is rewritten to
         ASBR2-SRv6-gold-Replace.</t>
 
@@ -3863,7 +3863,7 @@ Registry Name: BGP Transitive Extended Community Types
         and Mapping Community as Color:0:200 indicating Bronze SLA will use
         the Resolution Scheme associated with its Mapping Community to resolve
         over the PE2-LPBK CT route installed in the bronze TRDB, and push the
-        SRv6-bronze SID stack to reach PE2. This is shown below.</t>
+        SRv6-bronze SID stack to reach PE2. This is shown as follows:</t>
 
         <figure suppress-title="true" title="Service layer processing">
           <artwork align="left" xml:space="preserve">
