@@ -1066,14 +1066,15 @@
 
         <t>The mechanisms described in <xref target="MULTI-NH-ATTR">BGP
         MultiNexthop Attribute</xref> allow a BGP route to carry multiple next
-        hop addresses. It also allows specifying 'Transport Class ID' as a
-        qualifier for each next hop address.</t>
+        hop addresses. Specifying 'Transport Class ID' as a
+        qualifier for each next hop address is also allowed.</t>
 
         <t>It should be noted that in such cases "Transport Class/Color" can
         exist in multiple places on the same route, and a precedence order
         needs to be established to determine which Transport Class the route's
         next hop should resolve over. This document suggests the following
-        order of precedence, more preferred first: <list>
+        order of precedence, more specific scoping of
+        Color preferred to less specific scoping: <list>
             <t>Transport Class ID SubTLV, in MultiNexthop Attribute.</t>
 
             <t>Color SubTLV, in Tunnel Encapsulation Attribute.</t>
@@ -1081,11 +1082,10 @@
             <t>Transport Target Extended community, on BGP CT route.</t>
 
             <t>Color Extended community, on BGP service route.</t>
-          </list> The above precedence order follows more specific scoping of
-        Color to less specific scoping.</t>
+          </list></t>
 
         <t>Transport Class ID specified for Nexthop-Leg subTLV in a
-        MultiNextHop attribute is more specific indication of Color than Color
+        MultiNextHop attribute is a more specific indication of Color than Color
         subTLV in a TEA, which in turn is more specific than Mapping Community
         (Transport Target) on a BGP CT transport route, which is in turn more
         specific than a Service route scoped Mapping Community (Color Extended
@@ -1289,7 +1289,7 @@
 
     <section anchor="SRv6-Support" title="SRv6 Support">
       <t>This section describes how BGP CT family (e.g. AFI/SAFI 1/76) may be
-      used to set up inter-domain tunnels of a certain Transport Class, when
+      used to set up interdomain tunnels of a certain Transport Class, when
       using Segment Routing over IPv6 (SRv6) data plane on the inter-AS links
       or as an intra-AS tunneling mechanism.</t>
 
@@ -1653,7 +1653,7 @@
           PIC (Prefix scale Independent Convergence). The repair time will be
           proportional to time taken for withdrawing the BGP CT route.</t>
 
-          <t>The above examples demonstrate the various levels of failsafe
+          <t>These examples demonstrate the various levels of failsafe
           mechanisms available to protect traffic in a BGP CT network.</t>
         </section>
       </section>
@@ -1727,7 +1727,7 @@
 </artwork>
           </figure>
 
-          <t>In the above topology shown in <xref
+          <t>In the topology shown in <xref
           target="BGPCT_NON_AGREEING_COLOR_DOMAIN"/>, we have three Autonomous
           Systems. All the nodes in the topology support BGP CT.</t>
 
@@ -1750,7 +1750,7 @@
           TRDB with color 500 whereas in AS2 it maps to a TRDB with color 300
           and in AS1 it maps to a TRDB with color 100. Co-ordination is needed
           to provision the resolution schemes in each domain as explained
-          above.</t>
+          previously.</t>
 
           <t>At the AS boundary, the transport-class route-target is rewritten
           for the BGP CT routes. In the above topology, At ASBR31 the
@@ -1925,7 +1925,7 @@
           sessions within the domain. Nodes in AS1 and AS3 negotiate BGP CT
           family on IBGP sessions within the domain. ASBR11 and ASBR21 as well
           as ASBR22 and ASBR31 negotiate BGP LU family on the EBGP session
-          over directly connected inter-domain links. ASBR11 and ASBR31 have
+          over directly connected interdomain links. ASBR11 and ASBR31 have
           reachability to each other&rsquo;s loopbacks through BGP LU. ASBR11
           and ASBR31 negotiate BGP CT family over a multihop EBGP session
           formed using BGP LU reachability.</t>
