@@ -776,7 +776,7 @@
         function of unique EPs multiplied by BNs in the ingress domain that do
         next hop self. BGP CT provides flexible RD and Label allocation modes
         to address operational requirements in a multi-domain network. The
-        impacts on the control plane and forwarding behavior for the above
+        impacts on the control plane and forwarding behavior for these
         modes are detailed with an example in <xref
         target="CTRouteVis">Managing Transport Route Visibility</xref></t>
       </section>
@@ -909,7 +909,7 @@
           can be used for any Transport Class.</t>
 
           <t>If the inter-AS links need to honor Transport Class, then the BN
-          MUST follow procedures of an Ingress node described above and
+          MUST follow procedures of an Ingress node described previously and
           perform next hop resolution process. In order to make the link
           Transport Class aware, the route to directly connected PNH is
           installed in the TRDB belonging to the associated Transport
@@ -959,13 +959,13 @@
           <t>Taking into account some other deployment considerations can also
           help in avoiding this problem, e.g.,: <list>
               <t>IGP metric should be assigned such that "ABR to redundant
-              ABR" cost is inferior than "ABR to upstream ASBR" cost.</t>
+              ABR" cost is inferior to "ABR to upstream ASBR" cost.</t>
 
               <t>Tunnels belonging to non-best effort Transport Classes SHOULD
               NOT be provisioned between ABRs. This will ensure that the route
               received from an ABR with next hop self will not be usable at a
               redundant ABR.</t>
-            </list> Using one or more of the above approaches softens the
+            </list> Using one or more of the previous approaches softens the
           possibility of such loops in a network with redundant ABRs.</t>
         </list>
       </section>
