@@ -1289,7 +1289,7 @@
 
     <section anchor="SRv6-Support" title="SRv6 Support">
       <t>This section describes how BGP CT family (e.g. AFI/SAFI 1/76) may be
-      used to set up interdomain tunnels of a certain Transport Class, when
+      used to set up inter-domain tunnels of a certain Transport Class, when
       using Segment Routing over IPv6 (SRv6) data plane on the inter-AS links
       or as an intra-AS tunneling mechanism.</t>
 
@@ -1753,7 +1753,7 @@
           previously.</t>
 
           <t>At the AS boundary, the transport-class route-target is rewritten
-          for the BGP CT routes. In the above topology, At ASBR31 the
+          for the BGP CT routes. In the previous topology, at ASBR31, the
           transport-target:0:500 for Gold tunnels is rewritten to
           transport-target:0:300 and then advertised to ASBR22. Similarly, the
           transport-target:0:300 for Gold tunnels are re-written to
@@ -1763,7 +1763,7 @@
           mapping community color:0:100500 at PE1 maps to the Gold TRDB and
           resolves over this transport route.</t>
 
-          <t>Inter-domain traffic forwarding in the above topology works as
+          <t>Inter-domain traffic forwarding in the previous topology works as
           explained in <xref target="CTProc"/>.</t>
 
           <t>Transport-target re-write requires co-ordination of color values
@@ -1925,7 +1925,7 @@
           sessions within the domain. Nodes in AS1 and AS3 negotiate BGP CT
           family on IBGP sessions within the domain. ASBR11 and ASBR21 as well
           as ASBR22 and ASBR31 negotiate BGP LU family on the EBGP session
-          over directly connected interdomain links. ASBR11 and ASBR31 have
+          over directly connected inter-domain links. ASBR11 and ASBR31 have
           reachability to each other&rsquo;s loopbacks through BGP LU. ASBR11
           and ASBR31 negotiate BGP CT family over a multihop EBGP session
           formed using BGP LU reachability.</t>
