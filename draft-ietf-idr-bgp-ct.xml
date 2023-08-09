@@ -1131,10 +1131,10 @@
           Transport and <xref target="RFC4684">Route Target Constraints
           (RTC)</xref>.</t>
 
-          <t>An egress SN MAY advertise BGP CT route for RD:eSN with two Route
+          <t>An egress SN MAY advertise a BGP CT route for RD:eSN with two Route
           Targets: transport-target:0:&lt;TC&gt; and a RT carrying
-          &lt;eSN&gt;:&lt;TC&gt;. Where TC is the Transport Class identifier,
-          and eSN is the IP-address used by SN as BGP next hop in its service
+          &lt;eSN&gt;:&lt;TC&gt;, where TC is the Transport Class identifier,
+          and eSN is the IP address used by SN as BGP next hop in its service
           route advertisements.</t>
 
           <t>Note that such use of the IP address specific route target
@@ -1168,7 +1168,7 @@
           transport routes to reach eSN. This allows constrained distribution
           of the transport routes to the PNHs actually required by iSN.</t>
 
-          <t>When the path of route propagation of BGP CT routes is same as
+          <t>When the path of route propagation of BGP CT routes is the same as
           the RTC routes, a BN would learn the RTC routes advertised by
           ingress SNs and propagate further. This will allow constraining
           distribution of BGP CT routes for a PNH to only the necessary BNs in
