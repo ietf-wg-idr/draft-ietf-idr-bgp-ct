@@ -2854,8 +2854,8 @@ Registry Name: BGP Transitive Extended Community Types
 
           <t>With a <xref target="MULTI-NH-ATTR">BGP MultiNexthop
           Attribute</xref> attached to a AFI/SAFI 1/1 service route, it is
-          possible to extend the PE-CE BGP signalling (if used) to communicate
-          such information to the CE1. In the above example, the MNH contains
+          possible to extend the PE-CE BGP signaling (if used) to communicate
+          such information to the CE1. In the preceding example, the MNH contains
           two Next hop Legs, described by two Forwarding Instruction TLVs.
           Each Next hop Leg contains PE1's peering self address in <xref
           target="MNH-EP">Endpoint Identifier TLV</xref> , the color Gold or
@@ -2902,7 +2902,7 @@ Registry Name: BGP Transitive Extended Community Types
 
           <t>A <xref target="MULTI-NH-ATTR">BGP MultiNexthop Attribute</xref>
           is attached to a AFI/SAFI 1/1 service route to convey the MPLS Label
-          information to CE1. In the above example, the MNH contains two Next
+          information to CE1. In the preceding example, the MNH contains two Next
           hop Legs, described by two Forwarding Instruction TLVs. Each Next
           hop Leg contains PE1's peering self address in <xref
           target="MNH-EP">Endpoint Identifier TLV</xref> , the color Gold or
@@ -3151,7 +3151,7 @@ Registry Name: BGP Transitive Extended Community Types
 
           <t>This route is readvertised by ASBR21 on BGP session inside VRF
           with next hop self. EBGP session peering on interface address.
-          ASBR21 acts like a CE to ASBR11, and the above mentioned process
+          ASBR21 acts like a CE to ASBR11, and the previously mentioned process
           repeats in AS1, until the route reaches PE11 and resolves over
           PE11_to_ASBR11_gold RSVP TE tunnel.</t>
 
@@ -3583,7 +3583,7 @@ Registry Name: BGP Transitive Extended Community Types
 </artwork>
         </figure>
 
-        <t>In the above topology shown in <xref target="BGPCTSRv6"/>, there
+        <t>In the topology shown in <xref target="BGPCTSRv6"/>, there
         are two AS domains, AS1 and AS2. These are pure IPv6 domains, with no
         MPLS enabled. Inter-AS links between AS1 and AS2 are also enabled with
         IPv6 forwarding.</t>
@@ -3660,7 +3660,7 @@ Registry Name: BGP Transitive Extended Community Types
         <t>Architecturally, the forwarding semantic of End.REPLACE SID
         operation is similar to Label SWAP operation in MPLS data plane. When
         a route received with End SID (e.g. PE2-SRv6-gold or PE2-SRv6-bronze
-        transport SIDs) is readvertised with next hop self, a IPv6 forwarding
+        transport SIDs) is readvertised with next hop self, an IPv6 forwarding
         entry is emitted with a forwarding semantic of End.B6.Encaps
         operation, which means: Update IPv6 DA with Next Segment in SRH, and
         Encapsulate SRv6 SID corresponding to the correct transport class.
@@ -3671,7 +3671,7 @@ Registry Name: BGP Transitive Extended Community Types
             <t>PE2-SRv6-S1-DT4 : PE2 End.DT4 SID for service S1</t>
           </list></t>
 
-        <t>The locators for above provisioned SRv6 SIDs will be advertised via
+        <t>The locators for the provisioned SRv6 SIDs will be advertised via
         ISIS between Intra-AS nodes and the established SRv6 tunnel to the
         node's loopback will be installed into the corresponding TRDB based on
         color.</t>
