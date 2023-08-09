@@ -1181,15 +1181,15 @@
           <t>However, the amount of state carried in RTC family may become
           proportional to the number of PNHs in the network. To strike a
           balance, the RTC route advertisements for &lt;Origin
-          ASN&gt;:&lt;eSN&gt;/[80|176] MAY be confined to the BNs in home
-          region of ingress-SN, or the BNs of a super core.</t>
+          ASN&gt;:&lt;eSN&gt;/[80|176] MAY be confined to the BNs in the home
+          region of an ingress SN, or the BNs of a super core.</t>
 
           <t>Such a BN in the core of the network imports BGP CT routes with
-          Transport-Target:0:&lt;TC&gt; and generates a RTC route for
+          Transport-Target:0:&lt;TC&gt; and generates an RTC route for
           &lt;Origin ASN&gt;:0:&lt;TC&gt;/96, while not propagating the more
           specific RTC requests for specific PNHs. This lets the BN learn
           transport routes to all eSN nodes but confine their propagation to
-          ingress-SNs.</t>
+          ingress SNs.</t>
         </list>
       </section>
 
@@ -1554,8 +1554,8 @@
         tunnel.</t>
 
         <t>In this manner, the Gold transport LSP "ASBR13_to_PE11_gold" in
-        egress-domain is extended by BGP CT until the ingress-node PE25 in
-        ingress domain, to create an end-to-end Gold SLA path. MPLS swap
+        the egress domain is extended by BGP CT until the ingress node PE25 in
+        the ingress domain, to create an end-to-end Gold SLA path. MPLS swap
         routes are installed at ASBR13, ASBR22 and ABR23, when propagating the
         PE11 BGP CT Gold transport class route 192.0.2.11:100:192.0.2.11 with
         next hop self towards PE25.</t>
