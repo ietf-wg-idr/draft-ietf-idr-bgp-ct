@@ -10,7 +10,7 @@
 <?rfc inline="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="exp" docName="draft-ietf-idr-bgp-ct-13" ipr="trust200902">
+<rfc category="exp" docName="draft-ietf-idr-bgp-ct-14" ipr="trust200902">
   <front>
     <title abbrev="BGP Classful Transport Planes">BGP Classful Transport
     Planes</title>
@@ -57,7 +57,7 @@
       </address>
     </author>
 
-    <date day="14" month="08" year="2023"/>
+    <date day="20" month="08" year="2023"/>
 
     <abstract>
       <t>This document specifies a mechanism, referred to as "Intent Driven
@@ -165,7 +165,7 @@
 
       <t>TC: Transport Class</t>
 
-      <t>TC-BE: Best-Effort Transport Class</t>
+      <t>TC-BE: Best Effort Transport Class</t>
 
       <t>AFI: Address Family Identifier</t>
 
@@ -378,10 +378,10 @@
       target="ArchOv"/>, the Resolution Schemes are shown and the following
       next hop resolutions are done by PE12 and PE21:<list>
           <t>Resolve IP1 next hop over available tunnels in TRDB for Transport
-          Class 100 with fallback to TRDB for best-effort.</t>
+          Class 100 with fallback to TRDB for best effort.</t>
 
           <t>Resolve IP2 next hop over available tunnels in TRDB for Transport
-          Class 200 with fallback to TRDB for best-effort.</t>
+          Class 200 with fallback to TRDB for best effort.</t>
 
           <t>Resolve IP3 next hop over available tunnels in TRDB for Transport
           Class 100 with fallback to TRDB for Transport Class 200.</t>
@@ -582,6 +582,8 @@
       desired intent. The Resolution Scheme may also be configured to include
       an ordered list of fallback Transport Classes.</t>
 
+     <section anchor="Mapping_Comm" title="Mapping Community">
+
       <t>Mapping community is a "role" and not a new type of community; any
       BGP Community or Extended Community may play this role. A Mapping
       Community maps to exactly one Resolution Scheme.</t>
@@ -607,6 +609,12 @@
       Scheme that contains the primary Transport Class along with fallback to
       best effort tunnels. The administrator MAY customize the resolution
       schemes to map to a different ordered list of TRDBs.</t>
+
+      <t>A Mapping Community uniquely identifies a Resolution Scheme. An
+      implementation SHOULD allow associating multiple Mapping Communities to
+      a Resolution Scheme. This helps with renumbering and migration scenarios.</t>
+
+      </section>
     </section>
 
     <section anchor="ct-family" title="BGP Classful Transport Family">
@@ -736,51 +744,6 @@
         multiple instances of the same transport prefix in a BGP Update.</t>
       </section>
 
-      <section anchor="rd-lbl-usage"
-               title="Usage of Route Distinguisher and Label Allocation Modes">
-        <t>RDs aid in troubleshooting provider networks that deploy BGP CT, by
-        uniquely identifying the originator of a route across an
-        administrative domain that may either span multiple domains within a
-        provider network or span closely coordinated provider networks.</t>
-
-        <t>The use of RDs also provides an option for signaling forwarding
-        diversity within the same Transport Class. An SN can advertise an SEP
-        with the same Transport Class in multiple BGP CT routes with unique
-        RDs.</t>
-
-        <t>For e.g., unique "RDx:EP1" prefixes can be advertised by an SN for
-        an EP1 to different upstream BNs with unique forwarding specific
-        encapsulation (e.g., Label), in order to collect traffic statistics at
-        the SN for each BN. In absence of RD, duplicated Transport Class/Color
-        values will be needed in the transport network to achieve such use
-        cases.</t>
-
-        <t>The allocation of RDs is done at the point of origin of the BGP CT
-        route. This can either be an Egress SN or a BN. The default RD
-        allocation mode is to use a unique RD per originating node for an EP.
-        This mode allows for the ingress to uniquely identify each originated
-        path. Alternatively, the same RD may be provisioned for multiple
-        originators of the same EP. This mode can be used when the ingress
-        does not require full visibility of all nodes originating an EP.</t>
-
-        <t>A label is allocated for a BGP CT route when it is advertised with
-        next hop self by a SN or a BN. An implementation may use different
-        label allocation modes with BGP CT. The recommended label allocation
-        mode is per-prefix as it provides better traffic convergence
-        properties than per-next hop label allocation mode. Furthermore, BGP
-        CT offers two flavors for per-prefix label allocation. The first
-        flavor assigns a label for each unique "RD, EP". The second flavor
-        assigns a label for each unique "Transport Class, EP" while ignoring
-        the RD.</t>
-
-        <t>In a BGP CT network, the number of routes at an Ingress PE is a
-        function of unique EPs multiplied by BNs in the ingress domain that do
-        next hop self. BGP CT provides flexible RD and Label allocation modes
-        to address operational requirements in a multi-domain network. The
-        impacts on the control plane and forwarding behavior for these modes
-        are detailed with an example in <xref target="CTRouteVis">Managing
-        Transport Route Visibility</xref></t>
-      </section>
     </section>
 
     <section title="Protocol Procedures">
@@ -871,7 +834,9 @@
           <t>The received BGP CT route MUST be added to the TRDB corresponding
           to the Transport Class "C1". So that service routes can resolve over
           this BGP CT ingress route. RD is stripped by the ingress node from
-          the BGP CT NLRI prefix when a BGP CT route is added to a TRDB.</t>
+          the BGP CT NLRI prefix when a BGP CT route is added to a TRDB.
+          This step does not apply if the Transport Class RT is received on a
+          route in BGP address family that does not have SAFI 76.</t>
         </list>
       </section>
 
@@ -942,33 +907,46 @@
           reflects routes with next hop self, as is the case for ABR BNs in a
           BGP transport network, this rule may cause loops.</t>
 
-          <t>Implementations SHOULD provide a way to alter the tie-breaking
-          rule specified in <xref target="RFC4456">Section 9 of BGP RR</xref>
-          so as to tie-break on CLUSTER_LIST step before ORIGINATOR_ID step,
-          when performing path selection for BGP CT routes.</t>
-
-          <t>This document suggests the following modification to the BGP
-          Decision Process Tie Breaking rules (Section. 9.1.2.2 of <xref
-          target="RFC4271"/>) that can be applied to path selection of BGP CT
-          family routes:</t>
-
-          <t>The following rule SHOULD be inserted between Steps e) and f): a
-          BGP Speaker SHOULD prefer a route with the shorter CLUSTER_LIST
-          length. The CLUSTER_LIST length is zero if a route does not carry
-          the CLUSTER_LIST attribute.</t>
-
-          <t>Taking into account some other deployment considerations can also
-          help in avoiding this problem, e.g.,: <list>
-              <t>IGP metric should be assigned such that "ABR to redundant
-              ABR" cost is inferior to "ABR to upstream ASBR" cost.</t>
-
-              <t>Tunnels belonging to non-best effort Transport Classes SHOULD
-              NOT be provisioned between ABRs. This will ensure that the route
-              received from an ABR with next hop self will not be usable at a
-              redundant ABR.</t>
-            </list> Using one or more of the above approaches softens the
+          <t>Using one or more of the following approaches softens the
           possibility of such loops in a network with redundant ABRs.</t>
+
         </list>
+          <section title="Path selection change">
+            <list>
+            <t>Implementations SHOULD provide a way to alter the tie-breaking
+            rule specified in <xref target="RFC4456">Section 9 of BGP RR</xref>
+            so as to tie-break on CLUSTER_LIST step before ORIGINATOR_ID step,
+            when performing path selection for BGP CT routes.</t>
+
+            <t>This document suggests the following modification to the BGP
+            Decision Process Tie Breaking rules (Section. 9.1.2.2 of <xref
+            target="RFC4271"/>) that can be applied to path selection of BGP CT
+            family routes:</t>
+
+            <t>The following rule SHOULD be inserted between Steps e) and f): a
+            BGP Speaker SHOULD prefer a route with the shorter CLUSTER_LIST
+            length. The CLUSTER_LIST length is zero if a route does not carry
+            the CLUSTER_LIST attribute.</t>
+            </list>
+          </section>
+
+          <section title="Other mechanisms">
+          <list>
+            <t>Taking into account some other deployment considerations can also
+            help in avoiding this problem, e.g.,:
+             <list>
+                <t>IGP metric should be assigned such that "ABR to redundant
+                ABR" cost is inferior to "ABR to upstream ASBR" cost.</t>
+
+                <t>Tunnels belonging to non 'best effort' Transport Classes SHOULD
+                NOT be provisioned between ABRs. This will ensure that the route
+                received from an ABR with next hop self will not be usable at a
+                redundant ABR.</t>
+             </list>
+            </t>
+          </list>
+          </section>
+
       </section>
 
       <section title="Ingress Nodes Receiving Service Routes with a Mapping Community">
@@ -978,7 +956,7 @@
           route (e.g, Color Extended Community) is used to decide to which
           resolution scheme this route is to be mapped. The resolution scheme
           for a Color Extended Community with Color "C1" contains TRDB for
-          Transport Class with same ID, followed by Best-Effort TRDB. The
+          Transport Class with same ID, followed by Best Effort TRDB. The
           administrator MAY customize the resolution scheme to map to a
           different ordered list of TRDBs.</t>
 
@@ -993,28 +971,9 @@
           any of the Transport Route Databases, the service route MUST be
           considered unusable for forwarding purpose and be withdrawn.</t>
         </list>
-      </section>
 
-      <section title="Coordination Between Domains Using Different Community Namespaces">
-        <list>
-          <t>Cooperating Inter-AS Option C domains may sometimes not agree on
-          RT, RD, Mapping community or Transport Route Target values because
-          of differences in community namespaces (e.g. during network mergers
-          or renumbering for expansion). Such deployments may deploy
-          mechanisms to map and rewrite the Route Target values on domain
-          boundaries, using per ASBR import policies. This is no different
-          than any other BGP VPN family. Mechanisms used in inter-AS VPN
-          deployments may be leveraged with the Classful Transport family
-          also.</t>
+        <t>Note: For an illustration of above procedures in a MPLS network, refer to <xref target="CTProc"/>.</t>
 
-          <t>The resolution schemes SHOULD allow association with multiple
-          Mapping Communities. This minimizes service disruption during
-          renumbering, network merger or transition scenarios.</t>
-
-          <t>The Transport Class Route Target Extended Community is useful to
-          avoid collision with regular Route Target namespace used by service
-          routes.</t>
-        </list>
       </section>
 
       <section title="Best Effort Transport Class">
@@ -1105,218 +1064,69 @@
         <t>Flowspec BGP family acts as just another service that can make use
         of BGP CT architecture to achieve Flow based forwarding with SLAs.</t>
       </section>
-    </section>
 
-    <section title="Scaling Considerations">
-      <section anchor="secure-propagate"
-               title="Avoiding Unintended Spread of BGP CT Routes Across Domains">
-        <list>
-          <t><xref target="RFC8212"/> suggests BGP speakers require explicit
-          configuration of both BGP Import and Export Policies in order to
-          receive or send routes over EBGP sessions.</t>
+      <section title="Applicability to IPv6">
+        <t>This section describes applicability of BGP CT to IPv6 at various
+        layers. BGP CT procedures apply equally to an IPv6 enabled Intra-AS or
+        Inter-AS Option A, B, C network.</t>
 
-          <t>It is recommended to follow this for BGP CT routes. It will
-          prohibit unintended advertisement of transport routes throughout the
-          BGP CT transport domain, which may span across multiple AS domains.
-          This will conserve usage of MPLS label and next hop resources in the
-          network. An ASBR of a domain can be provisioned to allow routes with
-          only the Transport Route Targets that are required by SNs in the
-          domain.</t>
-        </list>
+        <t>A BGP CT enabled network supports IPv6 service families (e.g.,
+        AFI/SAFI 2/1 or 2/128) and IPv6 transport signaling protocols like
+        SRTEv6, LDPv6, RSVP-TEv6.</t>
+
+        <t>Procedures in this document also apply to a network with Pure
+        IPv6 core, that uses MPLS forwarding for intra-domain tunnels and
+        inter-AS links. BGP CTv6 family (AFI/SAFI: 2/76) is used to carry
+        global IPv6 address tunnel endpoints in the NLRI. Service family
+        routes (e.g. AFI/SAFI: 1/1, 2/1, 1/128, 2/128) are also advertised
+        with those Global IPv6 addresses as next hop.</t>
+
+        <t>Procedures in this document also apply to a 6PE network with an
+        IPv4 core, that uses MPLS forwarding for intra-domain tunnels and
+        Inter-AS links. BGP CTv6 family (AFI/SAFI: 2/76) is used to carry IPv4
+        Mapped IPv6 address tunnel endpoints in the NLRI. IPv6 Service family
+        routes (e.g., AFI/SAFI: 2/1, 2/128) are also advertised with those
+        IPv4 Mapped IPv6 addresses as next hop.</t>
+
+        <t>The PE-CE attachment circuits may use IPv4 addresses only, IPv6
+        addresses only, or both IPv4 and IPv6 addresses.</t>
+        <t/>
       </section>
 
-      <section title="Constrained Distribution of PNHs to SNs (On-Demand Next Hop)">
-        <list>
-          <t>This section describes how the number of Protocol Next hops
-          advertised to a SN or BN can be constrained using BGP Classful
-          Transport and <xref target="RFC4684">Route Target Constraints
-          (RTC)</xref>.</t>
+      <section anchor="SRv6-Support" title="SRv6 Support">
+        <t>This section describes how BGP CT family (e.g. AFI/SAFI 2/76) may be
+        used to set up inter-domain tunnels of a certain Transport Class, when
+        using Segment Routing over IPv6 (SRv6) data plane on the inter-AS links
+        or as an intra-AS tunneling mechanism.</t>
 
-          <t>An egress SN MAY advertise a BGP CT route for RD:eSN with two
-          Route Targets: transport-target:0:&lt;TC&gt; and a RT carrying
-          &lt;eSN&gt;:&lt;TC&gt;, where TC is the Transport Class identifier,
-          and eSN is the IP address used by SN as BGP next hop in its service
-          route advertisements.</t>
+        <t><xref target="RFC8986"/> specifies the SRv6 Endpoint behaviors (End
+        USD, End.BM, End.B6.Encaps). <xref target="SRV6-INTER-DOMAIN"/>
+        specifies the SRv6 Endpoint behaviors (END.REPLACE, END.REPLACEB6 and
+        END.DB6). These are leveraged for BGP CT routes with SRv6 data
+        plane.</t>
 
-          <t>Note that such use of the IP address specific route target
-          &lt;eSN&gt;:&lt;TC&gt; is optional in a BGP CT network. It is
-          required only if there is a requirement to prune the propagation of
-          the transport route for an egress node eSN to only the set of
-          ingress nodes that need it. When only RT of
-          transport-target:0:&lt;TC&gt; is used, the pruning happens in
-          granularity of Transport Class ID (Color), and not BGP next hop; BGP
-          CT routes will not be advertised into domains with PEs that don't
-          import its transport class.</t>
+        <t>The BGP Classful Transport route update for SRv6 MUST include an
+        attribute containing SRv6 SID information. This may be either the BGP
+        Prefix-SID attribute as specified in <xref target="RFC9252"/> or the BGP
+        MultiNexthop attribute as specified in <xref target="MULTI-NH-ATTR">BGP
+        MultiNexthop Attribute</xref> Section 5.4.3.3. If the Prefix-SID
+        attribute is used, it MUST NOT include SRv6 SID structure for
+        Transposition described in <xref target="RFC9252"/>.</t>
 
-          <t>The transport-target:0:&lt;TC&gt; is the new type of route target
-          (Transport Class RT) defined in this document. It is carried in BGP
-          extended community attribute (BGP attribute code 16).</t>
-
-          <t>The RT carrying &lt;eSN&gt;:&lt;TC&gt; MAY be an IP-address
-          specific regular RT (BGP attribute code 16), IPv6-address specific
-          RT (BGP attribute code 25), or a Wide-communities based RT (BGP
-          attribute code 34) as described in <xref target="RTC-Ext">Route
-          Target Constrain Extension</xref>. This document recommends using
-          Wide-communities based RT for the same.</t>
-
-          <t>An ingress SN MAY import BGP CT routes with Route Target carrying
-          &lt;eSN&gt;:&lt;TC&gt;. The ingress SN may learn the eSN values
-          either by configuration, or it may discover them from the BGP next
-          hop field in the BGP VPN service routes received from eSN. A BGP
-          ingress SN receiving a BGP service route with next hop of eSN
-          generates a RTC/Extended-RTC route for Route Target prefix
-          &lt;Origin ASN&gt;:&lt;eSN&gt;/[80|176] in order to learn BGP CT
-          transport routes to reach eSN. This allows constrained distribution
-          of the transport routes to the PNHs actually required by iSN.</t>
-
-          <t>When the path of route propagation of BGP CT routes is the same
-          as the RTC routes, a BN would learn the RTC routes advertised by
-          ingress SNs and propagate further. This will allow constraining
-          distribution of BGP CT routes for a PNH to only the necessary BNs in
-          the network, closer to the egress SN.</t>
-
-          <t>This mechanism provides "On Demand Next hop" of BGP CT routes,
-          which help with the scaling of MPLS forwarding state at SN and
-          BN.</t>
-
-          <t>However, the amount of state carried in RTC family may become
-          proportional to the number of PNHs in the network. To strike a
-          balance, the RTC route advertisements for &lt;Origin
-          ASN&gt;:&lt;eSN&gt;/[80|176] MAY be confined to the BNs in the home
-          region of an ingress SN, or the BNs of a super core.</t>
-
-          <t>Such a BN in the core of the network imports BGP CT routes with
-          Transport-Target:0:&lt;TC&gt; and generates an RTC route for
-          &lt;Origin ASN&gt;:0:&lt;TC&gt;/96, while not propagating the more
-          specific RTC requests for specific PNHs. This lets the BN learn
-          transport routes to all eSN nodes but confine their propagation to
-          ingress SNs.</t>
-        </list>
+        <t>It should be noted that prefixes carried in BGP CT family are
+        transport layer end-points, e.g. PE loopback addresses. Thus, the SRv6
+        SID carried in a BGP CT route is also a transport layer identifier. For
+        an illustration of BGP CT deployment in SRv6 networks, refer to <xref
+        target="Appendix E"/> .</t>
       </section>
 
-      <section title="Limiting The Visibility Scope of PE Loopback as PNHs">
-        <list>
-          <t>It may be even more desirable to limit the number of PNHs that
-          are globally visible in the network. This is possible using
-          mechanism described in <xref target="Appendix D"/></t>
-
-          <t>Such that advertisement of PE loopback addresses as next-hop in
-          BGP service routes is confined to the region they belong to. An
-          anycast IP-address called "Context Protocol Nexthop Address" (CPNH,
-          <xref target="CPNH"/>) abstracts the SNs in a region from other
-          regions in the network, swapping the SN scoped service label with a
-          CPNH scoped private namespace label.</t>
-
-          <t>This provides much greater advantage in terms of scaling and
-          convergence. Changes to implement this feature are required only on
-          the local region's BNs and RRs.</t>
-        </list>
-      </section>
-    </section>
-
-    <section title="OAM Considerations">
-      <t>MPLS OAM procedures specified in <xref target="RFC8029"/> also apply
-      to BGP Classful Transport.</t>
-
-      <t>The 'Target FEC Stack' sub-TLV for IPv4 Classful Transport has a
-      Sub-Type of 31744, and a length of 13. The Value field consists of the
-      RD advertised with the Classful Transport prefix, the IPv4 prefix (with
-      trailing 0 bits to make 32 bits in all) and a prefix length encoded as
-      shown in <xref target="FECv4"/>.</t>
-
-      <figure anchor="FECv4" suppress-title="false"
-              title="Classful Transport IPv4 FEC">
-        <artwork align="left" xml:space="preserve">
-       0                   1                   2                   3
-       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |                      Route Distinguisher                      |
-      |                          (8 octets)                           |
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |                         IPv4 prefix                           |
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      | Prefix Length |                 Must Be Zero                  |
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-</artwork>
-      </figure>
-
-      <t>The 'Target FEC Stack' sub-TLV for IPv6 Classful Transport has a
-      Sub-Type of 31745, and a length of 25. The Value field consists of the
-      RD advertised with the Classful Transport prefix, the IPv6 prefix (with
-      trailing 0 bits to make 128 bits in all) and a prefix length encoded as
-      shown in <xref target="FECv6"/>.</t>
-
-      <figure anchor="FECv6" suppress-title="false"
-              title="Classful Transport IPv6 FEC">
-        <artwork align="left" xml:space="preserve">
-       0                   1                   2                   3
-       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |                      Route Distinguisher                      |
-      |                          (8 octets)                           |
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |                         IPv6 prefix                           |
-      |                                                               |
-      |                                                               |
-      |                                                               |
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      | Prefix Length |                 Must Be Zero                  |
-      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-</artwork>
-      </figure>
-
-      <t>These prefix layouts are inherited from Sections 3.2.5, 3.2.6 in
-      <xref target="RFC8029"/></t>
-    </section>
-
-    <section title="Applicability to Network Slicing">
-      <t>In Network Slicing, the Transport Slice Controller (TSC) is
-      responsible for customizing and setting up the underlying transport
-      (e.g. RSVP-TE, SRTE tunnels with desired characteristics) and resources
-      (e.g., polices/shapers) in a transport network to create an IETF Network
-      Slice.</t>
-
-      <t>The Transport Class construct described in this document can be used
-      to realize the "IETF Network Slice" defined in <xref
-      target="TEAS-NS"/></t>
-
-      <t>The TSC can use the Transport Class Identifier (Color value) to
-      provision a transport tunnel in a specific IETF Network Slice.</t>
-
-      <t>Furthermore, the Network Slice Controller can use the Mapping
-      Community on the service route to map traffic to the desired IETF
-      Network Slice.</t>
-    </section>
-
-    <section anchor="SRv6-Support" title="SRv6 Support">
-      <t>This section describes how BGP CT family (e.g. AFI/SAFI 1/76) may be
-      used to set up inter-domain tunnels of a certain Transport Class, when
-      using Segment Routing over IPv6 (SRv6) data plane on the inter-AS links
-      or as an intra-AS tunneling mechanism.</t>
-
-      <t><xref target="RFC8986"/> specifies the SRv6 Endpoint behaviors (End
-      USD, End.BM, End.B6.Encaps). <xref target="SRV6-INTER-DOMAIN"/>
-      specifies the SRv6 Endpoint behaviors (END.REPLACE, END.REPLACEB6 and
-      END.DB6). These are leveraged for BGP CT routes with SRv6 data
-      plane.</t>
-
-      <t>The BGP Classful Transport route update for SRv6 MUST include an
-      attribute containing SRv6 SID information. This may be either the BGP
-      Prefix-SID attribute as specified in <xref target="RFC9252"/> or the BGP
-      MultiNexthop attribute as specified in <xref target="MULTI-NH-ATTR">BGP
-      MultiNexthop Attribute</xref> Section 5.4.3.3. If the Prefix-SID
-      attribute is used, it MUST NOT include SRv6 SID structure for
-      Transposition described in <xref target="RFC9252"/>.</t>
-
-      <t>It should be noted that prefixes carried in BGP CT family are
-      transport layer end-points, e.g. PE loopback addresses. Thus, the SRv6
-      SID carried in a BGP CT route is also a transport layer identifier. For
-      an illustration of BGP CT deployment in SRv6 networks, refer to <xref
-      target="Appendix E"/> .</t>
     </section>
 
     <section anchor="CTProc"
-             title="Illustration of BGP CT Procedures in Inter AS Option C">
+             title="Illustration of BGP CT Procedures">
+
+      <t>This section illustrates BGP CT procedures in an Inter AS Option C MPLS network.</t>
+
       <t>All Illustrations in this document make use of <xref
       target="RFC6890"/> IP address ranges. The range 192.0.2.0/24 is used to
       represent transport endpoints like loopback addresses. The range
@@ -1349,16 +1159,17 @@
 </artwork>
         </figure>
 
-        <t>This example shows a provider network that consists of two ASes,
-        AS1 and AS2. They are serving customers AS3, AS4 respectively. Traffic
-        direction being described is CE41 to CE31. CE31 may request a specific
-        SLA (e.g. mapped to Gold for this example), when traversing these
-        provider networks.</t>
+        <t>This example shows a provider MPLS network that consists of two
+        ASes, AS1 and AS2. They are serving customers AS3, AS4 respectively.
+        Traffic direction being described is CE41 to CE31. CE31 may request a
+        specific SLA (e.g. mapped to Gold for this example), when traversing
+        these provider networks.</t>
 
         <t>AS2 is further divided into two regions. So, there are three tunnel
         domains in provider's space. AS1 uses <xref target="RFC9350">ISIS
         Flex-Algo</xref> intra-domain tunnels, whereas AS2 uses RSVP-TE
-        intra-domain tunnels.</t>
+        intra-domain tunnels. MPLS forwarding is used within these domains and
+        on inter-domain links.</t>
 
         <t>The network exposes two Transport Classes: "Gold" with Transport
         Class id 100, "Bronze" with Transport Class id 200. These Transport
@@ -1642,7 +1453,7 @@
 
           <t>The withdrawal for 192.0.2.11:100:192.0.2.11 allows PE25 to react
           to the loss of the Gold path to 192.0.2.11. Assuming PE25 is
-          provisioned to use best-effort transport class as the backup path,
+          provisioned to use best effort transport class as the backup path,
           this withdrawal of BGP CT route allows PE25 to adjust the next hop
           of the VPN Service-route to push the labels provided by the BGP LU
           route. That repairs the traffic to go via the best effort path. PE25
@@ -1661,7 +1472,315 @@
       </section>
     </section>
 
+    <section title="Scaling Considerations">
+      <section anchor="secure-propagate"
+               title="Avoiding Unintended Spread of BGP CT Routes Across Domains">
+        <list>
+          <t><xref target="RFC8212"/> suggests BGP speakers require explicit
+          configuration of both BGP Import and Export Policies in order to
+          receive or send routes over EBGP sessions.</t>
+
+          <t>It is recommended to follow this for BGP CT routes. It will
+          prohibit unintended advertisement of transport routes throughout the
+          BGP CT transport domain, which may span across multiple AS domains.
+          This will conserve usage of MPLS label and next hop resources in the
+          network. An ASBR of a domain can be provisioned to allow routes with
+          only the Transport Route Targets that are required by SNs in the
+          domain.</t>
+        </list>
+      </section>
+
+      <section title="Constrained Distribution of PNHs to SNs (On-Demand Next Hop)">
+        <list>
+          <t>This section describes how the number of Protocol Next hops
+          advertised to a SN or BN can be constrained using BGP Classful
+          Transport and <xref target="RFC4684">Route Target Constraints
+          (RTC)</xref>.</t>
+
+          <t>An egress SN MAY advertise a BGP CT route for RD:eSN with two
+          Route Targets: transport-target:0:&lt;TC&gt; and a RT carrying
+          &lt;eSN&gt;:&lt;TC&gt;, where TC is the Transport Class identifier,
+          and eSN is the IP address used by SN as BGP next hop in its service
+          route advertisements.</t>
+
+          <t>Note that such use of the IP address specific route target
+          &lt;eSN&gt;:&lt;TC&gt; is optional in a BGP CT network. It is
+          required only if there is a requirement to prune the propagation of
+          the transport route for an egress node eSN to only the set of
+          ingress nodes that need it. When only RT of
+          transport-target:0:&lt;TC&gt; is used, the pruning happens in
+          granularity of Transport Class ID (Color), and not BGP next hop; BGP
+          CT routes will not be advertised into domains with PEs that don't
+          import its transport class.</t>
+
+          <t>The transport-target:0:&lt;TC&gt; is the new type of route target
+          (Transport Class RT) defined in this document. It is carried in BGP
+          extended community attribute (BGP attribute code 16).</t>
+
+          <t>The RT carrying &lt;eSN&gt;:&lt;TC&gt; MAY be an IP-address
+          specific regular RT (BGP attribute code 16), IPv6-address specific
+          RT (BGP attribute code 25), or a Wide-communities based RT (BGP
+          attribute code 34) as described in <xref target="RTC-Ext">Route
+          Target Constrain Extension</xref>. This document recommends using
+          Wide-communities based RT for the same.</t>
+
+          <t>An ingress SN MAY import BGP CT routes with Route Target carrying
+          &lt;eSN&gt;:&lt;TC&gt;. The ingress SN may learn the eSN values
+          either by configuration, or it may discover them from the BGP next
+          hop field in the BGP VPN service routes received from eSN. A BGP
+          ingress SN receiving a BGP service route with next hop of eSN
+          generates a RTC/Extended-RTC route for Route Target prefix
+          &lt;Origin ASN&gt;:&lt;eSN&gt;/[80|176] in order to learn BGP CT
+          transport routes to reach eSN. This allows constrained distribution
+          of the transport routes to the PNHs actually required by iSN.</t>
+
+          <t>When the path of route propagation of BGP CT routes is the same
+          as the RTC routes, a BN would learn the RTC routes advertised by
+          ingress SNs and propagate further. This will allow constraining
+          distribution of BGP CT routes for a PNH to only the necessary BNs in
+          the network, closer to the egress SN.</t>
+
+          <t>This mechanism provides "On Demand Next hop" of BGP CT routes,
+          which help with the scaling of MPLS forwarding state at SN and
+          BN.</t>
+
+          <t>However, the amount of state carried in RTC family may become
+          proportional to the number of PNHs in the network. To strike a
+          balance, the RTC route advertisements for &lt;Origin
+          ASN&gt;:&lt;eSN&gt;/[80|176] MAY be confined to the BNs in the home
+          region of an ingress SN, or the BNs of a super core.</t>
+
+          <t>Such a BN in the core of the network imports BGP CT routes with
+          Transport-Target:0:&lt;TC&gt; and generates an RTC route for
+          &lt;Origin ASN&gt;:0:&lt;TC&gt;/96, while not propagating the more
+          specific RTC requests for specific PNHs. This lets the BN learn
+          transport routes to all eSN nodes but confine their propagation to
+          ingress SNs.</t>
+        </list>
+      </section>
+
+      <section title="Limiting The Visibility Scope of PE Loopback as PNHs">
+        <list>
+          <t>It may be even more desirable to limit the number of PNHs that
+          are globally visible in the network. This is possible using
+          mechanism described in <xref target="Appendix D"/></t>
+
+          <t>Such that advertisement of PE loopback addresses as next-hop in
+          BGP service routes is confined to the region they belong to. An
+          anycast IP-address called "Context Protocol Nexthop Address" (CPNH,
+          <xref target="CPNH"/>) abstracts the SNs in a region from other
+          regions in the network, swapping the SN scoped service label with a
+          CPNH scoped private namespace label.</t>
+
+          <t>This provides much greater advantage in terms of scaling,
+          convergence and security. Changes to implement this feature are
+          required only on the local region's BNs and RRs.</t>
+        </list>
+      </section>
+    </section>
+
+    <section title="Operations and Manageability Considerations">
+
+      <section anchor="mpls-oam"
+               title="MPLS OAM">
+
+      <t>MPLS OAM procedures specified in <xref target="RFC8029"/> also apply
+      to BGP Classful Transport.</t>
+
+      <t>The 'Target FEC Stack' sub-TLV for IPv4 Classful Transport has a
+      Sub-Type of 31744, and a length of 13. The Value field consists of the
+      RD advertised with the Classful Transport prefix, the IPv4 prefix (with
+      trailing 0 bits to make 32 bits in all) and a prefix length encoded as
+      shown in <xref target="FECv4"/>.</t>
+
+      <figure anchor="FECv4" suppress-title="false"
+              title="Classful Transport IPv4 FEC">
+        <artwork align="left" xml:space="preserve">
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |                      Route Distinguisher                      |
+      |                          (8 octets)                           |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |                         IPv4 prefix                           |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      | Prefix Length |                 Must Be Zero                  |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</artwork>
+      </figure>
+
+      <t>The 'Target FEC Stack' sub-TLV for IPv6 Classful Transport has a
+      Sub-Type of 31745, and a length of 25. The Value field consists of the
+      RD advertised with the Classful Transport prefix, the IPv6 prefix (with
+      trailing 0 bits to make 128 bits in all) and a prefix length encoded as
+      shown in <xref target="FECv6"/>.</t>
+
+      <figure anchor="FECv6" suppress-title="false"
+              title="Classful Transport IPv6 FEC">
+        <artwork align="left" xml:space="preserve">
+       0                   1                   2                   3
+       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |                      Route Distinguisher                      |
+      |                          (8 octets)                           |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      |                         IPv6 prefix                           |
+      |                                                               |
+      |                                                               |
+      |                                                               |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+      | Prefix Length |                 Must Be Zero                  |
+      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</artwork>
+      </figure>
+
+      <t>These prefix layouts are inherited from Sections 3.2.5, 3.2.6 in
+      <xref target="RFC8029"/></t>
+      </section>
+
+      <section anchor="rd-lbl-usage"
+               title="Usage of Route Distinguisher and Label Allocation Modes">
+        <t>RDs aid in troubleshooting provider networks that deploy BGP CT, by
+        uniquely identifying the originator of a route across an
+        administrative domain that may either span multiple domains within a
+        provider network or span closely coordinated provider networks.</t>
+
+        <t>The use of RDs also provides an option for signaling forwarding
+        diversity within the same Transport Class. An SN can advertise an SEP
+        with the same Transport Class in multiple BGP CT routes with unique
+        RDs.</t>
+
+        <t>For e.g., unique "RDx:EP1" prefixes can be advertised by an SN for
+        an EP1 to different upstream BNs with unique forwarding specific
+        encapsulation (e.g., Label), in order to collect traffic statistics at
+        the SN for each BN. In absence of RD, duplicated Transport Class/Color
+        values will be needed in the transport network to achieve such use
+        cases.</t>
+
+        <t>The allocation of RDs is done at the point of origin of the BGP CT
+        route. This can either be an Egress SN or a BN. The default RD
+        allocation mode is to use a unique RD per originating node for an EP.
+        This mode allows for the ingress to uniquely identify each originated
+        path. Alternatively, the same RD may be provisioned for multiple
+        originators of the same EP. This mode can be used when the ingress
+        does not require full visibility of all nodes originating an EP.</t>
+
+        <t>A label is allocated for a BGP CT route when it is advertised with
+        next hop self by a SN or a BN. An implementation may use different
+        label allocation modes with BGP CT. The recommended label allocation
+        mode is per-prefix as it provides better traffic convergence
+        properties than per-next hop label allocation mode. Furthermore, BGP
+        CT offers two flavors for per-prefix label allocation. The first
+        flavor assigns a label for each unique "RD, EP". The second flavor
+        assigns a label for each unique "Transport Class, EP" while ignoring
+        the RD.</t>
+
+        <t>In a BGP CT network, the number of routes at an Ingress PE is a
+        function of unique EPs multiplied by BNs in the ingress domain that do
+        next hop self. BGP CT provides flexible RD and Label allocation modes
+        to address operational requirements in a multi-domain network. The
+        impacts on the control plane and forwarding behavior for these modes
+        are detailed with an example in <xref target="CTRouteVis">Managing
+        Transport Route Visibility</xref></t>
+      </section>
+
+      <section anchor="CTRouteVis" title="Managing Transport Route Visibility">
+        <t>This section details the usage of BGP CT RD and label allocation
+        modes to calibrate the level of path visibility and the amount of
+        route churn in a multi-domain network.</t>
+
+        <t>Consider a multi-domain BGP CT network as illustrated in the
+        following <xref target="MultiDomainNetwork"/>:</t>
+
+        <figure anchor="MultiDomainNetwork" suppress-title="false"
+                title="Managing Transport Route Visibility in Multi Domain Network">
+          <artwork align="left" xml:space="preserve">
+       |-----AS3-----|  |-------AS1------|
+
+                +--------ASBR11     +--PE11 (EP1)
+                |              \   /
+         +----ASBR31            (P)----PE12 (EP2)
+         |      |              / | \
+         |      +--------ASBR12  |  +--PE13 (EP3)
+         |                       |
+         |                       +-----PE14 (EP4)
+  PE31--(P)
+         |
+         |
+         |      +--------ASBR21     +--PE21 (EP5)
+         |      |              \   /
+         +----ASBR32            (P)----PE22 (EP6)
+                |              / | \
+                +--------ASBR22  |  +--PE22 (EP7)
+                                 |
+                                 +-----PE24 (EP8)
+
+       |-----AS3-----|  |-------AS2------|
+</artwork>
+        </figure>
+
+        <t>The following table details the BGP CT route and path visibility at
+        PE31-- for each TC.</t>
+
+        <figure anchor="RDLabelVis" suppress-title="false"
+                title="Route and Path Visibility at Ingress Node">
+          <artwork align="left" xml:space="preserve">
+      +--------+------+-------+-------+---------+---------+
+      |EP-type |Origin|RD-Mode|PP-Mode|CT Routes|CT Labels|
+      +--------+------+-------+-------+---------+---------+
+      |Unicast |SN    |Unique |TC,EP  |    16   |    8    |
+      |Unicast |SN    |Unique |RD,EP  |    16   |   16    |
+      |Unicast |BN    |Unique |TC,EP  |    16   |    8    |
+      |Unicast |BN    |Unique |RD,EP  |    16   |   16    |
+      |--------|------|-------|-------|---------|---------|
+      |Anycast |SN    |Unique |TC,EP  |    16   |    2    |
+      |Anycast |SN    |Unique |RD,EP  |    16   |   16    |
+      |Anycast |SN    |Same   |TC,EP  |     2   |    2    |
+      |Anycast |SN    |Same   |RD,EP  |     2   |    2    |
+      |Anycast |BN    |Unique |TC,EP  |     4   |    2    |
+      |Anycast |BN    |Unique |RD,EP  |     4   |    4    |
+      |Anycast |BN    |Same   |TC,EP  |     2   |    2    |
+      |Anycast |BN    |Same   |RD,IP  |     2   |    2    |
+      +--------+------+-------+-------+---------+---------+
+</artwork>
+        </figure>
+
+        <t>In the table shown in <xref target="RDLabelVis"/>, both route churn
+        and TE granularity are directly proportional to the number of CT
+        labels received.</t>
+
+        <t>Deploying unique RDs is strongly RECOMMENDED because it helps in
+        troubleshooting by uniquely identifying the originator of a route and
+        avoids path-hiding.</t>
+
+        <t>The previous table demonstrates that BGP CT allows an operator to
+        control how much path visibility and forwarding diversity is desired
+        in the network, for Unicast and Anycast endpoints.</t>
+      </section>
+
+    </section>
+
     <section title="Deployment Considerations.">
+      <section title="Coordination Between Domains Using Different Community Namespaces">
+          <t>Cooperating Inter-AS Option C domains may sometimes not agree on
+          RT, RD, Mapping community or Transport Route Target values because
+          of differences in community namespaces (e.g. during network mergers
+          or renumbering for expansion). Such deployments may deploy
+          mechanisms to map and rewrite the Route Target values on domain
+          boundaries, using per ASBR import policies. This is no different
+          than any other BGP VPN family. Mechanisms used in inter-AS VPN
+          deployments may be leveraged with the Classful Transport family
+          also.</t>
+
+          <t>A resolution scheme allows association with multiple
+          Mapping Communities. This minimizes service disruption during
+          renumbering, network merger or transition scenarios.</t>
+
+          <t>The Transport Class Route Target Extended Community is useful to
+          avoid collision with regular Route Target namespace used by service
+          routes.</t>
+      </section>
+
       <section title="Managing Intent at Service and Transport layers.">
         <t><xref target="CTProc">Illustration of BGP CT Procedures </xref>
         shows multiple domains that agree on a color name space (Agreeing
@@ -2003,7 +2122,7 @@
 
           <t>In cases where an SLA cannot be preserved in AS2 because SLA
           specific tunnels and loopbacks don't exist in AS2, traffic can be
-          carried over available SLAs (e.g.: best-effort SLA) by rewriting the
+          carried over available SLAs (e.g.: best effort SLA) by rewriting the
           next hop to ASBR21 loopback assigned to the available SLA. This
           eases migration in case of heterogeneous color domains as-well.</t>
         </section>
@@ -2146,108 +2265,24 @@
         </section>
       </section>
 
-      <section anchor="CTRouteVis" title="Managing Transport Route Visibility">
-        <t>This section details the usage of BGP CT RD and label allocation
-        modes to calibrate the level of path visibility and the amount of
-        route churn in a multi-domain network.</t>
+    </section>
 
-        <t>Consider a multi-domain BGP CT network as illustrated in the
-        following <xref target="MultiDomainNetwork"/>:</t>
+    <section title="Applicability to Network Slicing">
+      <t>In Network Slicing, the Network Slice Controller (IETF NSC) is
+      responsible for customizing and setting up the underlying transport
+      (e.g. RSVP-TE, SRTE tunnels with desired characteristics) and resources
+      (e.g., polices/shapers) in a transport network to create an IETF Network
+      Slice.</t>
 
-        <figure anchor="MultiDomainNetwork" suppress-title="false"
-                title="Managing Transport Route Visibility in Multi Domain Network">
-          <artwork align="left" xml:space="preserve">
-       |-----AS3-----|  |-------AS1------|
+      <t>The Transport Class construct described in this document can be used
+      to realize the "IETF Network Slice" described in Section 4 of <xref
+      target="TEAS-NS"/></t>
 
-                +--------ASBR11     +--PE11 (EP1)
-                |              \   /
-         +----ASBR31            (P)----PE12 (EP2)
-         |      |              / | \
-         |      +--------ASBR12  |  +--PE13 (EP3)
-         |                       |
-         |                       +-----PE14 (EP4)
-  PE31--(P)
-         |
-         |
-         |      +--------ASBR21     +--PE21 (EP5)
-         |      |              \   /
-         +----ASBR32            (P)----PE22 (EP6)
-                |              / | \
-                +--------ASBR22  |  +--PE22 (EP7)
-                                 |
-                                 +-----PE24 (EP8)
+      <t>The NSC can use the Transport Class Identifier (Color value) to
+      provision a transport tunnel in a specific IETF Network Slice.</t>
 
-       |-----AS3-----|  |-------AS2------|
-</artwork>
-        </figure>
-
-        <t>The following table details the BGP CT route and path visibility at
-        PE31-- for each TC.</t>
-
-        <figure anchor="RDLabelVis" suppress-title="false"
-                title="Route and Path Visibility at Ingress Node">
-          <artwork align="left" xml:space="preserve">
-      +--------+------+-------+-------+---------+---------+
-      |EP-type |Origin|RD-Mode|PP-Mode|CT Routes|CT Labels|
-      +--------+------+-------+-------+---------+---------+
-      |Unicast |SN    |Unique |TC,EP  |    16   |    8    |
-      |Unicast |SN    |Unique |RD,EP  |    16   |   16    |
-      |Unicast |BN    |Unique |TC,EP  |    16   |    8    |
-      |Unicast |BN    |Unique |RD,EP  |    16   |   16    |
-      |--------|------|-------|-------|---------|---------|
-      |Anycast |SN    |Unique |TC,EP  |    16   |    2    |
-      |Anycast |SN    |Unique |RD,EP  |    16   |   16    |
-      |Anycast |SN    |Same   |TC,EP  |     2   |    2    |
-      |Anycast |SN    |Same   |RD,EP  |     2   |    2    |
-      |Anycast |BN    |Unique |TC,EP  |     4   |    2    |
-      |Anycast |BN    |Unique |RD,EP  |     4   |    4    |
-      |Anycast |BN    |Same   |TC,EP  |     2   |    2    |
-      |Anycast |BN    |Same   |RD,IP  |     2   |    2    |
-      +--------+------+-------+-------+---------+---------+
-</artwork>
-        </figure>
-
-        <t>In the table shown in <xref target="RDLabelVis"/>, both route churn
-        and TE granularity are directly proportional to the number of CT
-        labels received.</t>
-
-        <t>Deploying unique RDs is strongly RECOMMENDED because it helps in
-        troubleshooting by uniquely identifying the originator of a route and
-        avoids path-hiding.</t>
-
-        <t>The previous table demonstrates that BGP CT allows an operator to
-        control how much path visibility and forwarding diversity is desired
-        in the network, for Unicast and Anycast endpoints.</t>
-      </section>
-
-      <section title="Applicability to IPv6">
-        <t>This section describes applicability of BGP CT to IPv6 at various
-        layers. BGP CT procedures apply equally to an IPv6 enabled Intra-AS or
-        Inter-AS Option A, B, C network.</t>
-
-        <t>A BGP CT enabled network supports IPv6 service families (e.g.,
-        AFI/SAFI 2/1 or 2/128) and IPv6 transport signaling protocols like
-        SRTEv6, LDPv6, RSVP-TEv6.</t>
-
-        <t>Procedures in this document also apply to a network with a Pure
-        IPv6 core, that uses either MPLS forwarding or SRv6 forwarding for
-        intra-domain tunnels and inter-AS links. BGP CTv6 family (AFI/SAFI:
-        2/76) is used to carry global IPv6 address tunnel endpoints in the
-        NLRI. Service family routes (e.g. AFI/SAFI: 1/1, 2/1, 1/128, 2/128)
-        are also advertised with those Global IPv6 addresses as next hop.</t>
-
-        <t>Procedures in this document also apply to a 6PE network with an
-        IPv4 core, that uses MPLS forwarding for intra-domain tunnels and
-        Inter-AS links. BGP CTv6 family (AFI/SAFI: 2/76) is used to carry IPv4
-        Mapped IPv6 address tunnel endpoints in the NLRI. IPv6 Service family
-        routes (e.g., AFI/SAFI: 2/1, 2/128) are also advertised with those
-        IPv4 Mapped IPv6 addresses as next hop.</t>
-
-        <t>The PE-CE attachment circuits may use IPv4 addresses only, IPv6
-        addresses only, or both IPv4 and IPv6 addresses.</t>
-
-        <t/>
-      </section>
+      <t>Furthermore, the NSC can use the Mapping Community on the service
+      route to map traffic to the desired IETF Network Slice.</t>
     </section>
 
     <section anchor="IANA" title="IANA Considerations">
@@ -2804,7 +2839,7 @@ Registry Name: BGP Transitive Extended Community Types
       </reference>
 
       <reference anchor="TEAS-NS"
-                 target="https://www.ietf.org/archive/id/draft-ietf-teas-ietf-network-slices-21.html#section-4">
+                 target="https://www.ietf.org/archive/id/draft-ietf-teas-ietf-network-slices-23.html#section-4">
         <front>
           <title abbrev="TEAS-NS">A Framework for IETF Network Slices</title>
 
@@ -2814,13 +2849,13 @@ Registry Name: BGP Transitive Extended Community Types
           <author fullname="John Drake" initials="" role="editor"
                   surname="Drake"/>
 
-          <date day="15" month="06" year="2023"/>
+          <date day="12" month="08" year="2023"/>
         </front>
       </reference>
     </references>
 
     <section anchor="Appendix A" numbered="true"
-             title="Extensibility considerations.">
+             title="Extensibility considerations">
       <section title="Signaling Intent over PE-CE Attachment Circuit">
         <t>It may be desirable to allow a CE device to indicate in the data
         packet it sends what treatment it desires (the Intent) when the packet
