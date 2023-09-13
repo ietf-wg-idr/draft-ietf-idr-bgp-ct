@@ -5,11 +5,11 @@
 Network Working Group                              K. Vairavakkalai, Ed.
 Internet-Draft                                      N. Venkataraman, Ed.
 Intended status: Experimental                     Juniper Networks, Inc.
-Expires: 21 February 2024                                 20 August 2023
+Expires: 15 March 2024                                 12 September 2023
 
 
                      BGP Classful Transport Planes
-                        draft-ietf-idr-bgp-ct-14
+                        draft-ietf-idr-bgp-ct-15
 
 Abstract
 
@@ -53,9 +53,9 @@ Status of This Memo
 
 
 
-Vairavakkalai & VenkatarExpires 21 February 2024                [Page 1]
+Vairavakkalai & VenkataramExpires 15 March 2024                 [Page 1]
 
-Internet-Draft        BGP Classful Transport Planes          August 2023
+Internet-Draft        BGP Classful Transport Planes       September 2023
 
 
    Internet-Drafts are working documents of the Internet Engineering
@@ -68,7 +68,7 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 21 February 2024.
+   This Internet-Draft will expire on 15 March 2024.
 
 Copyright Notice
 
@@ -98,20 +98,20 @@ Table of Contents
      5.1.  Mapping Community . . . . . . . . . . . . . . . . . . . .  15
    6.  BGP Classful Transport Family . . . . . . . . . . . . . . . .  16
      6.1.  NLRI Encoding . . . . . . . . . . . . . . . . . . . . . .  16
-     6.2.  Next Hop Encoding . . . . . . . . . . . . . . . . . . . .  17
+     6.2.  Next Hop Encoding . . . . . . . . . . . . . . . . . . . .  16
      6.3.  Carrying multiple Encapsulation Information . . . . . . .  17
      6.4.  Comparison with Other Families using RFC-8277 Encoding  .  17
    7.  Protocol Procedures . . . . . . . . . . . . . . . . . . . . .  18
      7.1.  Preparing the network to deploy Classful Transport
             planes . . . . . . . . . . . . . . . . . . . . . . . . .  18
      7.2.  Originating Classful Transport Routes . . . . . . . . . .  19
-     7.3.  Processing Classful Transport Routes by Ingress Nodes . .  20
+     7.3.  Processing Classful Transport Routes by Ingress Nodes . .  19
 
 
 
-Vairavakkalai & VenkatarExpires 21 February 2024                [Page 2]
+Vairavakkalai & VenkataramExpires 15 March 2024                 [Page 2]
 
-Internet-Draft        BGP Classful Transport Planes          August 2023
+Internet-Draft        BGP Classful Transport Planes       September 2023
 
 
      7.4.  Readvertising Classful Transport Route by Border Nodes with
@@ -121,115 +121,115 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
      7.6.  Avoiding Path Hiding Through Route Reflectors . . . . . .  21
      7.7.  Avoiding Loops Between Route Reflectors in Forwarding
             Path . . . . . . . . . . . . . . . . . . . . . . . . . .  21
-       7.7.1.  Path selection change . . . . . . . . . . . . . . . .  22
+       7.7.1.  Path selection change . . . . . . . . . . . . . . . .  21
        7.7.2.  Other mechanisms  . . . . . . . . . . . . . . . . . .  22
      7.8.  Ingress Nodes Receiving Service Routes with a Mapping
             Community  . . . . . . . . . . . . . . . . . . . . . . .  22
      7.9.  Best Effort Transport Class . . . . . . . . . . . . . . .  23
      7.10. Interaction with BGP Attributes Specifying Next Hop Address
             and Color  . . . . . . . . . . . . . . . . . . . . . . .  24
-     7.11. Applicability to Flowspec Redirect to IP  . . . . . . . .  25
+     7.11. Applicability to Flowspec Redirect to IP  . . . . . . . .  24
      7.12. Applicability to IPv6 . . . . . . . . . . . . . . . . . .  25
      7.13. SRv6 Support  . . . . . . . . . . . . . . . . . . . . . .  25
    8.  Illustration of BGP CT Procedures . . . . . . . . . . . . . .  26
      8.1.  Reference Topology  . . . . . . . . . . . . . . . . . . .  26
-     8.2.  Service Layer Route Exchange  . . . . . . . . . . . . . .  28
-     8.3.  Transport Layer Route Propagation . . . . . . . . . . . .  29
-     8.4.  Data Plane View . . . . . . . . . . . . . . . . . . . . .  32
-       8.4.1.  Steady State  . . . . . . . . . . . . . . . . . . . .  32
-       8.4.2.  Local Repair of Primary Path  . . . . . . . . . . . .  33
+     8.2.  Service Layer Route Exchange  . . . . . . . . . . . . . .  27
+     8.3.  Transport Layer Route Propagation . . . . . . . . . . . .  28
+     8.4.  Data Plane View . . . . . . . . . . . . . . . . . . . . .  31
+       8.4.1.  Steady State  . . . . . . . . . . . . . . . . . . . .  31
+       8.4.2.  Local Repair of Primary Path  . . . . . . . . . . . .  32
        8.4.3.  Absorbing Failure of Primary Path: Fallback to Best
-               Effort Tunnels  . . . . . . . . . . . . . . . . . . .  33
-   9.  Scaling Considerations  . . . . . . . . . . . . . . . . . . .  34
+               Effort Tunnels  . . . . . . . . . . . . . . . . . . .  32
+   9.  Scaling Considerations  . . . . . . . . . . . . . . . . . . .  33
      9.1.  Avoiding Unintended Spread of BGP CT Routes Across
-           Domains . . . . . . . . . . . . . . . . . . . . . . . . .  34
+           Domains . . . . . . . . . . . . . . . . . . . . . . . . .  33
      9.2.  Constrained Distribution of PNHs to SNs (On-Demand Next
-           Hop)  . . . . . . . . . . . . . . . . . . . . . . . . . .  34
+           Hop)  . . . . . . . . . . . . . . . . . . . . . . . . . .  33
      9.3.  Limiting The Visibility Scope of PE Loopback as PNHs  . .  35
-   10. Operations and Manageability Considerations . . . . . . . . .  36
-     10.1.  MPLS OAM . . . . . . . . . . . . . . . . . . . . . . . .  36
+   10. Operations and Manageability Considerations . . . . . . . . .  35
+     10.1.  MPLS OAM . . . . . . . . . . . . . . . . . . . . . . . .  35
      10.2.  Usage of Route Distinguisher and Label Allocation
-            Modes  . . . . . . . . . . . . . . . . . . . . . . . . .  37
-     10.3.  Managing Transport Route Visibility  . . . . . . . . . .  38
+            Modes  . . . . . . . . . . . . . . . . . . . . . . . . .  36
+     10.3.  Managing Transport Route Visibility  . . . . . . . . . .  37
    11. Deployment Considerations.  . . . . . . . . . . . . . . . . .  39
      11.1.  Coordination Between Domains Using Different Community
             Namespaces . . . . . . . . . . . . . . . . . . . . . . .  39
-     11.2.  Managing Intent at Service and Transport layers. . . . .  40
+     11.2.  Managing Intent at Service and Transport layers. . . . .  39
        11.2.1.  Service Layer Color Management . . . . . . . . . . .  40
        11.2.2.  Non-Agreeing Color Transport Domains . . . . . . . .  40
-       11.2.3.  Heterogeneous Agreeing Color Transport Domains . . .  42
+       11.2.3.  Heterogeneous Agreeing Color Transport Domains . . .  41
      11.3.  Migration Scenarios. . . . . . . . . . . . . . . . . . .  44
        11.3.1.  BGP CT Islands Connected via BGP LU Domain . . . . .  44
        11.3.2.  BGP CT - Interoperability between MPLS and Other
-               Forwarding Technologies . . . . . . . . . . . . . . .  47
+               Forwarding Technologies . . . . . . . . . . . . . . .  46
 
 
 
-Vairavakkalai & VenkatarExpires 21 February 2024                [Page 3]
+Vairavakkalai & VenkataramExpires 15 March 2024                 [Page 3]
 
-Internet-Draft        BGP Classful Transport Planes          August 2023
+Internet-Draft        BGP Classful Transport Planes       September 2023
 
 
-   12. Applicability to Network Slicing  . . . . . . . . . . . . . .  50
-   13. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  50
-     13.1.  New BGP SAFI . . . . . . . . . . . . . . . . . . . . . .  50
-     13.2.  New Format for BGP Extended Community  . . . . . . . . .  51
-       13.2.1.  Existing Registries to be Modified . . . . . . . . .  51
-       13.2.2.  New Registries . . . . . . . . . . . . . . . . . . .  52
-     13.3.  MPLS OAM Code Points . . . . . . . . . . . . . . . . . .  53
+   12. Applicability to Network Slicing  . . . . . . . . . . . . . .  49
+   13. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  49
+     13.1.  New BGP SAFI . . . . . . . . . . . . . . . . . . . . . .  49
+     13.2.  New Format for BGP Extended Community  . . . . . . . . .  50
+       13.2.1.  Existing Registries to be Modified . . . . . . . . .  50
+       13.2.2.  New Registries . . . . . . . . . . . . . . . . . . .  51
+     13.3.  MPLS OAM Code Points . . . . . . . . . . . . . . . . . .  52
      13.4.  Best Effort Transport Class ID . . . . . . . . . . . . .  53
-   14. Security Considerations . . . . . . . . . . . . . . . . . . .  54
+   14. Security Considerations . . . . . . . . . . . . . . . . . . .  53
    15. References  . . . . . . . . . . . . . . . . . . . . . . . . .  55
      15.1.  Normative References . . . . . . . . . . . . . . . . . .  55
-     15.2.  Informative References . . . . . . . . . . . . . . . . .  58
+     15.2.  Informative References . . . . . . . . . . . . . . . . .  57
    Appendix A.  Extensibility considerations . . . . . . . . . . . .  60
      A.1.  Signaling Intent over PE-CE Attachment Circuit  . . . . .  60
-       A.1.1.  Using DSCP in MultiNexthop Attribute  . . . . . . . .  61
+       A.1.1.  Using DSCP in MultiNexthop Attribute  . . . . . . . .  60
        A.1.2.  MPLS-enabled CE . . . . . . . . . . . . . . . . . . .  61
-     A.2.  BGP CT Egress TE  . . . . . . . . . . . . . . . . . . . .  63
+     A.2.  BGP CT Egress TE  . . . . . . . . . . . . . . . . . . . .  62
    Appendix B.  Applicability to Intra-AS and different Inter-AS
            deployments.  . . . . . . . . . . . . . . . . . . . . . .  63
      B.1.  Intra-AS usecase  . . . . . . . . . . . . . . . . . . . .  63
        B.1.1.  Topology  . . . . . . . . . . . . . . . . . . . . . .  63
-       B.1.2.  Transport Layer . . . . . . . . . . . . . . . . . . .  64
-       B.1.3.  Service Layer route exchange  . . . . . . . . . . . .  65
+       B.1.2.  Transport Layer . . . . . . . . . . . . . . . . . . .  63
+       B.1.3.  Service Layer route exchange  . . . . . . . . . . . .  64
      B.2.  Inter-AS option A usecase . . . . . . . . . . . . . . . .  65
        B.2.1.  Topology  . . . . . . . . . . . . . . . . . . . . . .  65
-       B.2.2.  Transport Layer . . . . . . . . . . . . . . . . . . .  66
+       B.2.2.  Transport Layer . . . . . . . . . . . . . . . . . . .  65
        B.2.3.  Service Layer route exchange  . . . . . . . . . . . .  66
      B.3.  Inter-AS option B usecase . . . . . . . . . . . . . . . .  67
        B.3.1.  Topology  . . . . . . . . . . . . . . . . . . . . . .  67
-       B.3.2.  Transport Layer . . . . . . . . . . . . . . . . . . .  68
-       B.3.3.  Service Layer route exchange  . . . . . . . . . . . .  69
-   Appendix C.  Why reuse RFC 8277 and RFC 4364? . . . . . . . . . .  70
-     C.1.  Update packing considerations . . . . . . . . . . . . . .  71
+       B.3.2.  Transport Layer . . . . . . . . . . . . . . . . . . .  67
+       B.3.3.  Service Layer route exchange  . . . . . . . . . . . .  68
+   Appendix C.  Why reuse RFC 8277 and RFC 4364? . . . . . . . . . .  69
+     C.1.  Update packing considerations . . . . . . . . . . . . . .  70
    Appendix D.  Scaling using BGP MPLS Namespaces  . . . . . . . . .  71
-     D.1.  Illustration. . . . . . . . . . . . . . . . . . . . . . .  72
+     D.1.  Illustration. . . . . . . . . . . . . . . . . . . . . . .  71
      D.2.  Topology  . . . . . . . . . . . . . . . . . . . . . . . .  72
-     D.3.  Context Protocol Nexthop Address (CPNH) . . . . . . . . .  74
+     D.3.  Context Protocol Nexthop Address (CPNH) . . . . . . . . .  73
      D.4.  Service Forwarding Helper, and Changes to Transport
-           Layer.  . . . . . . . . . . . . . . . . . . . . . . . . .  74
+           Layer.  . . . . . . . . . . . . . . . . . . . . . . . . .  73
      D.5.  BGP MPLS Namespace Address family (AFI:16399,
-           SAFI:128) . . . . . . . . . . . . . . . . . . . . . . . .  75
-     D.6.  Changes to Service Layer Route Exchange . . . . . . . . .  75
-     D.7.  Analysis of Forwarding Behavior . . . . . . . . . . . . .  75
-   Appendix E.  BGP CT deployment in SRv6 networks . . . . . . . . .  76
-     E.1.  SID stacking approach . . . . . . . . . . . . . . . . . .  76
-     E.2.  Color-encoded Service SID (CPR) Approach  . . . . . . . .  83
-       E.2.1.  Analysis of CPR Approach  . . . . . . . . . . . . . .  84
-   Contributors  . . . . . . . . . . . . . . . . . . . . . . . . . .  84
+           SAFI:128) . . . . . . . . . . . . . . . . . . . . . . . .  74
+     D.6.  Changes to Service Layer Route Exchange . . . . . . . . .  74
+     D.7.  Analysis of Forwarding Behavior . . . . . . . . . . . . .  74
+   Appendix E.  BGP CT deployment in SRv6 networks . . . . . . . . .  75
+     E.1.  SID stacking approach . . . . . . . . . . . . . . . . . .  75
+     E.2.  Color-encoded Service SID (CPR) Approach  . . . . . . . .  82
+       E.2.1.  Analysis of CPR Approach  . . . . . . . . . . . . . .  83
+   Contributors  . . . . . . . . . . . . . . . . . . . . . . . . . .  83
 
 
 
-Vairavakkalai & VenkatarExpires 21 February 2024                [Page 4]
+Vairavakkalai & VenkataramExpires 15 March 2024                 [Page 4]
 
-Internet-Draft        BGP Classful Transport Planes          August 2023
+Internet-Draft        BGP Classful Transport Planes       September 2023
 
 
-     Co-Authors  . . . . . . . . . . . . . . . . . . . . . . . . . .  84
-     Other Contributors  . . . . . . . . . . . . . . . . . . . . . .  85
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  86
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  87
+     Co-Authors  . . . . . . . . . . . . . . . . . . . . . . . . . .  83
+     Other Contributors  . . . . . . . . . . . . . . . . . . . . . .  84
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  85
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  86
 
 1.  Introduction
 
@@ -277,9 +277,9 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
 
 
 
-Vairavakkalai & VenkatarExpires 21 February 2024                [Page 5]
+Vairavakkalai & VenkataramExpires 15 March 2024                 [Page 5]
 
-Internet-Draft        BGP Classful Transport Planes          August 2023
+Internet-Draft        BGP Classful Transport Planes       September 2023
 
 
    The mechanisms defined in this document are agnostic to the tunneling
@@ -333,9 +333,9 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
 
 
 
-Vairavakkalai & VenkatarExpires 21 February 2024                [Page 6]
+Vairavakkalai & VenkataramExpires 15 March 2024                 [Page 6]
 
-Internet-Draft        BGP Classful Transport Planes          August 2023
+Internet-Draft        BGP Classful Transport Planes       September 2023
 
 
    TN: Transport Node, P-router
@@ -389,9 +389,9 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
 
 
 
-Vairavakkalai & VenkatarExpires 21 February 2024                [Page 7]
+Vairavakkalai & VenkataramExpires 15 March 2024                 [Page 7]
 
-Internet-Draft        BGP Classful Transport Planes          August 2023
+Internet-Draft        BGP Classful Transport Planes       September 2023
 
 
    UHP: Ultimate Hop Pop
@@ -445,9 +445,9 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
 
 
 
-Vairavakkalai & VenkatarExpires 21 February 2024                [Page 8]
+Vairavakkalai & VenkataramExpires 15 March 2024                 [Page 8]
 
-Internet-Draft        BGP Classful Transport Planes          August 2023
+Internet-Draft        BGP Classful Transport Planes       September 2023
 
 
    Mapping Community: Any BGP Community/Extended Community on a BGP
@@ -501,9 +501,9 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
 
 
 
-Vairavakkalai & VenkatarExpires 21 February 2024                [Page 9]
+Vairavakkalai & VenkataramExpires 15 March 2024                 [Page 9]
 
-Internet-Draft        BGP Classful Transport Planes          August 2023
+Internet-Draft        BGP Classful Transport Planes       September 2023
 
 
       The "Transport Class" (Section 4) construct to group underlay
@@ -557,9 +557,9 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
 
 
 
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 10]
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 10]
 
-Internet-Draft        BGP Classful Transport Planes          August 2023
+Internet-Draft        BGP Classful Transport Planes       September 2023
 
 
    The following text illustrates BGP CT having the property of
@@ -613,9 +613,9 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
 
 
 
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 11]
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 11]
 
-Internet-Draft        BGP Classful Transport Planes          August 2023
+Internet-Draft        BGP Classful Transport Planes       September 2023
 
 
    Classful Transport family (AFI/SAFIs, 1/76 or 2/76) routes, the
@@ -669,18 +669,18 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
 
 
 
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 12]
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 12]
 
-Internet-Draft        BGP Classful Transport Planes          August 2023
+Internet-Draft        BGP Classful Transport Planes       September 2023
 
 
 4.2.  Transport Route Database
 
-   A Transport Route Database is a logical collection of transport
-   routes pertaining to the same Transport Class.  In any node, every
-   Transport Class has an associated TRDB.  Resolution Schemes resolve
-   next hop reachability using the transport routes within the scope of
-   the TRDBs.
+   A Transport Route Database (TRDB) is a logical collection of
+   transport routes pertaining to the same Transport Class.  In any
+   node, every Transport Class has an associated TRDB.  Resolution
+   Schemes resolve next hop reachability using the transport routes
+   within the scope of the TRDBs.
 
    Tunnel endpoint addresses in a TRDB belong to the "Provider
    Namespace" representing the core transport region.
@@ -725,9 +725,9 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
 
 
 
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 13]
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 13]
 
-Internet-Draft        BGP Classful Transport Planes          August 2023
+Internet-Draft        BGP Classful Transport Planes       September 2023
 
 
  0                   1                   2                   3
@@ -773,31 +773,33 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    Extended community avoids conflicts with any VPN Route Target
    assignments already in use for service families.
 
+   Transport Class ID conveys the color of a Transport Class.  The terms
+   'Transport Class ID' and 'Color' are used interchangeably in this
+   document.
+
+
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 14]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
+
    Procedures to manage differences in Transport Class ID namespaces
    between domains are provided in Section 11.2.2.
 
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 14]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
-
 5.  Resolution Scheme
 
-   This section defines the Resolution Scheme construct that is used to
-   specify how a service route or a BGP CT route can resolve its next
-   hop using its associated Mapping Community over a specific TRDB or an
-   ordered set of TRDBs.
+   Resolution Scheme is a construct that consists of a specific TRDB or
+   an ordered set of TRDBs, and is identified by a Mapping Community.  A
+   BGP route is associated with a resolution scheme during import
+   processing.
 
    Resolution Schemes enable a BGP speaker to resolve next hop
    reachability for overlay routes over the appropriate underlay tunnels
-   within the scope of the TRDBs identified by the Mapping Community.
-   Longest Prefix Match (LPM) of the next hop is performed within the
-   identified TRDB.
+   within the scope of the TRDBs.  Longest Prefix Match (LPM) of the
+   next hop is performed within the identified TRDB.
 
    An implementation may provide an option for the overlay route to
    resolve over less preferred Transport Classes, should the resolution
@@ -819,8 +821,7 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    [RFC9012], or the "transport-target:0:100" described in Section 4.3
    in this document.
 
-   A BGP route is associated with a resolution scheme during import
-   processing.  The first community on the route that matches a Mapping
+   The first community on an overlay route that matches a Mapping
    Community of a locally configured Resolution Scheme is considered the
    effective Mapping Community for the route.  The Resolution Scheme
    thus found is used when resolving the route's PNH.  If a route
@@ -829,27 +830,17 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    So, the first community that maps to a Resolution Scheme is chosen as
    the effective Mapping Community.
 
-   A transport route received in BGP Classful Transport family SHOULD
-   use a Resolution Scheme that contains only the primary Transport
-   Class without any fallback to best effort tunnels.  A service route
-   received in a BGP service family (e.g., AFI/SAFI: 1/1, 2/1) SHOULD
-   use a Resolution Scheme that contains the primary Transport Class
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 15]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
-
-   along with fallback to best effort tunnels.  The administrator MAY
-   customize the resolution schemes to map to a different ordered list
-   of TRDBs.
-
    A Mapping Community uniquely identifies a Resolution Scheme.  An
    implementation SHOULD allow associating multiple Mapping Communities
    to a Resolution Scheme.  This helps with renumbering and migration
    scenarios.
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 15]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
 
 6.  BGP Classful Transport Family
 
@@ -889,15 +880,6 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    with the correct TRDBs on SNs and BNs in the network and either an
    IPv4 or an IPv6 next hop.
 
-
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 16]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
-
 6.2.  Next Hop Encoding
 
    When the length of the Next hop Address field is 4, the next hop
@@ -906,6 +888,15 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    When the length of Next hop Address field is 16 (or 32), the next hop
    address is of type IPv6 address (potentially followed by the link-
    local IPv6 address of the next hop).
+
+
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 16]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
 
    When the length of Next hop Address field is 24 (or 48), the next hop
    address is of type VPN-IPv6 with an 8-octet RD set to zero
@@ -923,7 +914,9 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
 
    An MPLS Label is carried using the encoding in [RFC8277] . A node
    that does not support MPLS forwarding advertises the special label 3
-   (Implicit Null) in the RFC 8277 MPLS Label field.
+   (Implicit NULL) in the RFC 8277 MPLS Label field.  The Implicit NULL
+   label carried in BGP CT route indicates to receiving node that it
+   should not impose any BGP CT label for this route.
 
    The SID information for SR with respect to MPLS Data Plane is carried
    as specified in Prefix SID attribute defined as part of Section 3 in
@@ -945,15 +938,6 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    come from the customer namespaces and are contextualized into
    separate user virtual service RIBs called VRFs as per [RFC4364].
 
-
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 17]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
-
    AFI/SAFI 1/4 (BGP LU) is an RFC8277 encoded family that carries
    transport prefixes in the NLRI, where the prefixes come from the
    provider namespace.
@@ -962,6 +946,13 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    that carries transport prefixes in the NLRI, where the prefixes come
    from the provider namespace and are contextualized into separate TRDB
    as per RFC4364 procedures.
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 17]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
 
    It is worth noting that AFI/SAFI 1/128 has been used to carry
    transport prefixes in "L3VPN Inter-AS Carrier's carrier" scenario as
@@ -1001,15 +992,6 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
 
 7.1.  Preparing the network to deploy Classful Transport planes
 
-
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 18]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
-
       It is responsibility of the operators to decide the Transport
       Classes to enable and use in their network.  They are also
       expected to allocate a Transport Class Route Target to identify
@@ -1018,6 +1000,15 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
       Operators configure the Transport Classes on the SNs and BNs in
       the network with Transport Class Route Targets and unique Route-
       Distinguishers.
+
+
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 18]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
 
       Implementations MAY provide automatic generation and assignment of
       RD, RT values; they MAY also provide a way to manually override
@@ -1059,24 +1050,26 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
       on local choice, understanding the impact on path diversity and
       troubleshooting, as described in Section 10.2.
 
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 19]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
-
 7.3.  Processing Classful Transport Routes by Ingress Nodes
 
-      Upon receipt of a BGP Classful Transport route with a PNH that is
-      not directly connected (e.g. an IBGP-route), a Mapping Community
-      on the route (the Transport Class RT) is used to decide to which
-      resolution scheme this route is to be mapped.  The resolution
-      scheme for a Transport Class RT with Transport Class ID "C1"
-      contains TRDB for Transport Class with same ID.  In cases where
-      Transport Class "C1" tunnels are not available in a domain, the
-      administrator MAY customize the resolution scheme to map to a
-      different set of transport classes available in that domain.
+      Upon receipt of a BGP Classful Transport route (e.g., AFI/SAFI:
+      1/76, 2/76) with a PNH that is not directly connected (e.g. an
+      IBGP-route), a Mapping Community on the route (the Transport Class
+      RT) is used to decide to which resolution scheme this route is to
+      be mapped.  The resolution scheme for a Transport Class RT with
+      Transport Class ID "C1" contains TRDB for Transport Class with
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 19]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
+
+      same ID.  In cases where Transport Class "C1" tunnels are not
+      available in a domain, the administrator MAY customize the
+      resolution scheme to map to a different set of transport classes
+      available in that domain.
 
       The routes in the associated TRDBs are used to resolve the
       received PNH.  The order of TRDBs in a resolution scheme is
@@ -1087,7 +1080,9 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
 
       If the resolution process does not find a matching route in any of
       the associated TRDBs, the received BGP CT route MUST be considered
-      unusable for forwarding purpose and be withdrawn.
+      unusable for forwarding purpose and ineligible for best path
+      computation.  A withdrawal would be sent if this was the only
+      usable path.
 
       The received BGP CT route MUST be added to the TRDB corresponding
       to the Transport Class "C1".  So that service routes can resolve
@@ -1107,21 +1102,6 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
       received traffic to the transport tunnel or direct interface that
       the Classful Transport route's PNH resolved over.
 
-
-
-
-
-
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 20]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
-
       The label SHOULD be allocated with "per-prefix" label allocation
       semantics.  The IP prefix in the TRDB context (Transport-Class,
       IP-prefix) is used as the key to do per-prefix label allocation.
@@ -1130,6 +1110,17 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
       a domain.  The failure is not propagated further than the BN
       closest to the failure.  If a different label allocation mode is
       used, impact on end to end convergence should be considered.
+
+
+
+
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 20]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
 
       The value of the advertised MPLS label is locally significant, and
       is dynamic by default.  A BN may provide an option to allocate a
@@ -1163,21 +1154,6 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
 
 7.7.  Avoiding Loops Between Route Reflectors in Forwarding Path
 
-
-
-
-
-
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 21]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
-
       A pair of redundant ABRs, each acting as an RR with next hop self,
       may choose each other as best path instead of the upstream ASBR,
       causing a traffic forwarding loop.  This happens because of
@@ -1193,15 +1169,23 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
 
 7.7.1.  Path selection change
 
+
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 21]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
+
       Implementations SHOULD provide a way to alter the tie-breaking
       rule specified in Section 9 of BGP RR [RFC4456] so as to tie-break
       on CLUSTER_LIST step before ORIGINATOR_ID step, when performing
       path selection for BGP CT routes.
 
       This document suggests the following modification to the BGP
-      Decision Process Tie Breaking rules (Section. 9.1.2.2 of
-      [RFC4271]) that can be applied to path selection of BGP CT family
-      routes:
+      Decision Process Tie Breaking rules (Section 9.1.2.2 of [RFC4271])
+      that can be applied to path selection of BGP CT family routes:
 
       The following rule SHOULD be inserted between Steps e) and f): a
       BGP Speaker SHOULD prefer a route with the shorter CLUSTER_LIST
@@ -1223,22 +1207,14 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
 
 7.8.  Ingress Nodes Receiving Service Routes with a Mapping Community
 
-      Upon receipt of a BGP service route with a PNH that is not
-      directly connected (e.g. an IBGP-route), a Mapping Community on
-      the route (e.g, Color Extended Community) is used to decide to
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 22]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
-
-      which resolution scheme this route is to be mapped.  The
-      resolution scheme for a Color Extended Community with Color "C1"
-      contains TRDB for Transport Class with same ID, followed by Best
-      Effort TRDB.  The administrator MAY customize the resolution
-      scheme to map to a different ordered list of TRDBs.
+      Upon receipt of a BGP service route (e.g., AFI/SAFI: 1/1, 2/1)
+      with a PNH that is not directly connected (e.g. an IBGP-route), a
+      Mapping Community on the route (e.g, Color Extended Community) is
+      used to decide to which resolution scheme this route is to be
+      mapped.  The resolution scheme for a Color Extended Community with
+      Color "C1" contains TRDB for Transport Class with same ID,
+      followed by Best Effort TRDB.  The administrator MAY customize the
+      resolution scheme to map to a different ordered list of TRDBs.
 
       The routes in the associated TRDBs are used to resolve the
       received PNH.  The order of TRDBs in a resolution scheme is
@@ -1250,6 +1226,13 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
       If the resolution process does not find a Tunnel Ingress Route in
       any of the Transport Route Databases, the service route MUST be
       considered unusable for forwarding purpose and be withdrawn.
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 22]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
 
    Note: For an illustration of above procedures in a MPLS network,
    refer to Section 8.
@@ -1282,14 +1265,6 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
       next hop, the BGP CT route MUST be considered unusable, and not be
       propagated further.
 
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 23]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
-
       When a BGP speaker receives an overlay route without any explicit
       Mapping Community, and absent local policy, the best effort
       resolution scheme is used for resolving the BGP next hop on the
@@ -1301,6 +1276,19 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
       BGP CT routes to the Forwarding Information Base (FIB), to provide
       reachability for control plane peering towards endpoints in other
       domains.
+
+
+
+
+
+
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 23]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
 
 7.10.  Interaction with BGP Attributes Specifying Next Hop Address and
        Color
@@ -1315,7 +1303,7 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    addresses.  Specifying 'Transport Class ID' as a qualifier for each
    next hop address is also allowed.
 
-   It should be noted that in such cases "Transport Class/Color" can
+   It should be noted that in such cases "Transport Class ID/Color" can
    exist in multiple places on the same route, and a precedence order
    needs to be established to determine which Transport Class the
    route's next hop should resolve over.  This document suggests the
@@ -1337,15 +1325,6 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    specific than a Service route scoped Mapping Community (Color
    Extended community).
 
-
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 24]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
-
 7.11.  Applicability to Flowspec Redirect to IP
 
    Flowspec routes using Redirect to IP next hop is described in
@@ -1358,6 +1337,14 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
 
    Flowspec BGP family acts as just another service that can make use of
    BGP CT architecture to achieve Flow based forwarding with SLAs.
+
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 24]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
 
 7.12.  Applicability to IPv6
 
@@ -1394,26 +1381,26 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    when using Segment Routing over IPv6 (SRv6) data plane on the inter-
    AS links or as an intra-AS tunneling mechanism.
 
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 25]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
-
    [RFC8986] specifies the SRv6 Endpoint behaviors (End USD, End.BM,
    End.B6.Encaps).  [SRV6-INTER-DOMAIN] specifies the SRv6 Endpoint
    behaviors (END.REPLACE, END.REPLACEB6 and END.DB6).  These are
    leveraged for BGP CT routes with SRv6 data plane.
 
    The BGP Classful Transport route update for SRv6 MUST include an
-   attribute containing SRv6 SID information.  This may be either the
-   BGP Prefix-SID attribute as specified in [RFC9252] or the BGP
-   MultiNexthop attribute as specified in BGP MultiNexthop Attribute
-   [MULTI-NH-ATTR] Section 5.4.3.3.  If the Prefix-SID attribute is
-   used, it MUST NOT include SRv6 SID structure for Transposition
-   described in [RFC9252].
+   attribute containing SRv6 SID information.  This may be the BGP
+   Prefix-SID attribute as specified in [RFC9252] . If the Prefix-SID
+   attribute is used, it MUST NOT include SRv6 SID structure for
+   Transposition described in [RFC9252].
+
+
+
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 25]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
 
    It should be noted that prefixes carried in BGP CT family are
    transport layer end-points, e.g.  PE loopback addresses.  Thus, the
@@ -1433,30 +1420,6 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    1/128.
 
 8.1.  Reference Topology
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 26]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
 
                   [RR26]      [RR27]                       [RR16]
                    |            |                             |
@@ -1485,6 +1448,16 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    a specific SLA (e.g. mapped to Gold for this example), when
    traversing these provider networks.
 
+
+
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 26]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
+
    AS2 is further divided into two regions.  So, there are three tunnel
    domains in provider's space.  AS1 uses ISIS Flex-Algo [RFC9350]
    intra-domain tunnels, whereas AS2 uses RSVP-TE intra-domain tunnels.
@@ -1505,14 +1478,6 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
       ABR23_to_ASBR22_gold - RSVP-TE tunnel
 
       ASBR13_to_PE11_gold - SRTE tunnel
-
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 27]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
 
       ASBR14_to_PE11_gold - SRTE tunnel
 
@@ -1541,6 +1506,14 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    EBGP session between the two AS.  PE25 negotiates service families
    (AFI: 1 and SAFIs 1, 128) with RR26.
 
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 27]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
+
    The PEs see each other as next hop in the BGP Update for the service
    family routes.  Addpath send, receive is enabled on both directions
    on the EBGP multihop session between RR16 and RR26 for AFI:1 and
@@ -1562,14 +1535,6 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    RD1:203.0.113.31 route is readvertised in AFI/SAFI 1/128 by PE11 with
    next hop self (192.0.2.11) and label V-L1, to RR16 with the Mapping
    Community Color:0:100 attached.  RR16 advertises this route with
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 28]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
-
    Addpath-ID to RR26 which readvertises to PE25 with next hop
    unchanged.  Now, PE25 can resolve the PNH 192.0.2.11 using transport
    routes received in BGP CT or BGP LU.
@@ -1597,6 +1562,14 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    for Bronze tunnels.  Similarly, PE12 is provisioned with transport
    class 100, RD value 192.0.2.12:100 and a transport-target:0:100 for
    Gold tunnels.  And transport class 200, RD value 192.0.2.12:200 with
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 28]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
+
    transport-target:0:200 for Bronze tunnels.  Note that in this
    example, the BGP CT routes carry only the transport class route
    target, and no IP address format route target.
@@ -1616,15 +1589,6 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    1.  BGP LU family is also negotiated on these sessions alongside BGP
    CT family.  BGP LU carries "best effort" transport class routes, BGP
    CT carries Gold, Bronze transport class routes.
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 29]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
 
    PE11 is provisioned to originate BGP CT route with Gold SLA to
    endpoint PE11.  This route is sent with NLRI RD prefix
@@ -1654,6 +1618,14 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    originated by PE11 with a NLRI containing RD prefix
    192.0.2.11:200:192.0.2.11, and appropriate label.  The RD allows both
    Gold and Bronze advertisements to traverse path selection pinchpoints
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 29]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
+
    without any path hiding at RRs or ASBRs.  And route target extended
    community transport-target:0:200 lets the route resolve over Bronze
    tunnels in the network, similar to the process being described for
@@ -1674,14 +1646,6 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    over the single hop EBGP sessions from ASBR13, ASBR14, and
    readvertises with next hop self (loopback address 192.0.2.22) to
    RR27, advertising a new label B-L4.  An MPLS swap route is installed
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 30]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
-
    for label B-L4 at ASBR22 to swap to received label B-L1, B-L2 and
    forward to ASBR13, ASBR14 respectively.  RR27 readvertises this BGP
    CT route also to ABR23, ABR24 with label and next hop unchanged.
@@ -1710,6 +1674,14 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    route for B-L5 is installed by ABR23 to swap to label B-L4, and
    forward into ABR23_to_ASBR22_gold tunnel.
 
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 30]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
+
    PE25 receives the BGP CT route for prefix 192.0.2.11:100:192.0.2.11
    with label B-L5, next hop 192.0.2.23 and transport-target:0:100 from
    RR26.  And it similarly resolves the next hop 192.0.2.23 over
@@ -1728,15 +1700,6 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    Gold underlay LSPs in each domain.  ASBR13 uses UHP to stitch the BGP
    CT LSP into the "ASBR13_to_PE11_gold" LSP to traverse the last
    domain, thus satisfying Gold SLA end-to-end.
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 31]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
 
    When PE25 receives service routes from RR26 with next hop 192.0.2.11
    and mapping community Color:0:100, it resolves over this BGP CT route
@@ -1766,6 +1729,15 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    MPLS packet with label B-L4 to ASBR22, on a tunnel that satisfies
    Gold SLA.
 
+
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 31]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
+
    ASBR22 similarly performs a lookup for label B-L4 in global MPLS FIB,
    finds the route that swaps label B-L4 with label B-L2, and forwards
    to ASBR13 over the directly connected MPLS-enabled interface.  This
@@ -1781,18 +1753,6 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    PE11 receives the MPLS packet with V-L1, and performs VPN forwarding.
    Thus transmitting the original IP payload from CE41 to CE31.  The
    payload has traversed path satisfying Gold SLA end-to-end.
-
-
-
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 32]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
 
 8.4.2.  Local Repair of Primary Path
 
@@ -1826,6 +1786,14 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    provisioned to use best effort transport class as the backup path,
    this withdrawal of BGP CT route allows PE25 to adjust the next hop of
    the VPN Service-route to push the labels provided by the BGP LU
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 32]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
+
    route.  That repairs the traffic to go via the best effort path.
    PE25 can also be provisioned to use Bronze transport class as the
    backup path.  The repair will happen in similar manner in that case
@@ -1838,17 +1806,6 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
 
    These examples demonstrate the various levels of failsafe mechanisms
    available to protect traffic in a BGP CT network.
-
-
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 33]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
 
 9.  Scaling Considerations
 
@@ -1878,6 +1835,21 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
       the IP address used by SN as BGP next hop in its service route
       advertisements.
 
+
+
+
+
+
+
+
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 33]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
+
       Note that such use of the IP address specific route target
       <eSN>:<TC> is optional in a BGP CT network.  It is required only
       if there is a requirement to prune the propagation of the
@@ -1898,13 +1870,6 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
       code 34) as described in Route Target Constrain Extension
       [RTC-Ext].  This document recommends using Wide-communities based
       RT for the same.
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 34]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
 
       An ingress SN MAY import BGP CT routes with Route Target carrying
       <eSN>:<TC>.  The ingress SN may learn the eSN values either by
@@ -1931,6 +1896,16 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
       ASN>:<eSN>/[80|176] MAY be confined to the BNs in the home region
       of an ingress SN, or the BNs of a super core.
 
+
+
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 34]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
+
       Such a BN in the core of the network imports BGP CT routes with
       Transport-Target:0:<TC> and generates an RTC route for <Origin
       ASN>:0:<TC>/96, while not propagating the more specific RTC
@@ -1954,13 +1929,6 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
       This provides much greater advantage in terms of scaling,
       convergence and security.  Changes to implement this feature are
       required only on the local region's BNs and RRs.
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 35]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
 
 10.  Operations and Manageability Considerations
 
@@ -1986,6 +1954,14 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
        | Prefix Length |                 Must Be Zero                  |
        +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 35]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
+
                  Figure 4: Classful Transport IPv4 FEC
 
    The 'Target FEC Stack' sub-TLV for IPv6 Classful Transport has a Sub-
@@ -2010,14 +1986,6 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
 
                  Figure 5: Classful Transport IPv6 FEC
 
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 36]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
-
    These prefix layouts are inherited from Sections 3.2.5, 3.2.6 in
    [RFC8029]
 
@@ -2039,6 +2007,16 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    at the SN for each BN.  In absence of RD, duplicated Transport Class/
    Color values will be needed in the transport network to achieve such
    use cases.
+
+
+
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 36]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
 
    The allocation of RDs is done at the point of origin of the BGP CT
    route.  This can either be an Egress SN or a BN.  The default RD
@@ -2066,14 +2044,6 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    modes are detailed with an example in Managing Transport Route
    Visibility (Section 10.3)
 
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 37]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
-
 10.3.  Managing Transport Route Visibility
 
    This section details the usage of BGP CT RD and label allocation
@@ -2082,6 +2052,27 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
 
    Consider a multi-domain BGP CT network as illustrated in the
    following Figure 6:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 37]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
 
           |-----AS3-----|  |-------AS1------|
 
@@ -2110,26 +2101,6 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    The following table details the BGP CT route and path visibility at
    PE31-- for each TC.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 38]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
-
          +--------+------+-------+-------+---------+---------+
          |EP-type |Origin|RD-Mode|PP-Mode|CT Routes|CT Labels|
          +--------+------+-------+-------+---------+---------+
@@ -2149,6 +2120,15 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
          +--------+------+-------+-------+---------+---------+
 
             Figure 7: Route and Path Visibility at Ingress Node
+
+
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 38]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
 
    In the table shown in Figure 7, both route churn and TE granularity
    are directly proportional to the number of CT labels received.
@@ -2178,14 +2158,6 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    Communities.  This minimizes service disruption during renumbering,
    network merger or transition scenarios.
 
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 39]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
-
    The Transport Class Route Target Extended Community is useful to
    avoid collision with regular Route Target namespace used by service
    routes.
@@ -2206,6 +2178,13 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    preserve end-to-end Intent.  Examples described in this section use
    Inter-AS Option C domains.  But similar mechanisms will work for
    Inter-AS Option A and Inter-AS Option B scenarios as well.
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 39]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
 
 11.2.1.  Service Layer Color Management
 
@@ -2234,14 +2213,6 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    each domain boundary.  This rewrite helps to map one domain's
    namespace to another.
 
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 40]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
-
    The following example illustrates how traffic is stitched and SLA is
    preserved when domains don't use the same namespace at the transport
    layer.  Each domain specifies the same SLA using different color
@@ -2263,6 +2234,14 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    In the topology shown in Figure 8, we have three Autonomous Systems.
    All the nodes in the topology support BGP CT.
 
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 40]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
+
    In AS1 Gold SLA is represented by color 100 and Bronze by 200.
 
    In AS2 Gold SLA is represented by color 300 and Bronze by 400.
@@ -2280,23 +2259,6 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    and in AS1 it maps to a TRDB with color 100.  Co-ordination is needed
    to provision the resolution schemes in each domain as explained
    previously.
-
-
-
-
-
-
-
-
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 41]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
 
    At the AS boundary, the transport-class route-target is rewritten for
    the BGP CT routes.  In the previous topology, at ASBR31, the
@@ -2325,6 +2287,17 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    a service layer intent to the matching transport color, as the color
    might not be locally available in a domain.
 
+
+
+
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 41]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
+
    The following example illustrates how traffic is stitched, when a
    transit AS contains more shades for an SLA path compared to Ingress
    and Egress domains.  This example shows how service routes can
@@ -2344,15 +2317,6 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
                 ----------- Packet Forwarding Direction -------->
 
       Figure 9: Transport Layer with Heterogenous Color Domains
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 42]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
 
    In the preceding topology shown in Figure 9, we have three Autonomous
    Systems.  All the nodes in the topology support BGP CT.
@@ -2375,12 +2339,20 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    These tunnels will be installed in TRDBs corresponding to transport
    classes of color 101, 102.
 
-   Service routes received with mapping community (e.g.: transport-
+   Overlay routes received with mapping community (e.g.: transport-
    target or color community) can resolve over these tunnels in the TRDB
    with matching color by using resolution schemes.
 
    This approach consumes more resources in the transport and forwarding
    layer, because of the duplicate tunnels.
+
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 42]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
 
 11.2.3.2.  Customized Resolution Schemes Approach
 
@@ -2401,14 +2373,6 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    and AS3 are provisioned with customized resolution schemes that
    resolve routes with transport-target:0:101 or transport-target:0:102
    strictly over color 100 TRDB.
-
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 43]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
 
    PE31 is provisioned to originate BGP CT route with color 101 for
    endpoint PE31.  This route is sent with NLRI RD prefix RD1:PE31 and
@@ -2438,6 +2402,14 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    route is then re-advertised from color 101 TRDB to PE11 with route-
    target:0:101.
 
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 43]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
+
    At PE11, the route target "transport-target:0:101" on this BGP CT
    route instructs to add the route to color 101 TRDB.  PE11 is
    provisioned with a customized resolution scheme that resolves the
@@ -2457,14 +2429,6 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    This section explains how end-to-end SLA can be achieved while
    transiting a domain that does not support BGP CT.  BGP LU is used in
    such domains to connect the BGP CT islands.
-
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 44]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
 
                  +----------EBGP Multihop CT-------------+
                  |                                       |
@@ -2495,6 +2459,13 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
 
       PE11_to_ASBR11_gold - RSVP-TE tunnel
 
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 44]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
+
       ASBR11_to_PE11_gold - RSVP-TE tunnel
 
       PE31_to_ASBR31_gold - SRTE tunnel
@@ -2514,13 +2485,6 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    These tunnels are provisioned to belong to Transport Classes Gold and
    Bronze, and are advertised between ASBR31 and ASBR11 with Next hop
    self.
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 45]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
 
    In AS2, that does not support BGP CT, a separate loopback may be used
    on ASBR22 and ASBR21 to represent Gold and Bronze SLAs, viz.
@@ -2550,6 +2514,14 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    ASBR21 readvertises the BGP LU route for endpoint ASBR11_lpbk_gold to
    ASBR22 with next hop set by local policy config to the unique
    loopback ASBR21_lpbk_gold by matching the 'gold SLA' community
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 45]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
+
    received as part of BGP LU advertisement from ASBR11.  ASBR22
    receives this route and resolves the next hop over the
    ASBR22_to_ASBR21_lpbk_gold RSVP-TE tunnel.  On successful resolution,
@@ -2566,17 +2538,6 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    with the BGP LU LSP in AS2.  Intra-domain traffic forwarding in AS1
    and AS3 follows the procedures as explained in Illustration of CT
    Procedures (Section 8)
-
-
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 46]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
 
    In cases where an SLA cannot be preserved in AS2 because SLA specific
    tunnels and loopbacks don't exist in AS2, traffic can be carried over
@@ -2609,6 +2570,14 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
 
                      <---- Bidirectional Traffic ---->
 
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 46]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
+
            Figure 11: BGP CT Interop between MPLS and SRv6 nodes
 
    This example shows a provider network with a mix of devices with
@@ -2618,21 +2587,6 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    session with Route Reflector RR1 which reflects routes between these
    nodes with next hop unchanged.  BGP CT family is negotiated on these
    sessions.
-
-
-
-
-
-
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 47]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
 
    R1 and R2 send and receive both MPLS label and SRv6 SID in the BGP CT
    control plane routes.  This allows them to be ingress and egress for
@@ -2658,14 +2612,27 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    routes using BGP Prefix-SID attribute, without Transposition Scheme.
    This allows them to be ingress and egress for SRv6 data plane.  R4
    will carry the special MPLS Label with value 3 (Implicit-NULL) in RFC
-   8277 encoding, which tells R1 not to push any MPLS label towards R4.
-   The MPLS Label advertised by R1 in RFC 8277 NLRI will not be used by
-   R4.  SRv6 forwarding will be used between R1 and R4.
+   8277 encoding, which tells R1 not to push any MPLS label for this BGP
+   CT route towards R4.  The MPLS Label advertised by R1 in RFC 8277
+   NLRI will not be used by R4.  SRv6 forwarding will be used between R1
+   and R4.
 
    Note in this example that R3 and R4 cannot communicate directly with
    each other, because they don't support a common forwarding
    technology.  The BGP CT routes received at R3, R4 from each other
    will remain unusable, due to incompatible forwarding technology.
+
+
+
+
+
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 47]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
 
 11.3.2.2.  Interop Between Nodes Supporting MPLS and UDP Tunneling
 
@@ -2676,19 +2643,6 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    MPLS Labels are carried using RFC 8277 encoding, and UDP (or IP)
    tunneling information is carried using TEA attribute or the
    Encapsulation Extended Community as specified in [RFC9012].
-
-
-
-
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 48]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
 
                          RR1--+
                                 \  +-------R2  [MPLS + UDP]
@@ -2722,29 +2676,32 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    attribute, which will not be used by R3.  MPLS forwarding will be
    used between R1 and R3.
 
+
+
+
+
+
+
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 48]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
+
    R1 and R4 send and receive UDP tunneling info in the BGP CT control
    plane routes using BGP TEA attribute.  This allows them to be ingress
    and egress for UDP tunneled data plane.  R4 will carry special MPLS
    Label with value 3 (Implicit-NULL) in RFC 8277 encoding, which tells
-   R1 not to push any MPLS label towards R4.  The MPLS Label advertised
-   by R1 will not be used by R4.  UDP tunneled forwarding will be used
-   between R1 and R4.
+   R1 not to push any MPLS label for this BGP CT route towards R4.  The
+   MPLS Label advertised by R1 will not be used by R4.  UDP tunneled
+   forwarding will be used between R1 and R4.
 
    Note in this example that R3 and R4 cannot communicate directly with
    each other, because they don't support a common forwarding
    technology.  The BGP CT routes received at R3, R4 from each other
    will remain unusable, due to incompatible forwarding technology.
-
-
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 49]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
 
 12.  Applicability to Network Slicing
 
@@ -2781,6 +2738,14 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
        -------------+--------------------------
          76            Classful Transport SAFI
 
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 49]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
+
    This will be used to create new AFI,SAFI pairs for IPv4, IPv6
    Classful Transport families. viz:
 
@@ -2789,18 +2754,6 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
 
    *  "IPv6, Classful Transport".  AFI/SAFI = "2/76" for carrying IPv6
       Classful Transport prefixes.
-
-
-
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 50]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
 
 13.2.  New Format for BGP Extended Community
 
@@ -2831,6 +2784,24 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    This registry contains values of the high-order octet (the "Type"
    field) of a Transitive Extended Community.
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 50]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
+
    Registry Group: Border Gateway Protocol (BGP) Extended Communities
 
    Registry Name: BGP Transitive Extended Community Types
@@ -2847,16 +2818,6 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
 
    This registry contains values of the high-order octet (the "Type"
    field) of a Non-transitive Extended Community.
-
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 51]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
 
     Registry Group: Border Gateway Protocol (BGP) Extended Communities
 
@@ -2877,6 +2838,25 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
 
    IANA is requested to add the following subregistry under the "Border
    Gateway Protocol (BGP) Extended Communities":
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 51]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
 
   Registry Group: Border Gateway Protocol (BGP) Extended Communities
 
@@ -2902,18 +2882,6 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    IANA is requested to add the following subregistry under the "Border
    Gateway Protocol (BGP) Extended Communities":
 
-
-
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 52]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
-
  Registry Group: Border Gateway Protocol (BGP) Extended Communities
 
  Registry Name: Non-Transitive Transport Class Extended Community Sub-Types
@@ -2938,6 +2906,14 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    The following two code points are sought for Target FEC Stack sub-
    TLVs:
 
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 52]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
+
    *  IPv4 BGP Classful Transport
 
    *  IPv6 BGP Classful Transport
@@ -2960,15 +2936,6 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    Class ID' field of Transport Route Target extended community that
    represents best effort transport class.  Please create a new registry
    for this.
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 53]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
 
     Registry Group: BGP CT Parameters
 
@@ -2993,6 +2960,16 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    existing BGP protocol, such as those described in [RFC4271] and
    [RFC4272].
 
+
+
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 53]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
+
    Mechanisms described in this document follow a "Walled Garden"
    approach to carry routes for loopback addresses in BGP CT family
    (AFI/SAFI: 1/76 or 2/76), which is explicitly configured and
@@ -3012,19 +2989,6 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
 
    Using a separate BGP family and new RT (Transport Class RT) minimizes
    the possibility of these routes mixing with service routes.
-
-
-
-
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 54]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
 
    If redistributing between SAFI 76 and SAFI 4 routes for AFIs 1 or 2,
    there is a possibility of SAFI 4 routes mixing with SAFI 1 service
@@ -3053,6 +3017,15 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    Section 6.3, to mitigate the risk of misinterpreting transposed SRv6
    SID information as an MPLS label.
 
+
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 54]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
+
    As [RFC4272] discusses, BGP is vulnerable to traffic-diversion
    attacks.  This SAFI routes adds a new means by which an attacker
    could cause the traffic to be diverted from its normal path.
@@ -3073,14 +3046,6 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
 15.  References
 
 15.1.  Normative References
-
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 55]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -3109,6 +3074,14 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
               (IBGP)", April 2006,
               <https://datatracker.ietf.org/doc/html/rfc4456#section-9>.
 
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 55]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
+
    [RFC4684]  Marques, P., Bonica, R., Fang, L., Martini, L., Raszuk,
               R., Patel, K., and J. Guichard, "Constrained Route
               Distribution for Border Gateway Protocol/MultiProtocol
@@ -3129,14 +3102,6 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    [RFC5925]  Touch, J., Mankin, A., and R. Bonica, "The TCP
               Authentication Option", RFC 5925, DOI 10.17487/RFC5925,
               June 2010, <https://www.rfc-editor.org/info/rfc5925>.
-
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 56]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
 
    [RFC6811]  Mohapatra, P., Scudder, J., Ward, D., Bush, R., and R.
               Austein, "BGP Prefix Origin Validation", RFC 6811,
@@ -3166,6 +3131,13 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
               Specification", RFC 8205, DOI 10.17487/RFC8205, September
               2017, <https://www.rfc-editor.org/info/rfc8205>.
 
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 56]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
+
    [RFC8212]  Mauch, J., Snijders, J., and G. Hankins, "Default External
               BGP (EBGP) Route Propagation Behavior without Policies",
               RFC 8212, DOI 10.17487/RFC8212, July 2017,
@@ -3186,13 +3158,6 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
               (SRv6) Network Programming", RFC 8986,
               DOI 10.17487/RFC8986, February 2021,
               <https://www.rfc-editor.org/info/rfc8986>.
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 57]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
 
    [RFC9012]  Patel, K., Van de Velde, G., Sangli, S., and J. Scudder,
               "The BGP Tunnel Encapsulation Attribute", RFC 9012,
@@ -3219,6 +3184,16 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
               ct/1a75d4d10d4df0f1fd7dcc041c2c868704b092c7/update-
               packing-test-results.txt>.
 
+
+
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 57]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
+
    [BGP-LU-EPE]
               Gredler, Ed., "Egress Peer Engineering using BGP-LU", 16
               June 2023, <https://datatracker.ietf.org/doc/html/draft-
@@ -3239,16 +3214,6 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
               Hegde, Ed., "Intent-aware Routing using Color", 13 March
               2022, <https://datatracker.ietf.org/doc/html/draft-hr-
               spring-intentaware-routing-using-color-01#section-6.3.2>.
-
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 58]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
 
    [MNH-ENCAP-DSCP]
               Vairavakkalai, Ed., "BGP MultiNexthop Attribute", 10 July
@@ -3278,6 +3243,13 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
               2023, <https://datatracker.ietf.org/doc/html/draft-
               kaliraj-idr-multinexthop-attribute-08>.
 
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 58]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
+
    [PCEP-RSVP-COLOR]
               Rajagopalan, Ed. and Pavan. Beeram, Ed., "Path Computation
               Element Protocol(PCEP) Extension for RSVP Color", 3
@@ -3296,15 +3268,6 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
               Field) in the IPv4 and IPv6 Headers", RFC 2474,
               DOI 10.17487/RFC2474, December 1998,
               <https://www.rfc-editor.org/info/rfc2474>.
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 59]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
 
    [RFC6890]  Cotton, M., Vegoda, L., Bonica, R., Ed., and B. Haberman,
               "Special-Purpose IP Address Registries", BCP 153,
@@ -3335,6 +3298,14 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
               Slices", 12 August 2023, <https://www.ietf.org/archive/id/
               draft-ietf-teas-ietf-network-slices-23.html#section-4>.
 
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 59]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
+
 Appendix A.  Extensibility considerations
 
 A.1.  Signaling Intent over PE-CE Attachment Circuit
@@ -3354,13 +3325,6 @@ A.1.  Signaling Intent over PE-CE Attachment Circuit
                                        ---Bronze--->
                    203.0.113.11                             203.0.113.22
                              ----  Traffic direction ---->
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 60]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
 
                 Figure 13: Example Topology with PE-CE Links
 
@@ -3390,6 +3354,14 @@ A.1.1.  Using DSCP in MultiNexthop Attribute
    by two Forwarding Instruction TLVs.  Each Next hop Leg contains PE1's
    peering self address in Endpoint Identifier TLV [MNH-EP] , the color
    Gold or Bronze encoded in the Transport class ID TLV [MNH-TC] , and
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 60]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
+
    associated DSCP code point indicating Gold or Bronze transport class
    encoded in the Payload Encapsulation Info TLV [MNH-ENCAP-DSCP] . This
    allows the CE to discover what transport classes exist in the
@@ -3410,14 +3382,6 @@ A.1.2.  MPLS-enabled CE
    tuple "VPN Label, PNH Address, Transport class ID" and advertise to
    CE1.
 
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 61]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
-
    Label PVL1 may identifies a service function at any node in the
    network, e.g. a Firewall device or egress node PE2.  And, for the
    same service prefix, a distinct label may be advertised to different
@@ -3436,6 +3400,23 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    support CBF by using MPLS Label inferred PHB.  The number of MPLS
    Labels consumed at PE1 for this approach will be proportional to the
    number of Service functions and Intents that are exposed to CE1.
+
+
+
+
+
+
+
+
+
+
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 61]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
 
    A BGP MultiNexthop Attribute [MULTI-NH-ATTR] is attached to a AFI/
    SAFI 1/1 service route to convey the MPLS Label information to CE1.
@@ -3463,17 +3444,6 @@ A.1.2.1.  Secure MPLS Forwarding on Inter-AS Link
    This ensures that if CE1 sends MPLS packet with a label that was not
    advertised to the CE1, the packet will be dropped.
 
-
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 62]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
-
    Furthermore, the routes for labels PVL1, PVL2 installed in MPLS
    context table "A" can match on 'Bottom of stack' bit being 'one',
    ensuring a MPLS packet is accepted from CE1 only if it has no more
@@ -3493,6 +3463,16 @@ A.2.  BGP CT Egress TE
    The Peer/32 or Peer/128 EPE route MAY be originated in BGP CT family
    with appropriate Mapping Community (e.g.  transport-target:0:100),
    thus allowing an EPE path to the peer that satisfies the desired SLA.
+
+
+
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 62]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
 
 Appendix B.  Applicability to Intra-AS and different Inter-AS
              deployments.
@@ -3518,18 +3498,6 @@ B.1.  Intra-AS usecase
 
 B.1.1.  Topology
 
-
-
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 63]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
-
                                        [RR11]
                                         |
                                         +
@@ -3553,6 +3521,15 @@ B.1.2.  Transport Layer
    AS1 uses RSVP-TE intra-domain tunnels between PE11 and PE12.  And LDP
    tunnels for best effort traffic.
 
+
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 63]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
+
    The network has two Transport classes: Gold with transport class id
    100, Bronze with transport class id 200.  These transport classes are
    provisioned at the PEs.  This creates the Resolution Schemes for
@@ -3572,19 +3549,6 @@ B.1.2.  Transport Layer
 
    These tunnels are provisioned to belong to transport class 100 or
    200.
-
-
-
-
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 64]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
 
 B.1.3.  Service Layer route exchange
 
@@ -3613,6 +3577,15 @@ B.1.3.  Service Layer route exchange
    hop when resolved using Resolution Scheme belonging to the mapping
    community Color:0:100, points to a PE11_to_PE12_gold tunnel.
 
+
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 64]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
+
    BGP CT AFI/SAFI 1/76 is not used in this Intra-AS deployment.  But
    the Transport class and Resolution Scheme constructs are used to
    preserve end-to-end SLA.
@@ -3633,14 +3606,6 @@ B.2.1.  Topology
 203.0.113.31          ---- Traffic Direction ---->           203.0.113.41
 
                  Figure 15: BGP CT Inter-AS option A.
-
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 65]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
 
    This example in Figure 15 shows two provider network Autonomous
    systems AS1, AS2.  They serve L3VPN customers AS3, AS4 respectively.
@@ -3670,6 +3635,13 @@ B.2.2.  Transport Layer
 
       PE21_to_ASBR21_gold - SRTE tunnel
 
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 65]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
+
       ASBR21_to_PE21_gold - SRTE tunnel
 
    Following tunnels exist for Bronze transport class.
@@ -3690,13 +3662,6 @@ B.2.3.  Service Layer route exchange
    Service nodes PE11, ASBR11 negotiate service family (AFI/SAFI 1/128)
    on the BGP session with RR11.  Service helper RR11 reflects service
    routes between the PE11 and ASBR11 with next hop unchanged.
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 66]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
 
    Similarly, in AS2 PE21, ASBR21 negotiate service family (AFI/SAFI
    1/128) on the BGP session with RR21, which reflects service routes
@@ -3724,6 +3689,15 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
    repeats in AS1, until the route reaches PE11 and resolves over
    PE11_to_ASBR11_gold RSVP TE tunnel.
 
+
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 66]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
+
    Traffic traverses as IP packet on the following legs: CE31-PE11,
    ASBR11-ASBR21, PE21-CE41.  And uses MPLS forwarding inside AS1, AS2
    core.
@@ -3746,13 +3720,6 @@ B.3.1.  Topology
   AS3               ..AS1..               ..AS2..                  AS4
 
 203.0.113.31          ---- Traffic Direction ---->           203.0.113.41
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 67]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
 
                  Figure 16: BGP CT Inter-AS option B.
 
@@ -3780,6 +3747,13 @@ B.3.2.  Transport Layer
 
       PE11_to_ASBR12_gold - RSVP-TE tunnel
 
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 67]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
+
       ASBR12_to_PE11_gold - RSVP-TE tunnel
 
       PE22_to_ASBR21_gold - SRTE tunnel
@@ -3798,17 +3772,6 @@ B.3.2.  Transport Layer
 
    These tunnels are provisioned to belong to transport class 100 or
    200.
-
-
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 68]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
 
 B.3.3.  Service Layer route exchange
 
@@ -3836,6 +3799,17 @@ B.3.3.  Service Layer route exchange
    RR23 with the next hop unchanged as PE22 and label V-L1.  Now ASBR21
    can resolve the PNH 192.0.2.22 using ASBR21_to_PE22_gold SRTE LSP.
 
+
+
+
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 68]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
+
    Next, ASBR21 readvertises the RD:203.0.113.41 route with next hop
    self to ASBR12, with a newly allocated MPLS label, V-L2.  Forwarding
    for this label is installed to Swap V-L1, and Push labels for
@@ -3852,19 +3826,6 @@ B.3.3.  Service Layer route exchange
    BGP CT AFI/SAFI 1/76 is not used in this Inter-AS Option B
    deployment.  But the Transport class and Resolution Scheme constructs
    are used to preserve end-to-end SLA.
-
-
-
-
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 69]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
 
 Appendix C.  Why reuse RFC 8277 and RFC 4364?
 
@@ -3896,6 +3857,15 @@ Appendix C.  Why reuse RFC 8277 and RFC 4364?
    that support SAFI 128 for AFIs 1 or 2.  This can be useful during
    transition, until all BGP speakers in the network support BGP CT.
 
+
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 69]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
+
    In future, if RFC 8277 evolves into a typed NLRI, that does not carry
    Label in the NLRI, BGP CT will be compatible with that as-well.  In
    essence, BGP CT encoding is compatible with existing deployed
@@ -3908,19 +3878,6 @@ Appendix C.  Why reuse RFC 8277 and RFC 4364?
    and protocol compatibility considerations, as it complements and
    works well with existing protocol machineries.  This problem does not
    need reinventing the wheel with brand new NLRI and procedures.
-
-
-
-
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 70]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
 
    This is a more pragmatic approach, rather than abandoning time tested
    design pattern like RFC 4364 and RFC 8277, just to invent something
@@ -3956,6 +3913,15 @@ C.1.  Update packing considerations
    are available in BGP CT Update packing Test Results
    [BGP-CT-UPDATE-PACKING-TEST].
 
+
+
+
+
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 70]
+
+Internet-Draft        BGP Classful Transport Planes       September 2023
+
+
    Furthermore, even in today's BGP LU deployments each egress node
    originates BGP LU route for it's loopback, with some attributes like
    community identifying the originating node or region, and AIGP
@@ -3968,15 +3934,6 @@ Appendix D.  Scaling using BGP MPLS Namespaces
    MPLS network, where a domain is an AS or IGP area.  Domain boundary
    is demarcated by a BN performing BGP next hop self action on the
    transport route.
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 71]
-
-Internet-Draft        BGP Classful Transport Planes          August 2023
-
 
    It considers the scenario suggested in the document Intent-aware
    Routing using Color [Intent-Routing-Color] Section 6.3.2.1. where
@@ -4014,25 +3971,14 @@ D.1.  Illustration.
    loopbacks from the rest of the network.  The rest of the network sees
    this region as 1 BGP next hop, and not as 1000 BGP next hops.
 
-D.2.  Topology
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 72]
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 71]
 
-Internet-Draft        BGP Classful Transport Planes          August 2023
+Internet-Draft        BGP Classful Transport Planes       September 2023
 
+
+D.2.  Topology
 
                   [RR11]                           [RR31]
                     |                                |
@@ -4083,11 +4029,9 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
 
 
 
-
-
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 73]
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 72]
 
-Internet-Draft        BGP Classful Transport Planes          August 2023
+Internet-Draft        BGP Classful Transport Planes       September 2023
 
 
    Traffic direction being described is CE41 to CE31.  Reverse direction
@@ -4141,9 +4085,9 @@ D.4.  Service Forwarding Helper, and Changes to Transport Layer.
 
 
 
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 74]
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 73]
 
-Internet-Draft        BGP Classful Transport Planes          August 2023
+Internet-Draft        BGP Classful Transport Planes       September 2023
 
 
 D.5.  BGP MPLS Namespace Address family (AFI:16399, SAFI:128)
@@ -4197,9 +4141,9 @@ D.7.  Analysis of Forwarding Behavior
 
 
 
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 75]
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 74]
 
-Internet-Draft        BGP Classful Transport Planes          August 2023
+Internet-Draft        BGP Classful Transport Planes       September 2023
 
 
 Appendix E.  BGP CT deployment in SRv6 networks
@@ -4239,7 +4183,7 @@ E.1.  SID stacking approach
    CT (AFI: 2, SAFI:76) between them.  Transport Classes Gold (100) and
    Bronze (200) are provisioned in all PEs and ASBRs.  All BGP CT
    advertisements in this example carry a MPLS label value of 3
-   (Implicit Null) in the NLRI encoding.
+   (Implicit NULL) in the NLRI encoding.
 
    Reachability between PE1 and PE2 is formed using BGP CT family.
    Service families like IPv4 unicast (AFI: 1, SAFI: 1) and L3VPN (AFI:
@@ -4253,9 +4197,9 @@ E.1.  SID stacking approach
 
 
 
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 76]
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 75]
 
-Internet-Draft        BGP Classful Transport Planes          August 2023
+Internet-Draft        BGP Classful Transport Planes       September 2023
 
 
       PE2-SRv6 : SRv6 Locator for PE2 best effort transport class
@@ -4309,9 +4253,9 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
 
 
 
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 77]
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 76]
 
-Internet-Draft        BGP Classful Transport Planes          August 2023
+Internet-Draft        BGP Classful Transport Planes       September 2023
 
 
    Architecturally, the forwarding semantic of End.REPLACE SID operation
@@ -4365,9 +4309,9 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
 
 
 
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 78]
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 77]
 
-Internet-Draft        BGP Classful Transport Planes          August 2023
+Internet-Draft        BGP Classful Transport Planes       September 2023
 
 
    The illustrations that follow, show how the BGP CT route for gold
@@ -4421,9 +4365,9 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
 
 
 
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 79]
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 78]
 
-Internet-Draft        BGP Classful Transport Planes          August 2023
+Internet-Draft        BGP Classful Transport Planes       September 2023
 
 
   EBGP CT routes from ASBR2 to ASBR1
@@ -4477,9 +4421,9 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
 
 
 
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 80]
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 79]
 
-Internet-Draft        BGP Classful Transport Planes          August 2023
+Internet-Draft        BGP Classful Transport Planes       September 2023
 
 
      IBGP CT routes from ASBR1 to PE1
@@ -4533,9 +4477,9 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
 
 
 
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 81]
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 80]
 
-Internet-Draft        BGP Classful Transport Planes          August 2023
+Internet-Draft        BGP Classful Transport Planes       September 2023
 
 
      Gold TRDB routes at PE1
@@ -4589,9 +4533,9 @@ Internet-Draft        BGP Classful Transport Planes          August 2023
 
 
 
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 82]
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 81]
 
-Internet-Draft        BGP Classful Transport Planes          August 2023
+Internet-Draft        BGP Classful Transport Planes       September 2023
 
 
  BGP Service routes advertisement from PE2 to PE1:
@@ -4645,9 +4589,9 @@ E.2.  Color-encoded Service SID (CPR) Approach
 
 
 
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 83]
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 82]
 
-Internet-Draft        BGP Classful Transport Planes          August 2023
+Internet-Draft        BGP Classful Transport Planes       September 2023
 
 
 E.2.1.  Analysis of CPR Approach
@@ -4701,9 +4645,9 @@ Co-Authors
 
 
 
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 84]
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 83]
 
-Internet-Draft        BGP Classful Transport Planes          August 2023
+Internet-Draft        BGP Classful Transport Planes       September 2023
 
 
    Israel Means
@@ -4757,9 +4701,9 @@ Other Contributors
 
 
 
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 85]
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 84]
 
-Internet-Draft        BGP Classful Transport Planes          August 2023
+Internet-Draft        BGP Classful Transport Planes       September 2023
 
 
    Chaitanya Yadlapalli
@@ -4813,9 +4757,9 @@ Acknowledgements
 
 
 
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 86]
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 85]
 
-Internet-Draft        BGP Classful Transport Planes          August 2023
+Internet-Draft        BGP Classful Transport Planes       September 2023
 
 
 Authors' Addresses
@@ -4869,4 +4813,4 @@ Authors' Addresses
 
 
 
-Vairavakkalai & VenkatarExpires 21 February 2024               [Page 87]
+Vairavakkalai & VenkataramExpires 15 March 2024                [Page 86]
