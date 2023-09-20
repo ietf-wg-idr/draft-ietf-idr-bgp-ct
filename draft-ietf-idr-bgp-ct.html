@@ -1207,7 +1207,7 @@ li > p:last-of-type {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Vairavakkalai &amp; Venkataraman</td>
-<td class="center">Expires 15 March 2024</td>
+<td class="center">Expires 23 March 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1220,12 +1220,12 @@ li > p:last-of-type {
 <dd class="internet-draft">draft-ietf-idr-bgp-ct-15</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-09-12" class="published">12 September 2023</time>
+<time datetime="2023-09-20" class="published">20 September 2023</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Experimental</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-03-15">15 March 2024</time></dd>
+<dd class="expires"><time datetime="2024-03-23">23 March 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1294,7 +1294,7 @@ li > p:last-of-type {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 15 March 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 23 March 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1786,14 +1786,13 @@ li > p:last-of-type {
 <p id="section-2-28">SR: Segment Routing<a href="#section-2-28" class="pilcrow">¶</a></p>
 <p id="section-2-29">SRTE: Segment Routing Traffic Engineering<a href="#section-2-29" class="pilcrow">¶</a></p>
 <p id="section-2-30">SID: SR Segment Identifier<a href="#section-2-30" class="pilcrow">¶</a></p>
-<p id="section-2-31">EP: Endpoint, a loopback address in the network<a href="#section-2-31" class="pilcrow">¶</a></p>
-<p id="section-2-32">SEP: Service Endpoint, the PNH of a Service route<a href="#section-2-32" class="pilcrow">¶</a></p>
-<p id="section-2-33">LPM: Longest Prefix Match<a href="#section-2-33" class="pilcrow">¶</a></p>
-<p id="section-2-34">SLA: Service Level Agreement<a href="#section-2-34" class="pilcrow">¶</a></p>
-<p id="section-2-35">EPE: Egress Peer Engineering<a href="#section-2-35" class="pilcrow">¶</a></p>
-<p id="section-2-36">MPLS: Multi Protocol Label Switching<a href="#section-2-36" class="pilcrow">¶</a></p>
-<p id="section-2-37">UHP: Ultimate Hop Pop<a href="#section-2-37" class="pilcrow">¶</a></p>
-<p id="section-2-38">PHP: Penultimate Hop Pop<a href="#section-2-38" class="pilcrow">¶</a></p>
+<p id="section-2-31">EP: Endpoint, e.g. a loopback address in the network<a href="#section-2-31" class="pilcrow">¶</a></p>
+<p id="section-2-32">LPM: Longest Prefix Match<a href="#section-2-32" class="pilcrow">¶</a></p>
+<p id="section-2-33">SLA: Service Level Agreement<a href="#section-2-33" class="pilcrow">¶</a></p>
+<p id="section-2-34">EPE: Egress Peer Engineering<a href="#section-2-34" class="pilcrow">¶</a></p>
+<p id="section-2-35">MPLS: Multi Protocol Label Switching<a href="#section-2-35" class="pilcrow">¶</a></p>
+<p id="section-2-36">UHP: Ultimate Hop Pop<a href="#section-2-36" class="pilcrow">¶</a></p>
+<p id="section-2-37">PHP: Penultimate Hop Pop<a href="#section-2-37" class="pilcrow">¶</a></p>
 <section id="section-2.1">
         <h3 id="name-definitions-2">
 <a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-definitions-2" class="section-name selfRef">Definitions</a>
@@ -2126,8 +2125,9 @@ li > p:last-of-type {
 <a href="#section-5" class="section-number selfRef">5. </a><a href="#name-resolution-scheme-2" class="section-name selfRef">Resolution Scheme</a>
       </h2>
 <p id="section-5-1">Resolution Scheme is a construct that consists of a specific TRDB or
-      an ordered set of TRDBs, and is identified by a Mapping Community. A BGP
-      route is associated with a resolution scheme during import processing.<a href="#section-5-1" class="pilcrow">¶</a></p>
+      an ordered set of TRDBs. An overlay route is associated with a
+      resolution scheme during import processing, based on Mapping Community
+      on the route.<a href="#section-5-1" class="pilcrow">¶</a></p>
 <p id="section-5-2">Resolution Schemes enable a BGP speaker to resolve next hop
       reachability for overlay routes over the appropriate underlay tunnels
       within the scope of the TRDBs. Longest Prefix Match (LPM) of the next
@@ -2135,11 +2135,13 @@ li > p:last-of-type {
 <p id="section-5-3">An implementation may provide an option for the overlay route to
       resolve over less preferred Transport Classes, should the resolution
       over a primary Transport Class fail.<a href="#section-5-3" class="pilcrow">¶</a></p>
-<p id="section-5-4">To accomplish this, the set of overlay routes may be associated with
-      a user configured "Resolution Scheme" that consists of the "Mapping
-      Community" and the primary Transport Class, which is used to realize the
-      desired intent. The Resolution Scheme may also be configured to include
-      an ordered list of fallback Transport Classes.<a href="#section-5-4" class="pilcrow">¶</a></p>
+<p id="section-5-4">To accomplish this, the "Resolution Scheme" is configured with the
+      primary Transport Class, and an ordered list of fallback Transport
+      Classes. Two Resolution Schemes are considered equivalent in Intent if
+      they consist of the same ordered set of TRDBs.<a href="#section-5-4" class="pilcrow">¶</a></p>
+<p id="section-5-5">Operators take care that Resolution Schemes for a mapping community
+      are configured consistently on various nodes in a network, based on
+      desired Intent and available transport class tunnels.<a href="#section-5-5" class="pilcrow">¶</a></p>
 <div id="Mapping_Comm">
 <section id="section-5.1">
         <h3 id="name-mapping-community-2">
@@ -2148,21 +2150,23 @@ li > p:last-of-type {
 <p id="section-5.1-1">Mapping community is a "role" and not a new type of community; any
         BGP Community or Extended Community may play this role. A Mapping
         Community maps to exactly one Resolution Scheme.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
-<p id="section-5.1-2">An example of mapping community is "color:0:100", described in
+<p id="section-5.1-2">An implementation SHOULD allow associating multiple Mapping
+        Communities to a Resolution Scheme. This helps with renumbering and
+        migration scenarios.<a href="#section-5.1-2" class="pilcrow">¶</a></p>
+<p id="section-5.1-3">An example of mapping community is "color:0:100", described in
         <span>[<a href="#RFC9012" class="xref">RFC9012</a>]</span>, or the "transport-target:0:100" described in
-        <a href="#tc-rt" class="xref">Section 4.3</a> in this document.<a href="#section-5.1-2" class="pilcrow">¶</a></p>
-<p id="section-5.1-3">The first community on an overlay route that matches a Mapping
+        <a href="#tc-rt" class="xref">Section 4.3</a> in this document.<a href="#section-5.1-3" class="pilcrow">¶</a></p>
+<p id="section-5.1-4">The first community on an overlay route that matches a Mapping
         Community of a locally configured Resolution Scheme is considered the
         effective Mapping Community for the route. The Resolution Scheme thus
         found is used when resolving the route's PNH. If a route contains more
         than one Mapping Community, it indicates that the route considers
-        these distinct Mapping Communities as equivalent in Intent. So, the
-        first community that maps to a Resolution Scheme is chosen as the
-        effective Mapping Community.<a href="#section-5.1-3" class="pilcrow">¶</a></p>
-<p id="section-5.1-4">A Mapping Community uniquely identifies a Resolution Scheme. An
-        implementation SHOULD allow associating multiple Mapping Communities
-        to a Resolution Scheme. This helps with renumbering and migration
-        scenarios.<a href="#section-5.1-4" class="pilcrow">¶</a></p>
+        these distinct Mapping Communities as equivalent in Intent.<a href="#section-5.1-4" class="pilcrow">¶</a></p>
+<p id="section-5.1-5">If more than one distinct Mapping Communities on an overlay route
+        map to multiple Resolution Schemes with dissimilar Intents at a
+        receiving node, it is considered a configuration error. Operators
+        should avoid such configuration errors when attaching mapping
+        community on overlay routes.<a href="#section-5.1-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2386,16 +2390,14 @@ li > p:last-of-type {
 </li>
           <li class="normal ulEmpty" id="section-7.3-1.3">If the resolution process does not find a matching route in any
           of the associated TRDBs, the received BGP CT route MUST be
-          considered unusable for forwarding purpose and ineligible for best
-          path computation. A withdrawal would be sent if this was the only
-          usable path.<a href="#section-7.3-1.3" class="pilcrow">¶</a>
+          considered unresolvable. (See RFC 4271, Section 9.1.2.1).<a href="#section-7.3-1.3" class="pilcrow">¶</a>
 </li>
           <li class="normal ulEmpty" id="section-7.3-1.4">The received BGP CT route MUST be added to the TRDB corresponding
           to the Transport Class "C1". So that service routes can resolve over
           this BGP CT ingress route. RD is stripped by the ingress node from
           the BGP CT NLRI prefix when a BGP CT route is added to a TRDB. This
-          step does not apply if the Transport Class RT is received on a route
-          in BGP address family that does not have SAFI 76.<a href="#section-7.3-1.4" class="pilcrow">¶</a>
+          step applies only if the Transport Class RT is received on a BGP
+          route in address family with SAFI 76.<a href="#section-7.3-1.4" class="pilcrow">¶</a>
 </li>
         </ul>
 </section>
@@ -2548,7 +2550,7 @@ li > p:last-of-type {
 </li>
           <li class="normal ulEmpty" id="section-7.8-1.3">If the resolution process does not find a Tunnel Ingress Route in
           any of the Transport Route Databases, the service route MUST be
-          considered unusable for forwarding purpose and be withdrawn.<a href="#section-7.8-1.3" class="pilcrow">¶</a>
+          considered unresolvable. (See RFC 4271, Section 9.1.2.1).<a href="#section-7.8-1.3" class="pilcrow">¶</a>
 </li>
         </ul>
 <p id="section-7.8-2">Note: For an illustration of above procedures in a MPLS network,
@@ -2606,9 +2608,9 @@ li > p:last-of-type {
 <p id="section-7.10-1">The Tunnel Encapsulation Attribute, described in <span>[<a href="#RFC9012" class="xref">RFC9012</a>]</span> can be used to request a specific type of tunnel
         encapsulation. This attribute may apply to BGP service routes or
         transport routes, including BGP Classful Transport family routes.<a href="#section-7.10-1" class="pilcrow">¶</a></p>
-<p id="section-7.10-2">The mechanisms described in <span><a href="#MULTI-NH-ATTR" class="xref">BGP
-        MultiNexthop Attribute</a> [<a href="#MULTI-NH-ATTR" class="xref">MULTI-NH-ATTR</a>]</span> allow a BGP route to carry multiple next
-        hop addresses. Specifying 'Transport Class ID' as a qualifier for each
+<p id="section-7.10-2">The mechanisms described in <span><a href="#MNH" class="xref">BGP MultiNexthop
+        Attribute</a> [<a href="#MNH" class="xref">MNH</a>]</span> allow a BGP route to carry multiple next hop
+        addresses. Specifying 'Transport Class ID' as a qualifier for each
         next hop address is also allowed.<a href="#section-7.10-2" class="pilcrow">¶</a></p>
 <p id="section-7.10-3">It should be noted that in such cases "Transport Class ID/Color"
         can exist in multiple places on the same route, and a precedence order
@@ -2729,10 +2731,10 @@ li > p:last-of-type {
                  +--[ABR24]--+ +--[ASBR22]---[ASBR14]-+ +--[PE12]--+
 
 
-       |                |                  |                    |
-       +                +                  +                    +
-    CE |     region-1   |   region-2       |                    |CE
-   AS4              ...AS2...                       AS1          AS3
+       |      AS2       |         AS2      |                   |
+   AS4 +    region-1    +      region-2    +       AS1         + AS3
+       |                |                  |                   |
+
 
 203.0.113.41  ------------ Traffic Direction ----------&gt;  203.0.113.31
 
@@ -3233,7 +3235,7 @@ li > p:last-of-type {
         administrative domain that may either span multiple domains within a
         provider network or span closely coordinated provider networks.<a href="#section-10.2-1" class="pilcrow">¶</a></p>
 <p id="section-10.2-2">The use of RDs also provides an option for signaling forwarding
-        diversity within the same Transport Class. An SN can advertise an SEP
+        diversity within the same Transport Class. An SN can advertise an EP
         with the same Transport Class in multiple BGP CT routes with unique
         RDs.<a href="#section-10.2-2" class="pilcrow">¶</a></p>
 <p id="section-10.2-3">For e.g., unique "RDx:EP1" prefixes can be advertised by an SN for
@@ -3308,8 +3310,11 @@ li > p:last-of-type {
 <a href="#name-managing-transport-route-visib" class="selfRef">Managing Transport Route Visibility in Multi Domain Network</a>
           </figcaption></figure>
 </div>
-<p id="section-10.3-4">The following table details the BGP CT route and path visibility at
-        PE31-- for each TC.<a href="#section-10.3-4" class="pilcrow">¶</a></p>
+<p id="section-10.3-4">The following table provides a comparison of the BGP CT route scale
+        and endpoint path visibility at ingress node PE31 for each TC, when
+        Unicast or Anycast EPs (EP-type) are originated by different node
+        roles (Origin), using different RD allocation modes (RD-Mode), and
+        different Per-Prefix Label allocation modes (PP-Mode).<a href="#section-10.3-4" class="pilcrow">¶</a></p>
 <span id="name-route-and-path-visibility-at"></span><div id="RDLabelVis">
 <figure id="figure-7">
           <div class="alignLeft art-text artwork" id="section-10.3-5.1">
@@ -3337,7 +3342,7 @@ li > p:last-of-type {
 <a href="#name-route-and-path-visibility-at" class="selfRef">Route and Path Visibility at Ingress Node</a>
           </figcaption></figure>
 </div>
-<p id="section-10.3-6">In the table shown in <a href="#RDLabelVis" class="xref">Figure 7</a>, both route churn
+<p id="section-10.3-6">In the table shown in <a href="#RDLabelVis" class="xref">Figure 7</a>, both route scale
         and TE granularity are directly proportional to the number of CT
         labels received.<a href="#section-10.3-6" class="pilcrow">¶</a></p>
 <p id="section-10.3-7">Deploying unique RDs is strongly RECOMMENDED because it helps in
@@ -3956,8 +3961,8 @@ Registry Name: BGP Transitive Extended Community Types
  Registry Name: BGP Non-Transitive Extended Community Types
 
       Type Value         Name
-     --------------+------------------
-         0x4a         Transport Class
+     --------------+--------------------------------
+         0x4a         Non-Transitive Transport Class
 
  (Sub-Types are defined in the
   "Non-Transitive Transport Class Extended Community Sub-Types"
@@ -4160,6 +4165,14 @@ Registry Name: BGP Transitive Extended Community Types
 <a href="#section-15.1" class="section-number selfRef">15.1. </a><a href="#name-normative-references-2" class="section-name selfRef">Normative References</a>
         </h3>
 <dl class="references">
+<dt id="MNH">[MNH]</dt>
+        <dd>
+<span class="refAuthor">Vairavakkalai, Ed.</span>, <span class="refTitle">"BGP MultiNexthop Attribute"</span>, <time datetime="2023-07-23" class="refDate">23 July 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-kaliraj-idr-multinexthop-attribute-09">https://datatracker.ietf.org/doc/html/draft-kaliraj-idr-multinexthop-attribute-09</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="MPLS-NS">[MPLS-NS]</dt>
+        <dd>
+<span class="refAuthor">Vairavakkalai, Ed.</span>, <span class="refTitle">"BGP signalled MPLS namespaces"</span>, <time datetime="2023-07-10" class="refDate">10 July 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-kaliraj-bess-bgp-sig-private-mpls-labels-06">https://datatracker.ietf.org/doc/html/draft-kaliraj-bess-bgp-sig-private-mpls-labels-06</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
         <dd>
 <span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc2119">https://www.rfc-editor.org/info/rfc2119</a>&gt;</span>. </dd>
@@ -4249,8 +4262,12 @@ Registry Name: BGP Transitive Extended Community Types
 <span class="refAuthor">Dawra, G., Ed.</span>, <span class="refAuthor">Talaulikar, K., Ed.</span>, <span class="refAuthor">Raszuk, R.</span>, <span class="refAuthor">Decraene, B.</span>, <span class="refAuthor">Zhuang, S.</span>, and <span class="refAuthor">J. Rabadan</span>, <span class="refTitle">"BGP Overlay Services Based on Segment Routing over IPv6 (SRv6)"</span>, <span class="seriesInfo">RFC 9252</span>, <span class="seriesInfo">DOI 10.17487/RFC9252</span>, <time datetime="2022-07" class="refDate">July 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc9252">https://www.rfc-editor.org/info/rfc9252</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="SRTE">[SRTE]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Talaulikar, Ed.</span> and <span class="refAuthor">S. Previdi</span>, <span class="refTitle">"Advertising Segment Routing Policies in BGP"</span>, <time datetime="2023-01-28" class="refDate">28 January 2023</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-idr-segment-routing-te-policy-20">https://tools.ietf.org/html/draft-ietf-idr-segment-routing-te-policy-20</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="SRV6-INTER-DOMAIN">[SRV6-INTER-DOMAIN]</dt>
+      <dd>
+<span class="refAuthor">K A, Ed.</span>, <span class="refTitle">"SRv6 inter-domain mapping SIDs"</span>, <time datetime="2023-06-23" class="refDate">23 June 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-salih-spring-srv6-inter-domain-sids-03">https://datatracker.ietf.org/doc/html/draft-salih-spring-srv6-inter-domain-sids-03</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
@@ -4279,30 +4296,6 @@ Registry Name: BGP Transitive Extended Community Types
         <dd>
 <span class="refAuthor">Hegde, Ed.</span>, <span class="refTitle">"Intent-aware Routing using Color"</span>, <time datetime="2022-03-13" class="refDate">13 March 2022</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-hr-spring-intentaware-routing-using-color-01#section-6.3.2">https://datatracker.ietf.org/doc/html/draft-hr-spring-intentaware-routing-using-color-01#section-6.3.2</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="MNH-ENCAP-DSCP">[MNH-ENCAP-DSCP]</dt>
-        <dd>
-<span class="refAuthor">Vairavakkalai, Ed.</span>, <span class="refTitle">"BGP MultiNexthop Attribute"</span>, <time datetime="2023-07-10" class="refDate">10 July 2023</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-kaliraj-idr-multinexthop-attribute-08.html#section-5.4.3.4">https://www.ietf.org/archive/id/draft-kaliraj-idr-multinexthop-attribute-08.html#section-5.4.3.4</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="MNH-ENCAP-MPLS">[MNH-ENCAP-MPLS]</dt>
-        <dd>
-<span class="refAuthor">Vairavakkalai, Ed.</span>, <span class="refTitle">"BGP MultiNexthop Attribute"</span>, <time datetime="2023-07-10" class="refDate">10 July 2023</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-kaliraj-idr-multinexthop-attribute-08.html#section-5.4.3.1">https://www.ietf.org/archive/id/draft-kaliraj-idr-multinexthop-attribute-08.html#section-5.4.3.1</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="MNH-EP">[MNH-EP]</dt>
-        <dd>
-<span class="refAuthor">Vairavakkalai, Ed.</span>, <span class="refTitle">"BGP MultiNexthop Attribute"</span>, <time datetime="2023-07-10" class="refDate">10 July 2023</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-kaliraj-idr-multinexthop-attribute-08.html#section-5.4.1">https://www.ietf.org/archive/id/draft-kaliraj-idr-multinexthop-attribute-08.html#section-5.4.1</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="MNH-TC">[MNH-TC]</dt>
-        <dd>
-<span class="refAuthor">Vairavakkalai, Ed.</span>, <span class="refTitle">"BGP MultiNexthop Attribute"</span>, <time datetime="2023-07-10" class="refDate">10 July 2023</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-kaliraj-idr-multinexthop-attribute-08.html#section-5.4.2.2">https://www.ietf.org/archive/id/draft-kaliraj-idr-multinexthop-attribute-08.html#section-5.4.2.2</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="MPLS-NAMESPACES">[MPLS-NAMESPACES]</dt>
-        <dd>
-<span class="refAuthor">Vairavakkalai, Ed.</span>, <span class="refTitle">"BGP signalled MPLS namespaces"</span>, <time datetime="2023-07-10" class="refDate">10 July 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-kaliraj-bess-bgp-sig-private-mpls-labels-06">https://datatracker.ietf.org/doc/html/draft-kaliraj-bess-bgp-sig-private-mpls-labels-06</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="MULTI-NH-ATTR">[MULTI-NH-ATTR]</dt>
-        <dd>
-<span class="refAuthor">Vairavakkalai, Ed.</span>, <span class="refTitle">"BGP MultiNexthop Attribute"</span>, <time datetime="2023-07-10" class="refDate">10 July 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-kaliraj-idr-multinexthop-attribute-08">https://datatracker.ietf.org/doc/html/draft-kaliraj-idr-multinexthop-attribute-08</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="PCEP-RSVP-COLOR">[PCEP-RSVP-COLOR]</dt>
         <dd>
 <span class="refAuthor">Rajagopalan, Ed.</span> and <span class="refAuthor">Pavan. Beeram, Ed.</span>, <span class="refTitle">"Path Computation Element Protocol(PCEP) Extension for RSVP Color"</span>, <time datetime="2023-01-03" class="refDate">3 January 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-pce-pcep-color-00">https://datatracker.ietf.org/doc/html/draft-ietf-pce-pcep-color-00</a>&gt;</span>. </dd>
@@ -4330,10 +4323,6 @@ Registry Name: BGP Transitive Extended Community Types
 <dt id="RTC-Ext">[RTC-Ext]</dt>
         <dd>
 <span class="refAuthor">Zhang, Z., Ed.</span> and <span class="refAuthor">Haas, Ed.</span>, <span class="refTitle">"Generic Route Constraint Distribution Mechanism for BGP"</span>, <time datetime="2023-06-26" class="refDate">26 June 2023</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-zzhang-idr-bgp-rt-constrains-extension-03#section-2">https://tools.ietf.org/html/draft-zzhang-idr-bgp-rt-constrains-extension-03#section-2</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="SRV6-INTER-DOMAIN">[SRV6-INTER-DOMAIN]</dt>
-        <dd>
-<span class="refAuthor">K A, Ed.</span>, <span class="refTitle">"SRv6 inter-domain mapping SIDs"</span>, <time datetime="2023-06-23" class="refDate">23 June 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-salih-spring-srv6-inter-domain-sids-03">https://datatracker.ietf.org/doc/html/draft-salih-spring-srv6-inter-domain-sids-03</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="TEAS-NS">[TEAS-NS]</dt>
       <dd>
@@ -4391,19 +4380,19 @@ Registry Name: BGP Transitive Extended Community Types
           the PE1 device roles and CE1 doesn't receive any indication in BGP
           signaling regarding what DSCP code points are being offered by the
           provider network.<a href="#appendix-A.1.1-3" class="pilcrow">¶</a></p>
-<p id="appendix-A.1.1-4">With a <span><a href="#MULTI-NH-ATTR" class="xref">BGP MultiNexthop
-          Attribute</a> [<a href="#MULTI-NH-ATTR" class="xref">MULTI-NH-ATTR</a>]</span> attached to a AFI/SAFI 1/1 service route, it is
-          possible to extend the PE-CE BGP signaling (if used) to communicate
-          such information to the CE1. In the preceding example, the MNH
-          contains two Next hop Legs, described by two Forwarding Instruction
-          TLVs. Each Next hop Leg contains PE1's peering self address in <span><a href="#MNH-EP" class="xref">Endpoint Identifier TLV</a> [<a href="#MNH-EP" class="xref">MNH-EP</a>]</span> , the color Gold or
-          Bronze encoded in the <span><a href="#MNH-TC" class="xref">Transport class ID
-          TLV</a> [<a href="#MNH-TC" class="xref">MNH-TC</a>]</span> , and associated DSCP code point indicating Gold or
-          Bronze transport class encoded in the <span><a href="#MNH-ENCAP-DSCP" class="xref">Payload Encapsulation Info TLV</a> [<a href="#MNH-ENCAP-DSCP" class="xref">MNH-ENCAP-DSCP</a>]</span> . This
-          allows the CE to discover what transport classes exist in the
-          provider network, and which DSCP codepoint to encode so that traffic
-          is forwarded using the desired transport class in the provided
-          network.<a href="#appendix-A.1.1-4" class="pilcrow">¶</a></p>
+<p id="appendix-A.1.1-4">With a <span><a href="#MNH" class="xref">BGP MultiNexthop Attribute</a> [<a href="#MNH" class="xref">MNH</a>]</span>
+          attached to a AFI/SAFI 1/1 service route, it is possible to extend
+          the PE-CE BGP signaling (if used) to communicate such information to
+          the CE1. In the preceding example, the MNH contains two Next hop
+          Legs, described by two Forwarding Instruction TLVs. Each Next hop
+          Leg contains PE1's peering self address in Endpoint Identifier TLV
+          (Section 5.4.1, <span>[<a href="#MNH" class="xref">MNH</a>]</span>), the color Gold or Bronze
+          encoded in the Transport class ID TLV (Section 5.4.2.2, <span>[<a href="#MNH" class="xref">MNH</a>]</span>), and associated DSCP code point indicating Gold or
+          Bronze transport class encoded in the Payload Encapsulation Info TLV
+          (Section 5.4.3.4, <span>[<a href="#MNH" class="xref">MNH</a>]</span>). This allows the CE to
+          discover what transport classes exist in the provider network, and
+          which DSCP codepoint to encode so that traffic is forwarded using
+          the desired transport class in the provided network.<a href="#appendix-A.1.1-4" class="pilcrow">¶</a></p>
 </section>
 <div id="MplsCE">
 <section id="appendix-A.1.2">
@@ -4430,23 +4419,25 @@ Registry Name: BGP Transitive Extended Community Types
           VL1, Push TL1 towards PE2". TL1 is the BGP CT label received for the
           tuple 'PE2, TC1'. In forwarding, when MPLS packet with label PVL1 is
           received from CE1, PVL1 Swaps to label VL1 and pushes the BGP CT
-          label TL1. PE1 advertises the label "PVL1" in the MULTI_NH_ATTR to
-          CE1. PE1 forwards based on MPLS label without performing any IP
-          lookup. This allows for PE1 to be a low IP FIB device and still
-          support CBF by using MPLS Label inferred PHB. The number of MPLS
-          Labels consumed at PE1 for this approach will be proportional to the
-          number of Service functions and Intents that are exposed to CE1.<a href="#appendix-A.1.2-4" class="pilcrow">¶</a></p>
-<p id="appendix-A.1.2-5">A <span><a href="#MULTI-NH-ATTR" class="xref">BGP MultiNexthop Attribute</a> [<a href="#MULTI-NH-ATTR" class="xref">MULTI-NH-ATTR</a>]</span>
-          is attached to a AFI/SAFI 1/1 service route to convey the MPLS Label
+          label TL1. PE1 advertises the label "PVL1" in the MNH to CE1. PE1
+          forwards based on MPLS label without performing any IP lookup. This
+          allows for PE1 to be a low IP FIB device and still support CBF by
+          using MPLS Label inferred PHB. The number of MPLS Labels consumed at
+          PE1 for this approach will be proportional to the number of Service
+          functions and Intents that are exposed to CE1.<a href="#appendix-A.1.2-4" class="pilcrow">¶</a></p>
+<p id="appendix-A.1.2-5">A <span><a href="#MNH" class="xref">BGP MultiNexthop Attribute</a> [<a href="#MNH" class="xref">MNH</a>]</span> is
+          attached to a AFI/SAFI 1/1 service route to convey the MPLS Label
           information to CE1. In the preceding example, the MNH contains two
           Next hop Legs, described by two Forwarding Instruction TLVs. Each
-          Next hop Leg contains PE1's peering self address in <span><a href="#MNH-EP" class="xref">Endpoint Identifier TLV</a> [<a href="#MNH-EP" class="xref">MNH-EP</a>]</span> , the color Gold or
-          Bronze encoded in the <span><a href="#MNH-TC" class="xref">Transport class ID
-          TLV</a> [<a href="#MNH-TC" class="xref">MNH-TC</a>]</span> , and associated MPLS Label "PVL1" or "PVL2" encoded in
-          the <span><a href="#MNH-ENCAP-MPLS" class="xref">Payload Encapsulation Info
-          TLV</a> [<a href="#MNH-ENCAP-MPLS" class="xref">MNH-ENCAP-MPLS</a>]</span> . This allows the CE to discover what transport classes
-          exist in the provider network, and which MPLS Label to encode so
-          that traffic is forwarded using the desired transport class.<a href="#appendix-A.1.2-5" class="pilcrow">¶</a></p>
+          Next hop Leg contains PE1's peering self address in Endpoint
+          Identifier TLV (Section 5.4.1, <span>[<a href="#MNH" class="xref">MNH</a>]</span>), the color Gold
+          or Bronze encoded in the Transport class ID TLV (Section 5.4.2.2,
+          <span>[<a href="#MNH" class="xref">MNH</a>]</span>), and associated MPLS Label "PVL1" or "PVL2"
+          encoded in the Payload Encapsulation Info TLV (Section 5.4.3.1,
+          <span>[<a href="#MNH" class="xref">MNH</a>]</span>). This allows the CE to discover what transport
+          classes exist in the provider network, and which MPLS Label to
+          encode so that traffic is forwarded using the desired transport
+          class.<a href="#appendix-A.1.2-5" class="pilcrow">¶</a></p>
 <section id="appendix-A.1.2.1">
             <h5 id="name-secure-mpls-forwarding-on-in">
 <a href="#appendix-A.1.2.1" class="section-number selfRef">A.1.2.1. </a><a href="#name-secure-mpls-forwarding-on-in" class="section-name selfRef">Secure MPLS Forwarding on Inter-AS Link</a>
@@ -4923,12 +4914,12 @@ Registry Name: BGP Transitive Extended Community Types
 <p id="appendix-D-3">This may result in 1.5M transport layer routes and MPLS transit
       routes in all Border Nodes in the network, which may overwhelm the
       nodes' MPLS forwarding resources.<a href="#appendix-D-3" class="pilcrow">¶</a></p>
-<p id="appendix-D-4">This section explains how mechanism described in <span>[<a href="#MPLS-NAMESPACES" class="xref">MPLS-NAMESPACES</a>]</span> is used to scale such a network. This
-      approach reduces the number of PNHs that are globally visible in the
-      network, thus reducing forwarding resource usage network wide. Service
-      route state is kept confined closer to network edge, and any churn is
-      confined within the region containing the point of failure, which
-      improves convergence.<a href="#appendix-D-4" class="pilcrow">¶</a></p>
+<p id="appendix-D-4">This section explains how mechanism described in <span>[<a href="#MPLS-NS" class="xref">MPLS-NS</a>]</span> is used to scale such a network. This approach
+      reduces the number of PNHs that are globally visible in the network,
+      thus reducing forwarding resource usage network wide. Service route
+      state is kept confined closer to network edge, and any churn is confined
+      within the region containing the point of failure, which improves
+      convergence.<a href="#appendix-D-4" class="pilcrow">¶</a></p>
 <p id="appendix-D-5">In order to achieve these scaling benefits, new functionality is
       required only at a Region's Border Nodes and the Regional RRs. All other
       nodes can remain legacy nodes, and still get the scaling and convergence

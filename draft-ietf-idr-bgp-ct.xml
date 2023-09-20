@@ -57,7 +57,7 @@
       </address>
     </author>
 
-    <date day="12" month="09" year="2023"/>
+    <date day="20" month="09" year="2023"/>
 
     <abstract>
       <t>This document specifies a mechanism, referred to as "Intent Driven
@@ -215,9 +215,7 @@
 
       <t>SID: SR Segment Identifier</t>
 
-      <t>EP: Endpoint, a loopback address in the network</t>
-
-      <t>SEP: Service Endpoint, the PNH of a Service route</t>
+      <t>EP: Endpoint, e.g. a loopback address in the network</t>
 
       <t>LPM: Longest Prefix Match</t>
 
@@ -566,9 +564,9 @@
 
     <section anchor="Nexthop_Resoln_Schm" title="Resolution Scheme">
       <t>Resolution Scheme is a construct that consists of a specific TRDB or
-      an ordered set of TRDBs, and is identified by a Mapping Community. A BGP
-      route is associated with a resolution scheme during import processing.
-      </t>
+      an ordered set of TRDBs. An overlay route is associated with a
+      resolution scheme during import processing, based on Mapping Community
+      on the route. </t>
 
       <t>Resolution Schemes enable a BGP speaker to resolve next hop
       reachability for overlay routes over the appropriate underlay tunnels
@@ -579,16 +577,23 @@
       resolve over less preferred Transport Classes, should the resolution
       over a primary Transport Class fail.</t>
 
-      <t>To accomplish this, the set of overlay routes may be associated with
-      a user configured "Resolution Scheme" that consists of the "Mapping
-      Community" and the primary Transport Class, which is used to realize the
-      desired intent. The Resolution Scheme may also be configured to include
-      an ordered list of fallback Transport Classes.</t>
+      <t>To accomplish this, the "Resolution Scheme" is configured with the
+      primary Transport Class, and an ordered list of fallback Transport
+      Classes. Two Resolution Schemes are considered equivalent in Intent if
+      they consist of the same ordered set of TRDBs.</t>
+
+      <t>Operators take care that Resolution Schemes for a mapping community
+      are configured consistently on various nodes in a network, based on
+      desired Intent and available transport class tunnels.</t>
 
       <section anchor="Mapping_Comm" title="Mapping Community">
         <t>Mapping community is a "role" and not a new type of community; any
         BGP Community or Extended Community may play this role. A Mapping
         Community maps to exactly one Resolution Scheme.</t>
+
+        <t>An implementation SHOULD allow associating multiple Mapping
+        Communities to a Resolution Scheme. This helps with renumbering and
+        migration scenarios.</t>
 
         <t>An example of mapping community is "color:0:100", described in
         <xref target="RFC9012"/>, or the "transport-target:0:100" described in
@@ -599,14 +604,13 @@
         effective Mapping Community for the route. The Resolution Scheme thus
         found is used when resolving the route's PNH. If a route contains more
         than one Mapping Community, it indicates that the route considers
-        these distinct Mapping Communities as equivalent in Intent. So, the
-        first community that maps to a Resolution Scheme is chosen as the
-        effective Mapping Community.</t>
+        these distinct Mapping Communities as equivalent in Intent. </t>
 
-        <t>A Mapping Community uniquely identifies a Resolution Scheme. An
-        implementation SHOULD allow associating multiple Mapping Communities
-        to a Resolution Scheme. This helps with renumbering and migration
-        scenarios.</t>
+        <t>If more than one distinct Mapping Communities on an overlay route
+        map to multiple Resolution Schemes with dissimilar Intents at a
+        receiving node, it is considered a configuration error. Operators
+        should avoid such configuration errors when attaching mapping
+        community on overlay routes.</t>
       </section>
     </section>
 
@@ -677,7 +681,7 @@
         advertises the special label 3 (Implicit NULL) in the RFC 8277 MPLS
         Label field. The Implicit NULL label carried in BGP CT route indicates
         to receiving node that it should not impose any BGP CT label for this
-        route. </t>
+        route.</t>
 
         <t>The SID information for SR with respect to MPLS Data Plane is
         carried as specified in Prefix SID attribute defined as part of
@@ -824,16 +828,14 @@
 
           <t>If the resolution process does not find a matching route in any
           of the associated TRDBs, the received BGP CT route MUST be
-          considered unusable for forwarding purpose and ineligible for best
-          path computation. A withdrawal would be sent if this was the only
-          usable path.</t>
+          considered unresolvable. (See RFC 4271, Section 9.1.2.1).</t>
 
           <t>The received BGP CT route MUST be added to the TRDB corresponding
           to the Transport Class "C1". So that service routes can resolve over
           this BGP CT ingress route. RD is stripped by the ingress node from
           the BGP CT NLRI prefix when a BGP CT route is added to a TRDB. This
-          step does not apply if the Transport Class RT is received on a route
-          in BGP address family that does not have SAFI 76.</t>
+          step applies only if the Transport Class RT is received on a BGP
+          route in address family with SAFI 76.</t>
         </list>
       </section>
 
@@ -964,7 +966,7 @@
 
           <t>If the resolution process does not find a Tunnel Ingress Route in
           any of the Transport Route Databases, the service route MUST be
-          considered unusable for forwarding purpose and be withdrawn.</t>
+          considered unresolvable. (See RFC 4271, Section 9.1.2.1).</t>
         </list>
 
         <t>Note: For an illustration of above procedures in a MPLS network,
@@ -1019,9 +1021,9 @@
         encapsulation. This attribute may apply to BGP service routes or
         transport routes, including BGP Classful Transport family routes.</t>
 
-        <t>The mechanisms described in <xref target="MULTI-NH-ATTR">BGP
-        MultiNexthop Attribute</xref> allow a BGP route to carry multiple next
-        hop addresses. Specifying 'Transport Class ID' as a qualifier for each
+        <t>The mechanisms described in <xref target="MNH">BGP MultiNexthop
+        Attribute</xref> allow a BGP route to carry multiple next hop
+        addresses. Specifying 'Transport Class ID' as a qualifier for each
         next hop address is also allowed.</t>
 
         <t>It should be noted that in such cases "Transport Class ID/Color"
@@ -1141,10 +1143,10 @@
                  +--[ABR24]--+ +--[ASBR22]---[ASBR14]-+ +--[PE12]--+
 
 
-       |                |                  |                    |
-       +                +                  +                    +
-    CE |     region-1   |   region-2       |                    |CE
-   AS4              ...AS2...                       AS1          AS3
+       |      AS2       |         AS2      |                   |
+   AS4 +    region-1    +      region-2    +       AS1         + AS3
+       |                |                  |                   |
+
 
 203.0.113.41  ------------ Traffic Direction ----------&gt;  203.0.113.31
 
@@ -1635,7 +1637,7 @@
         provider network or span closely coordinated provider networks.</t>
 
         <t>The use of RDs also provides an option for signaling forwarding
-        diversity within the same Transport Class. An SN can advertise an SEP
+        diversity within the same Transport Class. An SN can advertise an EP
         with the same Transport Class in multiple BGP CT routes with unique
         RDs.</t>
 
@@ -1708,8 +1710,11 @@
 </artwork>
         </figure>
 
-        <t>The following table details the BGP CT route and path visibility at
-        PE31-- for each TC.</t>
+        <t>The following table provides a comparison of the BGP CT route scale
+        and endpoint path visibility at ingress node PE31 for each TC, when
+        Unicast or Anycast EPs (EP-type) are originated by different node
+        roles (Origin), using different RD allocation modes (RD-Mode), and
+        different Per-Prefix Label allocation modes (PP-Mode).</t>
 
         <figure anchor="RDLabelVis" suppress-title="false"
                 title="Route and Path Visibility at Ingress Node">
@@ -1734,7 +1739,7 @@
 </artwork>
         </figure>
 
-        <t>In the table shown in <xref target="RDLabelVis"/>, both route churn
+        <t>In the table shown in <xref target="RDLabelVis"/>, both route scale
         and TE granularity are directly proportional to the number of CT
         labels received.</t>
 
@@ -2350,8 +2355,8 @@ Registry Name: BGP Transitive Extended Community Types
  Registry Name: BGP Non-Transitive Extended Community Types
 
       Type Value         Name
-     --------------+------------------
-         0x4a         Transport Class
+     --------------+--------------------------------
+         0x4a         Non-Transitive Transport Class
 
  (Sub-Types are defined in the
   "Non-Transitive Transport Class Extended Community Sub-Types"
@@ -2616,6 +2621,43 @@ Registry Name: BGP Transitive Extended Community Types
           <date day="28" month="01" year="2023"/>
         </front>
       </reference>
+
+      <reference anchor="MNH"
+                 target="https://datatracker.ietf.org/doc/html/draft-kaliraj-idr-multinexthop-attribute-09">
+        <front>
+          <title abbrev="MNH">BGP MultiNexthop Attribute</title>
+
+          <author fullname="Kaliraj Vairavakkalai" initials="" role="editor"
+                  surname="Vairavakkalai"/>
+
+          <date day="23" month="07" year="2023"/>
+        </front>
+      </reference>
+
+      <reference anchor="MPLS-NS"
+                 target="https://datatracker.ietf.org/doc/html/draft-kaliraj-bess-bgp-sig-private-mpls-labels-06">
+        <front>
+          <title abbrev="MPLS namespaces">BGP signalled MPLS
+          namespaces</title>
+
+          <author fullname="Kaliraj" initials="" role="editor"
+                  surname="Vairavakkalai"/>
+
+          <date day="10" month="07" year="2023"/>
+        </front>
+      </reference>
+
+      <reference anchor="SRV6-INTER-DOMAIN"
+                 target="https://datatracker.ietf.org/doc/html/draft-salih-spring-srv6-inter-domain-sids-03">
+        <front>
+          <title abbrev="SRV6-INTER-DOMAIN">SRv6 inter-domain mapping
+          SIDs</title>
+
+          <author fullname="Salih" initials="" role="editor" surname="K A"/>
+
+          <date day="23" month="06" year="2023"/>
+        </front>
+      </reference>
     </references>
 
     <references title="Informative References">
@@ -2702,19 +2744,6 @@ Registry Name: BGP Transitive Extended Community Types
         </front>
       </reference>
 
-      <reference anchor="MPLS-NAMESPACES"
-                 target="https://datatracker.ietf.org/doc/html/draft-kaliraj-bess-bgp-sig-private-mpls-labels-06">
-        <front>
-          <title abbrev="MPLS namespaces">BGP signalled MPLS
-          namespaces</title>
-
-          <author fullname="Kaliraj" initials="" role="editor"
-                  surname="Vairavakkalai"/>
-
-          <date day="10" month="07" year="2023"/>
-        </front>
-      </reference>
-
       <reference anchor="BGP-LU-EPE"
                  target="https://datatracker.ietf.org/doc/html/draft-gredler-idr-bgplu-epe-15">
         <front>
@@ -2725,18 +2754,6 @@ Registry Name: BGP Transitive Extended Community Types
                   surname="Gredler"/>
 
           <date day="16" month="06" year="2023"/>
-        </front>
-      </reference>
-
-      <reference anchor="SRV6-INTER-DOMAIN"
-                 target="https://datatracker.ietf.org/doc/html/draft-salih-spring-srv6-inter-domain-sids-03">
-        <front>
-          <title abbrev="SRV6-INTER-DOMAIN">SRv6 inter-domain mapping
-          SIDs</title>
-
-          <author fullname="Salih" initials="" role="editor" surname="K A"/>
-
-          <date day="23" month="06" year="2023"/>
         </front>
       </reference>
 
@@ -2762,66 +2779,6 @@ Registry Name: BGP Transitive Extended Community Types
                   surname="Simpson"/>
 
           <date day="02" month="02" year="2015"/>
-        </front>
-      </reference>
-
-      <reference anchor="MULTI-NH-ATTR"
-                 target="https://datatracker.ietf.org/doc/html/draft-kaliraj-idr-multinexthop-attribute-08">
-        <front>
-          <title abbrev="MULTI-NH-ATTR">BGP MultiNexthop Attribute</title>
-
-          <author fullname="Kaliraj Vairavakkalai" initials="" role="editor"
-                  surname="Vairavakkalai"/>
-
-          <date day="10" month="07" year="2023"/>
-        </front>
-      </reference>
-
-      <reference anchor="MNH-TC"
-                 target="https://www.ietf.org/archive/id/draft-kaliraj-idr-multinexthop-attribute-08.html#section-5.4.2.2">
-        <front>
-          <title abbrev="MNH-TC">BGP MultiNexthop Attribute</title>
-
-          <author fullname="Kaliraj Vairavakkalai" initials="" role="editor"
-                  surname="Vairavakkalai"/>
-
-          <date day="10" month="07" year="2023"/>
-        </front>
-      </reference>
-
-      <reference anchor="MNH-EP"
-                 target="https://www.ietf.org/archive/id/draft-kaliraj-idr-multinexthop-attribute-08.html#section-5.4.1">
-        <front>
-          <title abbrev="MNH-EP">BGP MultiNexthop Attribute</title>
-
-          <author fullname="Kaliraj Vairavakkalai" initials="" role="editor"
-                  surname="Vairavakkalai"/>
-
-          <date day="10" month="07" year="2023"/>
-        </front>
-      </reference>
-
-      <reference anchor="MNH-ENCAP-DSCP"
-                 target="https://www.ietf.org/archive/id/draft-kaliraj-idr-multinexthop-attribute-08.html#section-5.4.3.4">
-        <front>
-          <title abbrev="MNH-ENCAP-DSCP">BGP MultiNexthop Attribute</title>
-
-          <author fullname="Kaliraj Vairavakkalai" initials="" role="editor"
-                  surname="Vairavakkalai"/>
-
-          <date day="10" month="07" year="2023"/>
-        </front>
-      </reference>
-
-      <reference anchor="MNH-ENCAP-MPLS"
-                 target="https://www.ietf.org/archive/id/draft-kaliraj-idr-multinexthop-attribute-08.html#section-5.4.3.1">
-        <front>
-          <title abbrev="MNH-ENCAP-MPLS">BGP MultiNexthop Attribute</title>
-
-          <author fullname="Kaliraj Vairavakkalai" initials="" role="editor"
-                  surname="Vairavakkalai"/>
-
-          <date day="10" month="07" year="2023"/>
         </front>
       </reference>
 
@@ -2883,21 +2840,20 @@ Registry Name: BGP Transitive Extended Community Types
           signaling regarding what DSCP code points are being offered by the
           provider network.</t>
 
-          <t>With a <xref target="MULTI-NH-ATTR">BGP MultiNexthop
-          Attribute</xref> attached to a AFI/SAFI 1/1 service route, it is
-          possible to extend the PE-CE BGP signaling (if used) to communicate
-          such information to the CE1. In the preceding example, the MNH
-          contains two Next hop Legs, described by two Forwarding Instruction
-          TLVs. Each Next hop Leg contains PE1's peering self address in <xref
-          target="MNH-EP">Endpoint Identifier TLV</xref> , the color Gold or
-          Bronze encoded in the <xref target="MNH-TC">Transport class ID
-          TLV</xref> , and associated DSCP code point indicating Gold or
-          Bronze transport class encoded in the <xref
-          target="MNH-ENCAP-DSCP">Payload Encapsulation Info TLV</xref> . This
-          allows the CE to discover what transport classes exist in the
-          provider network, and which DSCP codepoint to encode so that traffic
-          is forwarded using the desired transport class in the provided
-          network.</t>
+          <t>With a <xref target="MNH">BGP MultiNexthop Attribute</xref>
+          attached to a AFI/SAFI 1/1 service route, it is possible to extend
+          the PE-CE BGP signaling (if used) to communicate such information to
+          the CE1. In the preceding example, the MNH contains two Next hop
+          Legs, described by two Forwarding Instruction TLVs. Each Next hop
+          Leg contains PE1's peering self address in Endpoint Identifier TLV
+          (Section 5.4.1, <xref target="MNH"/>), the color Gold or Bronze
+          encoded in the Transport class ID TLV (Section 5.4.2.2, <xref
+          target="MNH"/>), and associated DSCP code point indicating Gold or
+          Bronze transport class encoded in the Payload Encapsulation Info TLV
+          (Section 5.4.3.4, <xref target="MNH"/>). This allows the CE to
+          discover what transport classes exist in the provider network, and
+          which DSCP codepoint to encode so that traffic is forwarded using
+          the desired transport class in the provided network.</t>
         </section>
 
         <section anchor="MplsCE" title="MPLS-enabled CE">
@@ -2924,25 +2880,26 @@ Registry Name: BGP Transitive Extended Community Types
           VL1, Push TL1 towards PE2". TL1 is the BGP CT label received for the
           tuple 'PE2, TC1'. In forwarding, when MPLS packet with label PVL1 is
           received from CE1, PVL1 Swaps to label VL1 and pushes the BGP CT
-          label TL1. PE1 advertises the label "PVL1" in the MULTI_NH_ATTR to
-          CE1. PE1 forwards based on MPLS label without performing any IP
-          lookup. This allows for PE1 to be a low IP FIB device and still
-          support CBF by using MPLS Label inferred PHB. The number of MPLS
-          Labels consumed at PE1 for this approach will be proportional to the
-          number of Service functions and Intents that are exposed to CE1.</t>
+          label TL1. PE1 advertises the label "PVL1" in the MNH to CE1. PE1
+          forwards based on MPLS label without performing any IP lookup. This
+          allows for PE1 to be a low IP FIB device and still support CBF by
+          using MPLS Label inferred PHB. The number of MPLS Labels consumed at
+          PE1 for this approach will be proportional to the number of Service
+          functions and Intents that are exposed to CE1.</t>
 
-          <t>A <xref target="MULTI-NH-ATTR">BGP MultiNexthop Attribute</xref>
-          is attached to a AFI/SAFI 1/1 service route to convey the MPLS Label
+          <t>A <xref target="MNH">BGP MultiNexthop Attribute</xref> is
+          attached to a AFI/SAFI 1/1 service route to convey the MPLS Label
           information to CE1. In the preceding example, the MNH contains two
           Next hop Legs, described by two Forwarding Instruction TLVs. Each
-          Next hop Leg contains PE1's peering self address in <xref
-          target="MNH-EP">Endpoint Identifier TLV</xref> , the color Gold or
-          Bronze encoded in the <xref target="MNH-TC">Transport class ID
-          TLV</xref> , and associated MPLS Label "PVL1" or "PVL2" encoded in
-          the <xref target="MNH-ENCAP-MPLS">Payload Encapsulation Info
-          TLV</xref> . This allows the CE to discover what transport classes
-          exist in the provider network, and which MPLS Label to encode so
-          that traffic is forwarded using the desired transport class.</t>
+          Next hop Leg contains PE1's peering self address in Endpoint
+          Identifier TLV (Section 5.4.1, <xref target="MNH"/>), the color Gold
+          or Bronze encoded in the Transport class ID TLV (Section 5.4.2.2,
+          <xref target="MNH"/>), and associated MPLS Label "PVL1" or "PVL2"
+          encoded in the Payload Encapsulation Info TLV (Section 5.4.3.1,
+          <xref target="MNH"/>). This allows the CE to discover what transport
+          classes exist in the provider network, and which MPLS Label to
+          encode so that traffic is forwarded using the desired transport
+          class.</t>
 
           <section title="Secure MPLS Forwarding on Inter-AS Link">
             <t>The MPLS enabled PE-CE attachment circuit is considered
@@ -3409,12 +3366,12 @@ Registry Name: BGP Transitive Extended Community Types
       nodes' MPLS forwarding resources.</t>
 
       <t>This section explains how mechanism described in <xref
-      target="MPLS-NAMESPACES"/> is used to scale such a network. This
-      approach reduces the number of PNHs that are globally visible in the
-      network, thus reducing forwarding resource usage network wide. Service
-      route state is kept confined closer to network edge, and any churn is
-      confined within the region containing the point of failure, which
-      improves convergence.</t>
+      target="MPLS-NS"/> is used to scale such a network. This approach
+      reduces the number of PNHs that are globally visible in the network,
+      thus reducing forwarding resource usage network wide. Service route
+      state is kept confined closer to network edge, and any churn is confined
+      within the region containing the point of failure, which improves
+      convergence.</t>
 
       <t>In order to achieve these scaling benefits, new functionality is
       required only at a Region's Border Nodes and the Regional RRs. All other
