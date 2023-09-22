@@ -29,7 +29,7 @@
       Classful Transport", a.k.a., BGP CT. 
     ' name="description">
 <meta content="xml2rfc 3.13.0" name="generator">
-<meta content="draft-ietf-idr-bgp-ct-15" name="ietf.draft">
+<meta content="draft-ietf-idr-bgp-ct-16" name="ietf.draft">
 <!-- Generator version information:
   xml2rfc 3.13.0
     Python 3.8.9
@@ -1207,7 +1207,7 @@ li > p:last-of-type {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Vairavakkalai &amp; Venkataraman</td>
-<td class="center">Expires 24 March 2024</td>
+<td class="center">Expires 25 March 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1217,15 +1217,15 @@ li > p:last-of-type {
 <dt class="label-workgroup">Workgroup:</dt>
 <dd class="workgroup">Network Working Group</dd>
 <dt class="label-internet-draft">Internet-Draft:</dt>
-<dd class="internet-draft">draft-ietf-idr-bgp-ct-15</dd>
+<dd class="internet-draft">draft-ietf-idr-bgp-ct-16</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-09-21" class="published">21 September 2023</time>
+<time datetime="2023-09-22" class="published">22 September 2023</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Experimental</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-03-24">24 March 2024</time></dd>
+<dd class="expires"><time datetime="2024-03-25">25 March 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1294,7 +1294,7 @@ li > p:last-of-type {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 24 March 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 25 March 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1425,6 +1425,9 @@ li > p:last-of-type {
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.13">
                 <p id="section-toc.1-1.7.2.13.1"><a href="#section-7.13" class="xref">7.13</a>. <a href="#name-srv6-support-2" class="xref">SRv6 Support</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.14">
+                <p id="section-toc.1-1.7.2.14.1"><a href="#section-7.14" class="xref">7.14</a>. <a href="#name-error-handling-consideration" class="xref">Error Handling Considerations</a></p>
 </li>
             </ul>
 </li>
@@ -1724,7 +1727,7 @@ li > p:last-of-type {
       </ul>
 <p id="section-1-5">The constructs and procedures defined in this document apply
       homogeneously to intra-AS as well as inter-AS (a.k.a. multi-AS) Option
-      A, Option B and Option C <span>[<a href="#RFC4364" class="xref">RFC4364</a>]</span> style deployments in
+      A, Option B and Option C (Section 10, <span>[<a href="#RFC4364" class="xref">RFC4364</a>]</span>) style deployments in
       provider networks.<a href="#section-1-5" class="pilcrow">¶</a></p>
 <p id="section-1-6">Provider networks that are deployed using such styles, provision
       intra-domain transport tunnels between a pair of endpoints, typically a
@@ -1808,37 +1811,40 @@ li > p:last-of-type {
 <p id="section-2.1-3">Transport Family: A BGP address family used for advertising
         tunnels, which are in turn used by service routes for resolution (e.g.
         AFI/SAFIs 1/4 or 1/76).<a href="#section-2.1-3" class="pilcrow">¶</a></p>
-<p id="section-2.1-4">Transport Tunnel : A tunnel over which a service may place traffic.
+<p id="section-2.1-4">Import processing: Receive side processing of an overlay route, including
+        things like import policy application, resolution scheme selection and
+        nexthop resolution.<a href="#section-2.1-4" class="pilcrow">¶</a></p>
+<p id="section-2.1-5">Transport Tunnel : A tunnel over which a service may place traffic.
         Such a tunnel can be provisioned or signaled using a variety of means
         (e.g., Generic Routing Encapsulation (GRE), UDP, LDP, RSVP-TE, IGP
-        FLEX-ALGO or SRTE).<a href="#section-2.1-4" class="pilcrow">¶</a></p>
-<p id="section-2.1-5">Tunnel Ingress Route: A Route to Tunnel Destination/Endpoint that
+        FLEX-ALGO or SRTE).<a href="#section-2.1-5" class="pilcrow">¶</a></p>
+<p id="section-2.1-6">Tunnel Ingress Route: A Route to Tunnel Destination/Endpoint that
         is installed at the headend (ingress) of the tunnel using a tunneling
-        mechanism.<a href="#section-2.1-5" class="pilcrow">¶</a></p>
-<p id="section-2.1-6">Tunnel Domain: A domain of the network containing Service Nodes
+        mechanism.<a href="#section-2.1-6" class="pilcrow">¶</a></p>
+<p id="section-2.1-7">Tunnel Domain: A domain of the network containing Service Nodes
         (SNs) and Border Nodes (BNs) under a single administrative control
         that has tunnels between them. An end-to-end tunnel spanning several
         adjacent tunnel domains can be created by "stitching" them together
         using MPLS labels (or an equivalent identifier based on the forwarding
-        architecture).<a href="#section-2.1-6" class="pilcrow">¶</a></p>
-<p id="section-2.1-7">Transport Class: A construct to group transport tunnels offering
-        the same SLA.<a href="#section-2.1-7" class="pilcrow">¶</a></p>
-<p id="section-2.1-8">Transport Class RT: A Route Target Extended Community used to
-        identify a specific Transport Class.<a href="#section-2.1-8" class="pilcrow">¶</a></p>
-<p id="section-2.1-9">Transport Route Database (TRDB): At the SN and BN, a Transport
+        architecture).<a href="#section-2.1-7" class="pilcrow">¶</a></p>
+<p id="section-2.1-8">Transport Class: A construct to group transport tunnels offering
+        the same SLA.<a href="#section-2.1-8" class="pilcrow">¶</a></p>
+<p id="section-2.1-9">Transport Class RT: A Route Target Extended Community used to
+        identify a specific Transport Class.<a href="#section-2.1-9" class="pilcrow">¶</a></p>
+<p id="section-2.1-10">Transport Route Database (TRDB): At the SN and BN, a Transport
         Class has an associated Transport Route Database that collects its
-        tunnel ingress routes.<a href="#section-2.1-9" class="pilcrow">¶</a></p>
-<p id="section-2.1-10">Resolution Scheme: A construct comprising of an ordered set of
+        tunnel ingress routes.<a href="#section-2.1-10" class="pilcrow">¶</a></p>
+<p id="section-2.1-11">Resolution Scheme: A construct comprising of an ordered set of
         TRDBs to resolve next hop reachability, for realizing a desired
-        intent.<a href="#section-2.1-10" class="pilcrow">¶</a></p>
-<p id="section-2.1-11">Mapping Community: Any BGP Community/Extended Community on a BGP
+        intent.<a href="#section-2.1-11" class="pilcrow">¶</a></p>
+<p id="section-2.1-12">Mapping Community: Any BGP Community/Extended Community on a BGP
         route that maps to a Resolution Scheme. e.g., color:0:100,
-        transport-target:0:100.<a href="#section-2.1-11" class="pilcrow">¶</a></p>
-<p id="section-2.1-12">Transport Plane: An end-to-end plane consisting of transport
+        transport-target:0:100.<a href="#section-2.1-12" class="pilcrow">¶</a></p>
+<p id="section-2.1-13">Transport Plane: An end-to-end plane consisting of transport
         tunnels belonging to the same Transport Class. Tunnels of the same
         Transport Class are stitched together by BGP CT route readvertisements
         with next hop self to enable Label-Swap forwarding across domain
-        boundaries.<a href="#section-2.1-12" class="pilcrow">¶</a></p>
+        boundaries.<a href="#section-2.1-13" class="pilcrow">¶</a></p>
 </section>
 </section>
 <section id="section-3">
@@ -2004,7 +2010,7 @@ li > p:last-of-type {
           implementation specific and outside the scope of this document.<a href="#section-4.1-3" class="pilcrow">¶</a></p>
 <p id="section-4.1-4">When a tunnel is made Transport Class aware, it causes the Tunnel
           Ingress Route to be installed in the corresponding TRDB of that
-          Transport Class. These routes are used to resolve BGP routes including
+          Transport Class. These routes are used to resolve overlay routes including
           BGP CT, which may be further readvertised to adjacent domains to extend
           these tunnels. While readvertising BGP CT routes, the "Transport Class"
           identifier is encoded as part of the Transport Class RT, which is a new
@@ -2045,9 +2051,9 @@ li > p:last-of-type {
 <p id="section-4.2-1">A Transport Route Database (TRDB) is a logical collection of
         transport routes pertaining to the same Transport Class. In any node,
         every Transport Class has an associated TRDB. Resolution Schemes
-        resolve next hop reachability using the transport routes within the
+        resolve next hop reachability for EP using the transport routes within the
         scope of the TRDBs.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
-<p id="section-4.2-2">Tunnel endpoint addresses in a TRDB belong to the "Provider
+<p id="section-4.2-2">Tunnel endpoint addresses (EP) in a TRDB belong to the "Provider
         Namespace" representing the core transport region.<a href="#section-4.2-2" class="pilcrow">¶</a></p>
 <p id="section-4.2-3">An implementation may realize the TRDB e.g., as a "Routing Table"
         referred in <a href="https://www.rfc-editor.org/rfc/rfc4271#section-9.1.2.1">Section
@@ -2121,11 +2127,11 @@ li > p:last-of-type {
         Extended community avoids conflicts with any VPN Route Target
         assignments already in use for service families.<a href="#section-4.3-8" class="pilcrow">¶</a></p>
 <p id="section-4.3-9">This document also reserves the <span><a href="#tc-rt-nt" class="xref">Non-Transitive version of
-          Transport Class extended community</a> (<a href="#tc-rt-nt" class="xref">Section 13.2.1.1.2</a>)</span> just to block the code in non-transitive
+          Transport Class extended community</a> (<a href="#tc-rt-nt" class="xref">Section 13.2.1.1.2</a>)</span> just to block the codepoint in the non-transitive
           namespace also. The "Non-Transitive Transport Class" Route Target Extended Community
-          is not to be used. It is considered equivalent in functionality to the Transitive
+          is not used. If received, it is considered equivalent in functionality to the Transitive
           Transport Class Route Target Extended Community, except for the difference in
-          transitive flag.<a href="#section-4.3-9" class="pilcrow">¶</a></p>
+          Transitive bit flag.<a href="#section-4.3-9" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2229,11 +2235,13 @@ li > p:last-of-type {
         address is of type IPv4 address.<a href="#section-6.2-1" class="pilcrow">¶</a></p>
 <p id="section-6.2-2">When the length of Next hop Address field is 16 (or 32), the next
         hop address is of type IPv6 address (potentially followed by the
-        link-local IPv6 address of the next hop).<a href="#section-6.2-2" class="pilcrow">¶</a></p>
+        link-local IPv6 address of the next hop). This follows Section 3 in
+        <span>[<a href="#RFC2545" class="xref">RFC2545</a>]</span><a href="#section-6.2-2" class="pilcrow">¶</a></p>
 <p id="section-6.2-3">When the length of Next hop Address field is 24 (or 48), the next
         hop address is of type VPN-IPv6 with an 8-octet RD set to zero
         (potentially followed by the link-local VPN-IPv6 address of the next
-        hop with an 8-octet RD set to zero).<a href="#section-6.2-3" class="pilcrow">¶</a></p>
+        hop with an 8-octet RD set to zero). This follows Section 3.2.1.1 in
+        <span>[<a href="#RFC4659" class="xref">RFC4659</a>]</span><a href="#section-6.2-3" class="pilcrow">¶</a></p>
 <p id="section-6.2-4">When the length of the Next hop Address field is 12, the next hop
         address is of type VPN-IPv4 with 8-octet RD set to zero.<a href="#section-6.2-4" class="pilcrow">¶</a></p>
 </section>
@@ -2345,17 +2353,16 @@ li > p:last-of-type {
             protocols install tunnel ingress routes in the TRDB associated
             with the Transport Class to which the tunnel belongs.<a href="#section-7.2-1.2" class="pilcrow">¶</a>
 </li>
-          <li class="normal ulEmpty" id="section-7.2-1.3">The egress node of the tunnel i.e. the tunnel endpoint
+          <li class="normal ulEmpty" id="section-7.2-1.3">The egress node of the tunnel i.e. the tunnel endpoint (EP)
             originates the BGP Classful Transport route with NLRI containing
-            RD:TunnelEndpoint, Transport Class RT and PNH TunnelEndpoint,
-            which will be resolved over the tunnel route in TRDB at the
-            ingress node. When the tunnel is up, the Classful Transport BGP
-            route will become usable and get re-advertised by the ingress node
-            to BGP peers in neighboring domains.<a href="#section-7.2-1.3" class="pilcrow">¶</a>
+            RD:EP, Transport Class RT and PNH as EP, which will be resolved
+            over the tunnel route in TRDB at the ingress node. When the tunnel
+            is up, the Classful Transport BGP route will become usable and get
+            re-advertised by the ingress node to BGP peers in neighboring domains.<a href="#section-7.2-1.3" class="pilcrow">¶</a>
 </li>
           <li class="normal ulEmpty" id="section-7.2-1.4">Alternatively, the ingress node may advertise this tunnel
             destination into BGP as a Classful Transport family route with
-            NLRI RD:TunnelEndpoint, attaching a Transport Class Route Target
+            NLRI RD:EP, attaching a Transport Class Route Target
             that identifies the Transport Class. This BGP CT route is
             advertised to EBGP peers and IBGP peers in neighboring
             domains.<a href="#section-7.2-1.4" class="pilcrow">¶</a>
@@ -2379,7 +2386,7 @@ li > p:last-of-type {
         </h3>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-7.3-1.1">Upon receipt of a BGP Classful Transport route (e.g., AFI/SAFI:
-          1/76, 2/76) with a PNH that is not directly connected (e.g. an
+          1/76, 2/76) with a PNH EP that is not directly connected (e.g. an
           IBGP-route), a Mapping Community on the route (the Transport Class
           RT) is used to decide to which resolution scheme this route is to be
           mapped. The resolution scheme for a Transport Class RT with
@@ -2390,21 +2397,21 @@ li > p:last-of-type {
           domain.<a href="#section-7.3-1.1" class="pilcrow">¶</a>
 </li>
           <li class="normal ulEmpty" id="section-7.3-1.2">The routes in the associated TRDBs are used to resolve the
-          received PNH. The order of TRDBs in a resolution scheme is followed
+          received PNH EP. The order of TRDBs in a resolution scheme is followed
           when resolving the received PNH, such that a route in backup TRDB is
-          used only when a matching route was not found in the primary TRDBs
+          used only when a matching route was not found for EP in the primary TRDBs
           preceding it. This achieves the fallback desired by the resolution
           scheme.<a href="#section-7.3-1.2" class="pilcrow">¶</a>
 </li>
-          <li class="normal ulEmpty" id="section-7.3-1.3">If the resolution process does not find a matching route in any
+          <li class="normal ulEmpty" id="section-7.3-1.3">If the resolution process does not find a matching route for EP in any
           of the associated TRDBs, the received BGP CT route MUST be
           considered unresolvable. (See RFC 4271, Section 9.1.2.1).<a href="#section-7.3-1.3" class="pilcrow">¶</a>
 </li>
           <li class="normal ulEmpty" id="section-7.3-1.4">The received BGP CT route MUST be added to the TRDB corresponding
-          to the Transport Class "C1". So that service routes can resolve over
-          this BGP CT ingress route. RD is stripped by the ingress node from
-          the BGP CT NLRI prefix when a BGP CT route is added to a TRDB. This
-          step applies only if the Transport Class RT is received on a BGP
+          to the Transport Class "C1". RD is stripped by the ingress node from
+          the BGP CT NLRI prefix RD:EP when a BGP CT route is added to a TRDB.
+          So that service routes can resolve over this BGP CT ingress route for
+          EP. This step applies only if the Transport Class RT is received on a BGP
           route in address family with SAFI 76.<a href="#section-7.3-1.4" class="pilcrow">¶</a>
 </li>
         </ul>
@@ -2463,13 +2470,19 @@ li > p:last-of-type {
 <a href="#section-7.6" class="section-number selfRef">7.6. </a><a href="#name-avoiding-path-hiding-through" class="section-name selfRef">Avoiding Path Hiding Through Route Reflectors</a>
         </h3>
 <ul class="normal ulEmpty">
-<li class="normal ulEmpty" id="section-7.6-1.1">When multiple BNs exist such that they advertise a "RD:EP" prefix
+<li class="normal ulEmpty" id="section-7.6-1.1">When multiple instances of a given RD:EP exist with different forwarding
+            characteristics, then <span><a href="#RFC7911" class="xref">ADDPATH</a> [<a href="#RFC7911" class="xref">RFC7911</a>]</span> is helpful.<a href="#section-7.6-1.1" class="pilcrow">¶</a>
+</li>
+          <li class="normal ulEmpty" id="section-7.6-1.2">When multiple BNs exist such that they advertise a "RD:EP" prefix
           to Route Reflectors (RRs), the RRs may hide all but one of the BNs,
           unless <span><a href="#RFC7911" class="xref">ADDPATH</a> [<a href="#RFC7911" class="xref">RFC7911</a>]</span> is used for the
           Classful Transport family. This is similar to L3VPN Option B
-          scenarios. Hence, ADDPATH SHOULD be used for Classful Transport
-          family, to avoid path-hiding through RRs. This improves convergence
-          time when path via one of the multiple BNs fails.<a href="#section-7.6-1.1" class="pilcrow">¶</a>
+          scenarios.<a href="#section-7.6-1.2" class="pilcrow">¶</a>
+</li>
+          <li class="normal ulEmpty" id="section-7.6-1.3">Hence, <span><a href="#RFC7911" class="xref">ADDPATH</a> [<a href="#RFC7911" class="xref">RFC7911</a>]</span> SHOULD be used
+          for Classful Transport family, to avoid path-hiding through RRs. Such that
+          RR sends the multiple routes for RD:EP to it's clients. This improves
+          convergence time when path via one of the multiple BNs fails.<a href="#section-7.6-1.3" class="pilcrow">¶</a>
 </li>
         </ul>
 </section>
@@ -2480,15 +2493,20 @@ li > p:last-of-type {
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-7.7-1.1">A pair of redundant ABRs, each acting as an RR with next hop
           self, may choose each other as best path instead of the upstream
-          ASBR, causing a traffic forwarding loop. This happens because of
-          following the path selection rule specified in <span><a href="#RFC4456" class="xref">Section 9 of BGP RR</a> [<a href="#RFC4456" class="xref">RFC4456</a>]</span> that tie-breaks on
-          ORIGINATOR_ID before CLUSTER_LIST. RFC4456 considers pure RR which
-          is not in forwarding path. When a RR is in forwarding path and
-          reflects routes with next hop self, as is the case for ABR BNs in a
-          BGP transport network, this rule may cause loops.<a href="#section-7.7-1.1" class="pilcrow">¶</a>
+          ASBR, causing a traffic forwarding loop.<a href="#section-7.7-1.1" class="pilcrow">¶</a>
 </li>
-          <li class="normal ulEmpty" id="section-7.7-1.2">Using one or more of the following approaches softens the
-          possibility of such loops in a network with redundant ABRs.<a href="#section-7.7-1.2" class="pilcrow">¶</a>
+          <li class="normal ulEmpty" id="section-7.7-1.2"> This happens because of following the path selection rule specified
+           in <span><a href="#RFC4456" class="xref">Section 9 of BGP RR</a> [<a href="#RFC4456" class="xref">RFC4456</a>]</span> that tie-breaks on
+          ORIGINATOR_ID before CLUSTER_LIST. RFC4456 considers pure RR functionality
+          which is not in forwarding path. When a RR is in forwarding path and
+          reflects routes with next hop self, as is the case for ABR BNs in a
+          BGP transport network, this rule may cause loops.<a href="#section-7.7-1.2" class="pilcrow">¶</a>
+</li>
+          <li class="normal ulEmpty" id="section-7.7-1.3">This problem can happen for routes of any BGP address family,
+            including BGP CT and BGP LU.<a href="#section-7.7-1.3" class="pilcrow">¶</a>
+</li>
+          <li class="normal ulEmpty" id="section-7.7-1.4">Using one or more of the following approaches softens the
+          possibility of such loops in a network with redundant ABRs.<a href="#section-7.7-1.4" class="pilcrow">¶</a>
 </li>
         </ul>
 <section id="section-7.7.1">
@@ -2499,12 +2517,12 @@ li > p:last-of-type {
 <li class="normal ulEmpty" id="section-7.7.1-1.1">Implementations SHOULD provide a way to alter the tie-breaking
             rule specified in <span><a href="#RFC4456" class="xref">Section 9 of BGP
             RR</a> [<a href="#RFC4456" class="xref">RFC4456</a>]</span> so as to tie-break on CLUSTER_LIST step before
-            ORIGINATOR_ID step, when performing path selection for BGP CT
+            ORIGINATOR_ID step, when performing path selection for BGP
             routes.<a href="#section-7.7.1-1.1" class="pilcrow">¶</a>
 </li>
             <li class="normal ulEmpty" id="section-7.7.1-1.2">This document suggests the following modification to the BGP
             Decision Process Tie Breaking rules (Section 9.1.2.2 of <span>[<a href="#RFC4271" class="xref">RFC4271</a>]</span>) that can be applied to path selection of BGP
-            CT family routes:<a href="#section-7.7.1-1.2" class="pilcrow">¶</a>
+            routes:<a href="#section-7.7.1-1.2" class="pilcrow">¶</a>
 </li>
             <li class="normal ulEmpty" id="section-7.7.1-1.3">The following rule SHOULD be inserted between Steps e) and f):
             a BGP Speaker SHOULD prefer a route with the shorter CLUSTER_LIST
@@ -2527,7 +2545,7 @@ li > p:last-of-type {
 </li>
                 <li class="normal" id="section-7.7.2-1.1.2.2">Tunnels belonging to non 'best effort' Transport Classes
                 SHOULD NOT be provisioned between ABRs. This will ensure that
-                the route received from an ABR with next hop self will not be
+                the BGP CT route received from an ABR with next hop self will not be
                 usable at a redundant ABR.<a href="#section-7.7.2-1.1.2.2" class="pilcrow">¶</a>
 </li>
               </ul>
@@ -2541,7 +2559,7 @@ li > p:last-of-type {
         </h3>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-7.8-1.1">Upon receipt of a BGP service route (e.g., AFI/SAFI: 1/1, 2/1)
-          with a PNH that is not directly connected (e.g. an IBGP-route), a
+          with a PNH EP that is not directly connected (e.g. an IBGP-route), a
           Mapping Community on the route (e.g, Color Extended Community) is
           used to decide to which resolution scheme this route is to be
           mapped. The resolution scheme for a Color Extended Community with
@@ -2550,13 +2568,13 @@ li > p:last-of-type {
           scheme to map to a different ordered list of TRDBs.<a href="#section-7.8-1.1" class="pilcrow">¶</a>
 </li>
           <li class="normal ulEmpty" id="section-7.8-1.2">The routes in the associated TRDBs are used to resolve the
-          received PNH. The order of TRDBs in a resolution scheme is followed
+          received PNH EP. The order of TRDBs in a resolution scheme is followed
           when resolving the received PNH, such that a route in backup TRDB is
-          used only when a matching route was not found in the primary TRDBs
+          used only when a matching route was not found for EP in the primary TRDBs
           preceding it. This achieves the fallback desired by the resolution
           scheme.<a href="#section-7.8-1.2" class="pilcrow">¶</a>
 </li>
-          <li class="normal ulEmpty" id="section-7.8-1.3">If the resolution process does not find a Tunnel Ingress Route in
+          <li class="normal ulEmpty" id="section-7.8-1.3">If the resolution process does not find a Tunnel Ingress Route for EP in
           any of the Transport Route Databases, the service route MUST be
           considered unresolvable. (See RFC 4271, Section 9.1.2.1).<a href="#section-7.8-1.3" class="pilcrow">¶</a>
 </li>
@@ -2707,6 +2725,21 @@ li > p:last-of-type {
         SID carried in a BGP CT route is also a transport layer identifier.<a href="#section-7.13-5" class="pilcrow">¶</a></p>
 <p id="section-7.13-6">For an illustration of BGP CT deployment in SRv6 networks, refer to
         <a href="#Appendix_E" class="xref">Appendix E</a> .<a href="#section-7.13-6" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="error-handling">
+<section id="section-7.14">
+        <h3 id="name-error-handling-consideration">
+<a href="#section-7.14" class="section-number selfRef">7.14. </a><a href="#name-error-handling-consideration" class="section-name selfRef">Error Handling Considerations</a>
+        </h3>
+<p id="section-7.14-1">If a BGP speaker receives both <span><a href="#tc-rt-t" class="xref">Transitive</a> (<a href="#tc-rt-t" class="xref">Section 13.2.1.1.1</a>)</span> and
+        <span><a href="#tc-rt-nt" class="xref">Non-Transitive</a> (<a href="#tc-rt-nt" class="xref">Section 13.2.1.1.2</a>)</span> versions of Transport Class
+        extended community on a route, only the Transitive one is used.<a href="#section-7.14-1" class="pilcrow">¶</a></p>
+<p id="section-7.14-2">If a BGP speaker considers a received "Transport Class" extended community
+        (Transitive or Non-Transitive version), or any other part of a BGP CT route
+        invalid for some reason, but is able to successfully parse the NLRI and attributes,
+        Treat-as-withdraw approach from <span>[<a href="#RFC7606" class="xref">RFC7606</a>]</span> is used.
+        The route is kept as Unusable, with appropriate diagnostic information, to aid troubleshooting.<a href="#section-7.14-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -3915,8 +3948,8 @@ Registry Name: SAFI Values
 <a href="#section-13.2" class="section-number selfRef">13.2. </a><a href="#name-new-format-for-bgp-extended-" class="section-name selfRef">New Format for BGP Extended Community</a>
         </h3>
 <p id="section-13.2-1">IANA is requested to assign a new Format type (Type high = 0xa) of
-        Extended Community <span><a href="#RFC4360" class="xref">EXT-COMM</a> [<a href="#RFC4360" class="xref">RFC4360</a>]</span> called
-        "Transport Class" from the following registries:<a href="#section-13.2-1" class="pilcrow">¶</a></p>
+        Extended Community <span><a href="#RFC4360" class="xref">EXT-COMM</a> [<a href="#RFC4360" class="xref">RFC4360</a>]</span> for
+        Transport Class from the following registries:<a href="#section-13.2-1" class="pilcrow">¶</a></p>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-13.2-2.1">the "BGP Transitive Extended Community Types" registry, and<a href="#section-13.2-2.1" class="pilcrow">¶</a>
 </li>
@@ -3925,9 +3958,11 @@ Registry Name: SAFI Values
         </ul>
 <p id="section-13.2-3">Please assign the same low-order six bits for both allocations.<a href="#section-13.2-3" class="pilcrow">¶</a></p>
 <p id="section-13.2-4">This document uses this new Format with subtype 0x2 (route target),
-        as a transitive extended community.<a href="#section-13.2-4" class="pilcrow">¶</a></p>
-<p id="section-13.2-5">The Route Target thus formed is called "Transport Class" route
-        target extended community.<a href="#section-13.2-5" class="pilcrow">¶</a></p>
+        as a transitive extended community. The Route Target thus formed is called
+        "Transport Class" route target extended community.<a href="#section-13.2-4" class="pilcrow">¶</a></p>
+<p id="section-13.2-5">The Non-Transitive Transport Class Extended community with subtype
+          0x2 (route target) is called the "Non-Transitive Transport Class
+          route target extended community".<a href="#section-13.2-5" class="pilcrow">¶</a></p>
 <p id="section-13.2-6">Taking reference of <span>[<a href="#RFC7153" class="xref">RFC7153</a>]</span> , following requests
         are made:<a href="#section-13.2-6" class="pilcrow">¶</a></p>
 <section id="section-13.2.1">
@@ -3938,6 +3973,7 @@ Registry Name: SAFI Values
             <h5 id="name-registries-for-the-type-fiel">
 <a href="#section-13.2.1.1" class="section-number selfRef">13.2.1.1. </a><a href="#name-registries-for-the-type-fiel" class="section-name selfRef">Registries for the "Type" Field</a>
             </h5>
+<div id="tc-rt-t">
 <section id="section-13.2.1.1.1">
               <h6 id="name-transitive-types-2">
 <a href="#section-13.2.1.1.1" class="section-number selfRef">13.2.1.1.1. </a><a href="#name-transitive-types-2" class="section-name selfRef">Transitive Types</a>
@@ -3958,6 +3994,7 @@ Registry Name: BGP Transitive Extended Community Types
    registry)</pre><a href="#section-13.2.1.1.1-2" class="pilcrow">¶</a>
 </div>
 </section>
+</div>
 <div id="tc-rt-nt">
 <section id="section-13.2.1.1.2">
               <h6 id="name-non-transitive-types-2">
@@ -4176,6 +4213,10 @@ Registry Name: BGP Transitive Extended Community Types
 <a href="#section-15.1" class="section-number selfRef">15.1. </a><a href="#name-normative-references-2" class="section-name selfRef">Normative References</a>
         </h3>
 <dl class="references">
+<dt id="FLOWSPEC-REDIR-IP">[FLOWSPEC-REDIR-IP]</dt>
+        <dd>
+<span class="refAuthor">Simpson, Ed.</span>, <span class="refTitle">"BGP Flow-Spec Redirect to IP Action"</span>, <time datetime="2015-02-02" class="refDate">2 February 2015</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-idr-flowspec-redirect-ip-02">https://datatracker.ietf.org/doc/html/draft-ietf-idr-flowspec-redirect-ip-02</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="MNH">[MNH]</dt>
         <dd>
 <span class="refAuthor">Vairavakkalai, Ed.</span>, <span class="refTitle">"BGP MultiNexthop Attribute"</span>, <time datetime="2023-07-23" class="refDate">23 July 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-kaliraj-idr-multinexthop-attribute-09">https://datatracker.ietf.org/doc/html/draft-kaliraj-idr-multinexthop-attribute-09</a>&gt;</span>. </dd>
@@ -4187,6 +4228,10 @@ Registry Name: BGP Transitive Extended Community Types
 <dt id="RFC2119">[RFC2119]</dt>
         <dd>
 <span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc2119">https://www.rfc-editor.org/info/rfc2119</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC2545">[RFC2545]</dt>
+        <dd>
+<span class="refAuthor">Marques, P.</span> and <span class="refAuthor">F. Dupont</span>, <span class="refTitle">"Use of BGP-4 Multiprotocol Extensions for IPv6 Inter-Domain Routing"</span>, <span class="seriesInfo">RFC 2545</span>, <span class="seriesInfo">DOI 10.17487/RFC2545</span>, <time datetime="1999-03" class="refDate">March 1999</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc2545">https://www.rfc-editor.org/info/rfc2545</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC4271">[RFC4271]</dt>
         <dd>
@@ -4207,6 +4252,10 @@ Registry Name: BGP Transitive Extended Community Types
 <dt id="RFC4456">[RFC4456]</dt>
         <dd>
 <span class="refAuthor">Bates, J., Ed.</span>, <span class="refAuthor">Chen, Ed.</span>, and <span class="refAuthor">Chandra, Ed.</span>, <span class="refTitle">"BGP Route Reflection: An Alternative to Full Mesh Internal BGP (IBGP)"</span>, <time datetime="2006-04" class="refDate">April 2006</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/rfc4456#section-9">https://datatracker.ietf.org/doc/html/rfc4456#section-9</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC4659">[RFC4659]</dt>
+        <dd>
+<span class="refAuthor">De Clercq, J.</span>, <span class="refAuthor">Ooms, D.</span>, <span class="refAuthor">Carugi, M.</span>, and <span class="refAuthor">F. Le Faucheur</span>, <span class="refTitle">"BGP-MPLS IP Virtual Private Network (VPN) Extension for IPv6 VPN"</span>, <span class="seriesInfo">RFC 4659</span>, <span class="seriesInfo">DOI 10.17487/RFC4659</span>, <time datetime="2006-09" class="refDate">September 2006</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc4659">https://www.rfc-editor.org/info/rfc4659</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC4684">[RFC4684]</dt>
         <dd>
@@ -4231,6 +4280,10 @@ Registry Name: BGP Transitive Extended Community Types
 <dt id="RFC7153">[RFC7153]</dt>
         <dd>
 <span class="refAuthor">Rosen, E.</span> and <span class="refAuthor">Y. Rekhter</span>, <span class="refTitle">"IANA Registries for BGP Extended Communities"</span>, <span class="seriesInfo">RFC 7153</span>, <span class="seriesInfo">DOI 10.17487/RFC7153</span>, <time datetime="2014-03" class="refDate">March 2014</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7153">https://www.rfc-editor.org/info/rfc7153</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC7606">[RFC7606]</dt>
+        <dd>
+<span class="refAuthor">Chen, E., Ed.</span>, <span class="refAuthor">Scudder, J., Ed.</span>, <span class="refAuthor">Mohapatra, P.</span>, and <span class="refAuthor">K. Patel</span>, <span class="refTitle">"Revised Error Handling for BGP UPDATE Messages"</span>, <span class="seriesInfo">RFC 7606</span>, <span class="seriesInfo">DOI 10.17487/RFC7606</span>, <time datetime="2015-08" class="refDate">August 2015</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7606">https://www.rfc-editor.org/info/rfc7606</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC7911">[RFC7911]</dt>
         <dd>
@@ -4298,10 +4351,6 @@ Registry Name: BGP Transitive Extended Community Types
 <dt id="Colorful-Prefix-Routing-SRv6">[Colorful-Prefix-Routing-SRv6]</dt>
         <dd>
 <span class="refAuthor">Wang, Ed.</span>, <span class="refTitle">"BGP Colorful Prefix Routing for SRv6 based Services"</span>, <time datetime="2023-03-26" class="refDate">26 March 2023</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-wang-idr-cpr-01.html">https://www.ietf.org/archive/id/draft-wang-idr-cpr-01.html</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="FLOWSPEC-REDIR-IP">[FLOWSPEC-REDIR-IP]</dt>
-        <dd>
-<span class="refAuthor">Simpson, Ed.</span>, <span class="refTitle">"BGP Flow-Spec Redirect to IP Action"</span>, <time datetime="2015-02-02" class="refDate">2 February 2015</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-idr-flowspec-redirect-ip-02">https://datatracker.ietf.org/doc/html/draft-ietf-idr-flowspec-redirect-ip-02</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="Intent-Routing-Color">[Intent-Routing-Color]</dt>
         <dd>
