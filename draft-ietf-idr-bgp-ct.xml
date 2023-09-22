@@ -57,7 +57,7 @@
       </address>
     </author>
 
-    <date day="20" month="09" year="2023"/>
+    <date day="21" month="09" year="2023"/>
 
     <abstract>
       <t>This document specifies a mechanism, referred to as "Intent Driven
@@ -133,8 +133,8 @@
 
       <t>The mechanisms defined in this document are agnostic to the tunneling
       technologies. These can be applied homogeneously to intra-domain
-      tunneling technologies used in brownfield networks (e.g. MPLS Traffic
-      Engineering (TE)) as well as greenfield networks (e.g. Segment Routing
+      tunneling technologies used in brownfield networks as well as greenfield
+      networks. E.g. MPLS Traffic Engineering (TE) or Segment Routing
       (SR)).</t>
 
       <t>The constructs defined in this document are used to classify and
@@ -164,6 +164,8 @@
       <t>TE: Traffic Engineering</t>
 
       <t>TC: Transport Class</t>
+
+      <t>TC ID: Transport Class Identifier</t>
 
       <t>TC-BE: Best Effort Transport Class</t>
 
@@ -294,7 +296,7 @@
         <artwork align="left" xml:space="preserve">
                 INET     [RR21]--------------&lt;&lt;---[RR11]
                 Service  /                       /   | IP1, color:0:100
-       [PE21] &lt;&lt;--------+       | [PE12] &lt;&lt;-----+    | IP2, color:0:200
+       [PE21] &lt;&lt;--------+       | [SN11] &lt;&lt;-----+    | IP2, color:0:200
           \       ___           |       \    ___     | IP3, 100:200
            \    _(   )          |        \ _(   )    ^&lt;&lt;    ^^^^^^^^^^^
             +--(     _)--[BN21]===[BN11]--(     _)--[PE11]    Mapping
@@ -313,7 +315,7 @@
          ^^^^^^^^^^^^^^^^^^^^^^                        ^^^
          Route Target Extended Community        Transport Class ID
 
-  at PE12 and PE21,
+  at SN11 and PE21,
 
        Scheme1: color:0:100, (TRDB[TC-100], TRDB[TC-BE])
        Scheme2: color:0:200, (TRDB[TC-200], TRDB[TC-BE])
@@ -342,7 +344,7 @@
       publish their underlay tunnels for a Transport Class into an associated
       <xref target="trdb">"Transport Route Database" (TRDB)</xref>. In <xref
       target="ArchOv"/>, RSVP-TE publishes its underlay tunnels into TRDBs
-      created for Transport Class 100 and 200 at BN11 and PE12 within AS1;
+      created for Transport Class 100 and 200 at BN11 and SN11 within AS1;
       Similarly, SR-TE publishes its underlay tunnels into TRDBs created for
       Transport Class 100 and 200 at PE21 within AS2.</t>
 
@@ -368,13 +370,13 @@
       <t>Overlay routes carry sufficient indication of the desired Transport
       Classes using a BGP community which assumes the role of as a "Mapping
       Community". A Resolution Scheme is identified by its "Mapping
-      Community", where its configuration can either be auto-generated or done
-      manually.</t>
+      Community", where its configuration can either be auto-generated based on
+      TC ID or done manually.</t>
 
       <t>The following text illustrates BGP CT having the property of
       providing tiered fallback options at a per-route granularity. In <xref
       target="ArchOv"/>, the Resolution Schemes are shown and the following
-      next hop resolutions are done by PE12 and PE21:<list>
+      next hop resolutions are done by SN11 and PE21:<list>
           <t>Resolve IP1 next hop over available tunnels in TRDB for Transport
           Class 100 with fallback to TRDB for best effort.</t>
 
@@ -383,70 +385,40 @@
 
           <t>Resolve IP3 next hop over available tunnels in TRDB for Transport
           Class 100 with fallback to TRDB for Transport Class 200.</t>
-        </list>In <xref target="ArchOv"/>, PE12 resolves IP1, IP2 and IP3
+        </list>In <xref target="ArchOv"/>, SN11 resolves IP1, IP2 and IP3
       directly over RSVP-TE tunnels in AS1. PE21 resolves IP1, IP2 and IP3
       over extended BGP-CT tunnels that resolve over SR-TE tunnels in AS2.</t>
 
       <t>This document describes procedures using MPLS forwarding
       architecture. However, these procedures would work in a similar manner
-      for non-MPLS forwarding architectures as well. <xref
-      target="SRv6-Support"/> describes the application of BGP CT over SRv6
-      data plane.</t>
+      for non-MPLS forwarding architectures as well. <xref target="SRv6-Support"/>
+      describes the application of BGP CT over SRv6 data plane.</t>
     </section>
 
     <section anchor="tc" title="Transport Class">
       <t>Transport Class is a construct that groups transport tunnels offering
       similar SLA within the administrative domain of a provider network or
-      closely coordinated provider networks. A Transport Class is configured
-      at SNs and BNs with RD and RT attributes. Creation of a Transport Class
-      instantiates its corresponding TRDB on that node.</t>
+      closely coordinated provider networks.</t>
 
-      <t>A Transport Class is identified by a unique 32-bit "Transport Class"
-      identifier, that is assigned by the operator. An operator may configure
-      an SN/BN to classify a tunnel into an appropriate Transport Class. How
-      exactly these tunnels are made Transport Class aware is implementation
-      specific and outside the scope of this document.</t>
+      <t>A Transport Class is uniquely identified on a box by a 32-bit "Transport Class ID",
+      that is assigned by the operator. The operator consistently provisions a Transport Class
+      on participating nodes (SNs and BNs) in a domain with its unique Transport Class ID.</t>
 
-      <t>When a tunnel is made Transport Class aware, it causes the Tunnel
-      Ingress Route to be installed in the corresponding TRDB of that
-      Transport Class. These routes are used to resolve BGP routes including
-      BGP CT, which may be further readvertised to adjacent domains to extend
-      these tunnels. While readvertising BGP CT routes, the "Transport Class"
-      identifier is encoded as part of the Transport Class RT, which is a new
-      Route Target extended community.</t>
+      <t>A Transport Class is also configured with RD and import/export RT attributes.
+      Creation of a Transport Class instantiates its corresponding TRDB and Resolution Schemes
+      on that node.</t>
 
-      <t>An SN/BN receiving the transport routes via BGP with sufficient
-      signaling information to identify a Transport Class can associate those
-      ingress routes to the corresponding Transport Class. E.g., for Classful
-      Transport family (AFI/SAFIs, 1/76 or 2/76) routes, the Transport Class
-      RT indicates the Transport Class. For BGP LU family (AFI/SAFIs, 1/4 or
-      2/4) routes, import processing based on Communities or Inter-AS
-      source-peer may be used to place the route in the desired Transport
-      Class.</t>
+      <t>All nodes within a domain agree on a common Transport Class ID namespace. But two
+      co-operating domains may not always agree on the same namespace. Procedures to manage
+      differences in Transport Class ID namespaces between co-operating domains are specified
+      in <xref target="non-agreeing"/>.</t>
 
-      <t>When the ingress route is received via <xref target="SRTE"/> with
-      "Color:Endpoint" as the NLRI that encodes the Transport Class as an
-      integer 'Color', the 'Color' is mapped to a Transport Class during the
-      import processing. The SRTE ingress route for this 'Endpoint' is
-      installed in the corresponding TRDB. The SRTE tunnel will be extended by
-      a BGP CT advertisement with NLRI 'RD:Endpoint', Transport Class RT and a
-      new label. The MPLS swap route thus installed for the new label will pop
-      the label and forward the decapsulated traffic into the path determined
-      by the SRTE route for further encapsulation.</t>
-
-      <t><xref target="PCEP-SRTE-COLOR"/> extends Path Computation Element
-      Communication Protocol (PCEP) to carry SRTE Color. This color
-      association learnt from PCEP is also mapped to a Transport Class thus
-      associating the PCEP driven SRTE LSP with the desired Transport
-      Class.</t>
-
-      <t>Similarly, <xref target="PCEP-RSVP-COLOR"/> extends PCEP to carry
-      RSVP Color. This color association learnt from PCEP is also mapped to a
-      Transport Class thus associating the PCEP driven RSVP-TE LSP with the
-      desired Transport Class.</t>
+      <t>Transport Class ID conveys the Color of tunnels in a Transport Class.
+      The terms 'Transport Class ID' and 'Color' are used interchangeably in
+      this document.</t>
 
       <section anchor="tc-te" title="Classifying TE tunnels">
-        <t>TE tunnels can be classified within a Transport Class based on the
+        <t>TE tunnels can be classified into a Transport Class based on the
         TE attributes they possess and the TE characteristics that the
         operator defines for that Transport Class. Due to the fact that
         multiple TE tunneling protocols exist, their TE attributes and
@@ -466,6 +438,48 @@
             <t>Tunnels (RSVP-TE, SR-TE, BGP-CT) that avoid certain nodes in
             the network based on RSVP-TE ERO, SR-TE policy or BGP policy.</t>
           </list></t>
+
+          <t> An operator may configure an SN/BN to classify a tunnel into an appropriate
+          Transport Class. How exactly these tunnels are made Transport Class aware is
+          implementation specific and outside the scope of this document.</t>
+
+          <t>When a tunnel is made Transport Class aware, it causes the Tunnel
+          Ingress Route to be installed in the corresponding TRDB of that
+          Transport Class. These routes are used to resolve BGP routes including
+          BGP CT, which may be further readvertised to adjacent domains to extend
+          these tunnels. While readvertising BGP CT routes, the "Transport Class"
+          identifier is encoded as part of the Transport Class RT, which is a new
+          Route Target extended community.</t>
+
+          <t>An SN/BN receiving the transport routes via BGP with sufficient
+          signaling information to identify a Transport Class can associate those
+          ingress routes to the corresponding Transport Class. E.g., for Classful
+          Transport family (AFI/SAFIs, 1/76 or 2/76) routes, the Transport Class
+          RT indicates the Transport Class. For BGP LU family (AFI/SAFIs, 1/4 or
+          2/4) routes, import processing based on Communities or Inter-AS
+          source-peer may be used to place the route in the desired Transport
+          Class.</t>
+
+          <t>When the ingress route is received via <xref target="SRTE"/> with
+          "Color:Endpoint" as the NLRI that encodes the Transport Class as an
+          integer 'Color', the 'Color' is mapped to a Transport Class during the
+          import processing. The SRTE ingress route for this 'Endpoint' is
+          installed in the corresponding TRDB. The SRTE tunnel will be extended by
+          a BGP CT advertisement with NLRI 'RD:Endpoint', Transport Class RT and a
+          new label. The MPLS swap route thus installed for the new label will pop
+          the label and forward the decapsulated traffic into the path determined
+          by the SRTE route for further encapsulation.</t>
+
+          <t><xref target="PCEP-SRTE-COLOR"/> extends Path Computation Element
+          Communication Protocol (PCEP) to carry SRTE Color. This color
+          association learnt from PCEP is also mapped to a Transport Class thus
+          associating the PCEP driven SRTE LSP with the desired Transport
+          Class.</t>
+
+          <t>Similarly, <xref target="PCEP-RSVP-COLOR"/> extends PCEP to carry
+          RSVP Color. This color association learnt from PCEP is also mapped to a
+          Transport Class thus associating the PCEP driven RSVP-TE LSP with the
+          desired Transport Class.</t>
       </section>
 
       <section anchor="trdb" title="Transport Route Database">
@@ -553,13 +567,15 @@
         Extended community avoids conflicts with any VPN Route Target
         assignments already in use for service families.</t>
 
-        <t>Transport Class ID conveys the color of a Transport Class. The
-        terms 'Transport Class ID' and 'Color' are used interchangeably in
-        this document.</t>
+        <t>This document also reserves the <xref target="tc-rt-nt">Non-Transitive version of
+          Transport Class extended community</xref> just to block the code in non-transitive
+          namespace also. The "Non-Transitive Transport Class" Route Target Extended Community
+          is not to be used. It is considered equivalent in functionality to the Transitive
+          Transport Class Route Target Extended Community, except for the difference in
+          transitive flag.</t>
 
-        <t>Procedures to manage differences in Transport Class ID namespaces
-        between domains are provided in <xref target="non-agreeing"/>.</t>
       </section>
+
     </section>
 
     <section anchor="Nexthop_Resoln_Schm" title="Resolution Scheme">
@@ -583,8 +599,8 @@
       they consist of the same ordered set of TRDBs.</t>
 
       <t>Operators take care that Resolution Schemes for a mapping community
-      are configured consistently on various nodes in a network, based on
-      desired Intent and available transport class tunnels.</t>
+      are configured consistently on various nodes participating in a BGP CT network,
+      based on desired Intent and transport classes available in that domain.</t>
 
       <section anchor="Mapping_Comm" title="Mapping Community">
         <t>Mapping community is a "role" and not a new type of community; any
@@ -687,11 +703,8 @@
         carried as specified in Prefix SID attribute defined as part of
         Section 3 in <xref target="RFC8669"/>.</t>
 
-        <t>The SRv6 SID is carried using Prefix SID attribute as specified in
-        <xref target="RFC9252"/>, without Transposition Scheme. The
-        Transposition Length is set to 0 and Transposition Offset is set to 0
-        to indicate nothing is transposed and that the entire SRv6 SID value
-        is encoded in the SID Information Sub-TLV.</t>
+        <t>The SID information for SR with respect to SRv6 Data Plane is
+        carried as specified in <xref target="SRv6-Support"/>.</t>
 
         <t>UDP tunneling information is carried using Tunnel Encapsulation
         Attribute as specified in <xref target="RFC9012"/>.</t>
@@ -724,7 +737,7 @@
         prefixes into separate address families. For e.g., such an approach
         allows operators to safely enable "per-prefix" label allocation scheme
         for Classful Transport prefixes, typically with a space complexity of
-        O(1K), without affecting SAFI 128 service prefixes, with a space
+        O(1K) to O(100K), without affecting SAFI 128 service prefixes, with a space
         complexity of O(1M). The "per prefix" label allocation scheme keeps
         the routing churn local during topology changes.</t>
 
@@ -1104,15 +1117,18 @@
         plane.</t>
 
         <t>The BGP Classful Transport route update for SRv6 MUST include an
-        attribute containing SRv6 SID information. This may be the BGP
-        Prefix-SID attribute as specified in <xref target="RFC9252"/> . If the
-        Prefix-SID attribute is used, it MUST NOT include SRv6 SID structure
-        for Transposition described in <xref target="RFC9252"/>.</t>
+        attribute containing SRv6 SID information, with Transposition scheme disabled.</t>
+
+        <t>This may be the BGP Prefix-SID attribute as specified in <xref target="RFC9252"/>
+        containing a "SRv6 SID Information Sub-TLV". If the Prefix-SID attribute also
+        contains a "SRv6 SID Structure Sub-Sub-TLV", the Transposition Length is set to 0
+        and Transposition Offset is set to 0. This indicates nothing is transposed
+        and that the entire SRv6 SID value is encoded in the "SRv6 SID Information Sub-TLV".</t>
 
         <t>It should be noted that prefixes carried in BGP CT family are
         transport layer end-points, e.g. PE loopback addresses. Thus, the SRv6
-        SID carried in a BGP CT route is also a transport layer identifier.
-        For an illustration of BGP CT deployment in SRv6 networks, refer to
+        SID carried in a BGP CT route is also a transport layer identifier.</t>
+        <t>For an illustration of BGP CT deployment in SRv6 networks, refer to
         <xref target="Appendix E"/> .</t>
       </section>
     </section>
@@ -1678,7 +1694,7 @@
       <section anchor="CTRouteVis" title="Managing Transport Route Visibility">
         <t>This section details the usage of BGP CT RD and label allocation
         modes to calibrate the level of path visibility and the amount of
-        route churn in a multi-domain network.</t>
+        route and label scale in a multi-domain network.</t>
 
         <t>Consider a multi-domain BGP CT network as illustrated in the
         following <xref target="MultiDomainNetwork"/>:</t>
@@ -1710,11 +1726,11 @@
 </artwork>
         </figure>
 
-        <t>The following table provides a comparison of the BGP CT route scale
-        and endpoint path visibility at ingress node PE31 for each TC, when
-        Unicast or Anycast EPs (EP-type) are originated by different node
-        roles (Origin), using different RD allocation modes (RD-Mode), and
-        different Per-Prefix Label allocation modes (PP-Mode).</t>
+        <t>The following table provides a comparison of the BGP CT route and
+        label scale, for varying endpoint path visibility at ingress node PE31
+        for each TC. It analyzes scenarios where Unicast or Anycast EPs (EP-type)
+        may be originated by different node roles (Origin), using different RD allocation
+        modes(RD-Mode), and different Per-Prefix Label allocation modes (PP-Mode).</t>
 
         <figure anchor="RDLabelVis" suppress-title="false"
                 title="Route and Path Visibility at Ingress Node">
@@ -1753,7 +1769,7 @@
       </section>
     </section>
 
-    <section title="Deployment Considerations.">
+    <section anchor="CTdeploy" title="Deployment Considerations.">
       <section title="Coordination Between Domains Using Different Community Namespaces">
         <t>Cooperating Inter-AS Option C domains may sometimes not agree on
         RT, RD, Mapping community or Transport Route Target values because of
@@ -1776,13 +1792,13 @@
       <section title="Managing Intent at Service and Transport layers.">
         <t><xref target="CTProc">Illustration of BGP CT Procedures </xref>
         shows multiple domains that agree on a color name space (Agreeing
-        Color Domains) and contain tunnels with equivalent sets of colors
+        Color Domains) and contain tunnels with equivalent set of colors
         (Homogenous Color Domains).</t>
 
         <t>However, in the real world, this may not always be guaranteed. Two
         domains may independently manage their color namespaces; these are
         known as Non-Agreeing Color Domains. Two domains may have tunnels with
-        unequal sets of colors; these are known as Heterogeneous Color
+        unequal set of colors; these are known as Heterogeneous Color
         Domains.</t>
 
         <t>This section describes how BGP CT is deployed in such scenarios to
@@ -1883,8 +1899,11 @@
           between domains in the transport layer. This method avoids the need
           to re-write service route mapping communities, keeping the service
           layer homogenous and simple to manage. Coordinating Transport Class
-          RT between adjacent domains is easier than coordinating service
-          layer colors deployed in various non-adjacent domains.</t>
+          RT between two adjacent domains at a time is easier than coordinating
+          service layer colors deployed in a global mesh of non-adjacent domains.
+          This basically allows localizing the problem to a pair of adjacent domains
+          and solving it.
+          </t>
         </section>
 
         <section title="Heterogeneous Agreeing Color Transport Domains">
@@ -2131,8 +2150,7 @@
             information</xref></t>
 
             <t>MPLS Labels are carried using RFC 8277 encoding, and SRv6 SID
-            is carried using Prefix SID attribute as specified in <xref
-            target="RFC9252"/>.</t>
+            is carried using Prefix SID attribute as specified in <xref target="SRv6-Support"/>.</t>
 
             <figure anchor="BGPCT_MPLS_SRV6" suppress-title="false"
                     title="BGP CT Interop between MPLS and SRv6 nodes">
@@ -2160,11 +2178,8 @@
             BGP CT control plane routes. This allows them to be ingress and
             egress for both MPLS and SRv6 data planes. MPLS label is carried
             using RFC 8277 encoding, and SRv6 SID is carried using Prefix SID
-            attribute as specified in <xref target="RFC9252"/>, without
-            Transposition Scheme. The Transposition Length is set to 0 and
-            Transposition Offset is set to 0 to indicate nothing is transposed
-            and that the entire SRv6 SID value is encoded in the SID
-            Information Sub-TLV. In this way, either MPLS or SRv6 forwarding
+            attribute as specified in <xref target="SRv6-Support"/>, without
+            Transposition Scheme. In this way, either MPLS or SRv6 forwarding
             can be used between R1 and R2.</t>
 
             <t>R1 and R3 send and receive MPLS label in the BGP CT control
@@ -2172,10 +2187,8 @@
             ingress and egress for MPLS data plane. R1 will carry SRv6 SID in
             Prefix-SID attribute, which will not be used by R3. In order to
             interoperate with MPLS only device R3, R1 MUST NOT use SRv6
-            Transposition scheme described in <xref target="RFC9252"/>. The
-            Transposition Length is set to 0 and Transposition Offset is set
-            to 0 to indicate nothing is transposed and that the entire SRv6
-            SID value is encoded in the SID Information Sub-TLV. MPLS
+            Transposition scheme described in <xref target="RFC9252"/>. The encoding
+            suggested in <xref target="SRv6-Support"/> is used by R1. MPLS
             forwarding will be used between R1 and R3.</t>
 
             <t>R1 and R4 send and receive SRv6 SID in the BGP CT control plane
@@ -2347,7 +2360,7 @@ Registry Name: BGP Transitive Extended Community Types
                 </figure></t>
             </section>
 
-            <section title="Non-Transitive Types">
+            <section anchor="tc-rt-nt" title="Non-Transitive Types">
               <t>This registry contains values of the high-order octet (the
               "Type" field) of a Non-transitive Extended Community.<figure>
                   <artwork> Registry Group: Border Gateway Protocol (BGP) Extended Communities
@@ -2527,7 +2540,7 @@ Registry Name: BGP Transitive Extended Community Types
       <t>BGP CT routes distribute SRv6 SIDs for SRv6 dataplanes and hence
       security considerations of Section 9.3 of <xref target="RFC9252"/>
       apply. Moreover, SRv6 SID transposition scheme is disabled in BGP CT, as
-      described in <xref target="CTMultiEncap"/>, to mitigate the risk of
+      described in <xref target="SRv6-Support"/>, to mitigate the risk of
       misinterpreting transposed SRv6 SID information as an MPLS label.</t>
 
       <t>As <xref target="RFC4272"/> discusses, BGP is vulnerable to
@@ -2698,7 +2711,7 @@ Registry Name: BGP Transitive Extended Community Types
       </reference>
 
       <reference anchor="PCEP-RSVP-COLOR"
-                 target="https://datatracker.ietf.org/doc/html/draft-ietf-pce-pcep-color-00">
+                 target="https://datatracker.ietf.org/doc/html/draft-ietf-pce-pcep-color-02">
         <front>
           <title abbrev="PCEP RSVP COLOR">Path Computation Element
           Protocol(PCEP) Extension for RSVP Color</title>
@@ -2709,12 +2722,12 @@ Registry Name: BGP Transitive Extended Community Types
           <author fullname="Vishnu" initials="Pavan" role="editor"
                   surname="Beeram"/>
 
-          <date day="03" month="01" year="2023"/>
+          <date day="01" month="09" year="2023"/>
         </front>
       </reference>
 
       <reference anchor="PCEP-SRTE-COLOR"
-                 target="https://datatracker.ietf.org/doc/html/draft-ietf-pce-segment-routing-policy-cp-11#name-sr-policy-identifiers">
+                 target="https://datatracker.ietf.org/doc/html/draft-ietf-pce-segment-routing-policy-cp-12#name-sr-policy-identifiers">
         <front>
           <title abbrev="PCEP SRTE COLOR">Path Computation Element
           Protocol(PCEP) Extension for RSVP Color</title>
@@ -2727,7 +2740,7 @@ Registry Name: BGP Transitive Extended Community Types
 
           <author fullname="Colby" initials="" role="editor" surname="Barth"/>
 
-          <date day="20" month="06" year="2023"/>
+          <date day="22" month="07" year="2023"/>
         </front>
       </reference>
 
