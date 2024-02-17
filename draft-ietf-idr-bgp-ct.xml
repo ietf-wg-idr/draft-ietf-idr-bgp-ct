@@ -10,7 +10,7 @@
 <?rfc inline="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="exp" docName="draft-ietf-idr-bgp-ct-24" ipr="trust200902">
+<rfc category="exp" docName="draft-ietf-idr-bgp-ct-26" ipr="trust200902">
   <front>
     <title abbrev="BGP Classful Transport Planes">BGP Classful Transport
     Planes</title>
@@ -57,7 +57,7 @@
       </address>
     </author>
 
-    <date day="12" month="2" year="2024"/>
+    <date day="16" month="2" year="2024"/>
 
     <abstract>
       <t>This document specifies a mechanism referred to as "Intent Driven
@@ -131,8 +131,6 @@
       be Multiprotocol Label Switching (MPLS), Internet Protocol version 4
       (IPv4), or Internet Protocol version 6 (IPv6).</t>
 
-      <!-- XXX JMH - greenfield/brownfield not defined - need definitions? [DONE] -->
-
       <t>The mechanisms defined in this document allow different tunneling
       technologies to become Transport Class aware. These can be applied
       homogeneously to intra-domain tunneling technologies used in existing
@@ -165,9 +163,13 @@
     </section>
 
     <section title="Terminology">
+      <t>ABR: Area Border Router</t>
+
       <t>AFI: Address Family Identifier</t>
 
       <t>AS: Autonomous System</t>
+
+      <t>ASBR: Autonomous System Border Router</t>
 
       <t>ASN: Autonomous System Number</t>
 
@@ -222,6 +224,8 @@
 
       <t>SLA: Service Level Agreement</t>
 
+      <t>SN: Service Node</t>
+
       <t>SR: Segment Routing</t>
 
       <t>SRTE: Segment Routing Traffic Engineering</t>
@@ -233,8 +237,6 @@
       <t>TC-BE: Best Effort Transport Class</t>
 
       <t>TE: Traffic Engineering</t>
-
-      <t>TN: Transport Node, P-router</t>
 
       <t>TRDB: Transport Route Database</t>
 
@@ -403,9 +405,9 @@
       domain boundaries, which is parallel to BGP LU (AFI/SAFIs 1/4 or 2/4).
       It disseminates "Transport Class" information for the transport prefixes
       across the participating domains while avoiding the need of
-      per-transport class loopback, which is not possible with BGP LU. This
-      makes the end-to-end network a "Transport Class" aware tunneled
-      network.</t>
+      per-transport class loopback. This is not possible with BGP LU without
+      using per-color loopback. This makes the end-to-end network a "Transport
+      Class" aware tunneled network.</t>
 
       <t>In <xref target="ArchOv"/>, BGP CT routes are originated at BN11 in
       AS1 with next hop "self" towards BN21 in AS2 to extend available RSVP-TE
@@ -452,8 +454,6 @@
       "Transport Class ID", that is assigned by the operator. The operator
       consistently provisions a Transport Class on participating nodes (SNs
       and BNs) in a domain with its unique Transport Class ID.</t>
-
-      <!-- XXX JMH - this text isn't clear.  I think the intent here is to describe a specific instance of a TRDB? -->
 
       <t>A Transport Class is also configured with RD and import/export RT
       attributes. Creation of a Transport Class instantiates its corresponding
@@ -523,16 +523,15 @@
         will pop the label and forward the decapsulated traffic into the path
         determined by the SRTE route for further encapsulation.</t>
 
-        <t><xref target="PCEP-SRTE-COLOR"/> extends Path Computation Element
-        Communication Protocol (PCEP) to carry SRTE Color. This color
-        association learnt from PCEP is also mapped to a Transport Class thus
-        associating the PCEP driven SRTE LSP with the desired Transport
-        Class.</t>
+        <t><xref target="PCEP-SRPOLICY"/> extends Path Computation Element
+        Communication Protocol (PCEP) to signal attributes of an SR Policy
+        which include Color. This Color is mapped to a Transport Class thus
+        associating the SR Policy with the desired Transport Class.</t>
 
         <t>Similarly, <xref target="PCEP-RSVP-COLOR"/> extends PCEP to carry
-        RSVP Color. This color association learnt from PCEP is also mapped to
-        a Transport Class thus associating the PCEP driven RSVP-TE LSP with
-        the desired Transport Class.</t>
+        the Color attribute for its use with RSVP-TE LSPs . This Color is
+        mapped to a Transport Class thus associating the RSVP-TE LSP with the
+        desired Transport Class.</t>
       </section>
 
       <section anchor="trdb" title="Transport Route Database">
@@ -556,11 +555,11 @@
         used to resolve a next hop.</t>
 
         <t>SNs or BNs originate routes for the "Classful Transport" address
-        family from the TRDB. These routes have "RD:Endpoint" in the NLRI, and
-        carry a Transport Class RT and an MPLS label, or an identifier that
-        represents an equivalent of a label in a different forwarding
-        architecture. "Classful Transport" family routes received with
-        Transport Class RT are installed into their respective TRDB.</t>
+        family from the TRDB. These routes have "RD:Endpoint" in the NLRI,
+        carry a Transport Class RT, and an MPLS label or equivalent identifier
+        in different forwarding architecture. "Classful Transport" family
+        routes received with Transport Class RT are installed into their
+        respective TRDB.</t>
       </section>
 
       <section anchor="tc-rt"
@@ -604,9 +603,6 @@
     represent "Best Effort Transport Class ID".</artwork>
         </figure>
 
-        <!-- XXX JMH - Best effort isn't defined in IANA considerations - should it be? -->
-        <!-- XXX JMH - It's unclear which RFC 4364 mechanisms are applicable. I believe the intent is to discuss how CT routes with a RT will or will not be installed in a local TRDB. The text three paragraphs below is, I believe, the applicable text. If so, I suggest not referring to RFC4364. -->
-
         <t>The VPN route import/export mechanisms specified in <xref
         target="RFC4364">BGP/MPLS IP VPNs</xref> and the Constrained Route
         Distribution mechanisms specified in <xref target="RFC4684">Route
@@ -618,12 +614,14 @@
         <t>A BGP speaker that implements <xref target="RFC4684">Route Target
         Constrain</xref> MUST also apply the RTC procedures to the Transport
         Class Route Target Extended communities carried on BGP CT routes
-        (AFI/SAFI: 1/76 or 2/76) . Further, when processing RT membership
-        NLRIs received from external BGP peers, it is necessary to consider
-        multiple EBGP paths for a given RTC prefix for building the outbound
-        route filter, and not just the best path. An implementation MAY
-        provide configuration to control how many EBGP RTC paths are
-        considered.</t>
+        (AFI/SAFI: 1/76 or 2/76) . An RTC route is generated for each Route
+        Target imported by locally provisioned Transport Classes.</t>
+
+        <t>Further, when processing RT membership NLRIs received from external
+        BGP peers, it is necessary to consider multiple EBGP paths for a given
+        RTC prefix for building the outbound route filter, and not just the
+        best path. An implementation MAY provide configuration to control how
+        many EBGP RTC paths are considered.</t>
 
         <t>The Transport Class Route Target Extended community is carried on
         BGP CT family routes and is used to associate them with appropriate
@@ -637,8 +635,6 @@
         <t>Defining a new type code for the Transport Class Route Target
         Extended community avoids conflicting with any VPN Route Target
         assignments already in use for service families.</t>
-
-        <!-- XXX JMH - the text here says non-transitive is not used, but then says it should have a given behavior.-->
 
         <t>This document also reserves the <xref
         target="tc-rt-nt">Non-Transitive version of Transport Class extended
@@ -701,8 +697,6 @@
         <xref target="RFC9012"/>, or the "transport-target:0:100" described in
         <xref target="tc-rt"/> in this document.</t>
 
-        <!-- XXX JMH "first" community is problematic -->
-
         <t>The order of communities on an overlay route does not affect the
         determining of Mapping community in effect.</t>
 
@@ -718,8 +712,6 @@
         receiving node, it is considered a configuration error. Operators
         should avoid such configuration errors when attaching mapping
         communities on overlay routes.</t>
-
-        <!-- XXX JMH - this sentence needs work. -->
 
         <t>It should be noted that the Mapping Community role does not require
         applying Route Target Constrain procedures specified in RFC 4684.</t>
@@ -742,9 +734,8 @@
       prefixes.</t>
 
       <section anchor="ct-nlri" title="NLRI Encoding">
-        <t>The "Classful Transport" SAFI NLRI has the
-        same encoding as specified in Section 2 of <xref
-        target="RFC8277"/>.</t>
+        <t>The "Classful Transport" SAFI NLRI has the same encoding as
+        specified in Section 2 of <xref target="RFC8277"/>.</t>
 
         <t>When AFI/SAFI is 1/76, the Classful Transport NLRI Prefix consists
         of an 8-byte RD followed by an IPv4 prefix. When AFI/SAFI is 2/76, the
@@ -759,8 +750,6 @@
         <t>BGP CT routes MAY carry multiple labels in the NLRI, by negotiating
         the Multiple Labels Capability as described in Section 2.1 of <xref
         target="RFC8277"/></t>
-
-        <!-- XXX JMH - what procedure if no CT RT are present? -->
 
         <t>Attributes on a Classful Transport route include the Transport
         Class Route Target extended community, which is used to associate the
@@ -830,8 +819,6 @@
         come from the provider namespace and are contextualized into separate
         TRDB, following mechanisms similar to RFC 4364 procedures.</t>
 
-        <!-- XXX JMH - 4364 focuses on regular route targets. The intent here is to say that it's similar to L3VPNs in the sense that there's a table - a TRDB - that routes - CT - are installed into based on those TRDB having associated TC routes. I think the appropriate fix here is to avoid "as per" or other things that make an implementor see that RFC to look for normative procedures. Instead, TRDB install, as covered below, is inspired by 4364. -->
-
         <t>It is worth noting that AFI/SAFI 1/128 has been used to carry
         transport prefixes in "L3VPN Inter-AS Carrier's carrier" scenario as
         defined in Section 10 of <xref target="RFC4364"/>, where BGP LU/LDP
@@ -854,13 +841,13 @@
         1/1 or 2/1). These service routes can resolve over BGP CT (AFI/SAFI:
         1/76 or 2/76) transport routes.</t>
 
-        <t>A new SAFI for AFI 1 and AFI 2 also facilitates having a different
-        readvertisement path of the transport family routes in a network than
-        the service route readvertisement path. Service routes (Inet-VPN SAFI
-        128) are exchanged over an EBGP multihop session between ASes with
-        next hop unchanged; whereas Classful Transport routes (SAFI 76) are
-        readvertised over EBGP single hop sessions with "next hop self"
-        rewrite over inter-AS links.</t>
+        <t>A new SAFI 76 for AFI 1 and AFI 2 also facilitates having a
+        different readvertisement path of the transport family routes in a
+        network than the service route readvertisement path. Service routes
+        (Inet-VPN SAFI 128) are exchanged over an EBGP multihop session
+        between ASes with next hop unchanged; whereas Classful Transport
+        routes (SAFI 76) are readvertised over EBGP single hop sessions with
+        "next hop self" rewrite over inter-AS links.</t>
 
         <t>The BGP CT SAFI 76 for AFI 1 and 2 is similar in vein to BGP LU
         SAFI 4, in that it carries transport prefixes. The only difference is
@@ -976,14 +963,16 @@
 
       <section title="Readvertising Classful Transport Route by Border Nodes">
         <list>
-          <t>When readvertising a BGP CT route with Next Hop set to Self, a BN
-          allocates an MPLS label to advertise upstream in Classful Transport
-          NLRI. The BN also installs an MPLS route for that label that swaps
-          the incoming label with the label received from the downstream BGP
-          speaker (or pops the incoming label if the label received from the
-          downstream BGP speaker was Implicit-NULL). It then pushes received
-          traffic to the transport tunnel or direct interface that the
-          Classful Transport route's PNH resolved over.</t>
+          <t>This section describes the MPLS label handling when readvertising
+          a BGP CT route with Next Hop set to Self. When readvertising a BGP
+          CT route with Next Hop set to Self, a BN allocates an MPLS label to
+          advertise upstream in Classful Transport NLRI. The BN also installs
+          an MPLS route for that label that swaps the incoming label with the
+          label received from the downstream BGP speaker (or pops the incoming
+          label if the label received from the downstream BGP speaker was
+          Implicit-NULL). It then pushes received traffic to the transport
+          tunnel or direct interface that the Classful Transport route's PNH
+          resolved over.</t>
 
           <t>The label SHOULD be allocated with "per-prefix" label allocation
           semantics. The IP prefix in the TRDB context (Transport-Class,
@@ -1046,55 +1035,13 @@
           self, may choose each other as best path instead of the upstream
           ASBR, causing a traffic forwarding loop.</t>
 
-          <t>This happens because of following the path selection rule
-          specified in <xref target="RFC4456">Section 9 of BGP RR</xref> that
-          tie-breaks on ORIGINATOR_ID before CLUSTER_LIST. RFC4456 considers
-          pure RR functionality which is not in forwarding path. When a RR is
-          in forwarding path and reflects routes with next hop self, as is the
-          case for ABR BNs in a BGP transport network, this rule may cause
-          loops.</t>
-
           <t>This problem can happen for routes of any BGP address family,
           including BGP CT and BGP LU.</t>
 
-          <t>Using one or more of the following approaches softens the
-          possibility of such loops in a network with redundant ABRs.</t>
+          <t>Using one or more of the approaches described in <xref
+          target="BGP-FWD-RR"/> softens the possibility of such loops in a
+          network with redundant ABRs.</t>
         </list>
-
-        <section title="Path selection change">
-          <list>
-            <t>Implementations SHOULD provide a way to alter the tie-breaking
-            rule specified in <xref target="RFC4456">Section 9 of BGP
-            RR</xref> so as to tie-break on CLUSTER_LIST step before
-            ORIGINATOR_ID step, when performing path selection for BGP
-            routes.</t>
-
-            <t>This document suggests the following modification to the BGP
-            Decision Process Tie Breaking rules (Section 9.1.2.2 of <xref
-            target="RFC4271"/>) that can be applied to path selection of BGP
-            routes:</t>
-
-            <t>The following rule SHOULD be inserted between Steps e) and f):
-            a BGP Speaker SHOULD prefer a route with the shorter CLUSTER_LIST
-            length. The CLUSTER_LIST length is zero if a route does not carry
-            the CLUSTER_LIST attribute.</t>
-          </list>
-        </section>
-
-        <section title="Other mechanisms">
-          <list>
-            <t>Taking into account some other deployment considerations can
-            also help in avoiding this problem, e.g.,: <list>
-                <t>IGP metric should be assigned such that "ABR to redundant
-                ABR" cost is inferior to "ABR to upstream ASBR" cost.</t>
-
-                <t>Tunnels belonging to non "best effort" Transport Classes
-                SHOULD NOT be provisioned between ABRs. This will ensure that
-                the BGP CT route received from an ABR with next hop self will
-                not be usable at a redundant ABR.</t>
-              </list></t>
-          </list>
-        </section>
       </section>
 
       <section title="Ingress Nodes Receiving Service Routes with a Mapping Community">
@@ -1254,25 +1201,11 @@
         using Segment Routing over IPv6 (SRv6) data plane on the inter-AS
         links or as an intra-AS tunneling mechanism.</t>
 
-        <t>The BGP CT route update for SRv6 MUST include an attribute
-        containing SRv6 SID information, with Transposition scheme
-        disabled.</t>
-
-        <t>This may be the BGP Prefix-SID attribute as specified in <xref
-        target="RFC9252"/> containing a "SRv6 SID Information Sub-TLV". If the
-        Prefix-SID attribute also contains a "SRv6 SID Structure Sub-Sub-TLV",
-        the Transposition Length is set to 0 and Transposition Offset is set
-        to 0. This indicates nothing is transposed and that the entire SRv6
-        SID value is encoded in the "SRv6 SID Information Sub-TLV".</t>
-
-        <t>It should be noted that prefixes carried in BGP CT family are
-        transport layer end-points; i.e., PE loopback addresses. Thus, the
-        SRv6 SID carried in a BGP CT route is also a transport layer
-        identifier.</t>
-
         <t>Details of SRv6 Endpoint behaviors used by BGP CT and the
         procedures are specified in a separate document <xref
-        target="BGP-CT-SRv6"/>, along with illustration.</t>
+        target="BGP-CT-SRv6"/>, along with illustration. As noted in this
+        document, BGP CT route update for SRv6 include attribute containing
+        SRv6 SID information, with Transposition scheme disabled.</t>
       </section>
 
       <section anchor="error-handling" title="Error Handling Considerations">
@@ -2777,22 +2710,6 @@ Registry Name: BGP Transitive Extended Community Types
       <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8029.xml"?>
 
       <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8212.xml"?>
-
-      <reference anchor="RFC4456"
-                 target="https://datatracker.ietf.org/doc/html/rfc4456#section-9">
-        <front>
-          <title>BGP Route Reflection: An Alternative to Full Mesh Internal
-          BGP (IBGP)</title>
-
-          <author fullname="Tony" initials="J" role="editor" surname="Bates"/>
-
-          <author fullname="Enke" initials="" role="editor" surname="Chen"/>
-
-          <author fullname="Ravi" initials="" role="editor" surname="Chandra"/>
-
-          <date day="" month="04" year="2006"/>
-        </front>
-      </reference>
     </references>
 
     <references title="Informative References">
@@ -2803,7 +2720,7 @@ Registry Name: BGP Transitive Extended Community Types
       <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6890.xml"?>
 
       <reference anchor="BGP-CT-SRv6"
-                 target="https://tools.ietf.org/html/draft-ietf-idr-bgp-ct-srv6-01">
+                 target="https://tools.ietf.org/html/draft-ietf-idr-bgp-ct-srv6-02">
         <front>
           <title abbrev="BGP-CT-SRv6">BGP CT - Adaptation to SRv6
           dataplane</title>
@@ -2815,6 +2732,22 @@ Registry Name: BGP Transitive Extended Community Types
                   surname="Venkataraman"/>
 
           <date day="28" month="1" year="2024"/>
+        </front>
+      </reference>
+
+      <reference anchor="BGP-FWD-RR"
+                 target="https://tools.ietf.org/html/draft-ietf-idr-bgp-fwd-rr-01">
+        <front>
+          <title abbrev="BGP-FWD-RR">BGP Route Reflector in Forwarding
+          Path</title>
+
+          <author fullname="Kaliraj Vairavakkalai" initials="" role="editor"
+                  surname="Vairavakkalai"/>
+
+          <author fullname="Natarajan Venkataraman" initials="" role="editor"
+                  surname="Venkataraman"/>
+
+          <date day="16" month="2" year="2024"/>
         </front>
       </reference>
 
@@ -2899,11 +2832,11 @@ Registry Name: BGP Transitive Extended Community Types
         </front>
       </reference>
 
-      <reference anchor="PCEP-SRTE-COLOR"
-                 target="https://www.ietf.org/archive/id/draft-ietf-pce-segment-routing-policy-cp-13.html#name-sr-policy-identifier">
+      <reference anchor="PCEP-SRPOLICY"
+                 target="https://www.ietf.org/archive/id/draft-ietf-pce-segment-routing-policy-cp-14.html#name-sr-policy-identifier">
         <front>
-          <title abbrev="PCEP SRTE COLOR">Path Computation Element
-          Protocol(PCEP) Extension for RSVP Color</title>
+          <title abbrev="PCEP SRPOLICY">PCEP Extensions for SR Policy
+          Candidate Paths</title>
 
           <author fullname="Mike" initials="" role="editor"
                   surname="Koldychev"/>
@@ -2913,7 +2846,7 @@ Registry Name: BGP Transitive Extended Community Types
 
           <author fullname="Colby" initials="" role="editor" surname="Barth"/>
 
-          <date day="16" month="01" year="2023"/>
+          <date day="09" month="02" year="2024"/>
         </front>
       </reference>
 
