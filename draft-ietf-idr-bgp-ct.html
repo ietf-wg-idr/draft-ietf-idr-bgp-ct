@@ -29,7 +29,7 @@
       called "BGP Classful Transport", a.k.a., BGP CT. 
     ' name="description">
 <meta content="xml2rfc 3.18.2" name="generator">
-<meta content="draft-ietf-idr-bgp-ct-27" name="ietf.draft">
+<meta content="draft-ietf-idr-bgp-ct-29" name="ietf.draft">
 <!-- Generator version information:
   xml2rfc 3.18.2
     Python 3.9.6
@@ -1227,7 +1227,7 @@ li > p:last-of-type:only-child {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Vairavakkalai &amp; Venkataraman</td>
-<td class="center">Expires 5 September 2024</td>
+<td class="center">Expires 19 September 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1237,15 +1237,15 @@ li > p:last-of-type:only-child {
 <dt class="label-workgroup">Workgroup:</dt>
 <dd class="workgroup">Network Working Group</dd>
 <dt class="label-internet-draft">Internet-Draft:</dt>
-<dd class="internet-draft">draft-ietf-idr-bgp-ct-27</dd>
+<dd class="internet-draft">draft-ietf-idr-bgp-ct-29</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-03-04" class="published">4 March 2024</time>
+<time datetime="2024-03-18" class="published">18 March 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Experimental</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-09-05">5 September 2024</time></dd>
+<dd class="expires"><time datetime="2024-09-19">19 September 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1314,7 +1314,7 @@ li > p:last-of-type:only-child {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 5 September 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 19 September 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -3645,15 +3645,15 @@ li > p:last-of-type:only-child {
 <pre>
            &lt;---------- Service Routes AFI/SAFI 1/128 ---------------
 
-                                   Gold1(101)
-                                   Gold2(102)
-          Gold(100)                                     Gold(100)
+                                 Gold1(101)
+                                 Gold2(102)
+        Gold(100)                                     Gold(100)
 
-    [PE11]------[ASBR11]----[ASBR21------[ASBR22]----[ASBR31------[PE31]
-       Metro-Ingress                Core              Metro-Egress
-           AS1                       AS2                 AS3
+  [PE11]------[ASBR11]----[ASBR21------[ASBR22]----[ASBR31------[PE31]
+     Metro-Ingress                Core              Metro-Egress
+         AS1                       AS2                 AS3
 
-                ----------- Packet Forwarding Direction --------&gt;
+            ----------- Packet Forwarding Direction --------&gt;
 </pre>
 </div>
 <figcaption><a href="#figure-9" class="selfRef">Figure 9</a>:
@@ -4245,7 +4245,7 @@ Registry Name: BGP Transitive Extended Community Types
         best effort transport class. Please create a new registry for
         this.<a href="#section-13.4-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-13.4-2">
-<pre> Registry Group: BGP CT Parameters
+<pre> Registry Group: BGP Classful Transport (BGP CT)
 
  Registry Name: Transport Class ID
 
@@ -4257,7 +4257,11 @@ Registry Name: BGP Transitive Extended Community Types
  Reference: This document.
 
  Registration Procedure(s)
-       IETF Review.
+
+  Value                 Registration Procedure
+ -----------------+--------------------------------
+   0                IETF Review
+   1-4294967295     Private Use
 
 
 </pre><a href="#section-13.4-2" class="pilcrow">¶</a>
@@ -4431,7 +4435,7 @@ Registry Name: BGP Transitive Extended Community Types
 <dl class="references">
 <dt id="BGP-CT-SRv6">[BGP-CT-SRv6]</dt>
         <dd>
-<span class="refAuthor">Vairavakkalai, Ed.</span> and <span class="refAuthor">Venkataraman, Ed.</span>, <span class="refTitle">"BGP CT - Adaptation to SRv6 dataplane"</span>, <time datetime="2024-01-28" class="refDate">28 January 2024</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-idr-bgp-ct-srv6-02">https://tools.ietf.org/html/draft-ietf-idr-bgp-ct-srv6-02</a>&gt;</span>. </dd>
+<span class="refAuthor">Vairavakkalai, Ed.</span> and <span class="refAuthor">Venkataraman, Ed.</span>, <span class="refTitle">"BGP CT - Adaptation to SRv6 dataplane"</span>, <time datetime="2024-03-04" class="refDate">4 March 2024</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-idr-bgp-ct-srv6-03">https://tools.ietf.org/html/draft-ietf-idr-bgp-ct-srv6-03</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="BGP-CT-UPDATE-PACKING-TEST">[BGP-CT-UPDATE-PACKING-TEST]</dt>
         <dd>
@@ -4439,7 +4443,7 @@ Registry Name: BGP Transitive Extended Community Types
 <dd class="break"></dd>
 <dt id="BGP-FWD-RR">[BGP-FWD-RR]</dt>
         <dd>
-<span class="refAuthor">Vairavakkalai, Ed.</span> and <span class="refAuthor">Venkataraman, Ed.</span>, <span class="refTitle">"BGP Route Reflector in Forwarding Path"</span>, <time datetime="2024-02-16" class="refDate">16 February 2024</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-idr-bgp-fwd-rr-01">https://tools.ietf.org/html/draft-ietf-idr-bgp-fwd-rr-01</a>&gt;</span>. </dd>
+<span class="refAuthor">Vairavakkalai, Ed.</span> and <span class="refAuthor">Venkataraman, Ed.</span>, <span class="refTitle">"BGP Route Reflector in Forwarding Path"</span>, <time datetime="2024-03-17" class="refDate">17 March 2024</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-idr-bgp-fwd-rr-02">https://tools.ietf.org/html/draft-ietf-idr-bgp-fwd-rr-02</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="BGP-LU-EPE">[BGP-LU-EPE]</dt>
         <dd>
@@ -4455,7 +4459,7 @@ Registry Name: BGP Transitive Extended Community Types
 <dd class="break"></dd>
 <dt id="MNH">[MNH]</dt>
         <dd>
-<span class="refAuthor">Vairavakkalai, Ed.</span>, <span class="refTitle">"BGP MultiNexthop Attribute"</span>, <time datetime="2023-11-18" class="refDate">18 November 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-kaliraj-idr-multinexthop-attribute-11">https://datatracker.ietf.org/doc/html/draft-kaliraj-idr-multinexthop-attribute-11</a>&gt;</span>. </dd>
+<span class="refAuthor">Vairavakkalai, Ed.</span>, <span class="refTitle">"BGP MultiNexthop Attribute"</span>, <time datetime="2024-03-17" class="refDate">17 March 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-idr-multinexthop-attribute-00">https://datatracker.ietf.org/doc/html/draft-ietf-idr-multinexthop-attribute-00</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="MPLS-NS">[MPLS-NS]</dt>
         <dd>
@@ -4505,7 +4509,7 @@ Registry Name: BGP Transitive Extended Community Types
         packet it sends what treatment it desires (the Intent) when the packet
         is forwarded within the provider network.<a href="#appendix-A.1-1" class="pilcrow">¶</a></p>
 <p id="appendix-A.1-2">Section A.10 in <span><a href="#MNH" class="internal xref">BGP MultiNexthop
-        Attribute</a> [<a href="#MNH" class="cite xref">MNH</a>]</span>describes some mechanisms that enable such
+        Attribute</a> [<a href="#MNH" class="cite xref">MNH</a>]</span> describes some mechanisms that enable such
         signaling.<a href="#appendix-A.1-2" class="pilcrow">¶</a></p>
 </section>
 <section id="appendix-A.2">

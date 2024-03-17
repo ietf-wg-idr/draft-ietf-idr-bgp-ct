@@ -5,11 +5,11 @@
 Network Working Group                              K. Vairavakkalai, Ed.
 Internet-Draft                                      N. Venkataraman, Ed.
 Intended status: Experimental                     Juniper Networks, Inc.
-Expires: 5 September 2024                                   4 March 2024
+Expires: 19 September 2024                                 18 March 2024
 
 
                      BGP Classful Transport Planes
-                        draft-ietf-idr-bgp-ct-27
+                        draft-ietf-idr-bgp-ct-29
 
 Abstract
 
@@ -53,7 +53,7 @@ Status of This Memo
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024                [Page 1]
+Vairavakkalai & VenkatarExpires 19 September 2024               [Page 1]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -68,7 +68,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 5 September 2024.
+   This Internet-Draft will expire on 19 September 2024.
 
 Copyright Notice
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024                [Page 2]
+Vairavakkalai & VenkatarExpires 19 September 2024               [Page 2]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -165,7 +165,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024                [Page 3]
+Vairavakkalai & VenkatarExpires 19 September 2024               [Page 3]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -176,7 +176,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
        13.2.2.  New Registries . . . . . . . . . . . . . . . . . . .  54
      13.3.  MPLS OAM Code Points . . . . . . . . . . . . . . . . . .  55
      13.4.  Best Effort Transport Class ID . . . . . . . . . . . . .  56
-   14. Security Considerations . . . . . . . . . . . . . . . . . . .  56
+   14. Security Considerations . . . . . . . . . . . . . . . . . . .  57
    15. References  . . . . . . . . . . . . . . . . . . . . . . . . .  58
      15.1.  Normative References . . . . . . . . . . . . . . . . . .  58
      15.2.  Informative References . . . . . . . . . . . . . . . . .  60
@@ -184,13 +184,13 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
      A.1.  Signaling Intent over PE-CE Attachment Circuit  . . . . .  62
      A.2.  BGP CT Egress TE  . . . . . . . . . . . . . . . . . . . .  62
    Appendix B.  Applicability to Intra-AS and different Inter-AS
-           deployments.  . . . . . . . . . . . . . . . . . . . . . .  62
+           deployments.  . . . . . . . . . . . . . . . . . . . . . .  63
      B.1.  Intra-AS usecase  . . . . . . . . . . . . . . . . . . . .  63
        B.1.1.  Topology  . . . . . . . . . . . . . . . . . . . . . .  63
        B.1.2.  Transport Layer . . . . . . . . . . . . . . . . . . .  63
        B.1.3.  Service Layer route exchange  . . . . . . . . . . . .  64
-     B.2.  Inter-AS option A usecase . . . . . . . . . . . . . . . .  64
-       B.2.1.  Topology  . . . . . . . . . . . . . . . . . . . . . .  64
+     B.2.  Inter-AS option A usecase . . . . . . . . . . . . . . . .  65
+       B.2.1.  Topology  . . . . . . . . . . . . . . . . . . . . . .  65
        B.2.2.  Transport Layer . . . . . . . . . . . . . . . . . . .  65
        B.2.3.  Service Layer route exchange  . . . . . . . . . . . .  66
      B.3.  Inter-AS option B usecase . . . . . . . . . . . . . . . .  67
@@ -221,7 +221,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024                [Page 4]
+Vairavakkalai & VenkatarExpires 19 September 2024               [Page 4]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -277,7 +277,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024                [Page 5]
+Vairavakkalai & VenkatarExpires 19 September 2024               [Page 5]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -333,7 +333,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024                [Page 6]
+Vairavakkalai & VenkatarExpires 19 September 2024               [Page 6]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -389,7 +389,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024                [Page 7]
+Vairavakkalai & VenkatarExpires 19 September 2024               [Page 7]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -445,7 +445,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024                [Page 8]
+Vairavakkalai & VenkatarExpires 19 September 2024               [Page 8]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -501,7 +501,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024                [Page 9]
+Vairavakkalai & VenkatarExpires 19 September 2024               [Page 9]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -557,7 +557,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 10]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 10]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -613,7 +613,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 11]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 11]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -669,7 +669,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 12]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 12]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -725,7 +725,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 13]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 13]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -781,7 +781,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 14]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 14]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -837,7 +837,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 15]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 15]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -893,7 +893,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 16]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 16]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -949,7 +949,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 17]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 17]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -1005,7 +1005,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 18]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 18]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -1061,7 +1061,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 19]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 19]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -1117,7 +1117,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 20]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 20]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -1173,7 +1173,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 21]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 21]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -1229,7 +1229,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 22]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 22]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -1285,7 +1285,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 23]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 23]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -1341,7 +1341,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 24]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 24]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -1397,7 +1397,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 25]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 25]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -1453,7 +1453,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 26]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 26]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -1509,7 +1509,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 27]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 27]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -1565,7 +1565,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 28]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 28]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -1621,7 +1621,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 29]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 29]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -1677,7 +1677,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 30]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 30]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -1733,7 +1733,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 31]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 31]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -1789,7 +1789,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 32]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 32]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -1845,7 +1845,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 33]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 33]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -1901,7 +1901,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 34]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 34]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -1957,7 +1957,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 35]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 35]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -2013,7 +2013,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 36]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 36]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -2069,7 +2069,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 37]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 37]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -2125,7 +2125,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 38]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 38]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -2181,7 +2181,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 39]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 39]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -2237,7 +2237,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 40]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 40]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -2293,7 +2293,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 41]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 41]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -2349,7 +2349,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 42]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 42]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -2405,7 +2405,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 43]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 43]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -2461,7 +2461,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 44]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 44]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -2472,7 +2472,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
    traverse through finer shades when available and take coarse shades
    otherwise.
 
-           <---------- Service Routes AFI/SAFI 1/128 ---------------
+             <---------- Service Routes AFI/SAFI 1/128 ---------------
 
                                    Gold1(101)
                                    Gold2(102)
@@ -2482,9 +2482,9 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
        Metro-Ingress                Core              Metro-Egress
            AS1                       AS2                 AS3
 
-                ----------- Packet Forwarding Direction -------->
+              ----------- Packet Forwarding Direction -------->
 
-      Figure 9: Transport Layer with Heterogenous Color Domains
+        Figure 9: Transport Layer with Heterogenous Color Domains
 
    In the preceding topology shown in Figure 9, we have three Autonomous
    Systems.  All the nodes in the topology support BGP CT.
@@ -2517,7 +2517,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 45]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 45]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -2573,7 +2573,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 46]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 46]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -2629,7 +2629,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 47]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 47]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -2685,7 +2685,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 48]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 48]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -2741,7 +2741,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 49]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 49]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -2797,7 +2797,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 50]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 50]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -2853,7 +2853,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 51]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 51]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -2909,7 +2909,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 52]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 52]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -2965,7 +2965,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 53]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 53]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -3021,7 +3021,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 54]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 54]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -3077,7 +3077,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 55]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 55]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -3105,7 +3105,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
    represents best effort transport class.  Please create a new registry
    for this.
 
-    Registry Group: BGP CT Parameters
+    Registry Group: BGP Classful Transport (BGP CT)
 
     Registry Name: Transport Class ID
 
@@ -3117,8 +3117,25 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
     Reference: This document.
 
     Registration Procedure(s)
-          IETF Review.
 
+     Value                 Registration Procedure
+    -----------------+--------------------------------
+      0                IETF Review
+      1-4294967295     Private Use
+
+
+
+
+
+
+
+
+
+
+
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 56]
+
+Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 14.  Security Considerations
@@ -3129,14 +3146,6 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
    negotiated between BGP speakers, which confines the propagation scope
    of this reachability information, thus following a 'walled garden'
    approach.
-
-
-
-
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 56]
-
-Internet-Draft        BGP Classful Transport Planes           March 2024
-
 
    This mitigates the risk of advertising internal loopback addresses
    outside the administrative control of the provider network.
@@ -3177,6 +3186,14 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
    As [RFC4272] discusses, BGP is vulnerable to traffic-diversion
    attacks.  This SAFI routes adds a new means by which an attacker
    could cause the traffic to be diverted from its normal path.
+
+
+
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 57]
+
+Internet-Draft        BGP Classful Transport Planes           March 2024
+
+
    Potential consequences include "hijacking" of traffic (insertion of
    an undesired node in the path, which allows for inspection or
    modification of traffic, or avoidance of security controls) or denial
@@ -3186,14 +3203,6 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
    In order to mitigate the risk of the diversion of traffic from its
    intended destination, existing BGPsec solution could be extended and
    supported for this SAFI.  The restriction of the applicability of
-
-
-
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 57]
-
-Internet-Draft        BGP Classful Transport Planes           March 2024
-
-
    this SAFI to its intended well-defined scope limits the likelihood of
    traffic diversions.  Furthermore, as long as the filtering and
    appropriate configuration mechanisms discussed previously are applied
@@ -3231,6 +3240,16 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
               Networks (VPNs)", RFC 4364, DOI 10.17487/RFC4364, February
               2006, <https://www.rfc-editor.org/info/rfc4364>.
 
+
+
+
+
+
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 58]
+
+Internet-Draft        BGP Classful Transport Planes           March 2024
+
+
    [RFC4659]  De Clercq, J., Ooms, D., Carugi, M., and F. Le Faucheur,
               "BGP-MPLS IP Virtual Private Network (VPN) Extension for
               IPv6 VPN", RFC 4659, DOI 10.17487/RFC4659, September 2006,
@@ -3242,13 +3261,6 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
               Label Switching (BGP/MPLS) Internet Protocol (IP) Virtual
               Private Networks (VPNs)", RFC 4684, DOI 10.17487/RFC4684,
               November 2006, <https://www.rfc-editor.org/info/rfc4684>.
-
-
-
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 58]
-
-Internet-Draft        BGP Classful Transport Planes           March 2024
-
 
    [RFC4760]  Bates, T., Chandra, R., Katz, D., and Y. Rekhter,
               "Multiprotocol Extensions for BGP-4", RFC 4760,
@@ -3283,6 +3295,17 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
               DOI 10.17487/RFC7911, July 2016,
               <https://www.rfc-editor.org/info/rfc7911>.
 
+
+
+
+
+
+
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 59]
+
+Internet-Draft        BGP Classful Transport Planes           March 2024
+
+
    [RFC8029]  Kompella, K., Swallow, G., Pignataro, C., Ed., Kumar, N.,
               Aldrin, S., and M. Chen, "Detecting Multiprotocol Label
               Switched (MPLS) Data-Plane Failures", RFC 8029,
@@ -3296,15 +3319,6 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
    [RFC8205]  Lepinski, M., Ed. and K. Sriram, Ed., "BGPsec Protocol
               Specification", RFC 8205, DOI 10.17487/RFC8205, September
               2017, <https://www.rfc-editor.org/info/rfc8205>.
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 59]
-
-Internet-Draft        BGP Classful Transport Planes           March 2024
-
 
    [RFC8212]  Mauch, J., Snijders, J., and G. Hankins, "Default External
               BGP (EBGP) Route Propagation Behavior without Policies",
@@ -3336,9 +3350,17 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
    [BGP-CT-SRv6]
               Vairavakkalai, Ed. and Venkataraman, Ed., "BGP CT -
-              Adaptation to SRv6 dataplane", 28 January 2024,
+              Adaptation to SRv6 dataplane", 4 March 2024,
               <https://tools.ietf.org/html/draft-ietf-idr-bgp-ct-
-              srv6-02>.
+              srv6-03>.
+
+
+
+
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 60]
+
+Internet-Draft        BGP Classful Transport Planes           March 2024
+
 
    [BGP-CT-UPDATE-PACKING-TEST]
               Vairavakkalai, Ed., "BGP CT Update packing Test Results",
@@ -3349,18 +3371,9 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
    [BGP-FWD-RR]
               Vairavakkalai, Ed. and Venkataraman, Ed., "BGP Route
-              Reflector in Forwarding Path", 16 February 2024,
+              Reflector in Forwarding Path", 17 March 2024,
               <https://tools.ietf.org/html/draft-ietf-idr-bgp-fwd-rr-
-              01>.
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 60]
-
-Internet-Draft        BGP Classful Transport Planes           March 2024
-
+              02>.
 
    [BGP-LU-EPE]
               Gredler, Ed., "Egress Peer Engineering using BGP-LU", 16
@@ -3377,9 +3390,9 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
               2023, <https://datatracker.ietf.org/doc/html/draft-hr-
               spring-intentaware-routing-using-color-03#section-6.3.2>.
 
-   [MNH]      Vairavakkalai, Ed., "BGP MultiNexthop Attribute", 18
-              November 2023, <https://datatracker.ietf.org/doc/html/
-              draft-kaliraj-idr-multinexthop-attribute-11>.
+   [MNH]      Vairavakkalai, Ed., "BGP MultiNexthop Attribute", 17 March
+              2024, <https://datatracker.ietf.org/doc/html/draft-ietf-
+              idr-multinexthop-attribute-00>.
 
    [MPLS-NS]  Vairavakkalai, Ed., "BGP signalled MPLS namespaces", 20
               October 2023, <https://datatracker.ietf.org/doc/html/
@@ -3398,6 +3411,13 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
               segment-routing-policy-cp-14.html#name-sr-policy-
               identifier>.
 
+
+
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 61]
+
+Internet-Draft        BGP Classful Transport Planes           March 2024
+
+
    [RFC6890]  Cotton, M., Vegoda, L., Bonica, R., Ed., and B. Haberman,
               "Special-Purpose IP Address Registries", BCP 153,
               RFC 6890, DOI 10.17487/RFC6890, April 2013,
@@ -3407,16 +3427,6 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
               Tantsura, "Intent-Based Networking - Concepts and
               Definitions", RFC 9315, DOI 10.17487/RFC9315, October
               2022, <https://www.rfc-editor.org/info/rfc9315>.
-
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 61]
-
-Internet-Draft        BGP Classful Transport Planes           March 2024
-
 
    [RFC9350]  Psenak, P., Ed., Hegde, S., Filsfils, C., Talaulikar, K.,
               and A. Gulko, "IGP Flexible Algorithm", RFC 9350,
@@ -3441,7 +3451,7 @@ A.1.  Signaling Intent over PE-CE Attachment Circuit
    packet it sends what treatment it desires (the Intent) when the
    packet is forwarded within the provider network.
 
-   Section A.10 in BGP MultiNexthop Attribute [MNH]describes some
+   Section A.10 in BGP MultiNexthop Attribute [MNH] describes some
    mechanisms that enable such signaling.
 
 A.2.  BGP CT Egress TE
@@ -3451,6 +3461,18 @@ A.2.  BGP CT Egress TE
    The Peer/32 or Peer/128 EPE route MAY be originated in BGP CT family
    with appropriate Mapping Community (e.g.  transport-target:0:100),
    thus allowing an EPE path to the peer that satisfies the desired SLA.
+
+
+
+
+
+
+
+
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 62]
+
+Internet-Draft        BGP Classful Transport Planes           March 2024
+
 
 Appendix B.  Applicability to Intra-AS and different Inter-AS
              deployments.
@@ -3464,15 +3486,6 @@ Appendix B.  Applicability to Intra-AS and different Inter-AS
    of BGP CT work in an inter-AS Option C deployment.  The BGP CT
    constructs: AFI/SAFI 1/76, Transport Class and Resolution Scheme are
    used in an inter-AS Option C deployment.
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 62]
-
-Internet-Draft        BGP Classful Transport Planes           March 2024
-
 
    In Intra-AS and Inter-AS option A, option B scenarios, AFI/SAFI 1/76
    may not be used, but the Transport Class and Resolution Scheme
@@ -3508,6 +3521,15 @@ B.1.2.  Transport Layer
    AS1 uses RSVP-TE intra-domain tunnels between PE11 and PE12.  And LDP
    tunnels for best effort traffic.
 
+
+
+
+
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 63]
+
+Internet-Draft        BGP Classful Transport Planes           March 2024
+
+
    The network has two Transport classes: Gold with Transport Class ID
    100, Bronze with Transport Class ID 200.  These transport classes are
    provisioned at the PEs.  This creates the Resolution Schemes for
@@ -3522,13 +3544,6 @@ B.1.2.  Transport Layer
    Following tunnels exist for Bronze transport class.
 
       PE11_to_PE12_bronze - RSVP-TE tunnel
-
-
-
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 63]
-
-Internet-Draft        BGP Classful Transport Planes           March 2024
-
 
       PE11_to_PE12_bronze - RSVP-TE tunnel
 
@@ -3562,6 +3577,15 @@ B.1.3.  Service Layer route exchange
    hop when resolved using Resolution Scheme belonging to the mapping
    community Color:0:100, points to a PE11_to_PE12_gold tunnel.
 
+
+
+
+
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 64]
+
+Internet-Draft        BGP Classful Transport Planes           March 2024
+
+
    BGP CT AFI/SAFI 1/76 is not used in this Intra-AS deployment.  But
    the Transport class and Resolution Scheme constructs are used to
    preserve end-to-end SLA.
@@ -3569,22 +3593,6 @@ B.1.3.  Service Layer route exchange
 B.2.  Inter-AS option A usecase
 
 B.2.1.  Topology
-
-
-
-
-
-
-
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 64]
-
-Internet-Draft        BGP Classful Transport Planes           March 2024
-
 
                   [RR11]                        [RR21]
                     |                             |
@@ -3627,6 +3635,13 @@ B.2.2.  Transport Layer
 
       PE21_to_ASBR21_gold - SRTE tunnel
 
+
+
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 65]
+
+Internet-Draft        BGP Classful Transport Planes           March 2024
+
+
       ASBR21_to_PE21_gold - SRTE tunnel
 
    Following tunnels exist for Bronze transport class.
@@ -3634,13 +3649,6 @@ B.2.2.  Transport Layer
       PE11_to_ASBR11_bronze - RSVP-TE tunnel
 
       ASBR11_to_PE11_bronze - RSVP-TE tunnel
-
-
-
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 65]
-
-Internet-Draft        BGP Classful Transport Planes           March 2024
-
 
       PE21_to_ASBR21_bronze - SRTE tunnel
 
@@ -3681,6 +3689,15 @@ B.2.3.  Service Layer route exchange
    repeats in AS1, until the route reaches PE11 and resolves over
    PE11_to_ASBR11_gold RSVP TE tunnel.
 
+
+
+
+
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 66]
+
+Internet-Draft        BGP Classful Transport Planes           March 2024
+
+
    Traffic traverses as IP packet on the following legs: CE31-PE11,
    ASBR11-ASBR21, PE21-CE41.  And uses MPLS forwarding inside AS1, AS2
    core.
@@ -3688,15 +3705,6 @@ B.2.3.  Service Layer route exchange
    BGP CT AFI/SAFI 1/76 is not used in this Inter-AS Option B
    deployment.  But the Transport class and Resolution Scheme constructs
    are used to preserve end-to-end SLA.
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 66]
-
-Internet-Draft        BGP Classful Transport Planes           March 2024
-
 
 B.3.  Inter-AS option B usecase
 
@@ -3739,6 +3747,13 @@ B.3.2.  Transport Layer
 
       PE11_to_ASBR12_gold - RSVP-TE tunnel
 
+
+
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 67]
+
+Internet-Draft        BGP Classful Transport Planes           March 2024
+
+
       ASBR12_to_PE11_gold - RSVP-TE tunnel
 
       PE22_to_ASBR21_gold - SRTE tunnel
@@ -3746,13 +3761,6 @@ B.3.2.  Transport Layer
       ASBR21_to_PE22_gold - SRTE tunnel
 
    Following tunnels exist for Bronze transport class.
-
-
-
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 67]
-
-Internet-Draft        BGP Classful Transport Planes           March 2024
-
 
       PE11_to_ASBR12_bronze - RSVP-TE tunnel
 
@@ -3791,6 +3799,17 @@ B.3.3.  Service Layer route exchange
    RR23 with the next hop unchanged as PE22 and label V-L1.  Now ASBR21
    can resolve the PNH 192.0.2.22 using ASBR21_to_PE22_gold SRTE LSP.
 
+
+
+
+
+
+
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 68]
+
+Internet-Draft        BGP Classful Transport Planes           March 2024
+
+
    Next, ASBR21 readvertises the RD:203.0.113.41 route with next hop
    self to ASBR12 with a newly allocated MPLS label V-L2.  Forwarding
    for this label is installed to Swap V-L1, and Push labels for
@@ -3799,16 +3818,6 @@ B.3.3.  Service Layer route exchange
    ASBR12 further readvertises the RD:203.0.113.41 route via RR13 to
    PE11 with next hop self 192.0.2.12.  PE11 resolves the next hop
    192.0.2.12 over PE11_to_ASBR12_gold RSVP TE tunnel.
-
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 68]
-
-Internet-Draft        BGP Classful Transport Planes           March 2024
-
 
    Traffic traverses as IP packet on the following legs: CE31-PE11 and
    PE21-CE41.  And uses MPLS forwarding on ASBR11-ASBR21 link, and
@@ -3848,23 +3857,20 @@ Appendix C.  Why reuse RFC 8277 and RFC 4364?
    that support SAFI 128 for AFIs 1 or 2.  This can be useful during
    transition, until all BGP speakers in the network support BGP CT.
 
+
+
+
+
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 69]
+
+Internet-Draft        BGP Classful Transport Planes           March 2024
+
+
    In future, if RFC 8277 evolves into a typed NLRI, that does not carry
    Label in the NLRI, BGP CT will be compatible with that as-well.  In
    essence, BGP CT encoding is compatible with existing deployed
    technologies (RFC 4364, RFC 8277) and will adapt to any changes RFC
    8277 mechanisms undergo in future.
-
-
-
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 69]
-
-Internet-Draft        BGP Classful Transport Planes           March 2024
-
 
    This approach leverages the benefits of time tested design patterns
    proposed in RFC 4364 and RFC 8277.  Moreover, this approach greatly
@@ -3907,20 +3913,20 @@ C.1.  Update packing considerations
    are available in BGP CT Update packing Test Results
    [BGP-CT-UPDATE-PACKING-TEST].
 
+
+
+
+
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 70]
+
+Internet-Draft        BGP Classful Transport Planes           March 2024
+
+
    Furthermore, even in today's BGP LU deployments each egress node
    originates BGP LU route for it's loopback, with some attributes like
    community identifying the originating node or region, and AIGP
    attribute.  These attributes may be unique per egress node, thus do
    not help with update packing in transport layer family routes.
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 70]
-
-Internet-Draft        BGP Classful Transport Planes           March 2024
-
 
 Appendix D.  Scaling using BGP MPLS Namespaces
 
@@ -3960,6 +3966,18 @@ Co-Authors
    Email: israel.means@att.com
 
 
+
+
+
+
+
+
+
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 71]
+
+Internet-Draft        BGP Classful Transport Planes           March 2024
+
+
    Csaba Mate
    KIFU, Hungarian NREN
    Budapest
@@ -3967,15 +3985,6 @@ Co-Authors
    1134
    Hungary
    Email: ietf@nop.hu
-
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 71]
-
-Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
    Deepak J Gowda
@@ -4014,6 +4023,17 @@ Other Contributors
    Email: cy098d@att.com
 
 
+
+
+
+
+
+
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 72]
+
+Internet-Draft        BGP Classful Transport Planes           March 2024
+
+
    Mazen Khaddam
    Cox Communications Inc.
    Atlanta, GA
@@ -4026,14 +4046,6 @@ Other Contributors
    1160 N Mathilda Ave, Bldg 5,
    Sunnyvale,, CA 94089
    United States of America
-
-
-
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 72]
-
-Internet-Draft        BGP Classful Transport Planes           March 2024
-
-
    Email: szarecki@google.com
 
 
@@ -4070,6 +4082,14 @@ Authors' Addresses
    1133 Innovation Way,
    Sunnyvale, CA 94089
    United States of America
+
+
+
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 73]
+
+Internet-Draft        BGP Classful Transport Planes           March 2024
+
+
    Email: kaliraj@juniper.net
 
 
@@ -4085,4 +4105,40 @@ Authors' Addresses
 
 
 
-Vairavakkalai & VenkatarExpires 5 September 2024               [Page 73]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 74]
