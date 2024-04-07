@@ -9,7 +9,7 @@ Expires: 19 September 2024                                 18 March 2024
 
 
                      BGP Classful Transport Planes
-                        draft-ietf-idr-bgp-ct-29
+                        draft-ietf-idr-bgp-ct-30
 
 Abstract
 
@@ -160,8 +160,8 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
        11.3.1.  BGP CT Islands Connected via BGP LU Domain . . . . .  47
        11.3.2.  BGP CT - Interoperability between MPLS and Other
                Forwarding Technologies . . . . . . . . . . . . . . .  49
-   12. Applicability to Network Slicing  . . . . . . . . . . . . . .  52
-   13. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  52
+     11.4.  MTU Considerations . . . . . . . . . . . . . . . . . . .  52
+     11.5.  Use of DSCP  . . . . . . . . . . . . . . . . . . . . . .  52
 
 
 
@@ -170,41 +170,43 @@ Vairavakkalai & VenkatarExpires 19 September 2024               [Page 3]
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
-     13.1.  New BGP SAFI . . . . . . . . . . . . . . . . . . . . . .  52
-     13.2.  New Format for BGP Extended Community  . . . . . . . . .  53
-       13.2.1.  Existing Registries to be Modified . . . . . . . . .  53
-       13.2.2.  New Registries . . . . . . . . . . . . . . . . . . .  54
-     13.3.  MPLS OAM Code Points . . . . . . . . . . . . . . . . . .  55
-     13.4.  Best Effort Transport Class ID . . . . . . . . . . . . .  56
-   14. Security Considerations . . . . . . . . . . . . . . . . . . .  57
-   15. References  . . . . . . . . . . . . . . . . . . . . . . . . .  58
-     15.1.  Normative References . . . . . . . . . . . . . . . . . .  58
-     15.2.  Informative References . . . . . . . . . . . . . . . . .  60
-   Appendix A.  Extensibility considerations . . . . . . . . . . . .  62
-     A.1.  Signaling Intent over PE-CE Attachment Circuit  . . . . .  62
-     A.2.  BGP CT Egress TE  . . . . . . . . . . . . . . . . . . . .  62
+   12. Applicability to Network Slicing  . . . . . . . . . . . . . .  53
+   13. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  53
+     13.1.  New BGP SAFI . . . . . . . . . . . . . . . . . . . . . .  54
+     13.2.  New Format for BGP Extended Community  . . . . . . . . .  54
+       13.2.1.  Existing Registries to be Modified . . . . . . . . .  54
+       13.2.2.  New Registries . . . . . . . . . . . . . . . . . . .  55
+     13.3.  MPLS OAM Code Points . . . . . . . . . . . . . . . . . .  56
+     13.4.  Best Effort Transport Class ID . . . . . . . . . . . . .  57
+   14. Security Considerations . . . . . . . . . . . . . . . . . . .  58
+   15. References  . . . . . . . . . . . . . . . . . . . . . . . . .  59
+     15.1.  Normative References . . . . . . . . . . . . . . . . . .  59
+     15.2.  Informative References . . . . . . . . . . . . . . . . .  61
+   Appendix A.  Extensibility considerations . . . . . . . . . . . .  63
+     A.1.  Signaling Intent over PE-CE Attachment Circuit  . . . . .  63
+     A.2.  BGP CT Egress TE  . . . . . . . . . . . . . . . . . . . .  63
    Appendix B.  Applicability to Intra-AS and different Inter-AS
-           deployments.  . . . . . . . . . . . . . . . . . . . . . .  63
-     B.1.  Intra-AS usecase  . . . . . . . . . . . . . . . . . . . .  63
-       B.1.1.  Topology  . . . . . . . . . . . . . . . . . . . . . .  63
-       B.1.2.  Transport Layer . . . . . . . . . . . . . . . . . . .  63
-       B.1.3.  Service Layer route exchange  . . . . . . . . . . . .  64
-     B.2.  Inter-AS option A usecase . . . . . . . . . . . . . . . .  65
-       B.2.1.  Topology  . . . . . . . . . . . . . . . . . . . . . .  65
-       B.2.2.  Transport Layer . . . . . . . . . . . . . . . . . . .  65
-       B.2.3.  Service Layer route exchange  . . . . . . . . . . . .  66
-     B.3.  Inter-AS option B usecase . . . . . . . . . . . . . . . .  67
-       B.3.1.  Topology  . . . . . . . . . . . . . . . . . . . . . .  67
-       B.3.2.  Transport Layer . . . . . . . . . . . . . . . . . . .  67
-       B.3.3.  Service Layer route exchange  . . . . . . . . . . . .  68
-   Appendix C.  Why reuse RFC 8277 and RFC 4364? . . . . . . . . . .  69
-     C.1.  Update packing considerations . . . . . . . . . . . . . .  70
-   Appendix D.  Scaling using BGP MPLS Namespaces  . . . . . . . . .  71
-   Contributors  . . . . . . . . . . . . . . . . . . . . . . . . . .  71
-     Co-Authors  . . . . . . . . . . . . . . . . . . . . . . . . . .  71
-     Other Contributors  . . . . . . . . . . . . . . . . . . . . . .  72
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  73
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  73
+           deployments.  . . . . . . . . . . . . . . . . . . . . . .  64
+     B.1.  Intra-AS usecase  . . . . . . . . . . . . . . . . . . . .  64
+       B.1.1.  Topology  . . . . . . . . . . . . . . . . . . . . . .  64
+       B.1.2.  Transport Layer . . . . . . . . . . . . . . . . . . .  64
+       B.1.3.  Service Layer route exchange  . . . . . . . . . . . .  65
+     B.2.  Inter-AS option A usecase . . . . . . . . . . . . . . . .  66
+       B.2.1.  Topology  . . . . . . . . . . . . . . . . . . . . . .  66
+       B.2.2.  Transport Layer . . . . . . . . . . . . . . . . . . .  66
+       B.2.3.  Service Layer route exchange  . . . . . . . . . . . .  67
+     B.3.  Inter-AS option B usecase . . . . . . . . . . . . . . . .  68
+       B.3.1.  Topology  . . . . . . . . . . . . . . . . . . . . . .  68
+       B.3.2.  Transport Layer . . . . . . . . . . . . . . . . . . .  68
+       B.3.3.  Service Layer route exchange  . . . . . . . . . . . .  69
+   Appendix C.  Why reuse RFC 8277 and RFC 4364? . . . . . . . . . .  70
+     C.1.  Update packing considerations . . . . . . . . . . . . . .  71
+   Appendix D.  Scaling using BGP MPLS Namespaces  . . . . . . . . .  72
+   Contributors  . . . . . . . . . . . . . . . . . . . . . . . . . .  72
+     Co-Authors  . . . . . . . . . . . . . . . . . . . . . . . . . .  72
+     Other Contributors  . . . . . . . . . . . . . . . . . . . . . .  73
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  74
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  74
 
 1.  Introduction
 
@@ -214,8 +216,6 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
    several services are provisioned between different pairs of service
    endpoints (e.g., Provider Edge (PE) nodes), that can either be in the
    same domain or across different domains.
-
-
 
 
 
@@ -314,7 +314,11 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
    BN: Border Node
 
+   CBF: Class Based Forwarding
+
    CsC: Carrier serving Carrier VPN
+
+   DSCP: Differentiated Services Code Point
 
    EP: Endpoint of a tunnel, e.g. a loopback address in the network
 
@@ -326,10 +330,6 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
    iSN: Ingress Service Node
 
-   LPM: Longest Prefix Match
-
-   LSP: Label Switched Path
-
 
 
 
@@ -337,6 +337,10 @@ Vairavakkalai & VenkatarExpires 19 September 2024               [Page 6]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
+
+   LPM: Longest Prefix Match
+
+   LSP: Label Switched Path
 
    MNH: BGP MultiNexthop attribute
 
@@ -382,10 +386,6 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
    UHP: Ultimate Hop Pop
 
-   VRF: Virtual Routing and Forwarding table
-
-
-
 
 
 
@@ -393,6 +393,8 @@ Vairavakkalai & VenkatarExpires 19 September 2024               [Page 7]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
+
+   VRF: Virtual Routing and Forwarding table
 
 2.1.  Definitions and Notations
 
@@ -439,8 +441,6 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
    Tunnel Route: A Route to Tunnel Destination/Endpoint that is
    installed at the headend (ingress) of the tunnel.
-
-
 
 
 
@@ -2877,6 +2877,68 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
    technology.  The BGP CT routes received at R3, R4 from each other
    will remain unusable, due to incompatible forwarding technology.
 
+11.4.  MTU Considerations
+
+   Operators should coordinate the MTU of the intra-domain tunnels used
+   to prevent Path MTU discovery problems that could appear in
+   deployments.  The encapsulation overhead due to the MPLS label stack
+   or equivalent tunnel header in different forwarding architecture
+   should also be considered when determining the Path MTU of the end-
+   to-end BGP CT tunnel.
+
+11.5.  Use of DSCP
+
+   BGP CT specifies procedures for Intent Driven Service Mapping in a
+   service provider network, and defines 'Transport Class' construct to
+   represent an Intent.
+
+   It may be desirable to allow a CE device to indicate in the data
+   packet it sends what treatment it desires (the Intent) when the
+   packet is forwarded within the provider network.
+
+   Such an indication can be in form of DSCP code point [RFC2474] in the
+   IP header.
+
+   In RFC2474, a Forwarding Class Selector maps to a PHB (Per-hop
+   Behavior).  The Transport Class construct is a PHB at transport
+   layer.
+
+
+
+
+
+
+
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 52]
+
+Internet-Draft        BGP Classful Transport Planes           March 2024
+
+
+                                       ---Gold----->
+                         [CE1]-----[PE1]---[P]----[PE2]-----[CE2]
+                                       ---Bronze--->
+                   203.0.113.11                             203.0.113.22
+                             ----  Traffic direction ---->
+
+            Figure 13: Example Topology with DSCP on PE-CE Links
+
+   Let PE1 be configured to map DSCP1 to Gold Transport class, and DSCP2
+   to Bronze Transport class.  Based on the DSCP code point received on
+   the IP traffic from CE device, PE1 forwards the IP packet over a Gold
+   or Bronze TC tunnel.  Thus, the forwarding is not based on just the
+   destination IP address, but also the DSCP code point.  This is known
+   as Class Based Forwarding (CBF).
+
+   CBF is configured at the PE1 device, mapping the DSCP values to
+   respective Transport Classes.  This mapping (DSCP peering agreement)
+   is communicated to CE device by out of band mechanisms.  This allows
+   the administrator of CE1 to discover what transport classes exist in
+   the provider network, and which DSCP codepoint to encode so that
+   traffic is forwarded using the desired Transport Class in the
+   provided network.  When the IP packet exits the provider network to
+   CE2, PE2 resets the DSCP code point based on DSCP peering agreement
+   with CE2.
+
 12.  Applicability to Network Slicing
 
    In Network Slicing, the Network Slice Controller (IETF NSC) is
@@ -2899,20 +2961,19 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
    This document makes the following requests of IANA.
 
+
+
+
+
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 53]
+
+Internet-Draft        BGP Classful Transport Planes           March 2024
+
+
 13.1.  New BGP SAFI
 
    IANA is requested to assign a new BGP SAFI code for "Classful
    Transport".  Value 76.
-
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 19 September 2024              [Page 52]
-
-Internet-Draft        BGP Classful Transport Planes           March 2024
-
 
  Registry Group: Subsequent Address Family Identifiers (SAFI) Parameters
 
@@ -2957,18 +3018,18 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 13.2.1.1.  Registries for the "Type" Field
 
+
+
+
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 54]
+
+Internet-Draft        BGP Classful Transport Planes           March 2024
+
+
 13.2.1.1.1.  Transitive Types
 
    This registry contains values of the high-order octet (the "Type"
    field) of a Transitive Extended Community.
-
-
-
-
-Vairavakkalai & VenkatarExpires 19 September 2024              [Page 53]
-
-Internet-Draft        BGP Classful Transport Planes           March 2024
-
 
    Registry Group: Border Gateway Protocol (BGP) Extended Communities
 
@@ -3016,12 +3077,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-
-
-
-
-
-Vairavakkalai & VenkatarExpires 19 September 2024              [Page 54]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 55]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -3077,7 +3133,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 19 September 2024              [Page 55]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 56]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -3125,15 +3181,15 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
+   As noted in Sec 4 and Sec 7.10, 'Transport Class ID' is
+   interchangeable with 'Color'.  For purposes of backward compatibility
+   with usage of 'Color' field in Color extended community, the range
+   1-4294967295 uses 'Private Use' as Registration Procedure.
 
 
 
 
-
-
-
-
-Vairavakkalai & VenkatarExpires 19 September 2024              [Page 56]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 57]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -3189,7 +3245,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 19 September 2024              [Page 57]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 58]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -3218,6 +3274,12 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
 
+   [RFC2474]  Nichols, K., Blake, S., Baker, F., and D. Black,
+              "Definition of the Differentiated Services Field (DS
+              Field) in the IPv4 and IPv6 Headers", RFC 2474,
+              DOI 10.17487/RFC2474, December 1998,
+              <https://www.rfc-editor.org/info/rfc2474>.
+
    [RFC2545]  Marques, P. and F. Dupont, "Use of BGP-4 Multiprotocol
               Extensions for IPv6 Inter-Domain Routing", RFC 2545,
               DOI 10.17487/RFC2545, March 1999,
@@ -3236,19 +3298,17 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
               Communities Attribute", RFC 4360, DOI 10.17487/RFC4360,
               February 2006, <https://www.rfc-editor.org/info/rfc4360>.
 
-   [RFC4364]  Rosen, E. and Y. Rekhter, "BGP/MPLS IP Virtual Private
-              Networks (VPNs)", RFC 4364, DOI 10.17487/RFC4364, February
-              2006, <https://www.rfc-editor.org/info/rfc4364>.
 
 
 
-
-
-
-Vairavakkalai & VenkatarExpires 19 September 2024              [Page 58]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 59]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
+
+   [RFC4364]  Rosen, E. and Y. Rekhter, "BGP/MPLS IP Virtual Private
+              Networks (VPNs)", RFC 4364, DOI 10.17487/RFC4364, February
+              2006, <https://www.rfc-editor.org/info/rfc4364>.
 
    [RFC4659]  De Clercq, J., Ooms, D., Carugi, M., and F. Le Faucheur,
               "BGP-MPLS IP Virtual Private Network (VPN) Extension for
@@ -3297,11 +3357,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-
-
-
-
-Vairavakkalai & VenkatarExpires 19 September 2024              [Page 59]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 60]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -3357,7 +3413,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 19 September 2024              [Page 60]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 61]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -3413,7 +3469,7 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 19 September 2024              [Page 61]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 62]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -3469,7 +3525,7 @@ A.2.  BGP CT Egress TE
 
 
 
-Vairavakkalai & VenkatarExpires 19 September 2024              [Page 62]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 63]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -3509,9 +3565,9 @@ B.1.1.  Topology
 
                 203.0.113.21 ---- Traffic Direction ----> 203.0.113.31
 
-                        Figure 13: BGP CT Intra-AS.
+                        Figure 14: BGP CT Intra-AS.
 
-   This example in Figure 13 shows a provider network Autonomous system
+   This example in Figure 14 shows a provider network Autonomous system
    AS1.  It serves customers AS2, AS3.  Traffic direction being
    described is CE21 to CE31.  CE31 may request a specific SLA (e.g.
    Gold for this traffic), when traversing this provider network.
@@ -3525,7 +3581,7 @@ B.1.2.  Transport Layer
 
 
 
-Vairavakkalai & VenkatarExpires 19 September 2024              [Page 63]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 64]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -3581,7 +3637,7 @@ B.1.3.  Service Layer route exchange
 
 
 
-Vairavakkalai & VenkatarExpires 19 September 2024              [Page 64]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 65]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -3605,9 +3661,9 @@ B.2.1.  Topology
 
 203.0.113.31          ---- Traffic Direction ---->         203.0.113.41
 
-                 Figure 14: BGP CT Inter-AS option A.
+                 Figure 15: BGP CT Inter-AS option A.
 
-   This example in Figure 14 shows two provider network Autonomous
+   This example in Figure 15 shows two provider network Autonomous
    systems AS1, AS2.  They serve L3VPN customers AS3, AS4 respectively.
    The ASBRs ASBR11 and ASBR21 have IP VRFs connected directly.  The
    inter-AS link is IP enabled with no MPLS forwarding.
@@ -3637,7 +3693,7 @@ B.2.2.  Transport Layer
 
 
 
-Vairavakkalai & VenkatarExpires 19 September 2024              [Page 65]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 66]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -3693,7 +3749,7 @@ B.2.3.  Service Layer route exchange
 
 
 
-Vairavakkalai & VenkatarExpires 19 September 2024              [Page 66]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 67]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -3721,9 +3777,9 @@ B.3.1.  Topology
 
 203.0.113.31          ---- Traffic Direction ---->         203.0.113.41
 
-                 Figure 15: BGP CT Inter-AS option B.
+                 Figure 16: BGP CT Inter-AS option B.
 
-   This example in Figure 15 shows two provider network Autonomous
+   This example in Figure 16 shows two provider network Autonomous
    systems AS1 and AS2.  They serve L3VPN customers AS3 and AS4
    respectively.  The ASBRs ASBR12 and ASBR21 don't have any IP VRFs.
    The inter-AS link is MPLS forwarding enabled.
@@ -3749,7 +3805,7 @@ B.3.2.  Transport Layer
 
 
 
-Vairavakkalai & VenkatarExpires 19 September 2024              [Page 67]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 68]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -3805,7 +3861,7 @@ B.3.3.  Service Layer route exchange
 
 
 
-Vairavakkalai & VenkatarExpires 19 September 2024              [Page 68]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 69]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -3861,7 +3917,7 @@ Appendix C.  Why reuse RFC 8277 and RFC 4364?
 
 
 
-Vairavakkalai & VenkatarExpires 19 September 2024              [Page 69]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 70]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -3917,7 +3973,7 @@ C.1.  Update packing considerations
 
 
 
-Vairavakkalai & VenkatarExpires 19 September 2024              [Page 70]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 71]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -3973,7 +4029,7 @@ Co-Authors
 
 
 
-Vairavakkalai & VenkatarExpires 19 September 2024              [Page 71]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 72]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -4029,7 +4085,7 @@ Other Contributors
 
 
 
-Vairavakkalai & VenkatarExpires 19 September 2024              [Page 72]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 73]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -4085,7 +4141,7 @@ Authors' Addresses
 
 
 
-Vairavakkalai & VenkatarExpires 19 September 2024              [Page 73]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 74]
 
 Internet-Draft        BGP Classful Transport Planes           March 2024
 
@@ -4141,4 +4197,4 @@ Internet-Draft        BGP Classful Transport Planes           March 2024
 
 
 
-Vairavakkalai & VenkatarExpires 19 September 2024              [Page 74]
+Vairavakkalai & VenkatarExpires 19 September 2024              [Page 75]

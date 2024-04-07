@@ -10,7 +10,7 @@
 <?rfc inline="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="exp" docName="draft-ietf-idr-bgp-ct-29" ipr="trust200902">
+<rfc category="exp" docName="draft-ietf-idr-bgp-ct-30" ipr="trust200902">
   <front>
     <title abbrev="BGP Classful Transport Planes">BGP Classful Transport
     Planes</title>
@@ -182,7 +182,11 @@
 
       <t>BN: Border Node</t>
 
+      <t>CBF: Class Based Forwarding</t>
+
       <t>CsC: Carrier serving Carrier VPN</t>
+
+      <t>DSCP: Differentiated Services Code Point</t>
 
       <t>EP: Endpoint of a tunnel, e.g. a loopback address in the network</t>
 
@@ -2397,6 +2401,60 @@
           </section>
         </section>
       </section>
+
+      <section title="MTU Considerations">
+        <t>Operators should coordinate the MTU of the intra-domain tunnels
+        used to prevent Path MTU discovery problems that could appear in
+        deployments. The encapsulation overhead due to the MPLS label stack or
+        equivalent tunnel header in different forwarding architecture should
+        also be considered when determining the Path MTU of the end-to-end BGP
+        CT tunnel.</t>
+      </section>
+
+      <section title="Use of DSCP">
+        <t>BGP CT specifies procedures for Intent Driven Service Mapping in a
+        service provider network, and defines 'Transport Class' construct to
+        represent an Intent.</t>
+
+        <t>It may be desirable to allow a CE device to indicate in the data
+        packet it sends what treatment it desires (the Intent) when the packet
+        is forwarded within the provider network.</t>
+
+        <t>Such an indication can be in form of DSCP code point <xref
+        target="RFC2474"/> in the IP header.</t>
+
+        <t>In RFC2474, a Forwarding Class Selector maps to a PHB (Per-hop
+        Behavior). The Transport Class construct is a PHB at transport
+        layer.</t>
+
+        <figure anchor="Intent_PE_CE" suppress-title="false"
+                title="Example Topology with DSCP on PE-CE Links">
+          <artwork align="left" xml:space="preserve">
+                                    ---Gold-----&gt;
+                      [CE1]-----[PE1]---[P]----[PE2]-----[CE2]
+                                    ---Bronze---&gt;
+                203.0.113.11                             203.0.113.22
+                          ----  Traffic direction ----&gt;
+</artwork>
+        </figure>
+
+        <t>Let PE1 be configured to map DSCP1 to Gold Transport class, and
+        DSCP2 to Bronze Transport class. Based on the DSCP code point received
+        on the IP traffic from CE device, PE1 forwards the IP packet over a
+        Gold or Bronze TC tunnel. Thus, the forwarding is not based on just
+        the destination IP address, but also the DSCP code point. This is
+        known as Class Based Forwarding (CBF). </t>
+
+        <t>CBF is configured at the PE1 device, mapping the DSCP values to
+        respective Transport Classes. This mapping (DSCP peering agreement) is
+        communicated to CE device by out of band mechanisms. This allows the
+        administrator of CE1 to discover what transport classes exist in the
+        provider network, and which DSCP codepoint to encode so that traffic
+        is forwarded using the desired Transport Class in the provided
+        network. When the IP packet exits the provider network to CE2, PE2
+        resets the DSCP code point based on DSCP peering agreement with
+        CE2.</t>
+      </section>
     </section>
 
     <section title="Applicability to Network Slicing">
@@ -2619,6 +2677,11 @@ Registry Name: BGP Transitive Extended Community Types
 
               </artwork>
           </figure></t>
+
+        <t>As noted in Sec 4 and Sec 7.10, 'Transport Class ID' is
+        interchangeable with 'Color'. For purposes of backward compatibility
+        with usage of 'Color' field in Color extended community, the range
+        1-4294967295 uses 'Private Use' as Registration Procedure.</t>
       </section>
     </section>
 
@@ -2695,6 +2758,8 @@ Registry Name: BGP Transitive Extended Community Types
       <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"?>
 
       <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2545.xml"?>
+
+      <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2474.xml"?>
 
       <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4659.xml"?>
 

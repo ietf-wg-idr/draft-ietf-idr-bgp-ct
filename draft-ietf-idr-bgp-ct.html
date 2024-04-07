@@ -29,7 +29,7 @@
       called "BGP Classful Transport", a.k.a., BGP CT. 
     ' name="description">
 <meta content="xml2rfc 3.18.2" name="generator">
-<meta content="draft-ietf-idr-bgp-ct-29" name="ietf.draft">
+<meta content="draft-ietf-idr-bgp-ct-30" name="ietf.draft">
 <!-- Generator version information:
   xml2rfc 3.18.2
     Python 3.9.6
@@ -1237,7 +1237,7 @@ li > p:last-of-type:only-child {
 <dt class="label-workgroup">Workgroup:</dt>
 <dd class="workgroup">Network Working Group</dd>
 <dt class="label-internet-draft">Internet-Draft:</dt>
-<dd class="internet-draft">draft-ietf-idr-bgp-ct-29</dd>
+<dd class="internet-draft">draft-ietf-idr-bgp-ct-30</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
 <time datetime="2024-03-18" class="published">18 March 2024</time>
@@ -1530,6 +1530,12 @@ li > p:last-of-type:only-child {
 </li>
                 </ul>
 </li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.4">
+                <p id="section-toc.1-1.11.2.4.1"><a href="#section-11.4" class="auto internal xref">11.4</a>.  <a href="#name-mtu-considerations" class="internal xref">MTU Considerations</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.5">
+                <p id="section-toc.1-1.11.2.5.1"><a href="#section-11.5" class="auto internal xref">11.5</a>.  <a href="#name-use-of-dscp" class="internal xref">Use of DSCP</a></p>
+</li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
@@ -1743,37 +1749,39 @@ li > p:last-of-type:only-child {
 <p id="section-2-7">BGP LU: BGP Labeled Unicast family (AFI/SAFIs 1/4, 2/4)<a href="#section-2-7" class="pilcrow">¶</a></p>
 <p id="section-2-8">BGP CT: BGP Classful Transport family (AFI/SAFIs 1/76, 2/76)<a href="#section-2-8" class="pilcrow">¶</a></p>
 <p id="section-2-9">BN: Border Node<a href="#section-2-9" class="pilcrow">¶</a></p>
-<p id="section-2-10">CsC: Carrier serving Carrier VPN<a href="#section-2-10" class="pilcrow">¶</a></p>
-<p id="section-2-11">EP: Endpoint of a tunnel, e.g. a loopback address in the network<a href="#section-2-11" class="pilcrow">¶</a></p>
-<p id="section-2-12">EPE: Egress Peer Engineering<a href="#section-2-12" class="pilcrow">¶</a></p>
-<p id="section-2-13">eSN: Egress Service Node<a href="#section-2-13" class="pilcrow">¶</a></p>
-<p id="section-2-14">FEC: Forwarding Equivalence Class<a href="#section-2-14" class="pilcrow">¶</a></p>
-<p id="section-2-15">iSN: Ingress Service Node<a href="#section-2-15" class="pilcrow">¶</a></p>
-<p id="section-2-16">LPM: Longest Prefix Match<a href="#section-2-16" class="pilcrow">¶</a></p>
-<p id="section-2-17">LSP: Label Switched Path<a href="#section-2-17" class="pilcrow">¶</a></p>
-<p id="section-2-18">MNH: BGP MultiNexthop attribute<a href="#section-2-18" class="pilcrow">¶</a></p>
-<p id="section-2-19">MPLS: Multi Protocol Label Switching<a href="#section-2-19" class="pilcrow">¶</a></p>
-<p id="section-2-20">NLRI: Network Layer Reachability Information<a href="#section-2-20" class="pilcrow">¶</a></p>
-<p id="section-2-21">PE: Provider Edge<a href="#section-2-21" class="pilcrow">¶</a></p>
-<p id="section-2-22">PHP: Penultimate Hop Pop<a href="#section-2-22" class="pilcrow">¶</a></p>
-<p id="section-2-23">PNH: Protocol Next Hop address carried in a BGP Update message<a href="#section-2-23" class="pilcrow">¶</a></p>
-<p id="section-2-24">RD: Route Distinguisher<a href="#section-2-24" class="pilcrow">¶</a></p>
-<p id="section-2-25">RSVP-TE: Resource Reservation Protocol - Traffic Engineering<a href="#section-2-25" class="pilcrow">¶</a></p>
-<p id="section-2-26">RT: Route Target extended community<a href="#section-2-26" class="pilcrow">¶</a></p>
-<p id="section-2-27">RTC: Route Target Constrain<a href="#section-2-27" class="pilcrow">¶</a></p>
-<p id="section-2-28">SAFI: Subsequent Address Family Identifier<a href="#section-2-28" class="pilcrow">¶</a></p>
-<p id="section-2-29">SID: Segment Identifier<a href="#section-2-29" class="pilcrow">¶</a></p>
-<p id="section-2-30">SLA: Service Level Agreement<a href="#section-2-30" class="pilcrow">¶</a></p>
-<p id="section-2-31">SN: Service Node<a href="#section-2-31" class="pilcrow">¶</a></p>
-<p id="section-2-32">SR: Segment Routing<a href="#section-2-32" class="pilcrow">¶</a></p>
-<p id="section-2-33">SRTE: Segment Routing Traffic Engineering<a href="#section-2-33" class="pilcrow">¶</a></p>
-<p id="section-2-34">TC: Transport Class<a href="#section-2-34" class="pilcrow">¶</a></p>
-<p id="section-2-35">TC ID: Transport Class Identifier<a href="#section-2-35" class="pilcrow">¶</a></p>
-<p id="section-2-36">TC-BE: Best Effort Transport Class<a href="#section-2-36" class="pilcrow">¶</a></p>
-<p id="section-2-37">TE: Traffic Engineering<a href="#section-2-37" class="pilcrow">¶</a></p>
-<p id="section-2-38">TRDB: Transport Route Database<a href="#section-2-38" class="pilcrow">¶</a></p>
-<p id="section-2-39">UHP: Ultimate Hop Pop<a href="#section-2-39" class="pilcrow">¶</a></p>
-<p id="section-2-40">VRF: Virtual Routing and Forwarding table<a href="#section-2-40" class="pilcrow">¶</a></p>
+<p id="section-2-10">CBF: Class Based Forwarding<a href="#section-2-10" class="pilcrow">¶</a></p>
+<p id="section-2-11">CsC: Carrier serving Carrier VPN<a href="#section-2-11" class="pilcrow">¶</a></p>
+<p id="section-2-12">DSCP: Differentiated Services Code Point<a href="#section-2-12" class="pilcrow">¶</a></p>
+<p id="section-2-13">EP: Endpoint of a tunnel, e.g. a loopback address in the network<a href="#section-2-13" class="pilcrow">¶</a></p>
+<p id="section-2-14">EPE: Egress Peer Engineering<a href="#section-2-14" class="pilcrow">¶</a></p>
+<p id="section-2-15">eSN: Egress Service Node<a href="#section-2-15" class="pilcrow">¶</a></p>
+<p id="section-2-16">FEC: Forwarding Equivalence Class<a href="#section-2-16" class="pilcrow">¶</a></p>
+<p id="section-2-17">iSN: Ingress Service Node<a href="#section-2-17" class="pilcrow">¶</a></p>
+<p id="section-2-18">LPM: Longest Prefix Match<a href="#section-2-18" class="pilcrow">¶</a></p>
+<p id="section-2-19">LSP: Label Switched Path<a href="#section-2-19" class="pilcrow">¶</a></p>
+<p id="section-2-20">MNH: BGP MultiNexthop attribute<a href="#section-2-20" class="pilcrow">¶</a></p>
+<p id="section-2-21">MPLS: Multi Protocol Label Switching<a href="#section-2-21" class="pilcrow">¶</a></p>
+<p id="section-2-22">NLRI: Network Layer Reachability Information<a href="#section-2-22" class="pilcrow">¶</a></p>
+<p id="section-2-23">PE: Provider Edge<a href="#section-2-23" class="pilcrow">¶</a></p>
+<p id="section-2-24">PHP: Penultimate Hop Pop<a href="#section-2-24" class="pilcrow">¶</a></p>
+<p id="section-2-25">PNH: Protocol Next Hop address carried in a BGP Update message<a href="#section-2-25" class="pilcrow">¶</a></p>
+<p id="section-2-26">RD: Route Distinguisher<a href="#section-2-26" class="pilcrow">¶</a></p>
+<p id="section-2-27">RSVP-TE: Resource Reservation Protocol - Traffic Engineering<a href="#section-2-27" class="pilcrow">¶</a></p>
+<p id="section-2-28">RT: Route Target extended community<a href="#section-2-28" class="pilcrow">¶</a></p>
+<p id="section-2-29">RTC: Route Target Constrain<a href="#section-2-29" class="pilcrow">¶</a></p>
+<p id="section-2-30">SAFI: Subsequent Address Family Identifier<a href="#section-2-30" class="pilcrow">¶</a></p>
+<p id="section-2-31">SID: Segment Identifier<a href="#section-2-31" class="pilcrow">¶</a></p>
+<p id="section-2-32">SLA: Service Level Agreement<a href="#section-2-32" class="pilcrow">¶</a></p>
+<p id="section-2-33">SN: Service Node<a href="#section-2-33" class="pilcrow">¶</a></p>
+<p id="section-2-34">SR: Segment Routing<a href="#section-2-34" class="pilcrow">¶</a></p>
+<p id="section-2-35">SRTE: Segment Routing Traffic Engineering<a href="#section-2-35" class="pilcrow">¶</a></p>
+<p id="section-2-36">TC: Transport Class<a href="#section-2-36" class="pilcrow">¶</a></p>
+<p id="section-2-37">TC ID: Transport Class Identifier<a href="#section-2-37" class="pilcrow">¶</a></p>
+<p id="section-2-38">TC-BE: Best Effort Transport Class<a href="#section-2-38" class="pilcrow">¶</a></p>
+<p id="section-2-39">TE: Traffic Engineering<a href="#section-2-39" class="pilcrow">¶</a></p>
+<p id="section-2-40">TRDB: Transport Route Database<a href="#section-2-40" class="pilcrow">¶</a></p>
+<p id="section-2-41">UHP: Ultimate Hop Pop<a href="#section-2-41" class="pilcrow">¶</a></p>
+<p id="section-2-42">VRF: Virtual Routing and Forwarding table<a href="#section-2-42" class="pilcrow">¶</a></p>
 <section id="section-2.1">
         <h3 id="name-definitions-and-notations">
 <a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-definitions-and-notations" class="section-name selfRef">Definitions and Notations</a>
@@ -4011,6 +4019,62 @@ li > p:last-of-type:only-child {
 </section>
 </section>
 </section>
+<section id="section-11.4">
+        <h3 id="name-mtu-considerations">
+<a href="#section-11.4" class="section-number selfRef">11.4. </a><a href="#name-mtu-considerations" class="section-name selfRef">MTU Considerations</a>
+        </h3>
+<p id="section-11.4-1">Operators should coordinate the MTU of the intra-domain tunnels
+        used to prevent Path MTU discovery problems that could appear in
+        deployments. The encapsulation overhead due to the MPLS label stack or
+        equivalent tunnel header in different forwarding architecture should
+        also be considered when determining the Path MTU of the end-to-end BGP
+        CT tunnel.<a href="#section-11.4-1" class="pilcrow">¶</a></p>
+</section>
+<section id="section-11.5">
+        <h3 id="name-use-of-dscp">
+<a href="#section-11.5" class="section-number selfRef">11.5. </a><a href="#name-use-of-dscp" class="section-name selfRef">Use of DSCP</a>
+        </h3>
+<p id="section-11.5-1">BGP CT specifies procedures for Intent Driven Service Mapping in a
+        service provider network, and defines 'Transport Class' construct to
+        represent an Intent.<a href="#section-11.5-1" class="pilcrow">¶</a></p>
+<p id="section-11.5-2">It may be desirable to allow a CE device to indicate in the data
+        packet it sends what treatment it desires (the Intent) when the packet
+        is forwarded within the provider network.<a href="#section-11.5-2" class="pilcrow">¶</a></p>
+<p id="section-11.5-3">Such an indication can be in form of DSCP code point <span>[<a href="#RFC2474" class="cite xref">RFC2474</a>]</span> in the IP header.<a href="#section-11.5-3" class="pilcrow">¶</a></p>
+<p id="section-11.5-4">In RFC2474, a Forwarding Class Selector maps to a PHB (Per-hop
+        Behavior). The Transport Class construct is a PHB at transport
+        layer.<a href="#section-11.5-4" class="pilcrow">¶</a></p>
+<span id="name-example-topology-with-dscp-"></span><div id="Intent_PE_CE">
+<figure id="figure-13">
+          <div class="alignLeft art-text artwork" id="section-11.5-5.1">
+<pre>
+                                    ---Gold-----&gt;
+                      [CE1]-----[PE1]---[P]----[PE2]-----[CE2]
+                                    ---Bronze---&gt;
+                203.0.113.11                             203.0.113.22
+                          ----  Traffic direction ----&gt;
+</pre>
+</div>
+<figcaption><a href="#figure-13" class="selfRef">Figure 13</a>:
+<a href="#name-example-topology-with-dscp-" class="selfRef">Example Topology with DSCP on PE-CE Links</a>
+          </figcaption></figure>
+</div>
+<p id="section-11.5-6">Let PE1 be configured to map DSCP1 to Gold Transport class, and
+        DSCP2 to Bronze Transport class. Based on the DSCP code point received
+        on the IP traffic from CE device, PE1 forwards the IP packet over a
+        Gold or Bronze TC tunnel. Thus, the forwarding is not based on just
+        the destination IP address, but also the DSCP code point. This is
+        known as Class Based Forwarding (CBF).<a href="#section-11.5-6" class="pilcrow">¶</a></p>
+<p id="section-11.5-7">CBF is configured at the PE1 device, mapping the DSCP values to
+        respective Transport Classes. This mapping (DSCP peering agreement) is
+        communicated to CE device by out of band mechanisms. This allows the
+        administrator of CE1 to discover what transport classes exist in the
+        provider network, and which DSCP codepoint to encode so that traffic
+        is forwarded using the desired Transport Class in the provided
+        network. When the IP packet exits the provider network to CE2, PE2
+        resets the DSCP code point based on DSCP peering agreement with
+        CE2.<a href="#section-11.5-7" class="pilcrow">¶</a></p>
+</section>
 </section>
 </div>
 <section id="section-12">
@@ -4266,6 +4330,10 @@ Registry Name: BGP Transitive Extended Community Types
 
 </pre><a href="#section-13.4-2" class="pilcrow">¶</a>
 </div>
+<p id="section-13.4-3">As noted in Sec 4 and Sec 7.10, 'Transport Class ID' is
+        interchangeable with 'Color'. For purposes of backward compatibility
+        with usage of 'Color' field in Color extended community, the range
+        1-4294967295 uses 'Private Use' as Registration Procedure.<a href="#section-13.4-3" class="pilcrow">¶</a></p>
 </section>
 </section>
 </div>
@@ -4337,6 +4405,10 @@ Registry Name: BGP Transitive Extended Community Types
 <dt id="RFC2119">[RFC2119]</dt>
         <dd>
 <span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc2119">https://www.rfc-editor.org/info/rfc2119</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC2474">[RFC2474]</dt>
+        <dd>
+<span class="refAuthor">Nichols, K.</span>, <span class="refAuthor">Blake, S.</span>, <span class="refAuthor">Baker, F.</span>, and <span class="refAuthor">D. Black</span>, <span class="refTitle">"Definition of the Differentiated Services Field (DS Field) in the IPv4 and IPv6 Headers"</span>, <span class="seriesInfo">RFC 2474</span>, <span class="seriesInfo">DOI 10.17487/RFC2474</span>, <time datetime="1998-12" class="refDate">December 1998</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc2474">https://www.rfc-editor.org/info/rfc2474</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC2545">[RFC2545]</dt>
         <dd>
@@ -4552,7 +4624,7 @@ Registry Name: BGP Transitive Extended Community Types
 <a href="#appendix-B.1.1" class="section-number selfRef">B.1.1. </a><a href="#name-topology" class="section-name selfRef">Topology</a>
           </h4>
 <span id="name-bgp-ct-intra-as"></span><div id="BGPCT_INTRA_AS">
-<figure id="figure-13">
+<figure id="figure-14">
             <div class="alignLeft art-text artwork" id="appendix-B.1.1-1.1">
 <pre>
                                     [RR11]
@@ -4567,11 +4639,11 @@ Registry Name: BGP Transitive Extended Community Types
              203.0.113.21 ---- Traffic Direction ----&gt; 203.0.113.31
 </pre>
 </div>
-<figcaption><a href="#figure-13" class="selfRef">Figure 13</a>:
+<figcaption><a href="#figure-14" class="selfRef">Figure 14</a>:
 <a href="#name-bgp-ct-intra-as" class="selfRef">BGP CT Intra-AS.</a>
             </figcaption></figure>
 </div>
-<p id="appendix-B.1.1-2">This example in <a href="#BGPCT_INTRA_AS" class="auto internal xref">Figure 13</a> shows a provider
+<p id="appendix-B.1.1-2">This example in <a href="#BGPCT_INTRA_AS" class="auto internal xref">Figure 14</a> shows a provider
           network Autonomous system AS1. It serves customers AS2, AS3. Traffic
           direction being described is CE21 to CE31. CE31 may request a
           specific SLA (e.g. Gold for this traffic), when traversing this
@@ -4649,7 +4721,7 @@ Registry Name: BGP Transitive Extended Community Types
 <a href="#appendix-B.2.1" class="section-number selfRef">B.2.1. </a><a href="#name-topology-2" class="section-name selfRef">Topology</a>
           </h4>
 <span id="name-bgp-ct-inter-as-option-a"></span><div id="BGPCT_INTERAS_A">
-<figure id="figure-14">
+<figure id="figure-15">
             <div class="alignLeft art-text artwork" id="appendix-B.2.1-1.1">
 <pre>
                   [RR11]                        [RR21]
@@ -4664,11 +4736,11 @@ Registry Name: BGP Transitive Extended Community Types
 203.0.113.31          ---- Traffic Direction ----&gt;         203.0.113.41
 </pre>
 </div>
-<figcaption><a href="#figure-14" class="selfRef">Figure 14</a>:
+<figcaption><a href="#figure-15" class="selfRef">Figure 15</a>:
 <a href="#name-bgp-ct-inter-as-option-a" class="selfRef">BGP CT Inter-AS option A.</a>
             </figcaption></figure>
 </div>
-<p id="appendix-B.2.1-2">This example in <a href="#BGPCT_INTERAS_A" class="auto internal xref">Figure 14</a> shows two
+<p id="appendix-B.2.1-2">This example in <a href="#BGPCT_INTERAS_A" class="auto internal xref">Figure 15</a> shows two
           provider network Autonomous systems AS1, AS2. They serve L3VPN
           customers AS3, AS4 respectively. The ASBRs ASBR11 and ASBR21 have IP
           VRFs connected directly. The inter-AS link is IP enabled with no
@@ -4770,7 +4842,7 @@ Registry Name: BGP Transitive Extended Community Types
 <a href="#appendix-B.3.1" class="section-number selfRef">B.3.1. </a><a href="#name-topology-3" class="section-name selfRef">Topology</a>
           </h4>
 <span id="name-bgp-ct-inter-as-option-b"></span><div id="BGPCT_INTERAS_B">
-<figure id="figure-15">
+<figure id="figure-16">
             <div class="alignLeft art-text artwork" id="appendix-B.3.1-1.1">
 <pre>
                   [RR13]                        [RR23]
@@ -4785,11 +4857,11 @@ Registry Name: BGP Transitive Extended Community Types
 203.0.113.31          ---- Traffic Direction ----&gt;         203.0.113.41
 </pre>
 </div>
-<figcaption><a href="#figure-15" class="selfRef">Figure 15</a>:
+<figcaption><a href="#figure-16" class="selfRef">Figure 16</a>:
 <a href="#name-bgp-ct-inter-as-option-b" class="selfRef">BGP CT Inter-AS option B.</a>
             </figcaption></figure>
 </div>
-<p id="appendix-B.3.1-2">This example in <a href="#BGPCT_INTERAS_B" class="auto internal xref">Figure 15</a> shows two
+<p id="appendix-B.3.1-2">This example in <a href="#BGPCT_INTERAS_B" class="auto internal xref">Figure 16</a> shows two
           provider network Autonomous systems AS1 and AS2. They serve L3VPN
           customers AS3 and AS4 respectively. The ASBRs ASBR12 and ASBR21
           don't have any IP VRFs. The inter-AS link is MPLS forwarding
