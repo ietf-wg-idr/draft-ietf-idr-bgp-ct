@@ -29,7 +29,7 @@
       called "BGP Classful Transport", a.k.a., BGP CT. 
     ' name="description">
 <meta content="xml2rfc 3.18.2" name="generator">
-<meta content="draft-ietf-idr-bgp-ct-30" name="ietf.draft">
+<meta content="draft-ietf-idr-bgp-ct-31" name="ietf.draft">
 <!-- Generator version information:
   xml2rfc 3.18.2
     Python 3.9.6
@@ -1223,11 +1223,11 @@ li > p:last-of-type:only-child {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">BGP Classful Transport Planes</td>
-<td class="right">March 2024</td>
+<td class="right">April 2024</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Vairavakkalai &amp; Venkataraman</td>
-<td class="center">Expires 19 September 2024</td>
+<td class="center">Expires 12 October 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1237,15 +1237,15 @@ li > p:last-of-type:only-child {
 <dt class="label-workgroup">Workgroup:</dt>
 <dd class="workgroup">Network Working Group</dd>
 <dt class="label-internet-draft">Internet-Draft:</dt>
-<dd class="internet-draft">draft-ietf-idr-bgp-ct-30</dd>
+<dd class="internet-draft">draft-ietf-idr-bgp-ct-31</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-03-18" class="published">18 March 2024</time>
+<time datetime="2024-04-10" class="published">10 April 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Experimental</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-09-19">19 September 2024</time></dd>
+<dd class="expires"><time datetime="2024-10-12">12 October 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1314,7 +1314,7 @@ li > p:last-of-type:only-child {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 19 September 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 12 October 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1562,7 +1562,7 @@ li > p:last-of-type:only-child {
                 <p id="section-toc.1-1.13.2.3.1"><a href="#section-13.3" class="auto internal xref">13.3</a>.  <a href="#name-mpls-oam-code-points" class="internal xref">MPLS OAM Code Points</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13.2.4">
-                <p id="section-toc.1-1.13.2.4.1"><a href="#section-13.4" class="auto internal xref">13.4</a>.  <a href="#name-best-effort-transport-class-" class="internal xref">Best Effort Transport Class ID</a></p>
+                <p id="section-toc.1-1.13.2.4.1"><a href="#section-13.4" class="auto internal xref">13.4</a>.  <a href="#name-transport-class-id" class="internal xref">Transport Class ID</a></p>
 </li>
             </ul>
 </li>
@@ -4029,6 +4029,8 @@ li > p:last-of-type:only-child {
         equivalent tunnel header in different forwarding architecture should
         also be considered when determining the Path MTU of the end-to-end BGP
         CT tunnel.<a href="#section-11.4-1" class="pilcrow">¶</a></p>
+<p id="section-11.4-2">The document <span>[<a href="#INTAREA-TUNNELS" class="cite xref">INTAREA-TUNNELS</a>]</span> discusses these
+        considerations in more detail.<a href="#section-11.4-2" class="pilcrow">¶</a></p>
 </section>
 <section id="section-11.5">
         <h3 id="name-use-of-dscp">
@@ -4300,8 +4302,8 @@ Registry Name: BGP Transitive Extended Community Types
 </div>
 </section>
 <section id="section-13.4">
-        <h3 id="name-best-effort-transport-class-">
-<a href="#section-13.4" class="section-number selfRef">13.4. </a><a href="#name-best-effort-transport-class-" class="section-name selfRef">Best Effort Transport Class ID</a>
+        <h3 id="name-transport-class-id">
+<a href="#section-13.4" class="section-number selfRef">13.4. </a><a href="#name-transport-class-id" class="section-name selfRef">Transport Class ID</a>
         </h3>
 <p id="section-13.4-1">This document reserves the Transport class ID value 0 to represent
         "Best Effort Transport Class ID". This is used in the 'Transport Class
@@ -4332,8 +4334,9 @@ Registry Name: BGP Transitive Extended Community Types
 </div>
 <p id="section-13.4-3">As noted in Sec 4 and Sec 7.10, 'Transport Class ID' is
         interchangeable with 'Color'. For purposes of backward compatibility
-        with usage of 'Color' field in Color extended community, the range
-        1-4294967295 uses 'Private Use' as Registration Procedure.<a href="#section-13.4-3" class="pilcrow">¶</a></p>
+        with usage of 'Color' field in Color extended community as specified
+        in RFC9012 and RFC9256, the range 1-4294967295 uses 'Private Use' as
+        Registration Procedure.<a href="#section-13.4-3" class="pilcrow">¶</a></p>
 </section>
 </section>
 </div>
@@ -4525,6 +4528,10 @@ Registry Name: BGP Transitive Extended Community Types
         <dd>
 <span class="refAuthor">Simpson, Ed.</span>, <span class="refTitle">"BGP Flow-Spec Redirect to IP Action"</span>, <time datetime="2015-02-02" class="refDate">2 February 2015</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-idr-flowspec-redirect-ip-02">https://datatracker.ietf.org/doc/html/draft-ietf-idr-flowspec-redirect-ip-02</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="INTAREA-TUNNELS">[INTAREA-TUNNELS]</dt>
+        <dd>
+<span class="refAuthor">Touch, Ed.</span> and <span class="refAuthor">Townsley, Ed.</span>, <span class="refTitle">"IP Tunnels in the Internet Architecture"</span>, <time datetime="2023-03-26" class="refDate">26 March 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/draft-ietf-intarea-tunnels/13/">https://datatracker.ietf.org/doc/draft-ietf-intarea-tunnels/13/</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="Intent-Routing-Color">[Intent-Routing-Color]</dt>
         <dd>
 <span class="refAuthor">Hegde, Ed.</span>, <span class="refTitle">"Intent-aware Routing using Color"</span>, <time datetime="2023-10-23" class="refDate">23 October 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-hr-spring-intentaware-routing-using-color-03#section-6.3.2">https://datatracker.ietf.org/doc/html/draft-hr-spring-intentaware-routing-using-color-03#section-6.3.2</a>&gt;</span>. </dd>
@@ -4548,6 +4555,10 @@ Registry Name: BGP Transitive Extended Community Types
 <dt id="RFC6890">[RFC6890]</dt>
         <dd>
 <span class="refAuthor">Cotton, M.</span>, <span class="refAuthor">Vegoda, L.</span>, <span class="refAuthor">Bonica, R., Ed.</span>, and <span class="refAuthor">B. Haberman</span>, <span class="refTitle">"Special-Purpose IP Address Registries"</span>, <span class="seriesInfo">BCP 153</span>, <span class="seriesInfo">RFC 6890</span>, <span class="seriesInfo">DOI 10.17487/RFC6890</span>, <time datetime="2013-04" class="refDate">April 2013</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc6890">https://www.rfc-editor.org/info/rfc6890</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9256">[RFC9256]</dt>
+        <dd>
+<span class="refAuthor">Filsfils, C.</span>, <span class="refAuthor">Talaulikar, K., Ed.</span>, <span class="refAuthor">Voyer, D.</span>, <span class="refAuthor">Bogdanov, A.</span>, and <span class="refAuthor">P. Mattes</span>, <span class="refTitle">"Segment Routing Policy Architecture"</span>, <span class="seriesInfo">RFC 9256</span>, <span class="seriesInfo">DOI 10.17487/RFC9256</span>, <time datetime="2022-07" class="refDate">July 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc9256">https://www.rfc-editor.org/info/rfc9256</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC9315">[RFC9315]</dt>
         <dd>

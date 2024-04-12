@@ -10,7 +10,7 @@
 <?rfc inline="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="exp" docName="draft-ietf-idr-bgp-ct-30" ipr="trust200902">
+<rfc category="exp" docName="draft-ietf-idr-bgp-ct-31" ipr="trust200902">
   <front>
     <title abbrev="BGP Classful Transport Planes">BGP Classful Transport
     Planes</title>
@@ -57,7 +57,7 @@
       </address>
     </author>
 
-    <date day="18" month="3" year="2024"/>
+    <date day="10" month="4" year="2024"/>
 
     <abstract>
       <t>This document specifies a mechanism referred to as "Intent Driven
@@ -2409,6 +2409,9 @@
         equivalent tunnel header in different forwarding architecture should
         also be considered when determining the Path MTU of the end-to-end BGP
         CT tunnel.</t>
+
+        <t>The document <xref target="INTAREA-TUNNELS"/> discusses these
+        considerations in more detail.</t>
       </section>
 
       <section title="Use of DSCP">
@@ -2443,7 +2446,7 @@
         on the IP traffic from CE device, PE1 forwards the IP packet over a
         Gold or Bronze TC tunnel. Thus, the forwarding is not based on just
         the destination IP address, but also the DSCP code point. This is
-        known as Class Based Forwarding (CBF). </t>
+        known as Class Based Forwarding (CBF).</t>
 
         <t>CBF is configured at the PE1 device, mapping the DSCP values to
         respective Transport Classes. This mapping (DSCP peering agreement) is
@@ -2648,7 +2651,7 @@ Registry Name: BGP Transitive Extended Community Types
           </figure></t>
       </section>
 
-      <section title="Best Effort Transport Class ID">
+      <section title="Transport Class ID">
         <t>This document reserves the Transport class ID value 0 to represent
         "Best Effort Transport Class ID". This is used in the 'Transport Class
         ID' field of Transport Route Target extended community that represents
@@ -2680,8 +2683,9 @@ Registry Name: BGP Transitive Extended Community Types
 
         <t>As noted in Sec 4 and Sec 7.10, 'Transport Class ID' is
         interchangeable with 'Color'. For purposes of backward compatibility
-        with usage of 'Color' field in Color extended community, the range
-        1-4294967295 uses 'Private Use' as Registration Procedure.</t>
+        with usage of 'Color' field in Color extended community as specified
+        in RFC9012 and RFC9256, the range 1-4294967295 uses 'Private Use' as
+        Registration Procedure.</t>
       </section>
     </section>
 
@@ -2806,6 +2810,8 @@ Registry Name: BGP Transitive Extended Community Types
       <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.9315.xml"?>
 
       <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6890.xml"?>
+
+      <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.9256.xml"?>
 
       <reference anchor="BGP-CT-SRv6"
                  target="https://tools.ietf.org/html/draft-ietf-idr-bgp-ct-srv6-03">
@@ -2976,6 +2982,22 @@ Registry Name: BGP Transitive Extended Community Types
                   surname="Drake"/>
 
           <date day="14" month="09" year="2023"/>
+        </front>
+      </reference>
+
+      <reference anchor="INTAREA-TUNNELS"
+                 target="https://datatracker.ietf.org/doc/draft-ietf-intarea-tunnels/13/">
+        <front>
+          <title abbrev="INTAREA-TUNNELS">IP Tunnels in the Internet
+          Architecture</title>
+
+          <author fullname="Dr. Joseph D Touch" initials="" role="editor"
+                  surname="Touch"/>
+
+          <author fullname="Mark Townsley" initials="" role="editor"
+                  surname="Townsley"/>
+
+          <date day="26" month="03" year="2023"/>
         </front>
       </reference>
     </references>
