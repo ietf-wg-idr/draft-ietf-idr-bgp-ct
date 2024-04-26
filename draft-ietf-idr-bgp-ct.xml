@@ -10,7 +10,7 @@
 <?rfc inline="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="exp" docName="draft-ietf-idr-bgp-ct-32" ipr="trust200902">
+<rfc category="exp" docName="draft-ietf-idr-bgp-ct-33" ipr="trust200902">
   <front>
     <title abbrev="BGP Classful Transport Planes">BGP Classful Transport
     Planes</title>
@@ -2684,8 +2684,8 @@ Registry Name: BGP Transitive Extended Community Types
         <t>As noted in Sec 4 and Sec 7.10, 'Transport Class ID' is
         interchangeable with 'Color'. For purposes of backward compatibility
         with usage of 'Color' field in Color extended community as specified
-        in RFC9012 and RFC9256, the range 1-4294967295 uses 'Private Use' as
-        Registration Procedure.</t>
+        in <xref target="RFC9012"/> and <xref target="RFC9256"/>, the range
+        1-4294967295 uses 'Private Use' as Registration Procedure.</t>
       </section>
     </section>
 
@@ -2741,8 +2741,9 @@ Registry Name: BGP Transitive Extended Community Types
 
       <t>In order to mitigate the risk of the diversion of traffic from its
       intended destination, BGPsec solutions (<xref target="RFC8205"/> and
-      Origin Validation <xref target="RFC8210"/>) may be extended in future to
-      work for non-Internet SAFIs (SAFIs other than 1).</t>
+      Origin Validation <xref target="RFC8210"/><xref target="RFC6811"/>) may
+      be extended in future to work for non-Internet SAFIs (SAFIs other than
+      1).</t>
 
       <t>The restriction of the applicability of the BGP CT SAFI 76 to its
       intended well-defined scope limits the likelihood of traffic diversions.
@@ -2912,7 +2913,7 @@ Registry Name: BGP Transitive Extended Community Types
       </reference>
 
       <reference anchor="PCEP-RSVP-COLOR"
-                 target="https://datatracker.ietf.org/doc/html/draft-ietf-pce-pcep-color-02">
+                 target="https://datatracker.ietf.org/doc/html/draft-ietf-pce-pcep-color-03">
         <front>
           <title abbrev="PCEP RSVP COLOR">Path Computation Element
           Protocol(PCEP) Extension for RSVP Color</title>
@@ -2923,7 +2924,7 @@ Registry Name: BGP Transitive Extended Community Types
           <author fullname="Vishnu" initials="Pavan" role="editor"
                   surname="Beeram"/>
 
-          <date day="01" month="09" year="2023"/>
+          <date day="29" month="03" year="2024"/>
         </front>
       </reference>
 
