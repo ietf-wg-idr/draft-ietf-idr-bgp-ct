@@ -10,7 +10,7 @@
 <?rfc inline="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="exp" docName="draft-ietf-idr-bgp-ct-31" ipr="trust200902">
+<rfc category="exp" docName="draft-ietf-idr-bgp-ct-32" ipr="trust200902">
   <front>
     <title abbrev="BGP Classful Transport Planes">BGP Classful Transport
     Planes</title>
@@ -57,7 +57,7 @@
       </address>
     </author>
 
-    <date day="10" month="4" year="2024"/>
+    <date day="25" month="4" year="2024"/>
 
     <abstract>
       <t>This document specifies a mechanism referred to as "Intent Driven
@@ -2710,11 +2710,7 @@ Registry Name: BGP Transitive Extended Community Types
 
       <t>Additionally, BGP sessions SHOULD be protected using TCP
       Authentication Option <xref target="RFC5925"/> and the Generalized TTL
-      Security Mechanism <xref target="RFC5082"/>. To mitigate any risk of
-      manipulating the routing information carried within a new SAFI, BGP
-      origin validation <xref target="RFC6811"/> and BGPsec <xref
-      target="RFC8205"/> MAY be used as means to increase assurance that the
-      information has not been falsified.</t>
+      Security Mechanism <xref target="RFC5082"/>.</t>
 
       <t>Using a separate BGP family and new RT (Transport Class RT) minimizes
       the possibility of these routes mixing with service routes.</t>
@@ -2744,12 +2740,15 @@ Registry Name: BGP Transitive Extended Community Types
       (directing traffic to a node that doesn't desire to receive it).</t>
 
       <t>In order to mitigate the risk of the diversion of traffic from its
-      intended destination, existing BGPsec solution could be extended and
-      supported for this SAFI. The restriction of the applicability of this
-      SAFI to its intended well-defined scope limits the likelihood of traffic
-      diversions. Furthermore, as long as the filtering and appropriate
-      configuration mechanisms discussed previously are applied diligently,
-      risk of the diversion of the traffic is significantly mitigated.</t>
+      intended destination, BGPsec solutions (<xref target="RFC8205"/> and
+      Origin Validation <xref target="RFC8210"/>) may be extended in future to
+      work for non-Internet SAFIs (SAFIs other than 1).</t>
+
+      <t>The restriction of the applicability of the BGP CT SAFI 76 to its
+      intended well-defined scope limits the likelihood of traffic diversions.
+      Furthermore, as long as the filtering and appropriate configuration
+      mechanisms discussed previously are applied diligently, risk of the
+      diversion of the traffic is eliminated.</t>
     </section>
   </middle>
 
@@ -2776,8 +2775,6 @@ Registry Name: BGP Transitive Extended Community Types
       <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5925.xml"?>
 
       <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6811.xml"?>
-
-      <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8205.xml"?>
 
       <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4364.xml"?>
 
@@ -2813,8 +2810,12 @@ Registry Name: BGP Transitive Extended Community Types
 
       <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.9256.xml"?>
 
+      <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8205.xml"?>
+
+      <?rfc include="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8210.xml"?>
+
       <reference anchor="BGP-CT-SRv6"
-                 target="https://tools.ietf.org/html/draft-ietf-idr-bgp-ct-srv6-03">
+                 target="https://tools.ietf.org/html/draft-ietf-idr-bgp-ct-srv6-05">
         <front>
           <title abbrev="BGP-CT-SRv6">BGP CT - Adaptation to SRv6
           dataplane</title>
@@ -2825,7 +2826,7 @@ Registry Name: BGP Transitive Extended Community Types
           <author fullname="Natarajan Venkataraman" initials="" role="editor"
                   surname="Venkataraman"/>
 
-          <date day="04" month="3" year="2024"/>
+          <date day="25" month="4" year="2024"/>
         </front>
       </reference>
 

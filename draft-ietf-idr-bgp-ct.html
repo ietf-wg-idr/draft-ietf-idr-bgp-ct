@@ -29,7 +29,7 @@
       called "BGP Classful Transport", a.k.a., BGP CT. 
     ' name="description">
 <meta content="xml2rfc 3.18.2" name="generator">
-<meta content="draft-ietf-idr-bgp-ct-31" name="ietf.draft">
+<meta content="draft-ietf-idr-bgp-ct-32" name="ietf.draft">
 <!-- Generator version information:
   xml2rfc 3.18.2
     Python 3.9.6
@@ -1227,7 +1227,7 @@ li > p:last-of-type:only-child {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Vairavakkalai &amp; Venkataraman</td>
-<td class="center">Expires 12 October 2024</td>
+<td class="center">Expires 27 October 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1237,15 +1237,15 @@ li > p:last-of-type:only-child {
 <dt class="label-workgroup">Workgroup:</dt>
 <dd class="workgroup">Network Working Group</dd>
 <dt class="label-internet-draft">Internet-Draft:</dt>
-<dd class="internet-draft">draft-ietf-idr-bgp-ct-31</dd>
+<dd class="internet-draft">draft-ietf-idr-bgp-ct-32</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-04-10" class="published">10 April 2024</time>
+<time datetime="2024-04-25" class="published">25 April 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Experimental</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-10-12">12 October 2024</time></dd>
+<dd class="expires"><time datetime="2024-10-27">27 October 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1314,7 +1314,7 @@ li > p:last-of-type:only-child {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 12 October 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 27 October 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -4361,10 +4361,7 @@ Registry Name: BGP Transitive Extended Community Types
       in the existing BGP protocol, such as those described in <span>[<a href="#RFC4271" class="cite xref">RFC4271</a>]</span> and <span>[<a href="#RFC4272" class="cite xref">RFC4272</a>]</span>.<a href="#section-14-3" class="pilcrow">¶</a></p>
 <p id="section-14-4">Additionally, BGP sessions SHOULD be protected using TCP
       Authentication Option <span>[<a href="#RFC5925" class="cite xref">RFC5925</a>]</span> and the Generalized TTL
-      Security Mechanism <span>[<a href="#RFC5082" class="cite xref">RFC5082</a>]</span>. To mitigate any risk of
-      manipulating the routing information carried within a new SAFI, BGP
-      origin validation <span>[<a href="#RFC6811" class="cite xref">RFC6811</a>]</span> and BGPsec <span>[<a href="#RFC8205" class="cite xref">RFC8205</a>]</span> MAY be used as means to increase assurance that the
-      information has not been falsified.<a href="#section-14-4" class="pilcrow">¶</a></p>
+      Security Mechanism <span>[<a href="#RFC5082" class="cite xref">RFC5082</a>]</span>.<a href="#section-14-4" class="pilcrow">¶</a></p>
 <p id="section-14-5">Using a separate BGP family and new RT (Transport Class RT) minimizes
       the possibility of these routes mixing with service routes.<a href="#section-14-5" class="pilcrow">¶</a></p>
 <p id="section-14-6">If redistributing between SAFI 76 and SAFI 4 routes for AFIs 1 or 2,
@@ -4388,12 +4385,14 @@ Registry Name: BGP Transitive Extended Community Types
       of traffic, or avoidance of security controls) or denial of service
       (directing traffic to a node that doesn't desire to receive it).<a href="#section-14-9" class="pilcrow">¶</a></p>
 <p id="section-14-10">In order to mitigate the risk of the diversion of traffic from its
-      intended destination, existing BGPsec solution could be extended and
-      supported for this SAFI. The restriction of the applicability of this
-      SAFI to its intended well-defined scope limits the likelihood of traffic
-      diversions. Furthermore, as long as the filtering and appropriate
-      configuration mechanisms discussed previously are applied diligently,
-      risk of the diversion of the traffic is significantly mitigated.<a href="#section-14-10" class="pilcrow">¶</a></p>
+      intended destination, BGPsec solutions (<span>[<a href="#RFC8205" class="cite xref">RFC8205</a>]</span> and
+      Origin Validation <span>[<a href="#RFC8210" class="cite xref">RFC8210</a>]</span>) may be extended in future to
+      work for non-Internet SAFIs (SAFIs other than 1).<a href="#section-14-10" class="pilcrow">¶</a></p>
+<p id="section-14-11">The restriction of the applicability of the BGP CT SAFI 76 to its
+      intended well-defined scope limits the likelihood of traffic diversions.
+      Furthermore, as long as the filtering and appropriate configuration
+      mechanisms discussed previously are applied diligently, risk of the
+      diversion of the traffic is eliminated.<a href="#section-14-11" class="pilcrow">¶</a></p>
 </section>
 </div>
 <section id="section-15">
@@ -4477,10 +4476,6 @@ Registry Name: BGP Transitive Extended Community Types
         <dd>
 <span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8174">https://www.rfc-editor.org/info/rfc8174</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="RFC8205">[RFC8205]</dt>
-        <dd>
-<span class="refAuthor">Lepinski, M., Ed.</span> and <span class="refAuthor">K. Sriram, Ed.</span>, <span class="refTitle">"BGPsec Protocol Specification"</span>, <span class="seriesInfo">RFC 8205</span>, <span class="seriesInfo">DOI 10.17487/RFC8205</span>, <time datetime="2017-09" class="refDate">September 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8205">https://www.rfc-editor.org/info/rfc8205</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="RFC8212">[RFC8212]</dt>
         <dd>
 <span class="refAuthor">Mauch, J.</span>, <span class="refAuthor">Snijders, J.</span>, and <span class="refAuthor">G. Hankins</span>, <span class="refTitle">"Default External BGP (EBGP) Route Propagation Behavior without Policies"</span>, <span class="seriesInfo">RFC 8212</span>, <span class="seriesInfo">DOI 10.17487/RFC8212</span>, <time datetime="2017-07" class="refDate">July 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8212">https://www.rfc-editor.org/info/rfc8212</a>&gt;</span>. </dd>
@@ -4510,7 +4505,7 @@ Registry Name: BGP Transitive Extended Community Types
 <dl class="references">
 <dt id="BGP-CT-SRv6">[BGP-CT-SRv6]</dt>
         <dd>
-<span class="refAuthor">Vairavakkalai, Ed.</span> and <span class="refAuthor">Venkataraman, Ed.</span>, <span class="refTitle">"BGP CT - Adaptation to SRv6 dataplane"</span>, <time datetime="2024-03-04" class="refDate">4 March 2024</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-idr-bgp-ct-srv6-03">https://tools.ietf.org/html/draft-ietf-idr-bgp-ct-srv6-03</a>&gt;</span>. </dd>
+<span class="refAuthor">Vairavakkalai, Ed.</span> and <span class="refAuthor">Venkataraman, Ed.</span>, <span class="refTitle">"BGP CT - Adaptation to SRv6 dataplane"</span>, <time datetime="2024-04-25" class="refDate">25 April 2024</time>, <span>&lt;<a href="https://tools.ietf.org/html/draft-ietf-idr-bgp-ct-srv6-05">https://tools.ietf.org/html/draft-ietf-idr-bgp-ct-srv6-05</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="BGP-CT-UPDATE-PACKING-TEST">[BGP-CT-UPDATE-PACKING-TEST]</dt>
         <dd>
@@ -4555,6 +4550,14 @@ Registry Name: BGP Transitive Extended Community Types
 <dt id="RFC6890">[RFC6890]</dt>
         <dd>
 <span class="refAuthor">Cotton, M.</span>, <span class="refAuthor">Vegoda, L.</span>, <span class="refAuthor">Bonica, R., Ed.</span>, and <span class="refAuthor">B. Haberman</span>, <span class="refTitle">"Special-Purpose IP Address Registries"</span>, <span class="seriesInfo">BCP 153</span>, <span class="seriesInfo">RFC 6890</span>, <span class="seriesInfo">DOI 10.17487/RFC6890</span>, <time datetime="2013-04" class="refDate">April 2013</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc6890">https://www.rfc-editor.org/info/rfc6890</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8205">[RFC8205]</dt>
+        <dd>
+<span class="refAuthor">Lepinski, M., Ed.</span> and <span class="refAuthor">K. Sriram, Ed.</span>, <span class="refTitle">"BGPsec Protocol Specification"</span>, <span class="seriesInfo">RFC 8205</span>, <span class="seriesInfo">DOI 10.17487/RFC8205</span>, <time datetime="2017-09" class="refDate">September 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8205">https://www.rfc-editor.org/info/rfc8205</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8210">[RFC8210]</dt>
+        <dd>
+<span class="refAuthor">Bush, R.</span> and <span class="refAuthor">R. Austein</span>, <span class="refTitle">"The Resource Public Key Infrastructure (RPKI) to Router Protocol, Version 1"</span>, <span class="seriesInfo">RFC 8210</span>, <span class="seriesInfo">DOI 10.17487/RFC8210</span>, <time datetime="2017-09" class="refDate">September 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8210">https://www.rfc-editor.org/info/rfc8210</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC9256">[RFC9256]</dt>
         <dd>
