@@ -1874,38 +1874,157 @@ li > p:last-of-type:only-child {
       illustration.<a href="#section-3-1" class="pilcrow">¶</a></p>
 <span id="name-bgp-ct-overview-with-exampl"></span><div id="ArchOv">
 <figure id="figure-1">
-        <div class="alignLeft art-text artwork" id="section-3-2.1">
-<pre>
-                INET     [RR21]--------------&lt;&lt;---[RR11]
-                Service  /                       /   | IP1, color:0:100
-       [PE21] &lt;&lt;--------+       | [SN11] &lt;&lt;-----+    | IP2, color:0:200
-          \       ___           |       \    ___     | IP3, 100:200
-           \    _(   )          |        \ _(   )    ^&lt;&lt;    ^^^^^^^^^^^
-            +--(     _)--[BN21]===[BN11]--(     _)--[PE11]    Mapping
-                (___)           |          (___)             Community
-                          Inter-AS-Link
-                                |
-      [.......AS2:SR-TE........]|[.......AS1:RSVP-TE......]
-       --------&gt;---------MPLS Forwarding---------&gt;--------
-
-          [PE21]--&lt;&lt;--[BN21]          [BN21]--&lt;&lt;--[BN11]
-     { &lt;&lt;-RD1:PE11(L3),PNH=BN21 | &lt;&lt;-RD1:PE11(L1),PNH=BN11 }
-     |   transport-target:0:100 |   transport-target:0:100 | BGP
-     |                          |                          | Classful
-     | &lt;&lt;-RD2:PE11(L4),PNH=BN21 | &lt;&lt;-RD2:PE11(L2),PNH=BN11 | Transport
-     {   transport-target:0:200 |   transport-target:0:200 }
-         ^^^^^^^^^^^^^^^^^^^^^^                        ^^^
-             Route Target &amp;                 Transport Class ID
-            Mapping Community
-
-  at SN11 and PE21,
-
-       Scheme1: color:0:100, (TRDB[TC-100], TRDB[TC-BE])
-       Scheme2: color:0:200, (TRDB[TC-200], TRDB[TC-BE])
-       Scheme3:     100:200, (TRDB[TC-100], TRDB[TC-200])
-       ^^^^^^^                ^^^^               ^^^^^^
-  Resolution Schemes   Transport Route DB    Transport Class
-</pre>
+        <div id="section-3-2.1">
+          <div class="alignLeft art-svg artwork" id="section-3-2.1.1">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="512" width="568" viewBox="0 0 568 512" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+              <path d="M 32,240 L 32,320" fill="none" stroke="black"></path>
+              <path d="M 248,64 L 248,96" fill="none" stroke="black"></path>
+              <path d="M 248,160 L 248,176" fill="none" stroke="black"></path>
+              <path d="M 256,240 L 256,304" fill="none" stroke="black"></path>
+              <path d="M 416,48 L 416,80" fill="none" stroke="black"></path>
+              <path d="M 480,240 L 480,320" fill="none" stroke="black"></path>
+              <path d="M 240,32 L 344,32" fill="none" stroke="black"></path>
+              <path d="M 360,32 L 384,32" fill="none" stroke="black"></path>
+              <path d="M 112,64 L 184,64" fill="none" stroke="black"></path>
+              <path d="M 328,64 L 376,64" fill="none" stroke="black"></path>
+              <path d="M 88,112 L 112,112" fill="none" stroke="black"></path>
+              <path d="M 168,112 L 184,112" fill="none" stroke="black"></path>
+              <path d="M 240,110 L 256,110" fill="none" stroke="black"></path>
+              <path d="M 240,114 L 256,114" fill="none" stroke="black"></path>
+              <path d="M 312,112 L 328,112" fill="none" stroke="black"></path>
+              <path d="M 384,112 L 400,112" fill="none" stroke="black"></path>
+              <path d="M 48,192 L 184,192" fill="none" stroke="black"></path>
+              <path d="M 312,192 L 448,192" fill="none" stroke="black"></path>
+              <path d="M 48,224 L 56,224" fill="none" stroke="black"></path>
+              <path d="M 144,224 L 160,224" fill="none" stroke="black"></path>
+              <path d="M 368,224 L 384,224" fill="none" stroke="black"></path>
+              <path d="M 456,224 L 464,224" fill="none" stroke="black"></path>
+              <path d="M 56,240 L 72,240" fill="none" stroke="black"></path>
+              <path d="M 280,240 L 296,240" fill="none" stroke="black"></path>
+              <path d="M 56,288 L 72,288" fill="none" stroke="black"></path>
+              <path d="M 280,288 L 296,288" fill="none" stroke="black"></path>
+              <path d="M 48,336 L 56,336" fill="none" stroke="black"></path>
+              <path d="M 456,336 L 464,336" fill="none" stroke="black"></path>
+              <path d="M 72,80 L 88,112" fill="none" stroke="black"></path>
+              <path d="M 312,80 L 324,104" fill="none" stroke="black"></path>
+              <path d="M 184,64 L 192,48" fill="none" stroke="black"></path>
+              <path d="M 376,64 L 384,48" fill="none" stroke="black"></path>
+              <path d="M 48,224 C 39.16936,224 32,231.16936 32,240" fill="none" stroke="black"></path>
+              <path d="M 464,224 C 472.83064,224 480,231.16936 480,240" fill="none" stroke="black"></path>
+              <path d="M 48,336 C 39.16936,336 32,328.83064 32,320" fill="none" stroke="black"></path>
+              <path d="M 464,336 C 472.83064,336 480,328.83064 480,320" fill="none" stroke="black"></path>
+              <path d="M 132,88 L 156,88" fill="none" stroke="black"></path>
+              <path d="M 348,88 L 372,88" fill="none" stroke="black"></path>
+              <path d="M 124,136 L 148,136" fill="none" stroke="black"></path>
+              <path d="M 340,136 L 364,136" fill="none" stroke="black"></path>
+              <polygon class="arrowhead" points="392,192 380,186.4 380,197.6" fill="black" transform="rotate(0,384,192)"></polygon>
+              <polygon class="arrowhead" points="376,224 364,218.4 364,229.6" fill="black" transform="rotate(180,368,224)"></polygon>
+              <polygon class="arrowhead" points="368,32 356,26.4 356,37.6" fill="black" transform="rotate(180,360,32)"></polygon>
+              <polygon class="arrowhead" points="336,64 324,58.4 324,69.6" fill="black" transform="rotate(180,328,64)"></polygon>
+              <polygon class="arrowhead" points="288,288 276,282.4 276,293.6" fill="black" transform="rotate(180,280,288)"></polygon>
+              <polygon class="arrowhead" points="288,240 276,234.4 276,245.6" fill="black" transform="rotate(180,280,240)"></polygon>
+              <polygon class="arrowhead" points="152,224 140,218.4 140,229.6" fill="black" transform="rotate(180,144,224)"></polygon>
+              <polygon class="arrowhead" points="120,192 108,186.4 108,197.6" fill="black" transform="rotate(0,112,192)"></polygon>
+              <polygon class="arrowhead" points="120,64 108,58.4 108,69.6" fill="black" transform="rotate(180,112,64)"></polygon>
+              <polygon class="arrowhead" points="64,288 52,282.4 52,293.6" fill="black" transform="rotate(180,56,288)"></polygon>
+              <polygon class="arrowhead" points="64,240 52,234.4 52,245.6" fill="black" transform="rotate(180,56,240)"></polygon>
+              <g class="text">
+                <text x="132" y="36">INET</text>
+                <text x="212" y="36">[RR21]</text>
+                <text x="352" y="36">&lt;</text>
+                <text x="412" y="36">[RR11]</text>
+                <text x="144" y="52">Service</text>
+                <text x="444" y="52">IP1,</text>
+                <text x="512" y="52">color:0:100</text>
+                <text x="68" y="68">[PE21]</text>
+                <text x="104" y="68">&lt;</text>
+                <text x="284" y="68">[SN11]</text>
+                <text x="320" y="68">&lt;</text>
+                <text x="444" y="68">IP2,</text>
+                <text x="512" y="68">color:0:200</text>
+                <text x="444" y="84">IP3,</text>
+                <text x="496" y="84">100:200</text>
+                <text x="124" y="100">_(</text>
+                <text x="160" y="100">)</text>
+                <text x="340" y="100">_(</text>
+                <text x="376" y="100">)</text>
+                <text x="424" y="100">^&lt;&lt;</text>
+                <text x="512" y="100">^^^^^^^^^^^</text>
+                <text x="160" y="116">_</text>
+                <text x="212" y="116">[BN21]</text>
+                <text x="284" y="116">[BN11]</text>
+                <text x="376" y="116">_</text>
+                <text x="428" y="116">[PE11]</text>
+                <text x="512" y="116">Mapping</text>
+                <text x="120" y="132">(</text>
+                <text x="152" y="132">)</text>
+                <text x="248" y="132">|</text>
+                <text x="336" y="132">(</text>
+                <text x="368" y="132">)</text>
+                <text x="512" y="132">Community</text>
+                <text x="248" y="148">Inter-AS-Link</text>
+                <text x="140" y="180">[.......AS2:SR-TE........]</text>
+                <text x="356" y="180">[.......AS1:RSVP-TE......]</text>
+                <text x="204" y="196">MPLS</text>
+                <text x="268" y="196">Forwarding</text>
+                <text x="104" y="228">[PE21]--&lt;</text>
+                <text x="188" y="228">[BN21]</text>
+                <text x="328" y="228">[BN21]--&lt;</text>
+                <text x="412" y="228">[BN11]</text>
+                <text x="48" y="244">&lt;</text>
+                <text x="160" y="244">RD1:PE11(L3),PNH=BN21</text>
+                <text x="272" y="244">&lt;</text>
+                <text x="384" y="244">RD1:PE11(L1),PNH=BN11</text>
+                <text x="148" y="260">transport-target:0:100</text>
+                <text x="372" y="260">transport-target:0:100</text>
+                <text x="504" y="260">BGP</text>
+                <text x="524" y="276">Classful</text>
+                <text x="48" y="292">&lt;</text>
+                <text x="160" y="292">RD2:PE11(L4),PNH=BN21</text>
+                <text x="272" y="292">&lt;</text>
+                <text x="384" y="292">RD2:PE11(L2),PNH=BN11</text>
+                <text x="528" y="292">Transport</text>
+                <text x="148" y="308">transport-target:0:200</text>
+                <text x="372" y="308">transport-target:0:200</text>
+                <text x="148" y="324">^^^^^^^^^^^^^^^^^^^^^^</text>
+                <text x="448" y="324">^^^</text>
+                <text x="112" y="340">Route</text>
+                <text x="164" y="340">Target</text>
+                <text x="200" y="340">&amp;</text>
+                <text x="328" y="340">Transport</text>
+                <text x="392" y="340">Class</text>
+                <text x="428" y="340">ID</text>
+                <text x="112" y="356">Mapping</text>
+                <text x="184" y="356">Community</text>
+                <text x="12" y="388">at</text>
+                <text x="44" y="388">SN11</text>
+                <text x="80" y="388">and</text>
+                <text x="120" y="388">PE21,</text>
+                <text x="76" y="420">Scheme1:</text>
+                <text x="164" y="420">color:0:100,</text>
+                <text x="276" y="420">(TRDB[TC-100],</text>
+                <text x="388" y="420">TRDB[TC-BE])</text>
+                <text x="76" y="436">Scheme2:</text>
+                <text x="164" y="436">color:0:200,</text>
+                <text x="276" y="436">(TRDB[TC-200],</text>
+                <text x="388" y="436">TRDB[TC-BE])</text>
+                <text x="76" y="452">Scheme3:</text>
+                <text x="180" y="452">100:200,</text>
+                <text x="276" y="452">(TRDB[TC-100],</text>
+                <text x="392" y="452">TRDB[TC-200])</text>
+                <text x="72" y="468">^^^^^^^</text>
+                <text x="244" y="468">^^^^</text>
+                <text x="404" y="468">^^^^^^</text>
+                <text x="44" y="484">Resolution</text>
+                <text x="120" y="484">Schemes</text>
+                <text x="208" y="484">Transport</text>
+                <text x="272" y="484">Route</text>
+                <text x="308" y="484">DB</text>
+                <text x="384" y="484">Transport</text>
+                <text x="448" y="484">Class</text>
+              </g>
+            </svg><a href="#section-3-2.1.1" class="pilcrow">¶</a>
+</div>
 </div>
 <figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
 <a href="#name-bgp-ct-overview-with-exampl" class="selfRef">BGP CT Overview with Example Topology</a>
@@ -2852,28 +2971,73 @@ li > p:last-of-type:only-child {
         </h3>
 <span id="name-multi-domain-bgp-ct-network"></span><div id="CTProcTopo">
 <figure id="figure-3">
-          <div class="alignLeft art-text artwork" id="section-8.1-1.1">
-<pre>
-                [RR26]      [RR27]                       [RR16]
-                 |            |                             |
-                 |            |                             |
-                 |+-[ABR23]--+|+--[ASBR21]---[ASBR13]-+|+--[PE11]--+
-                 ||          |||          `  /        |||          |
-[CE41]--[PE25]--[P28]       [P29]          `/        [P15]     [CE31]
-                 |           | |           /`         | |          |
-                 |           | |          /  `        | |          |
-                 |           | |         /    `       | |          |
-                 +--[ABR24]--+ +--[ASBR22]---[ASBR14]-+ +--[PE12]--+
-
-
-       |      AS2       |         AS2      |                   |
-   AS4 +    region-1    +      region-2    +       AS1         + AS3
-       |                |                  |                   |
-
-
-203.0.113.41  ------------ Traffic Direction ----------&gt;  203.0.113.31
-
-</pre>
+          <div id="section-8.1-1.1">
+            <div class="alignLeft art-svg artwork" id="section-8.1-1.1.1">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="320" width="584" viewBox="0 0 584 320" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                <path d="M 56,224 L 56,256" fill="none" stroke="black"></path>
+                <path d="M 128,48 L 128,96" fill="none" stroke="black"></path>
+                <path d="M 144,80 L 144,96" fill="none" stroke="black"></path>
+                <path d="M 144,128 L 144,176" fill="none" stroke="black"></path>
+                <path d="M 192,224 L 192,256" fill="none" stroke="black"></path>
+                <path d="M 240,80 L 240,96" fill="none" stroke="black"></path>
+                <path d="M 240,128 L 240,176" fill="none" stroke="black"></path>
+                <path d="M 256,48 L 256,96" fill="none" stroke="black"></path>
+                <path d="M 272,80 L 272,96" fill="none" stroke="black"></path>
+                <path d="M 272,128 L 272,176" fill="none" stroke="black"></path>
+                <path d="M 352,224 L 352,256" fill="none" stroke="black"></path>
+                <path d="M 448,80 L 448,96" fill="none" stroke="black"></path>
+                <path d="M 448,128 L 448,176" fill="none" stroke="black"></path>
+                <path d="M 464,48 L 464,96" fill="none" stroke="black"></path>
+                <path d="M 480,80 L 480,96" fill="none" stroke="black"></path>
+                <path d="M 480,128 L 480,176" fill="none" stroke="black"></path>
+                <path d="M 528,224 L 528,256" fill="none" stroke="black"></path>
+                <path d="M 568,80 L 568,96" fill="none" stroke="black"></path>
+                <path d="M 568,128 L 568,176" fill="none" stroke="black"></path>
+                <path d="M 144,80 L 160,80" fill="none" stroke="black"></path>
+                <path d="M 224,80 L 240,80" fill="none" stroke="black"></path>
+                <path d="M 272,80 L 288,80" fill="none" stroke="black"></path>
+                <path d="M 432,80 L 448,80" fill="none" stroke="black"></path>
+                <path d="M 480,80 L 496,80" fill="none" stroke="black"></path>
+                <path d="M 552,80 L 568,80" fill="none" stroke="black"></path>
+                <path d="M 144,176 L 160,176" fill="none" stroke="black"></path>
+                <path d="M 224,176 L 240,176" fill="none" stroke="black"></path>
+                <path d="M 272,176 L 288,176" fill="none" stroke="black"></path>
+                <path d="M 432,176 L 448,176" fill="none" stroke="black"></path>
+                <path d="M 480,176 L 496,176" fill="none" stroke="black"></path>
+                <path d="M 552,176 L 568,176" fill="none" stroke="black"></path>
+                <path d="M 120,288 L 192,288" fill="none" stroke="black"></path>
+                <path d="M 352,288 L 448,288" fill="none" stroke="black"></path>
+                <path d="M 344,96 L 376,160" fill="none" stroke="black"></path>
+                <path d="M 336,160 L 368,96" fill="none" stroke="black"></path>
+                <polygon class="arrowhead" points="456,288 444,282.4 444,293.6" fill="black" transform="rotate(0,448,288)"></polygon>
+                <g class="text">
+                  <text x="132" y="36">[RR26]</text>
+                  <text x="260" y="36">[RR27]</text>
+                  <text x="468" y="36">[RR16]</text>
+                  <text x="192" y="84">[ABR23]</text>
+                  <text x="360" y="84">[ASBR21]-[ASBR13]</text>
+                  <text x="524" y="84">[PE11]</text>
+                  <text x="80" y="116">[CE41]-[PE25]-[P28]</text>
+                  <text x="256" y="116">[P29]</text>
+                  <text x="464" y="116">[P15]</text>
+                  <text x="556" y="116">[CE31]</text>
+                  <text x="192" y="180">[ABR24]</text>
+                  <text x="360" y="180">[ASBR22]-[ASBR14]</text>
+                  <text x="524" y="180">[PE12]</text>
+                  <text x="120" y="228">AS2</text>
+                  <text x="280" y="228">AS2</text>
+                  <text x="32" y="244">AS4</text>
+                  <text x="124" y="244">region-1</text>
+                  <text x="276" y="244">region-2</text>
+                  <text x="424" y="244">AS1</text>
+                  <text x="568" y="244">AS3</text>
+                  <text x="52" y="292">203.0.113.41</text>
+                  <text x="232" y="292">Traffic</text>
+                  <text x="304" y="292">Direction</text>
+                  <text x="516" y="292">203.0.113.31</text>
+                </g>
+              </svg><a href="#section-8.1-1.1.1" class="pilcrow">¶</a>
+</div>
 </div>
 <figcaption><a href="#figure-3" class="selfRef">Figure 3</a>:
 <a href="#name-multi-domain-bgp-ct-network" class="selfRef">Multi-Domain BGP CT Network</a>
@@ -3454,30 +3618,142 @@ li > p:last-of-type:only-child {
         following <a href="#MultiDomainNetwork" class="auto internal xref">Figure 6</a>:<a href="#section-10.3-2" class="pilcrow">¶</a></p>
 <span id="name-managing-transport-route-vis"></span><div id="MultiDomainNetwork">
 <figure id="figure-6">
-          <div class="alignLeft art-text artwork" id="section-10.3-3.1">
-<pre>
-       |-----AS3-----|  |-------AS1------|
-
-                +--------ASBR11     +--PE11 (EP1)
-                |              \   /
-         +----ASBR31            (P)----PE12 (EP2)
-         |      |              / | \
-         |      +--------ASBR12  |  +--PE13 (EP3)
-         |                       |
-         |                       +-----PE14 (EP4)
-  PE31--(P)
-         |
-         |
-         |      +--------ASBR21     +--PE21 (EP5)
-         |      |              \   /
-         +----ASBR32            (P)----PE22 (EP6)
-                |              / | \
-                +--------ASBR22  |  +--PE22 (EP7)
-                                 |
-                                 +-----PE24 (EP8)
-
-       |-----AS3-----|  |-------AS2------|
-</pre>
+          <div id="section-10.3-3.1">
+            <div class="alignLeft art-svg artwork" id="section-10.3-3.1.1">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="400" width="432" viewBox="0 0 432 400" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                <path d="M 80,112 L 80,176" fill="none" stroke="black"></path>
+                <path d="M 80,208 L 80,272" fill="none" stroke="black"></path>
+                <path d="M 136,80 L 136,96" fill="none" stroke="black"></path>
+                <path d="M 136,128 L 136,144" fill="none" stroke="black"></path>
+                <path d="M 136,240 L 136,256" fill="none" stroke="black"></path>
+                <path d="M 136,288 L 136,304" fill="none" stroke="black"></path>
+                <path d="M 288,128 L 288,176" fill="none" stroke="black"></path>
+                <path d="M 288,288 L 288,336" fill="none" stroke="black"></path>
+                <path d="M 136,80 L 216,80" fill="none" stroke="black"></path>
+                <path d="M 312,80 L 328,80" fill="none" stroke="black"></path>
+                <path d="M 80,112 L 112,112" fill="none" stroke="black"></path>
+                <path d="M 304,112 L 328,112" fill="none" stroke="black"></path>
+                <path d="M 136,144 L 216,144" fill="none" stroke="black"></path>
+                <path d="M 312,144 L 328,144" fill="none" stroke="black"></path>
+                <path d="M 288,176 L 328,176" fill="none" stroke="black"></path>
+                <path d="M 136,240 L 216,240" fill="none" stroke="black"></path>
+                <path d="M 312,240 L 328,240" fill="none" stroke="black"></path>
+                <path d="M 80,272 L 112,272" fill="none" stroke="black"></path>
+                <path d="M 304,272 L 328,272" fill="none" stroke="black"></path>
+                <path d="M 136,304 L 216,304" fill="none" stroke="black"></path>
+                <path d="M 312,304 L 328,304" fill="none" stroke="black"></path>
+                <path d="M 288,336 L 328,336" fill="none" stroke="black"></path>
+                <path d="M 304,288 L 312,304" fill="none" stroke="black"></path>
+                <path d="M 304,128 L 312,144" fill="none" stroke="black"></path>
+                <path d="M 304,96 L 312,80" fill="none" stroke="black"></path>
+                <path d="M 304,256 L 312,240" fill="none" stroke="black"></path>
+                <g class="text">
+                  <text x="92" y="36">......................</text>
+                  <text x="312" y="36">.............................</text>
+                  <text x="8" y="52">:</text>
+                  <text x="96" y="52">AS3</text>
+                  <text x="176" y="52">:</text>
+                  <text x="200" y="52">:</text>
+                  <text x="312" y="52">AS1</text>
+                  <text x="424" y="52">:</text>
+                  <text x="8" y="68">:</text>
+                  <text x="176" y="68">:</text>
+                  <text x="200" y="68">:</text>
+                  <text x="424" y="68">:</text>
+                  <text x="8" y="84">:</text>
+                  <text x="244" y="84">ASBR11</text>
+                  <text x="348" y="84">PE11</text>
+                  <text x="392" y="84">(EP1)</text>
+                  <text x="424" y="84">:</text>
+                  <text x="8" y="100">:</text>
+                  <text x="176" y="100">:</text>
+                  <text x="200" y="100">:</text>
+                  <text x="272" y="100">\</text>
+                  <text x="424" y="100">:</text>
+                  <text x="8" y="116">:</text>
+                  <text x="140" y="116">ASBR31</text>
+                  <text x="176" y="116">:</text>
+                  <text x="200" y="116">:</text>
+                  <text x="288" y="116">[P]</text>
+                  <text x="348" y="116">PE12</text>
+                  <text x="392" y="116">(EP2)</text>
+                  <text x="424" y="116">:</text>
+                  <text x="8" y="132">:</text>
+                  <text x="176" y="132">:</text>
+                  <text x="200" y="132">:</text>
+                  <text x="272" y="132">/</text>
+                  <text x="424" y="132">:</text>
+                  <text x="8" y="148">:</text>
+                  <text x="244" y="148">ASBR12</text>
+                  <text x="348" y="148">PE13</text>
+                  <text x="392" y="148">(EP3)</text>
+                  <text x="424" y="148">:</text>
+                  <text x="8" y="164">:</text>
+                  <text x="176" y="164">:</text>
+                  <text x="200" y="164">:</text>
+                  <text x="424" y="164">:</text>
+                  <text x="8" y="180">:</text>
+                  <text x="176" y="180">:</text>
+                  <text x="200" y="180">:</text>
+                  <text x="348" y="180">PE14</text>
+                  <text x="392" y="180">(EP4)</text>
+                  <text x="424" y="180">:</text>
+                  <text x="8" y="196">:</text>
+                  <text x="56" y="196">PE31--[P]</text>
+                  <text x="176" y="196">:</text>
+                  <text x="200" y="196">:</text>
+                  <text x="424" y="196">:</text>
+                  <text x="8" y="212">:</text>
+                  <text x="176" y="212">:</text>
+                  <text x="200" y="212">:</text>
+                  <text x="424" y="212">:</text>
+                  <text x="8" y="228">:</text>
+                  <text x="176" y="228">:</text>
+                  <text x="200" y="228">:</text>
+                  <text x="424" y="228">:</text>
+                  <text x="8" y="244">:</text>
+                  <text x="244" y="244">ASBR21</text>
+                  <text x="348" y="244">PE21</text>
+                  <text x="392" y="244">(EP5)</text>
+                  <text x="424" y="244">:</text>
+                  <text x="8" y="260">:</text>
+                  <text x="176" y="260">:</text>
+                  <text x="200" y="260">:</text>
+                  <text x="272" y="260">\</text>
+                  <text x="424" y="260">:</text>
+                  <text x="8" y="276">:</text>
+                  <text x="140" y="276">ASBR32</text>
+                  <text x="176" y="276">:</text>
+                  <text x="200" y="276">:</text>
+                  <text x="288" y="276">[P]</text>
+                  <text x="348" y="276">PE22</text>
+                  <text x="392" y="276">(EP6)</text>
+                  <text x="424" y="276">:</text>
+                  <text x="8" y="292">:</text>
+                  <text x="176" y="292">:</text>
+                  <text x="200" y="292">:</text>
+                  <text x="272" y="292">/</text>
+                  <text x="424" y="292">:</text>
+                  <text x="8" y="308">:</text>
+                  <text x="244" y="308">ASBR22</text>
+                  <text x="348" y="308">PE22</text>
+                  <text x="392" y="308">(EP7)</text>
+                  <text x="424" y="308">:</text>
+                  <text x="8" y="324">:</text>
+                  <text x="176" y="324">:</text>
+                  <text x="200" y="324">:</text>
+                  <text x="424" y="324">:</text>
+                  <text x="8" y="340">:</text>
+                  <text x="176" y="340">:</text>
+                  <text x="200" y="340">:</text>
+                  <text x="348" y="340">PE24</text>
+                  <text x="392" y="340">(EP8)</text>
+                  <text x="424" y="340">:</text>
+                  <text x="92" y="356">......................</text>
+                  <text x="312" y="356">.............................</text>
+                </g>
+              </svg><a href="#section-10.3-3.1.1" class="pilcrow">¶</a>
+</div>
 </div>
 <figcaption><a href="#figure-6" class="selfRef">Figure 6</a>:
 <a href="#name-managing-transport-route-vis" class="selfRef">Managing Transport Route Visibility in Multi Domain Network</a>
@@ -3491,26 +3767,109 @@ li > p:last-of-type:only-child {
         Label allocation modes (PP-Mode).<a href="#section-10.3-4" class="pilcrow">¶</a></p>
 <span id="name-route-and-path-visibility-a"></span><div id="RDLabelVis">
 <figure id="figure-7">
-          <div class="alignLeft art-text artwork" id="section-10.3-5.1">
-<pre>
-      +--------+------+-------+-------+---------+---------+
-      |EP-type |Origin|RD-Mode|PP-Mode|CT Routes|CT Labels|
-      +--------+------+-------+-------+---------+---------+
-      |Unicast |SN    |Unique |TC,EP  |     8   |    8    |
-      |Unicast |SN    |Unique |RD,EP  |     8   |    8    |
-      |Unicast |BN    |Unique |TC,EP  |    16   |    8    |
-      |Unicast |BN    |Unique |RD,EP  |    16   |   16    |
-      |--------|------|-------|-------|---------|---------|
-      |Anycast |SN    |Unique |TC,EP  |     8   |    2    |
-      |Anycast |SN    |Unique |RD,EP  |     8   |    8    |
-      |Anycast |SN    |Same   |TC,EP  |     2   |    2    |
-      |Anycast |SN    |Same   |RD,EP  |     2   |    2    |
-      |Anycast |BN    |Unique |TC,EP  |     4   |    2    |
-      |Anycast |BN    |Unique |RD,EP  |     4   |    4    |
-      |Anycast |BN    |Same   |TC,EP  |     2   |    2    |
-      |Anycast |BN    |Same   |RD,EP  |     2   |    2    |
-      +--------+------+-------+-------+---------+---------+
-</pre>
+          <div id="section-10.3-5.1">
+            <div class="alignLeft art-svg artwork" id="section-10.3-5.1.1">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="320" width="432" viewBox="0 0 432 320" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                <path d="M 8,32 L 8,288" fill="none" stroke="black"></path>
+                <path d="M 80,32 L 80,288" fill="none" stroke="black"></path>
+                <path d="M 136,32 L 136,288" fill="none" stroke="black"></path>
+                <path d="M 200,32 L 200,288" fill="none" stroke="black"></path>
+                <path d="M 264,32 L 264,288" fill="none" stroke="black"></path>
+                <path d="M 344,32 L 344,288" fill="none" stroke="black"></path>
+                <path d="M 424,32 L 424,288" fill="none" stroke="black"></path>
+                <path d="M 8,32 L 424,32" fill="none" stroke="black"></path>
+                <path d="M 8,64 L 424,64" fill="none" stroke="black"></path>
+                <path d="M 16,144 L 72,144" fill="none" stroke="black"></path>
+                <path d="M 88,144 L 128,144" fill="none" stroke="black"></path>
+                <path d="M 144,144 L 192,144" fill="none" stroke="black"></path>
+                <path d="M 208,144 L 256,144" fill="none" stroke="black"></path>
+                <path d="M 272,144 L 336,144" fill="none" stroke="black"></path>
+                <path d="M 352,144 L 416,144" fill="none" stroke="black"></path>
+                <path d="M 8,288 L 424,288" fill="none" stroke="black"></path>
+                <g class="text">
+                  <text x="40" y="52">EP-type</text>
+                  <text x="108" y="52">Origin</text>
+                  <text x="168" y="52">RD-Mode</text>
+                  <text x="232" y="52">PP-Mode</text>
+                  <text x="276" y="52">CT</text>
+                  <text x="316" y="52">Routes</text>
+                  <text x="356" y="52">CT</text>
+                  <text x="396" y="52">Labels</text>
+                  <text x="40" y="84">Unicast</text>
+                  <text x="92" y="84">SN</text>
+                  <text x="164" y="84">Unique</text>
+                  <text x="224" y="84">TC,EP</text>
+                  <text x="312" y="84">8</text>
+                  <text x="384" y="84">8</text>
+                  <text x="40" y="100">Unicast</text>
+                  <text x="92" y="100">SN</text>
+                  <text x="164" y="100">Unique</text>
+                  <text x="224" y="100">RD,EP</text>
+                  <text x="312" y="100">8</text>
+                  <text x="384" y="100">8</text>
+                  <text x="40" y="116">Unicast</text>
+                  <text x="92" y="116">BN</text>
+                  <text x="164" y="116">Unique</text>
+                  <text x="224" y="116">TC,EP</text>
+                  <text x="308" y="116">16</text>
+                  <text x="384" y="116">8</text>
+                  <text x="40" y="132">Unicast</text>
+                  <text x="92" y="132">BN</text>
+                  <text x="164" y="132">Unique</text>
+                  <text x="224" y="132">RD,EP</text>
+                  <text x="308" y="132">16</text>
+                  <text x="380" y="132">16</text>
+                  <text x="40" y="164">Anycast</text>
+                  <text x="92" y="164">SN</text>
+                  <text x="164" y="164">Unique</text>
+                  <text x="224" y="164">TC,EP</text>
+                  <text x="312" y="164">8</text>
+                  <text x="384" y="164">2</text>
+                  <text x="40" y="180">Anycast</text>
+                  <text x="92" y="180">SN</text>
+                  <text x="164" y="180">Unique</text>
+                  <text x="224" y="180">RD,EP</text>
+                  <text x="312" y="180">8</text>
+                  <text x="384" y="180">8</text>
+                  <text x="40" y="196">Anycast</text>
+                  <text x="92" y="196">SN</text>
+                  <text x="156" y="196">Same</text>
+                  <text x="224" y="196">TC,EP</text>
+                  <text x="312" y="196">2</text>
+                  <text x="384" y="196">2</text>
+                  <text x="40" y="212">Anycast</text>
+                  <text x="92" y="212">SN</text>
+                  <text x="156" y="212">Same</text>
+                  <text x="224" y="212">RD,EP</text>
+                  <text x="312" y="212">2</text>
+                  <text x="384" y="212">2</text>
+                  <text x="40" y="228">Anycast</text>
+                  <text x="92" y="228">BN</text>
+                  <text x="164" y="228">Unique</text>
+                  <text x="224" y="228">TC,EP</text>
+                  <text x="312" y="228">4</text>
+                  <text x="384" y="228">2</text>
+                  <text x="40" y="244">Anycast</text>
+                  <text x="92" y="244">BN</text>
+                  <text x="164" y="244">Unique</text>
+                  <text x="224" y="244">RD,EP</text>
+                  <text x="312" y="244">4</text>
+                  <text x="384" y="244">4</text>
+                  <text x="40" y="260">Anycast</text>
+                  <text x="92" y="260">BN</text>
+                  <text x="156" y="260">Same</text>
+                  <text x="224" y="260">TC,EP</text>
+                  <text x="312" y="260">2</text>
+                  <text x="384" y="260">2</text>
+                  <text x="40" y="276">Anycast</text>
+                  <text x="92" y="276">BN</text>
+                  <text x="156" y="276">Same</text>
+                  <text x="224" y="276">RD,EP</text>
+                  <text x="312" y="276">2</text>
+                  <text x="384" y="276">2</text>
+                </g>
+              </svg><a href="#section-10.3-5.1.1" class="pilcrow">¶</a>
+</div>
 </div>
 <figcaption><a href="#figure-7" class="selfRef">Figure 7</a>:
 <a href="#name-route-and-path-visibility-a" class="selfRef">Route and Path Visibility at Ingress Node</a>
@@ -3619,19 +3978,89 @@ li > p:last-of-type:only-child {
           color values.<a href="#section-11.2.2-2" class="pilcrow">¶</a></p>
 <span id="name-transport-layer-with-non-ag"></span><div id="BGPCT_NON_AGREEING_COLOR_DOMAIN">
 <figure id="figure-8">
-            <div class="alignLeft art-text artwork" id="section-11.2.2-3.1">
-<pre>
-          Gold(100)              Gold(300)               Gold(500)
-
-
-     [PE11]----[ASBR11]---[ASBR21------[ASBR22]---[ASBR31-------[PE31]
-            AS1                     AS2                    AS3
-
-
-          Bronze(200)          Bronze(400)             Bronze(600)
-
-            ----------- Packet Forwarding Direction --------&gt;
-</pre>
+            <div id="section-11.2.2-3.1">
+              <div class="alignLeft art-svg artwork" id="section-11.2.2-3.1.1">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="240" width="552" viewBox="0 0 552 240" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                  <path d="M 56,32 L 136,32" fill="none" stroke="black"></path>
+                  <path d="M 392,32 L 456,32" fill="none" stroke="black"></path>
+                  <path d="M 72,96 L 96,96" fill="none" stroke="black"></path>
+                  <path d="M 168,96 L 184,96" fill="none" stroke="black"></path>
+                  <path d="M 248,96 L 288,96" fill="none" stroke="black"></path>
+                  <path d="M 360,96 L 376,96" fill="none" stroke="black"></path>
+                  <path d="M 440,96 L 488,96" fill="none" stroke="black"></path>
+                  <path d="M 72,208 L 152,208" fill="none" stroke="black"></path>
+                  <path d="M 392,208 L 456,208" fill="none" stroke="black"></path>
+                  <polygon class="arrowhead" points="464,208 452,202.4 452,213.6" fill="black" transform="rotate(0,456,208)"></polygon>
+                  <polygon class="arrowhead" points="64,32 52,26.4 52,37.6" fill="black" transform="rotate(180,56,32)"></polygon>
+                  <g class="text">
+                    <text x="176" y="36">Service</text>
+                    <text x="236" y="36">Routes</text>
+                    <text x="300" y="36">AFI/SAFI</text>
+                    <text x="360" y="36">1/128</text>
+                    <text x="88" y="52">.....................</text>
+                    <text x="272" y="52">.......................</text>
+                    <text x="460" y="52">......................</text>
+                    <text x="8" y="68">:</text>
+                    <text x="96" y="68">Gold(100)</text>
+                    <text x="168" y="68">:</text>
+                    <text x="184" y="68">:</text>
+                    <text x="280" y="68">Gold(300)</text>
+                    <text x="360" y="68">:</text>
+                    <text x="376" y="68">:</text>
+                    <text x="472" y="68">Gold(500)</text>
+                    <text x="544" y="68">:</text>
+                    <text x="8" y="84">:</text>
+                    <text x="168" y="84">:</text>
+                    <text x="184" y="84">:</text>
+                    <text x="360" y="84">:</text>
+                    <text x="376" y="84">:</text>
+                    <text x="544" y="84">:</text>
+                    <text x="8" y="100">:</text>
+                    <text x="44" y="100">[PE11]</text>
+                    <text x="132" y="100">[ASBR11]</text>
+                    <text x="216" y="100">[ASBR21</text>
+                    <text x="324" y="100">[ASBR22]</text>
+                    <text x="408" y="100">[ASBR31</text>
+                    <text x="520" y="100">[PE31]:</text>
+                    <text x="8" y="116">:</text>
+                    <text x="168" y="116">:</text>
+                    <text x="184" y="116">:</text>
+                    <text x="360" y="116">:</text>
+                    <text x="376" y="116">:</text>
+                    <text x="544" y="116">:</text>
+                    <text x="8" y="132">:</text>
+                    <text x="88" y="132">AS1</text>
+                    <text x="168" y="132">:</text>
+                    <text x="184" y="132">:</text>
+                    <text x="280" y="132">AS2</text>
+                    <text x="360" y="132">:</text>
+                    <text x="376" y="132">:</text>
+                    <text x="464" y="132">AS3</text>
+                    <text x="544" y="132">:</text>
+                    <text x="8" y="148">:</text>
+                    <text x="168" y="148">:</text>
+                    <text x="184" y="148">:</text>
+                    <text x="360" y="148">:</text>
+                    <text x="376" y="148">:</text>
+                    <text x="544" y="148">:</text>
+                    <text x="8" y="164">:</text>
+                    <text x="104" y="164">Bronze(200)</text>
+                    <text x="168" y="164">:</text>
+                    <text x="184" y="164">:</text>
+                    <text x="272" y="164">Bronze(400)</text>
+                    <text x="360" y="164">:</text>
+                    <text x="376" y="164">:</text>
+                    <text x="464" y="164">Bronze(600)</text>
+                    <text x="544" y="164">:</text>
+                    <text x="88" y="180">.....................</text>
+                    <text x="272" y="180">.......................</text>
+                    <text x="460" y="180">......................</text>
+                    <text x="188" y="212">Packet</text>
+                    <text x="260" y="212">Forwarding</text>
+                    <text x="344" y="212">Direction</text>
+                  </g>
+                </svg><a href="#section-11.2.2-3.1.1" class="pilcrow">¶</a>
+</div>
 </div>
 <figcaption><a href="#figure-8" class="selfRef">Figure 8</a>:
 <a href="#name-transport-layer-with-non-ag" class="selfRef">Transport Layer with Non-agreeing Color Domains</a>
@@ -3691,20 +4120,98 @@ li > p:last-of-type:only-child {
           otherwise.<a href="#section-11.2.3-2" class="pilcrow">¶</a></p>
 <span id="name-transport-layer-with-hetero"></span><div id="BGPCT_HETERO_COLOR_DOMAIN">
 <figure id="figure-9">
-            <div class="alignLeft art-text artwork" id="section-11.2.3-3.1">
-<pre>
-           &lt;---------- Service Routes AFI/SAFI 1/128 ---------------
-
-                                 Gold1(101)
-                                 Gold2(102)
-        Gold(100)                                     Gold(100)
-
-  [PE11]------[ASBR11]----[ASBR21------[ASBR22]----[ASBR31------[PE31]
-     Metro-Ingress                Core              Metro-Egress
-         AS1                       AS2                 AS3
-
-            ----------- Packet Forwarding Direction --------&gt;
-</pre>
+            <div id="section-11.2.3-3.1">
+              <div class="alignLeft art-svg artwork" id="section-11.2.3-3.1.1">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="256" width="552" viewBox="0 0 552 256" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                  <path d="M 72,32 L 152,32" fill="none" stroke="black"></path>
+                  <path d="M 408,32 L 472,32" fill="none" stroke="black"></path>
+                  <path d="M 72,112 L 96,112" fill="none" stroke="black"></path>
+                  <path d="M 168,112 L 184,112" fill="none" stroke="black"></path>
+                  <path d="M 248,112 L 288,112" fill="none" stroke="black"></path>
+                  <path d="M 360,112 L 376,112" fill="none" stroke="black"></path>
+                  <path d="M 440,112 L 488,112" fill="none" stroke="black"></path>
+                  <path d="M 72,224 L 152,224" fill="none" stroke="black"></path>
+                  <path d="M 392,224 L 456,224" fill="none" stroke="black"></path>
+                  <polygon class="arrowhead" points="464,224 452,218.4 452,229.6" fill="black" transform="rotate(0,456,224)"></polygon>
+                  <polygon class="arrowhead" points="80,32 68,26.4 68,37.6" fill="black" transform="rotate(180,72,32)"></polygon>
+                  <g class="text">
+                    <text x="192" y="36">Service</text>
+                    <text x="252" y="36">Routes</text>
+                    <text x="316" y="36">AFI/SAFI</text>
+                    <text x="376" y="36">1/128</text>
+                    <text x="88" y="52">.....................</text>
+                    <text x="272" y="52">.......................</text>
+                    <text x="460" y="52">......................</text>
+                    <text x="8" y="68">:</text>
+                    <text x="168" y="68">:</text>
+                    <text x="184" y="68">:</text>
+                    <text x="276" y="68">Gold1(101)</text>
+                    <text x="360" y="68">:</text>
+                    <text x="376" y="68">:</text>
+                    <text x="544" y="68">:</text>
+                    <text x="8" y="84">:</text>
+                    <text x="96" y="84">Gold(100)</text>
+                    <text x="168" y="84">:</text>
+                    <text x="184" y="84">:</text>
+                    <text x="276" y="84">Gold2(102)</text>
+                    <text x="360" y="84">:</text>
+                    <text x="376" y="84">:</text>
+                    <text x="464" y="84">Gold(100)</text>
+                    <text x="544" y="84">:</text>
+                    <text x="8" y="100">:</text>
+                    <text x="168" y="100">:</text>
+                    <text x="184" y="100">:</text>
+                    <text x="360" y="100">:</text>
+                    <text x="376" y="100">:</text>
+                    <text x="544" y="100">:</text>
+                    <text x="8" y="116">:</text>
+                    <text x="44" y="116">[PE11]</text>
+                    <text x="132" y="116">[ASBR11]</text>
+                    <text x="216" y="116">[ASBR21</text>
+                    <text x="324" y="116">[ASBR22]</text>
+                    <text x="408" y="116">[ASBR31</text>
+                    <text x="520" y="116">[PE31]:</text>
+                    <text x="8" y="132">:</text>
+                    <text x="168" y="132">:</text>
+                    <text x="184" y="132">:</text>
+                    <text x="360" y="132">:</text>
+                    <text x="376" y="132">:</text>
+                    <text x="544" y="132">:</text>
+                    <text x="8" y="148">:</text>
+                    <text x="56" y="148">Metro</text>
+                    <text x="112" y="148">Ingress</text>
+                    <text x="168" y="148">:</text>
+                    <text x="184" y="148">:</text>
+                    <text x="268" y="148">Core</text>
+                    <text x="360" y="148">:</text>
+                    <text x="376" y="148">:</text>
+                    <text x="432" y="148">Metro</text>
+                    <text x="484" y="148">Egress</text>
+                    <text x="544" y="148">:</text>
+                    <text x="8" y="164">:</text>
+                    <text x="168" y="164">:</text>
+                    <text x="184" y="164">:</text>
+                    <text x="360" y="164">:</text>
+                    <text x="376" y="164">:</text>
+                    <text x="544" y="164">:</text>
+                    <text x="8" y="180">:</text>
+                    <text x="88" y="180">AS1</text>
+                    <text x="168" y="180">:</text>
+                    <text x="184" y="180">:</text>
+                    <text x="280" y="180">AS2</text>
+                    <text x="360" y="180">:</text>
+                    <text x="376" y="180">:</text>
+                    <text x="464" y="180">AS3</text>
+                    <text x="544" y="180">:</text>
+                    <text x="88" y="196">.....................</text>
+                    <text x="272" y="196">.......................</text>
+                    <text x="460" y="196">......................</text>
+                    <text x="188" y="228">Packet</text>
+                    <text x="260" y="228">Forwarding</text>
+                    <text x="344" y="228">Direction</text>
+                  </g>
+                </svg><a href="#section-11.2.3-3.1.1" class="pilcrow">¶</a>
+</div>
 </div>
 <figcaption><a href="#figure-9" class="selfRef">Figure 9</a>:
 <a href="#name-transport-layer-with-hetero" class="selfRef">Transport Layer with Heterogenous Color Domains</a>
@@ -3815,18 +4322,70 @@ li > p:last-of-type:only-child {
           such domains to connect the BGP CT islands.<a href="#section-11.3.1-1" class="pilcrow">¶</a></p>
 <span id="name-bgp-ct-in-as1-and-as3-conne"></span><div id="BGPCTIsles">
 <figure id="figure-10">
-            <div class="alignLeft art-text artwork" id="section-11.3.1-2.1">
-<pre>
-              +----------EBGP Multihop CT-------------+
-              |                                       |
-        AS3   |                   AS2                 |   AS1
-  [PE31-----ASBR31]--------[ASBR22---ASBR21]-------[ASBR11---PE11]
-
-                 &lt;-EBGP LU-&gt;              &lt;-EBGP LU-&gt;
-   &lt;---IBGP CT---&gt;          &lt;---IBGP LU---&gt;        &lt;---IBGP CT---&gt;
-
-            ---------Packet Forwarding Direction---------&gt;
-</pre>
+            <div id="section-11.3.1-2.1">
+              <div class="alignLeft art-svg artwork" id="section-11.3.1-2.1.1">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="176" width="520" viewBox="0 0 520 176" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                  <path d="M 104,32 L 104,64" fill="none" stroke="black"></path>
+                  <path d="M 424,32 L 424,64" fill="none" stroke="black"></path>
+                  <path d="M 104,32 L 184,32" fill="none" stroke="black"></path>
+                  <path d="M 320,32 L 424,32" fill="none" stroke="black"></path>
+                  <path d="M 48,80 L 80,80" fill="none" stroke="black"></path>
+                  <path d="M 144,80 L 200,80" fill="none" stroke="black"></path>
+                  <path d="M 264,80 L 280,80" fill="none" stroke="black"></path>
+                  <path d="M 344,80 L 392,80" fill="none" stroke="black"></path>
+                  <path d="M 456,80 L 472,80" fill="none" stroke="black"></path>
+                  <path d="M 128,112 L 144,112" fill="none" stroke="black"></path>
+                  <path d="M 208,112 L 224,112" fill="none" stroke="black"></path>
+                  <path d="M 328,112 L 344,112" fill="none" stroke="black"></path>
+                  <path d="M 408,112 L 424,112" fill="none" stroke="black"></path>
+                  <path d="M 24,128 L 40,128" fill="none" stroke="black"></path>
+                  <path d="M 104,128 L 120,128" fill="none" stroke="black"></path>
+                  <path d="M 224,128 L 240,128" fill="none" stroke="black"></path>
+                  <path d="M 304,128 L 320,128" fill="none" stroke="black"></path>
+                  <path d="M 400,128 L 416,128" fill="none" stroke="black"></path>
+                  <path d="M 480,128 L 496,128" fill="none" stroke="black"></path>
+                  <path d="M 88,160 L 152,160" fill="none" stroke="black"></path>
+                  <path d="M 376,160 L 448,160" fill="none" stroke="black"></path>
+                  <polygon class="arrowhead" points="504,128 492,122.4 492,133.6" fill="black" transform="rotate(0,496,128)"></polygon>
+                  <polygon class="arrowhead" points="456,160 444,154.4 444,165.6" fill="black" transform="rotate(0,448,160)"></polygon>
+                  <polygon class="arrowhead" points="432,112 420,106.4 420,117.6" fill="black" transform="rotate(0,424,112)"></polygon>
+                  <polygon class="arrowhead" points="408,128 396,122.4 396,133.6" fill="black" transform="rotate(180,400,128)"></polygon>
+                  <polygon class="arrowhead" points="336,112 324,106.4 324,117.6" fill="black" transform="rotate(180,328,112)"></polygon>
+                  <polygon class="arrowhead" points="328,128 316,122.4 316,133.6" fill="black" transform="rotate(0,320,128)"></polygon>
+                  <polygon class="arrowhead" points="232,128 220,122.4 220,133.6" fill="black" transform="rotate(180,224,128)"></polygon>
+                  <polygon class="arrowhead" points="232,112 220,106.4 220,117.6" fill="black" transform="rotate(0,224,112)"></polygon>
+                  <polygon class="arrowhead" points="136,112 124,106.4 124,117.6" fill="black" transform="rotate(180,128,112)"></polygon>
+                  <polygon class="arrowhead" points="128,128 116,122.4 116,133.6" fill="black" transform="rotate(0,120,128)"></polygon>
+                  <polygon class="arrowhead" points="32,128 20,122.4 20,133.6" fill="black" transform="rotate(180,24,128)"></polygon>
+                  <g class="text">
+                    <text x="204" y="36">EBGP</text>
+                    <text x="260" y="36">Multihop</text>
+                    <text x="308" y="36">CT</text>
+                    <text x="64" y="68">AS3</text>
+                    <text x="272" y="68">AS2</text>
+                    <text x="464" y="68">AS1</text>
+                    <text x="24" y="84">[PE31</text>
+                    <text x="112" y="84">ASBR31]</text>
+                    <text x="232" y="84">[ASBR22</text>
+                    <text x="312" y="84">ASBR21]</text>
+                    <text x="424" y="84">[ASBR11</text>
+                    <text x="496" y="84">PE11]</text>
+                    <text x="164" y="116">EBGP</text>
+                    <text x="196" y="116">LU</text>
+                    <text x="364" y="116">EBGP</text>
+                    <text x="396" y="116">LU</text>
+                    <text x="60" y="132">IBGP</text>
+                    <text x="92" y="132">CT</text>
+                    <text x="260" y="132">IBGP</text>
+                    <text x="292" y="132">LU</text>
+                    <text x="436" y="132">IBGP</text>
+                    <text x="468" y="132">CT</text>
+                    <text x="180" y="164">Packet</text>
+                    <text x="252" y="164">Forwarding</text>
+                    <text x="336" y="164">Direction</text>
+                  </g>
+                </svg><a href="#section-11.3.1-2.1.1" class="pilcrow">¶</a>
+</div>
 </div>
 <figcaption><a href="#figure-10" class="selfRef">Figure 10</a>:
 <a href="#name-bgp-ct-in-as1-and-as3-conne" class="selfRef">BGP CT in AS1 and AS3 connected by BGP LU in AS2</a>
@@ -3946,17 +4505,43 @@ li > p:last-of-type:only-child {
             is carried using Prefix SID attribute as specified in <a href="#SRv6-Support" class="auto internal xref">Section 7.13</a>.<a href="#section-11.3.2.1-2" class="pilcrow">¶</a></p>
 <span id="name-bgp-ct-interop-between-mpls"></span><div id="BGPCT_MPLS_SRV6">
 <figure id="figure-11">
-              <div class="alignLeft art-text artwork" id="section-11.3.2.1-3.1">
-<pre>
-                      RR1--+
-                             \  +-------R2  [MPLS + SRv6]
-                              \ |
-                      R1--------P-------R3  [MPLS only]
-                [MPLS + SRv6]   |
-                                +-------R4  [SRv6 only]
-
-                  &lt;---- Bidirectional Traffic ----&gt;
-</pre>
+              <div id="section-11.3.2.1-3.1">
+                <div class="alignLeft art-svg artwork" id="section-11.3.2.1-3.1.1">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="176" width="336" viewBox="0 0 336 176" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                    <path d="M 136,48 L 136,64" fill="none" stroke="black"></path>
+                    <path d="M 136,96 L 136,112" fill="none" stroke="black"></path>
+                    <path d="M 80,32 L 104,32" fill="none" stroke="black"></path>
+                    <path d="M 136,48 L 192,48" fill="none" stroke="black"></path>
+                    <path d="M 72,80 L 128,80" fill="none" stroke="black"></path>
+                    <path d="M 144,80 L 192,80" fill="none" stroke="black"></path>
+                    <path d="M 136,112 L 192,112" fill="none" stroke="black"></path>
+                    <path d="M 24,144 L 56,144" fill="none" stroke="black"></path>
+                    <path d="M 248,144 L 288,144" fill="none" stroke="black"></path>
+                    <path d="M 104,32 L 124,72" fill="none" stroke="black"></path>
+                    <polygon class="arrowhead" points="296,144 284,138.4 284,149.6" fill="black" transform="rotate(0,288,144)"></polygon>
+                    <polygon class="arrowhead" points="32,144 20,138.4 20,149.6" fill="black" transform="rotate(180,24,144)"></polygon>
+                    <g class="text">
+                      <text x="64" y="36">RR1</text>
+                      <text x="204" y="52">R2</text>
+                      <text x="248" y="52">[MPLS</text>
+                      <text x="280" y="52">+</text>
+                      <text x="312" y="52">SRv6]</text>
+                      <text x="60" y="84">R1</text>
+                      <text x="136" y="84">P</text>
+                      <text x="204" y="84">R3</text>
+                      <text x="248" y="84">[MPLS</text>
+                      <text x="296" y="84">only]</text>
+                      <text x="24" y="100">[MPLS</text>
+                      <text x="56" y="100">+</text>
+                      <text x="88" y="100">SRv6]</text>
+                      <text x="204" y="116">R4</text>
+                      <text x="248" y="116">[SRv6</text>
+                      <text x="296" y="116">only]</text>
+                      <text x="120" y="148">Bidirectional</text>
+                      <text x="208" y="148">Traffic</text>
+                    </g>
+                  </svg><a href="#section-11.3.2.1-3.1.1" class="pilcrow">¶</a>
+</div>
 </div>
 <figcaption><a href="#figure-11" class="selfRef">Figure 11</a>:
 <a href="#name-bgp-ct-interop-between-mpls" class="selfRef">BGP CT Interop between MPLS and SRv6 nodes</a>
@@ -4010,20 +4595,46 @@ li > p:last-of-type:only-child {
             Encapsulation Extended Community as specified in <span>[<a href="#RFC9012" class="cite xref">RFC9012</a>]</span>.<a href="#section-11.3.2.2-2" class="pilcrow">¶</a></p>
 <span id="name-bgp-ct-interop-between-mpls-"></span><div id="BGPCT_MPLS_UDP">
 <figure id="figure-12">
-              <div class="alignLeft art-text artwork" id="section-11.3.2.2-3.1">
-<pre>
-                      RR1--+
-                             \  +-------R2  [MPLS + UDP]
-                              \ |
-                      R1--------P-------R3  [MPLS only]
-                [MPLS + UDP]    |
-                                +-------R4  [UDP only]
-
-                  &lt;---- Bidirectional Traffic ----&gt;
-</pre>
+              <div id="section-11.3.2.2-3.1">
+                <div class="alignLeft art-svg artwork" id="section-11.3.2.2-3.1.1">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="176" width="328" viewBox="0 0 328 176" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                    <path d="M 136,48 L 136,64" fill="none" stroke="black"></path>
+                    <path d="M 136,96 L 136,112" fill="none" stroke="black"></path>
+                    <path d="M 80,32 L 104,32" fill="none" stroke="black"></path>
+                    <path d="M 136,48 L 192,48" fill="none" stroke="black"></path>
+                    <path d="M 72,80 L 128,80" fill="none" stroke="black"></path>
+                    <path d="M 144,80 L 192,80" fill="none" stroke="black"></path>
+                    <path d="M 136,112 L 192,112" fill="none" stroke="black"></path>
+                    <path d="M 24,144 L 56,144" fill="none" stroke="black"></path>
+                    <path d="M 248,144 L 288,144" fill="none" stroke="black"></path>
+                    <path d="M 104,32 L 124,72" fill="none" stroke="black"></path>
+                    <polygon class="arrowhead" points="296,144 284,138.4 284,149.6" fill="black" transform="rotate(0,288,144)"></polygon>
+                    <polygon class="arrowhead" points="32,144 20,138.4 20,149.6" fill="black" transform="rotate(180,24,144)"></polygon>
+                    <g class="text">
+                      <text x="64" y="36">RR1</text>
+                      <text x="204" y="52">R2</text>
+                      <text x="248" y="52">[MPLS</text>
+                      <text x="280" y="52">+</text>
+                      <text x="308" y="52">UDP]</text>
+                      <text x="60" y="84">R1</text>
+                      <text x="136" y="84">P</text>
+                      <text x="204" y="84">R3</text>
+                      <text x="248" y="84">[MPLS</text>
+                      <text x="296" y="84">only]</text>
+                      <text x="24" y="100">[MPLS</text>
+                      <text x="56" y="100">+</text>
+                      <text x="84" y="100">UDP]</text>
+                      <text x="204" y="116">R4</text>
+                      <text x="244" y="116">[UDP</text>
+                      <text x="288" y="116">only]</text>
+                      <text x="120" y="148">Bidirectional</text>
+                      <text x="208" y="148">Traffic</text>
+                    </g>
+                  </svg><a href="#section-11.3.2.2-3.1.1" class="pilcrow">¶</a>
+</div>
 </div>
 <figcaption><a href="#figure-12" class="selfRef">Figure 12</a>:
-<a href="#name-bgp-ct-interop-between-mpls-" class="selfRef">BGP CT Interop between MPLS and UDP tunneling nodes.</a>
+<a href="#name-bgp-ct-interop-between-mpls-" class="selfRef">BGP CT Interop between MPLS and UDP tunneling nodes</a>
               </figcaption></figure>
 </div>
 <p id="section-11.3.2.2-4">In this example, R1 and R2 support forwarding both MPLS and UDP
@@ -4053,11 +4664,11 @@ li > p:last-of-type:only-child {
             CT route towards R4. The MPLS Label advertised by R1 will not be
             used by R4. UDP tunneled forwarding will be used between R1 and
             R4.<a href="#section-11.3.2.2-7" class="pilcrow">¶</a></p>
-<p id="section-11.3.2.2-8">Note in this example that R3 and R4 cannot communicate directly
-            with each other, because they don't support a common forwarding
-            technology. The BGP CT routes received at R3, R4 from each other
-            will remain unusable, due to incompatible forwarding
-            technology.<a href="#section-11.3.2.2-8" class="pilcrow">¶</a></p>
+<p id="section-11.3.2.2-8">Note in this example that R3 and R4 cannot communicate 
+            directly with each other, because they don't support a common 
+            forwarding technology. The BGP CT routes received at R3, R4 
+            from each otherwill remain unusable, due to incompatible 
+            forwarding technology.<a href="#section-11.3.2.2-8" class="pilcrow">¶</a></p>
 </section>
 </section>
 </section>
@@ -4090,14 +4701,37 @@ li > p:last-of-type:only-child {
         layer.<a href="#section-11.5-4" class="pilcrow">¶</a></p>
 <span id="name-example-topology-with-dscp-"></span><div id="Intent_PE_CE">
 <figure id="figure-13">
-          <div class="alignLeft art-text artwork" id="section-11.5-5.1">
-<pre>
-                                    ---Gold-----&gt;
-                      [CE1]-----[PE1]---[P]----[PE2]-----[CE2]
-                                    ---Bronze---&gt;
-                203.0.113.11                             203.0.113.22
-                          ----  Traffic direction ----&gt;
-</pre>
+          <div id="section-11.5-5.1">
+            <div class="alignLeft art-svg artwork" id="section-11.5-5.1.1">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="128" width="432" viewBox="0 0 432 128" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                <path d="M 152,32 L 176,32" fill="none" stroke="black"></path>
+                <path d="M 216,32 L 256,32" fill="none" stroke="black"></path>
+                <path d="M 96,48 L 128,48" fill="none" stroke="black"></path>
+                <path d="M 176,48 L 192,48" fill="none" stroke="black"></path>
+                <path d="M 224,48 L 248,48" fill="none" stroke="black"></path>
+                <path d="M 296,48 L 328,48" fill="none" stroke="black"></path>
+                <path d="M 152,64 L 168,64" fill="none" stroke="black"></path>
+                <path d="M 224,64 L 256,64" fill="none" stroke="black"></path>
+                <path d="M 96,96 L 128,96" fill="none" stroke="black"></path>
+                <path d="M 272,96 L 304,96" fill="none" stroke="black"></path>
+                <polygon class="arrowhead" points="312,96 300,90.4 300,101.6" fill="black" transform="rotate(0,304,96)"></polygon>
+                <polygon class="arrowhead" points="264,64 252,58.4 252,69.6" fill="black" transform="rotate(0,256,64)"></polygon>
+                <polygon class="arrowhead" points="264,32 252,26.4 252,37.6" fill="black" transform="rotate(0,256,32)"></polygon>
+                <g class="text">
+                  <text x="196" y="36">Gold</text>
+                  <text x="72" y="52">[CE1]</text>
+                  <text x="152" y="52">[PE1]</text>
+                  <text x="208" y="52">[P]</text>
+                  <text x="272" y="52">[PE2]</text>
+                  <text x="352" y="52">[CE2]</text>
+                  <text x="196" y="68">Bronze</text>
+                  <text x="52" y="84">203.0.113.11</text>
+                  <text x="380" y="84">203.0.113.22</text>
+                  <text x="160" y="100">Traffic</text>
+                  <text x="232" y="100">direction</text>
+                </g>
+              </svg><a href="#section-11.5-5.1.1" class="pilcrow">¶</a>
+</div>
 </div>
 <figcaption><a href="#figure-13" class="selfRef">Figure 13</a>:
 <a href="#name-example-topology-with-dscp-" class="selfRef">Example Topology with DSCP on PE-CE Links</a>
@@ -4437,8 +5071,8 @@ Registry Name: BGP Transitive Extended Community Types
       be extended in future to work for non-Internet SAFIs (SAFIs other than
       1).<a href="#section-14-10" class="pilcrow">¶</a></p>
 <p id="section-14-11">The restriction of the applicability of the BGP CT SAFI 76 to its
-      intended well-defined scope limits the likelihood of traffic
-      diversions.<a href="#section-14-11" class="pilcrow">¶</a></p>
+      intended well-defined scope and utilizing <span>[<a href="#RFC8212" class="cite xref">RFC8212</a>]</span> limits 
+      the likelihood of traffic diversions.<a href="#section-14-11" class="pilcrow">¶</a></p>
 </section>
 </div>
 <section id="section-15">
@@ -4685,22 +5319,43 @@ Registry Name: BGP Transitive Extended Community Types
           </h4>
 <span id="name-bgp-ct-intra-as"></span><div id="BGPCT_INTRA_AS">
 <figure id="figure-14">
-            <div class="alignLeft art-text artwork" id="appendix-B.1.1-1.1">
-<pre>
-                                    [RR11]
-                                     |
-                                     +
-              [CE21]---[PE11]-------[P1]------[PE12]------[CE31]
-                     |                             |
-                     +                             +
-                     |                             |
-               AS2               ...AS1...               AS3
-
-             203.0.113.21 ---- Traffic Direction ----&gt; 203.0.113.31
-</pre>
+            <div id="appendix-B.1.1-1.1">
+              <div class="alignLeft art-svg artwork" id="appendix-B.1.1-1.1.1">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="208" width="440" viewBox="0 0 440 208" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                  <path d="M 200,48 L 200,64" fill="none" stroke="black"></path>
+                  <path d="M 56,80 L 72,80" fill="none" stroke="black"></path>
+                  <path d="M 128,80 L 176,80" fill="none" stroke="black"></path>
+                  <path d="M 216,80 L 256,80" fill="none" stroke="black"></path>
+                  <path d="M 312,80 L 352,80" fill="none" stroke="black"></path>
+                  <path d="M 112,176 L 136,176" fill="none" stroke="black"></path>
+                  <path d="M 296,176 L 328,176" fill="none" stroke="black"></path>
+                  <polygon class="arrowhead" points="336,176 324,170.4 324,181.6" fill="black" transform="rotate(0,328,176)"></polygon>
+                  <g class="text">
+                    <text x="204" y="36">[RR11]</text>
+                    <text x="28" y="84">[CE21]</text>
+                    <text x="100" y="84">[PE11]</text>
+                    <text x="196" y="84">[P1]</text>
+                    <text x="284" y="84">[PE12]</text>
+                    <text x="380" y="84">[CE31]</text>
+                    <text x="72" y="116">:</text>
+                    <text x="312" y="116">:</text>
+                    <text x="32" y="132">AS2</text>
+                    <text x="72" y="132">:</text>
+                    <text x="200" y="132">...AS1...</text>
+                    <text x="312" y="132">:</text>
+                    <text x="368" y="132">AS3</text>
+                    <text x="72" y="148">:</text>
+                    <text x="312" y="148">:</text>
+                    <text x="52" y="180">203.0.113.21</text>
+                    <text x="176" y="180">Traffic</text>
+                    <text x="248" y="180">Direction</text>
+                    <text x="388" y="180">203.0.113.31</text>
+                  </g>
+                </svg><a href="#appendix-B.1.1-1.1.1" class="pilcrow">¶</a>
+</div>
 </div>
 <figcaption><a href="#figure-14" class="selfRef">Figure 14</a>:
-<a href="#name-bgp-ct-intra-as" class="selfRef">BGP CT Intra-AS.</a>
+<a href="#name-bgp-ct-intra-as" class="selfRef">BGP CT Intra-AS</a>
             </figcaption></figure>
 </div>
 <p id="appendix-B.1.1-2">This example in <a href="#BGPCT_INTRA_AS" class="auto internal xref">Figure 14</a> shows a provider
@@ -4782,22 +5437,55 @@ Registry Name: BGP Transitive Extended Community Types
           </h4>
 <span id="name-bgp-ct-inter-as-option-a"></span><div id="BGPCT_INTERAS_A">
 <figure id="figure-15">
-            <div class="alignLeft art-text artwork" id="appendix-B.2.1-1.1">
-<pre>
-                  [RR11]                        [RR21]
-                    |                             |
-                    +                             +
-[CE31]---[PE11]----[P1]----[ASBR11]---[ASBR21]---[P2]---[PE21]----[CE41]
-        |                           |                           |
-        +                           +                           +
-        |                           |                           |
-  AS3               ..AS1..               ..AS2..                  AS4
-
-203.0.113.31          ---- Traffic Direction ----&gt;         203.0.113.41
-</pre>
+            <div id="appendix-B.2.1-1.1">
+              <div class="alignLeft art-svg artwork" id="appendix-B.2.1-1.1.1">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="192" width="624" viewBox="0 0 624 192" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                  <path d="M 168,48 L 168,64" fill="none" stroke="black"></path>
+                  <path d="M 408,48 L 408,64" fill="none" stroke="black"></path>
+                  <path d="M 56,80 L 72,80" fill="none" stroke="black"></path>
+                  <path d="M 128,80 L 152,80" fill="none" stroke="black"></path>
+                  <path d="M 192,80 L 216,80" fill="none" stroke="black"></path>
+                  <path d="M 288,80 L 304,80" fill="none" stroke="black"></path>
+                  <path d="M 376,80 L 392,80" fill="none" stroke="black"></path>
+                  <path d="M 432,80 L 448,80" fill="none" stroke="black"></path>
+                  <path d="M 504,80 L 528,80" fill="none" stroke="black"></path>
+                  <path d="M 184,176 L 232,176" fill="none" stroke="black"></path>
+                  <path d="M 376,176 L 424,176" fill="none" stroke="black"></path>
+                  <polygon class="arrowhead" points="432,176 420,170.4 420,181.6" fill="black" transform="rotate(0,424,176)"></polygon>
+                  <g class="text">
+                    <text x="172" y="36">[RR11]</text>
+                    <text x="412" y="36">[RR21]</text>
+                    <text x="28" y="84">[CE31]</text>
+                    <text x="100" y="84">[PE11]</text>
+                    <text x="172" y="84">[P1]</text>
+                    <text x="252" y="84">[ASBR11]</text>
+                    <text x="340" y="84">[ASBR21]</text>
+                    <text x="412" y="84">[P2]</text>
+                    <text x="476" y="84">[PE21]</text>
+                    <text x="556" y="84">[CE41]</text>
+                    <text x="72" y="116">:</text>
+                    <text x="296" y="116">:</text>
+                    <text x="512" y="116">:</text>
+                    <text x="32" y="132">AS3</text>
+                    <text x="72" y="132">:</text>
+                    <text x="200" y="132">..AS1..</text>
+                    <text x="296" y="132">:</text>
+                    <text x="376" y="132">..AS2..</text>
+                    <text x="512" y="132">:</text>
+                    <text x="560" y="132">AS4</text>
+                    <text x="72" y="148">:</text>
+                    <text x="296" y="148">:</text>
+                    <text x="512" y="148">:</text>
+                    <text x="52" y="180">203.0.113.31</text>
+                    <text x="264" y="180">Traffic</text>
+                    <text x="336" y="180">Direction</text>
+                    <text x="572" y="180">203.0.113.41</text>
+                  </g>
+                </svg><a href="#appendix-B.2.1-1.1.1" class="pilcrow">¶</a>
+</div>
 </div>
 <figcaption><a href="#figure-15" class="selfRef">Figure 15</a>:
-<a href="#name-bgp-ct-inter-as-option-a" class="selfRef">BGP CT Inter-AS option A.</a>
+<a href="#name-bgp-ct-inter-as-option-a" class="selfRef">BGP CT Inter-AS option A</a>
             </figcaption></figure>
 </div>
 <p id="appendix-B.2.1-2">This example in <a href="#BGPCT_INTERAS_A" class="auto internal xref">Figure 15</a> shows two
@@ -4904,22 +5592,55 @@ Registry Name: BGP Transitive Extended Community Types
           </h4>
 <span id="name-bgp-ct-inter-as-option-b"></span><div id="BGPCT_INTERAS_B">
 <figure id="figure-16">
-            <div class="alignLeft art-text artwork" id="appendix-B.3.1-1.1">
-<pre>
-                  [RR13]                        [RR23]
-                    |                             |
-                    +                             +
-[CE31]---[PE11]----[P1]----[ASBR12]---[ASBR21]---[P2]---[PE22]----[CE41]
-        |                           |                           |
-        +                           +                           +
-        |                           |                           |
-  AS3               ..AS1..               ..AS2..                  AS4
-
-203.0.113.31          ---- Traffic Direction ----&gt;         203.0.113.41
-</pre>
+            <div id="appendix-B.3.1-1.1">
+              <div class="alignLeft art-svg artwork" id="appendix-B.3.1-1.1.1">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="192" width="584" viewBox="0 0 584 192" class="diagram" text-anchor="middle" font-family="monospace" font-size="13px" stroke-linecap="round">
+                  <path d="M 168,48 L 168,64" fill="none" stroke="black"></path>
+                  <path d="M 408,48 L 408,64" fill="none" stroke="black"></path>
+                  <path d="M 56,80 L 72,80" fill="none" stroke="black"></path>
+                  <path d="M 128,80 L 152,80" fill="none" stroke="black"></path>
+                  <path d="M 192,80 L 216,80" fill="none" stroke="black"></path>
+                  <path d="M 288,80 L 304,80" fill="none" stroke="black"></path>
+                  <path d="M 376,80 L 392,80" fill="none" stroke="black"></path>
+                  <path d="M 432,80 L 448,80" fill="none" stroke="black"></path>
+                  <path d="M 504,80 L 528,80" fill="none" stroke="black"></path>
+                  <path d="M 184,176 L 208,176" fill="none" stroke="black"></path>
+                  <path d="M 368,176 L 400,176" fill="none" stroke="black"></path>
+                  <polygon class="arrowhead" points="408,176 396,170.4 396,181.6" fill="black" transform="rotate(0,400,176)"></polygon>
+                  <g class="text">
+                    <text x="172" y="36">[RR13]</text>
+                    <text x="412" y="36">[RR23]</text>
+                    <text x="28" y="84">[CE31]</text>
+                    <text x="100" y="84">[PE11]</text>
+                    <text x="172" y="84">[P1]</text>
+                    <text x="252" y="84">[ASBR12]</text>
+                    <text x="340" y="84">[ASBR21]</text>
+                    <text x="412" y="84">[P2]</text>
+                    <text x="476" y="84">[PE22]</text>
+                    <text x="556" y="84">[CE41]</text>
+                    <text x="72" y="116">:</text>
+                    <text x="296" y="116">:</text>
+                    <text x="512" y="116">:</text>
+                    <text x="32" y="132">AS3</text>
+                    <text x="72" y="132">:</text>
+                    <text x="200" y="132">..AS1..</text>
+                    <text x="296" y="132">:</text>
+                    <text x="376" y="132">..AS2..</text>
+                    <text x="512" y="132">:</text>
+                    <text x="560" y="132">AS4</text>
+                    <text x="72" y="148">:</text>
+                    <text x="296" y="148">:</text>
+                    <text x="512" y="148">:</text>
+                    <text x="52" y="180">203.0.113.31</text>
+                    <text x="248" y="180">Traffic</text>
+                    <text x="320" y="180">Direction</text>
+                    <text x="524" y="180">203.0.113.41</text>
+                  </g>
+                </svg><a href="#appendix-B.3.1-1.1.1" class="pilcrow">¶</a>
+</div>
 </div>
 <figcaption><a href="#figure-16" class="selfRef">Figure 16</a>:
-<a href="#name-bgp-ct-inter-as-option-b" class="selfRef">BGP CT Inter-AS option B.</a>
+<a href="#name-bgp-ct-inter-as-option-b" class="selfRef">BGP CT Inter-AS option B</a>
             </figcaption></figure>
 </div>
 <p id="appendix-B.3.1-2">This example in <a href="#BGPCT_INTERAS_B" class="auto internal xref">Figure 16</a> shows two
@@ -5283,6 +6004,8 @@ Registry Name: BGP Transitive Extended Community Types
 <p id="appendix-F-2">The decision to not reuse SAFI 128 and create a new address-family to
       carry these transport-routes was based on suggestion made by Richard
       Roberts and Krzysztof Szarkowicz.<a href="#appendix-F-2" class="pilcrow">¶</a></p>
+<p id="appendix-F-3">Thanks to John Scudder for showing us with example how the Figures 
+      can be enhanced using SVG format.<a href="#appendix-F-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="authors-addresses">
