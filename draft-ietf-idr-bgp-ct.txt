@@ -5,11 +5,11 @@
 Network Working Group                              K. Vairavakkalai, Ed.
 Internet-Draft                                      N. Venkataraman, Ed.
 Intended status: Experimental                     Juniper Networks, Inc.
-Expires: 27 July 2025                                    23 January 2025
+Expires: 28 July 2025                                    24 January 2025
 
 
                      BGP Classful Transport Planes
-                        draft-ietf-idr-bgp-ct-34
+                        draft-ietf-idr-bgp-ct-35
 
 Abstract
 
@@ -53,7 +53,7 @@ Status of This Memo
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                  [Page 1]
+Vairavakkalai & VenkataramExpires 28 July 2025                  [Page 1]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -68,7 +68,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 27 July 2025.
+   This Internet-Draft will expire on 28 July 2025.
 
 Copyright Notice
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                  [Page 2]
+Vairavakkalai & VenkataramExpires 28 July 2025                  [Page 2]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -165,7 +165,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                  [Page 3]
+Vairavakkalai & VenkataramExpires 28 July 2025                  [Page 3]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -221,7 +221,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                  [Page 4]
+Vairavakkalai & VenkataramExpires 28 July 2025                  [Page 4]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -277,7 +277,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                  [Page 5]
+Vairavakkalai & VenkataramExpires 28 July 2025                  [Page 5]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -333,7 +333,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                  [Page 6]
+Vairavakkalai & VenkataramExpires 28 July 2025                  [Page 6]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -389,7 +389,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                  [Page 7]
+Vairavakkalai & VenkataramExpires 28 July 2025                  [Page 7]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -445,7 +445,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                  [Page 8]
+Vairavakkalai & VenkataramExpires 28 July 2025                  [Page 8]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -501,7 +501,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                  [Page 9]
+Vairavakkalai & VenkataramExpires 28 July 2025                  [Page 9]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -518,25 +518,25 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
    illustration.
 
                  INET     [RR21]--------------<<---[RR11]
-                 Service  /                       /   | IP1, color:0:100
-       [PE21] <<--------+        : [SN11] <<-----+    ^ IP2, color:0:200
-           \       ___           :       \    ___     | IP3, 100:200
-            \    _(   )          :        \ _(   )    |      ^^^^^^^^^^^
-             +--(     _)--[BN21]===[BN11]--(     _)--[PE11]    Mapping
-                 (___)           :          (___)             Community
+                 Service  /                       /    | IP1,color:0:100
+       [PE21] <<--------+        : [SN11] <<-----+     ^ IP2,color:0:200
+         \        ___            :        \     ___    | IP3,100:200
+          \     _(  .)           :         \  _(  .)   |     ^^^^^^^^^^^
+           +-- (     _) --[BN21]===[BN11]--- (     _)-[PE11]  Mapping
+                (.__)            :            (.__)          Community
                            Inter-AS-Link
                                  :
        [.......AS2:SR-TE........]:[.......AS1:RSVP-TE......]
-              ---------Traffic Direction----------->
+               ---------Traffic Direction----------->
 
-       .-- [PE21]--<<--[BN21]          [BN21]--<<--[BN11]  --.
+      .-- [PE21]--<<--[BN21]          [BN21]--<<--[BN11]  --.
      | <<--RD1:PE11(L3),PNH=BN21 : <<--RD1:PE11(L1),PNH=BN11 |
      |   transport-target:0:100  :   transport-target:0:100  | BGP
      |                           :                           | Classful
      | <<--RD2:PE11(L4),PNH=BN21 : <<--RD2:PE11(L2),PNH=BN11 | Transport
      |   transport-target:0:200  :   transport-target:0:200  |
      |   ^^^^^^^^^^^^^^^^^^^^^^                         ^^^  |
-       '--    Route Target &           Transport Class ID  --'
+      '--     Route Target &            Transport Class ID--'
              Mapping Community
 
    at SN11 and PE21,
@@ -547,7 +547,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
        ^^^^^^^                ^^^^               ^^^^^^
    Resolution Schemes   Transport Route DB    Transport Class
 
-            Figure 1: BGP CT Overview with Example Topology
+              Figure 1: BGP CT Overview with Example Topology
 
    To achieve end-to-end "Intent Driven Service Mapping", this document
    defines the following constructs and BGP extensions:
@@ -557,7 +557,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 10]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 10]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -613,7 +613,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 11]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 11]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -669,7 +669,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 12]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 12]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -725,7 +725,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 13]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 13]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -781,7 +781,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 14]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 14]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -837,7 +837,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 15]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 15]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -893,7 +893,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 16]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 16]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -939,30 +939,30 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
    [RFC9012], or the "transport-target:0:100" described in Section 4.3
    in this document.
 
-   In a properly configured network, the order of communities on an
-   overlay route does not affect the determining of Mapping community in
-   effect.
-
    The first community on the overlay route that matches a Mapping
    Community of a locally configured Resolution Scheme is considered the
    effective Mapping Community for the route.  The Resolution Scheme
-
-
-
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 17]
-
-Internet-Draft        BGP Classful Transport Planes         January 2025
-
-
    thus found is used when resolving the route's PNH.  If a route
    contains more than one Mapping Community, it indicates that the route
    considers these distinct Mapping Communities as equivalent in Intent.
 
+
+
+
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 17]
+
+Internet-Draft        BGP Classful Transport Planes         January 2025
+
+
    If more than one distinct Mapping Communities on an overlay route map
    to distinct Resolution Schemes with dissimilar Intents at a receiving
-   node, it is considered a configuration error.  Operators should avoid
-   such configuration errors when attaching mapping communities on
-   overlay routes.
+   node, it is considered a configuration error.
+
+   Since a route can carry multiple communities, but only a single
+   Resolution Scheme can be in effect for the route on any given router,
+   it is incumbent on the operator to ensure that communities attached
+   to a route will map to the desired Resolution Scheme at each point in
+   the network.
 
    It should be noted that the Mapping Community role does not require
    applying Route Target Constrain procedures specified in RFC 4684.
@@ -1005,7 +1005,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 18]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 18]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -1061,7 +1061,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 19]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 19]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -1117,7 +1117,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 20]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 20]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -1173,7 +1173,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 21]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 21]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -1229,7 +1229,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 22]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 22]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -1285,7 +1285,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 23]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 23]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -1341,7 +1341,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 24]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 24]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -1397,7 +1397,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 25]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 25]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -1453,7 +1453,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 26]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 26]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -1509,7 +1509,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 27]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 27]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -1565,7 +1565,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 28]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 28]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -1582,9 +1582,9 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
                  +--[ABR24]--+   +--[ASBR22]-[ASBR14]--+   +--[PE12]--+
 
 
-      |      AS2       |         AS2       |                     |
-  AS4 +    region-1    +      region-2     +       AS1           +   AS3
-      |                |                   |                     |
+      :      AS2       :         AS2       :                     :
+  AS4 :    region-1    :      region-2     :       AS1           :   AS3
+      :                :                   :                     :
 
 203.0.113.41  ---------- Traffic Direction ------------>  203.0.113.31
 
@@ -1621,7 +1621,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 29]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 29]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -1677,7 +1677,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 30]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 30]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -1733,7 +1733,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 31]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 31]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -1789,7 +1789,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 32]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 32]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -1845,7 +1845,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 33]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 33]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -1901,7 +1901,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 34]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 34]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -1957,7 +1957,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 35]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 35]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -2013,7 +2013,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 36]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 36]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -2069,7 +2069,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 37]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 37]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -2125,7 +2125,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 38]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 38]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -2181,7 +2181,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 39]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 39]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -2237,7 +2237,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 40]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 40]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -2293,7 +2293,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 41]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 41]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -2349,7 +2349,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 42]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 42]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -2405,7 +2405,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 43]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 43]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -2444,7 +2444,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
     :      Bronze(200)  : :     Bronze(400)     : :     Bronze(600)    :
     ..................... ....................... ......................
 
-                ----------- Traffic Direction -------->
+               ----------- Traffic Direction -------->
 
         Figure 8: Transport Layer with Non-agreeing Color Domains
 
@@ -2461,7 +2461,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 44]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 44]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -2517,7 +2517,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 45]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 45]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -2533,7 +2533,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
     :        AS1        : :          AS2        : :         AS3        :
     ..................... ....................... ......................
 
-              ----------- Traffic Direction -------->
+                  ----------- Traffic Direction -------->
 
         Figure 9: Transport Layer with Heterogenous Color Domains
 
@@ -2573,7 +2573,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 46]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 46]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -2629,7 +2629,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 47]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 47]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -2685,7 +2685,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 48]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 48]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -2741,7 +2741,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 49]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 49]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -2797,7 +2797,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 50]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 50]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -2853,7 +2853,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 51]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 51]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -2909,7 +2909,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 52]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 52]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -2930,8 +2930,8 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
    Note in this example that R3 and R4 cannot communicate directly with
    each other, because they don't support a common forwarding
-   technology.  The BGP CT routes received at R3, R4 from each otherwill
-   remain unusable, due to incompatible forwarding technology.
+   technology.  The BGP CT routes received at R3, R4 from each other
+   will remain unusable, due to incompatible forwarding technology.
 
 11.4.  MTU Considerations
 
@@ -2965,7 +2965,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 53]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 53]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -3021,7 +3021,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 54]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 54]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -3077,7 +3077,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 55]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 55]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -3133,7 +3133,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 56]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 56]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -3189,7 +3189,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 57]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 57]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -3245,7 +3245,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 58]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 58]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -3301,7 +3301,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 59]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 59]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -3357,7 +3357,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 60]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 60]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -3413,7 +3413,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 61]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 61]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -3469,7 +3469,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 62]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 62]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -3499,9 +3499,9 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
               gredler-idr-bgplu-epe-15>.
 
    [FLOWSPEC-REDIR-IP]
-              Simpson, Ed., "BGP Flow-Spec Redirect to IP Action", 2
-              February 2015, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-idr-flowspec-redirect-ip-02>.
+              Simpson, Ed., "BGP Flow-Spec Redirect to IP Action", 8
+              September 2024, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-idr-flowspec-redirect-ip-03>.
 
    [INTAREA-TUNNELS]
               Touch, Ed. and Townsley, Ed., "IP Tunnels in the Internet
@@ -3518,23 +3518,23 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
               2024, <https://datatracker.ietf.org/doc/html/draft-ietf-
               idr-multinexthop-attribute-00>.
 
-   [MPLS-NS]  Vairavakkalai, Ed., "BGP signalled MPLS namespaces", 20
-              October 2023, <https://datatracker.ietf.org/doc/html/
-              draft-kaliraj-bess-bgp-sig-private-mpls-labels-07>.
+   [MPLS-NS]  Vairavakkalai, Ed., "BGP signalled MPLS namespaces", 9
+              November 2024, <https://datatracker.ietf.org/doc/html/
+              draft-kaliraj-bess-bgp-sig-private-mpls-labels-09>.
 
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 63]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 63]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
    [PCEP-RSVP-COLOR]
               Rajagopalan, Ed. and Pavan. Beeram, Ed., "Path Computation
-              Element Protocol(PCEP) Extension for RSVP Color", 22
+              Element Protocol(PCEP) Extension for RSVP Color", 23
               January 2025, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-pce-pcep-color-07>.
+              draft-ietf-pce-pcep-color-08>.
 
    [PCEP-SRPOLICY]
               Koldychev, Ed., Sivabalan, Ed., and Barth, Ed., "PCEP
@@ -3581,7 +3581,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 64]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 64]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -3637,7 +3637,7 @@ B.1.1.  Topology
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 65]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 65]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -3693,7 +3693,7 @@ B.1.2.  Transport Layer
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 66]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 66]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -3749,7 +3749,7 @@ B.2.1.  Topology
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 67]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 67]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -3805,7 +3805,7 @@ B.2.3.  Service Layer route exchange
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 68]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 68]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -3861,7 +3861,7 @@ B.3.1.  Topology
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 69]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 69]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -3917,7 +3917,7 @@ B.3.2.  Transport Layer
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 70]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 70]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -3973,7 +3973,7 @@ B.3.3.  Service Layer route exchange
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 71]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 71]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -4029,7 +4029,7 @@ Appendix C.  Why reuse RFC 8277 and RFC 4364?
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 72]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 72]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -4085,7 +4085,7 @@ Appendix D.  Scaling using BGP MPLS Namespaces
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 73]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 73]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -4141,7 +4141,7 @@ Other Contributors
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 74]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 74]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -4197,7 +4197,7 @@ Internet-Draft        BGP Classful Transport Planes         January 2025
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 75]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 75]
 
 Internet-Draft        BGP Classful Transport Planes         January 2025
 
@@ -4253,4 +4253,4 @@ Authors' Addresses
 
 
 
-Vairavakkalai & VenkataramExpires 27 July 2025                 [Page 76]
+Vairavakkalai & VenkataramExpires 28 July 2025                 [Page 76]
