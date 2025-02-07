@@ -10,7 +10,7 @@
 <?rfc inline="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="exp" docName="draft-ietf-idr-bgp-ct-35" ipr="trust200902">
+<rfc category="exp" docName="draft-ietf-idr-bgp-ct-36" ipr="trust200902">
   <front>
     <title abbrev="BGP Classful Transport Planes">BGP Classful Transport
     Planes</title>
@@ -57,7 +57,7 @@
       </address>
     </author>
 
-    <date day="24" month="1" year="2025"/>
+    <date day="06" month="2" year="2025"/>
 
     <abstract>
       <t>This document specifies a mechanism referred to as "Intent Driven
@@ -77,7 +77,7 @@
       that may span multiple cooperating administrative domains. These domains
       may be administered either by the same provider or by closely
       coordinating providers. A new BGP address family that leverages RFC 4364
-      ("BGP/MPLS IP Virtual Private Networks (VPNs)" procedures and follows
+      ("BGP/MPLS IP Virtual Private Networks (VPNs)") procedures and follows
       RFC 8277 ("Using BGP to Bind MPLS Labels to Address Prefixes") NLRI
       encoding is defined to enable each advertised underlay route to be
       identified by its class. This new address family is called "BGP Classful
@@ -103,10 +103,14 @@
       (e.g., Provider Edge (PE) nodes), that can either be in the same domain
       or across different domains.</t>
 
-      <t>This document realizes "Intent" as defined in <xref target="RFC9315">
-      </xref> and prescribes constructs and procedures that enable provider
-      networks to be able to forward service traffic based on service specific
-      intent, end-to-end across service endpoints.</t>
+      <t><xref target="RFC9315"></xref> defines "Intent" as, "A set of operational
+      goals (that a network should meet) and outcomes (that a network is supposed
+      to deliver) defined in a declarative manner without specifying how to achieve
+      or implement them.".</t>
+      <t> This document prescribes constructs and procedures
+      to realize "Intent", and enable provider networks to be able to forward
+      service traffic based on service specific intent, end-to-end across service
+      endpoints.</t>
 
       <t>The mechanisms described in this document achieve "Intent Driven
       Service Mapping" between any pair of service endpoints by:<list>
@@ -125,13 +129,12 @@
       Option C (Section 10, <xref target="RFC4364"/>) style deployments in
       provider networks.</t>
 
-      <t>Provider networks that are deployed using such styles provision
-      intra-domain transport tunnels between a pair of endpoints, typically a
-      service node or a border node, that service traffic use to traverse that
-      domain. These tunnels are signaled using various tunneling protocols
-      depending on the forwarding architecture used in the domain, which can
-      be Multiprotocol Label Switching (MPLS), Internet Protocol version 4
-      (IPv4), or Internet Protocol version 6 (IPv6).</t>
+      <t>Such networks provision intra-domain transport tunnels between a pair
+      of endpoints, typically a service node or a border node that service traffic
+      traverses through. These tunnels are signaled using various tunneling
+      protocols depending on the forwarding architecture used in the domain,
+      which can be Multiprotocol Label Switching (MPLS), Internet Protocol
+      version 4 (IPv4), or Internet Protocol version 6 (IPv6).</t>
 
       <t>The mechanisms defined in this document allow different tunneling
       technologies to become Transport Class aware. These can be applied
@@ -145,13 +148,13 @@
       target="BGP-CT-SRv6"/>, and an overview is provided in <xref
       target="SRv6-Support"/>.</t>
 
-      <t>Customers need to be able to signal desired Intent to the network,
+      <t>Customers need to be able to express desired Intent to the network,
       and the network needs to have constructs able to enact the customer's
       intent. The network constructs defined in this document are used to
       classify and group these intra-domain tunnels based on various
       characteristics, like TE characteristics (e.g., low latency), into
       identifiable classes that can pass "intent-aware" traffic. These
-      constructs enable services to express their intent to use one or more
+      constructs enable services to signal their intent to use one or more
       identifiable classes, and mechanisms to selectively map traffic onto
       "intent-aware" tunnels for these classes.</t>
 
@@ -287,11 +290,6 @@
         including things like import policy application, resolution scheme
         selection and next hop resolution.</t>
 
-        <t>Intent: As defined in Section 2 of <xref target="RFC9315"/>, "A set
-        of operational goals (that a network should meet) and outcomes (that a
-        network is supposed to deliver) defined in a declarative manner
-        without specifying how to achieve or implement them." .</t>
-
         <t>Mapping Community: Any BGP CCA (e.g., Community, Extended
         Community) on an overlay route that maps to a Resolution Scheme. For
         example, color:0:100, transport-target:0:100.</t>
@@ -306,6 +304,9 @@
         <t>Service Family: A BGP address family used for advertising routes
         for destinations in "data traffic". For example, AFI/SAFIs 1/1 or
         1/128.</t>
+
+        <t>Service Prefix: A destinations in "data traffic". Routes to these
+        prefixes are carried in a Service family.</t>
 
         <t>Transport Family: A BGP address family used for advertising
         tunnels, which are in turn used by service routes for resolution. For
@@ -552,9 +553,11 @@ Resolution Schemes   Transport Route DB    Transport Class
           address family to extend these constructs to adjacent domains.</t>
         </list><xref target="ArchOv"/> depicts the intra-AS and inter-AS
       application of these constructs. It uses an example topology of Inter-AS
-      option C network with two AS domains. AS1 is a RSVP-TE network, AS2 is a
-      SRTE network. BGP CT and BGP LU are transport layer families used
-      between the two AS domains. IP1, IP2, IP3 are service prefixes
+      option C (Section 10, <xref target="RFC4364"/>) network with two AS domains,
+      each domain contains tunnels serving two Intents, viz. low-latency denoted
+      by color 100 and high-bandwidth denoted by color 200. AS1 is a RSVP-TE
+      network, AS2 is a SRTE network. BGP CT and BGP LU are transport families
+      used between the two AS domains. IP1, IP2, IP3 are service prefixes
       (AFI/SAFI: 1/1) behind egress PE11.</t>
 
       <t>PE21, SN11 and PE11 are the SNs in this network. SN11 is an ingress
@@ -582,8 +585,8 @@ Resolution Schemes   Transport Route DB    Transport Class
       (AFI/SAFIs 1/4 or 2/4). It disseminates "Transport Class" information
       for the transport prefixes across the participating domains while
       avoiding the need of per-transport class loopback. This is not possible
-      with BGP LU without using per-color loopback. This makes the end-to-end
-      network a "Transport Class" aware tunneled network.</t>
+      with BGP LU without using per-color loopback. This dissemination makes
+      the end-to-end network a "Transport Class" aware tunneled network.</t>
 
       <t>In <xref target="ArchOv"/>, BGP CT routes are originated at BN11 in
       AS1 with next hop "self" towards BN21 in AS2 to extend available RSVP-TE
@@ -591,16 +594,15 @@ Resolution Schemes   Transport Route DB    Transport Class
       routes with next hop "self" to PE21, which resolves the BGP CT routes
       over SRTE tunnels belonging to same transport class.</t>
 
-      <t>Overlay routes carry an indication of the desired Transport Classes
-      using a BGP community which assumes the role of a "Mapping Community". A
-      Resolution Scheme is identified by its "Mapping Community", where its
-      configuration can either be auto-generated based on TC ID or done
-      manually.</t>
+      <t>Resolution Schemes are used to realize Intent. A Resolution Scheme is
+      identified by its "Mapping Community", and contains an ordered list of
+      transport classes. Overlay routes carry an indication of the desired
+      Intent using a BGP community which assumes the role of "Mapping Community".</t>
 
-      <t>The following text illustrates CT architecture having the property of
-      providing tiered fallback options at a per-route granularity. In <xref
-      target="ArchOv"/>, the Resolution Schemes are shown and the following
-      next hop resolutions are done by SN11 and PE21 for the service routes of
+      <t>The following text illustrates how CT architecture provides tiered
+      fallback options at a per-route granularity. <xref target="ArchOv"/>,
+      shows the Resolution Schemes in use, which make the following next hop
+      resolution happen at SN11 and PE21 for the service routes of
       prefixes IP1, IP2, IP3:<list>
           <t>Resolve IP1 next hop over available tunnels in TRDB for Transport
           Class 100 with fallback to TRDB for best effort.</t>
@@ -754,12 +756,12 @@ Resolution Schemes   Transport Route DB    Transport Class
         <figure anchor="TCExtCom" suppress-title="false"
                 title="&quot;Transport Class&quot; Route Target Extended Community">
           <artwork align="left" xml:space="preserve">
- 0                   1                   2                   3    
+ 0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|   Type= 0xa   | SubType= 0x02 |            Reserved           |    
+|   Type= 0xa   | SubType= 0x02 |            Reserved           |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                     Transport Class ID                        |    
+|                     Transport Class ID                        |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
  Type: 1-octet field MUST be set to 0xa to indicate 'Transport Class'.
@@ -776,10 +778,12 @@ Resolution Schemes   Transport Route DB    Transport Class
     This field contains the "Transport Class" identifier,
     which is an unsigned 32-bit integer.
 
-    This document reserves the Transport class ID value 0 to 
+    This document reserves the Transport class ID value 0 to
     represent "Best Effort Transport Class ID".</artwork>
         </figure>
 
+        <t>A Transport Class Route Target Extended community with TC ID 100
+        is denoted as "transport-target:0:100".</t>
 
         <t>The VPN route import/export mechanisms specified in <xref
         target="RFC4364">BGP/MPLS IP VPNs</xref> and the Constrained Route
@@ -888,9 +892,9 @@ Resolution Schemes   Transport Route DB    Transport Class
         map to distinct Resolution Schemes with dissimilar Intents at a
         receiving node, it is considered a configuration error.</t>
 
-        <t>Since a route can carry multiple communities, but only a single 
+        <t>Since a route can carry multiple communities, but only a single
         Resolution Scheme can be in effect for the route on any given router,
-        it is incumbent on the operator to ensure that communities attached 
+        it is incumbent on the operator to ensure that communities attached
         to a route will map to the desired Resolution Scheme at each point
         in the network.</t>
 
@@ -1962,15 +1966,15 @@ Resolution Schemes   Transport Route DB    Transport Class
     <figure anchor="FECv4" suppress-title="false"
             title="Classful Transport IPv4 FEC">
       <artwork align="left" xml:space="preserve">
-       0                   1                   2                   3    
+       0                   1                   2                   3
        0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |                      Route Distinguisher                      |    
-      |                          (8 octets)                           |    
+      |                      Route Distinguisher                      |
+      |                          (8 octets)                           |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |                         IPv4 prefix                           |    
+      |                         IPv4 prefix                           |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      | Prefix Length |                 Must Be Zero                  |    
+      | Prefix Length |                 Must Be Zero                  |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
         </figure>
@@ -1985,18 +1989,18 @@ Resolution Schemes   Transport Route DB    Transport Class
         <figure anchor="FECv6" suppress-title="false"
                 title="Classful Transport IPv6 FEC">
           <artwork align="left" xml:space="preserve">
-       0                   1                   2                   3    
+       0                   1                   2                   3
        0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |                      Route Distinguisher                      |    
-      |                          (8 octets)                           |    
+      |                      Route Distinguisher                      |
+      |                          (8 octets)                           |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      |                         IPv6 prefix                           |    
-      |                                                               |    
-      |                                                               |    
-      |                                                               |    
+      |                         IPv6 prefix                           |
+      |                                                               |
+      |                                                               |
+      |                                                               |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-      | Prefix Length |                 Must Be Zero                  |    
+      | Prefix Length |                 Must Be Zero                  |
       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </artwork>
         </figure>
@@ -2523,7 +2527,7 @@ Resolution Schemes   Transport Route DB    Transport Class
 </g>
 </svg>
 </artwork><artwork  type="ascii-art"><![CDATA[
-        
+
   ..................... ....................... ......................
   :      Gold(100)    : :       Gold(300)     : :       Gold(500)    :
   :                   : :                     : :                    :
@@ -2679,7 +2683,7 @@ Resolution Schemes   Transport Route DB    Transport Class
 </g>
 </svg>
 </artwork><artwork  type="ascii-art"><![CDATA[
-          
+
   ..................... ....................... ......................
   :                   : :      Gold1(101)     : :                    :
   :      Gold(100)    : :      Gold2(102)     : :      Gold(100)     :
@@ -3160,10 +3164,10 @@ Resolution Schemes   Transport Route DB    Transport Class
             used by R4. UDP tunneled forwarding will be used between R1 and
             R4.</t>
 
-            <t>Note in this example that R3 and R4 cannot communicate 
-            directly with each other, because they don't support a common 
-            forwarding technology. The BGP CT routes received at R3, R4 
-            from each other will remain unusable, due to incompatible 
+            <t>Note in this example that R3 and R4 cannot communicate
+            directly with each other, because they don't support a common
+            forwarding technology. The BGP CT routes received at R3, R4
+            from each other will remain unusable, due to incompatible
             forwarding technology.</t>
           </section>
         </section>
@@ -3471,7 +3475,7 @@ Registry Name: BGP Transitive Extended Community Types
  Reference: This document.
 
  Registration Procedure(s)
-       
+
   Value                 Registration Procedure
  -----------------+--------------------------------
    0                IETF Review
@@ -3546,7 +3550,7 @@ Registry Name: BGP Transitive Extended Community Types
       1).</t>
 
       <t>The restriction of the applicability of the BGP CT SAFI 76 to its
-      intended well-defined scope and utilizing <xref target="RFC8212"/> limits 
+      intended well-defined scope and utilizing <xref target="RFC8212"/> limits
       the likelihood of traffic diversions.</t>
     </section>
   </middle>
@@ -4323,7 +4327,7 @@ Registry Name: BGP Transitive Extended Community Types
         originates BGP LU route for it's loopback, with some attributes like
         community identifying the originating node or region, and AIGP
         attribute. These attributes may be unique per egress node, thus do not
-        help with update packing in transport layer family routes.</t>
+        help with update packing in transport family routes.</t>
       </section>
     </section>
 
@@ -4576,7 +4580,7 @@ Registry Name: BGP Transitive Extended Community Types
       carry these transport-routes was based on suggestion made by Richard
       Roberts and Krzysztof Szarkowicz.</t>
 
-      <t>Thanks to John Scudder for showing us with example how the Figures 
+      <t>Thanks to John Scudder for showing us with example how the Figures
       can be enhanced using SVG format.</t>
     </section>
   </back>

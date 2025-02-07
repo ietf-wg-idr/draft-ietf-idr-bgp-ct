@@ -24,14 +24,14 @@
       that may span multiple cooperating administrative domains. These domains
       may be administered either by the same provider or by closely
       coordinating providers. A new BGP address family that leverages RFC 4364
-      ("BGP/MPLS IP Virtual Private Networks (VPNs)" procedures and follows
+      ("BGP/MPLS IP Virtual Private Networks (VPNs)") procedures and follows
       RFC 8277 ("Using BGP to Bind MPLS Labels to Address Prefixes") NLRI
       encoding is defined to enable each advertised underlay route to be
       identified by its class. This new address family is called "BGP Classful
       Transport", a.k.a., BGP CT. 
     ' name="description">
 <meta content="xml2rfc 3.18.2" name="generator">
-<meta content="draft-ietf-idr-bgp-ct-35" name="ietf.draft">
+<meta content="draft-ietf-idr-bgp-ct-36" name="ietf.draft">
 <!-- Generator version information:
   xml2rfc 3.18.2
     Python 3.9.6
@@ -1225,11 +1225,11 @@ li > p:last-of-type:only-child {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">BGP Classful Transport Planes</td>
-<td class="right">January 2025</td>
+<td class="right">February 2025</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Vairavakkalai &amp; Venkataraman</td>
-<td class="center">Expires 28 July 2025</td>
+<td class="center">Expires 10 August 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1239,15 +1239,15 @@ li > p:last-of-type:only-child {
 <dt class="label-workgroup">Workgroup:</dt>
 <dd class="workgroup">Network Working Group</dd>
 <dt class="label-internet-draft">Internet-Draft:</dt>
-<dd class="internet-draft">draft-ietf-idr-bgp-ct-35</dd>
+<dd class="internet-draft">draft-ietf-idr-bgp-ct-36</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-01-24" class="published">24 January 2025</time>
+<time datetime="2025-02-06" class="published">6 February 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Experimental</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-07-28">28 July 2025</time></dd>
+<dd class="expires"><time datetime="2025-08-10">10 August 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1282,7 +1282,7 @@ li > p:last-of-type:only-child {
       that may span multiple cooperating administrative domains. These domains
       may be administered either by the same provider or by closely
       coordinating providers. A new BGP address family that leverages RFC 4364
-      ("BGP/MPLS IP Virtual Private Networks (VPNs)" procedures and follows
+      ("BGP/MPLS IP Virtual Private Networks (VPNs)") procedures and follows
       RFC 8277 ("Using BGP to Bind MPLS Labels to Address Prefixes") NLRI
       encoding is defined to enable each advertised underlay route to be
       identified by its class. This new address family is called "BGP Classful
@@ -1318,7 +1318,7 @@ li > p:last-of-type:only-child {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 28 July 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 10 August 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1684,37 +1684,41 @@ li > p:last-of-type:only-child {
       services are provisioned between different pairs of service endpoints
       (e.g., Provider Edge (PE) nodes), that can either be in the same domain
       or across different domains.<a href="#section-1-1" class="pilcrow">¶</a></p>
-<p id="section-1-2">This document realizes "Intent" as defined in <span>[<a href="#RFC9315" class="cite xref">RFC9315</a>]</span> and prescribes constructs and procedures that enable provider
-      networks to be able to forward service traffic based on service specific
-      intent, end-to-end across service endpoints.<a href="#section-1-2" class="pilcrow">¶</a></p>
-<p id="section-1-3">The mechanisms described in this document achieve "Intent Driven
-      Service Mapping" between any pair of service endpoints by:<a href="#section-1-3" class="pilcrow">¶</a></p>
+<p id="section-1-2"><span>[<a href="#RFC9315" class="cite xref">RFC9315</a>]</span> defines "Intent" as, "A set of operational
+      goals (that a network should meet) and outcomes (that a network is supposed
+      to deliver) defined in a declarative manner without specifying how to achieve
+      or implement them.".<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-3"> This document prescribes constructs and procedures
+      to realize "Intent", and enable provider networks to be able to forward
+      service traffic based on service specific intent, end-to-end across service
+      endpoints.<a href="#section-1-3" class="pilcrow">¶</a></p>
+<p id="section-1-4">The mechanisms described in this document achieve "Intent Driven
+      Service Mapping" between any pair of service endpoints by:<a href="#section-1-4" class="pilcrow">¶</a></p>
 <ul class="normal ulEmpty">
-<li class="normal ulEmpty" id="section-1-4.1">
-          <p id="section-1-4.1.1">Provisioning end-to-end "intent-aware" paths using BGP. For
-          example, low latency path, best effort path.<a href="#section-1-4.1.1" class="pilcrow">¶</a></p>
+<li class="normal ulEmpty" id="section-1-5.1">
+          <p id="section-1-5.1.1">Provisioning end-to-end "intent-aware" paths using BGP. For
+          example, low latency path, best effort path.<a href="#section-1-5.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal ulEmpty" id="section-1-4.2">
-          <p id="section-1-4.2.1">Expressing a desired intent. For example, use low latency path
-          with fallback to the best effort path.<a href="#section-1-4.2.1" class="pilcrow">¶</a></p>
+        <li class="normal ulEmpty" id="section-1-5.2">
+          <p id="section-1-5.2.1">Expressing a desired intent. For example, use low latency path
+          with fallback to the best effort path.<a href="#section-1-5.2.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal ulEmpty" id="section-1-4.3">
-          <p id="section-1-4.3.1">Forwarding service traffic "only" using end-to-end "intent-aware"
-          paths honoring that desired intent.<a href="#section-1-4.3.1" class="pilcrow">¶</a></p>
+        <li class="normal ulEmpty" id="section-1-5.3">
+          <p id="section-1-5.3.1">Forwarding service traffic "only" using end-to-end "intent-aware"
+          paths honoring that desired intent.<a href="#section-1-5.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="section-1-5">The constructs and procedures defined in this document apply equally
+<p id="section-1-6">The constructs and procedures defined in this document apply equally
       to intra-AS as well as inter-AS (a.k.a. multi-AS) Option A, Option B and
       Option C (Section 10, <span>[<a href="#RFC4364" class="cite xref">RFC4364</a>]</span>) style deployments in
-      provider networks.<a href="#section-1-5" class="pilcrow">¶</a></p>
-<p id="section-1-6">Provider networks that are deployed using such styles provision
-      intra-domain transport tunnels between a pair of endpoints, typically a
-      service node or a border node, that service traffic use to traverse that
-      domain. These tunnels are signaled using various tunneling protocols
-      depending on the forwarding architecture used in the domain, which can
-      be Multiprotocol Label Switching (MPLS), Internet Protocol version 4
-      (IPv4), or Internet Protocol version 6 (IPv6).<a href="#section-1-6" class="pilcrow">¶</a></p>
-<p id="section-1-7">The mechanisms defined in this document allow different tunneling
+      provider networks.<a href="#section-1-6" class="pilcrow">¶</a></p>
+<p id="section-1-7">Such networks provision intra-domain transport tunnels between a pair
+      of endpoints, typically a service node or a border node that service traffic
+      traverses through. These tunnels are signaled using various tunneling
+      protocols depending on the forwarding architecture used in the domain,
+      which can be Multiprotocol Label Switching (MPLS), Internet Protocol
+      version 4 (IPv4), or Internet Protocol version 6 (IPv6).<a href="#section-1-7" class="pilcrow">¶</a></p>
+<p id="section-1-8">The mechanisms defined in this document allow different tunneling
       technologies to become Transport Class aware. These can be applied
       homogeneously to intra-domain tunneling technologies used in existing
       brownfield networks as well as new greenfield networks. For clarity,
@@ -1722,27 +1726,27 @@ li > p:last-of-type:only-child {
       examples only MPLS Traffic Engineering (TE) examples are described.
       Other tunneling technologies have been described in detail in other
       documents and only an overview has been included in this document. For
-      example, the details for Segment Routing (SRv6) are provided in <span>[<a href="#BGP-CT-SRv6" class="cite xref">BGP-CT-SRv6</a>]</span>, and an overview is provided in <a href="#SRv6-Support" class="auto internal xref">Section 7.13</a>.<a href="#section-1-7" class="pilcrow">¶</a></p>
-<p id="section-1-8">Customers need to be able to signal desired Intent to the network,
+      example, the details for Segment Routing (SRv6) are provided in <span>[<a href="#BGP-CT-SRv6" class="cite xref">BGP-CT-SRv6</a>]</span>, and an overview is provided in <a href="#SRv6-Support" class="auto internal xref">Section 7.13</a>.<a href="#section-1-8" class="pilcrow">¶</a></p>
+<p id="section-1-9">Customers need to be able to express desired Intent to the network,
       and the network needs to have constructs able to enact the customer's
       intent. The network constructs defined in this document are used to
       classify and group these intra-domain tunnels based on various
       characteristics, like TE characteristics (e.g., low latency), into
       identifiable classes that can pass "intent-aware" traffic. These
-      constructs enable services to express their intent to use one or more
+      constructs enable services to signal their intent to use one or more
       identifiable classes, and mechanisms to selectively map traffic onto
-      "intent-aware" tunnels for these classes.<a href="#section-1-8" class="pilcrow">¶</a></p>
-<p id="section-1-9">This document introduces a new BGP address family called "BGP
+      "intent-aware" tunnels for these classes.<a href="#section-1-9" class="pilcrow">¶</a></p>
+<p id="section-1-10">This document introduces a new BGP address family called "BGP
       Classful Transport", that extends/stitches intent-aware intra-domain
       tunnels belonging to the same class across domain boundaries, to
-      establish end-to-end intent-aware paths between service endpoints.<a href="#section-1-9" class="pilcrow">¶</a></p>
-<p id="section-1-10"><span>[<a href="#Intent-Routing-Color" class="cite xref">Intent-Routing-Color</a>]</span> describes various use cases and
-      applications of the procedures described in this document.<a href="#section-1-10" class="pilcrow">¶</a></p>
-<p id="section-1-11"><a href="#Appendix_C" class="auto internal xref">Appendix C</a> provides an outline of the design
+      establish end-to-end intent-aware paths between service endpoints.<a href="#section-1-10" class="pilcrow">¶</a></p>
+<p id="section-1-11"><span>[<a href="#Intent-Routing-Color" class="cite xref">Intent-Routing-Color</a>]</span> describes various use cases and
+      applications of the procedures described in this document.<a href="#section-1-11" class="pilcrow">¶</a></p>
+<p id="section-1-12"><a href="#Appendix_C" class="auto internal xref">Appendix C</a> provides an outline of the design
       philosophy behind this specification. In particular, readers who are
       already familiar with one or more BGP VPN technologies may want to
       review this appendix before reading the main body of the
-      specification.<a href="#section-1-11" class="pilcrow">¶</a></p>
+      specification.<a href="#section-1-12" class="pilcrow">¶</a></p>
 </section>
 <section id="section-2">
       <h2 id="name-terminology">
@@ -1816,21 +1820,19 @@ li > p:last-of-type:only-child {
 <p id="section-2.1-4">Import processing: Receive side processing of an overlay route,
         including things like import policy application, resolution scheme
         selection and next hop resolution.<a href="#section-2.1-4" class="pilcrow">¶</a></p>
-<p id="section-2.1-5">Intent: As defined in Section 2 of <span>[<a href="#RFC9315" class="cite xref">RFC9315</a>]</span>, "A set
-        of operational goals (that a network should meet) and outcomes (that a
-        network is supposed to deliver) defined in a declarative manner
-        without specifying how to achieve or implement them." .<a href="#section-2.1-5" class="pilcrow">¶</a></p>
-<p id="section-2.1-6">Mapping Community: Any BGP CCA (e.g., Community, Extended
+<p id="section-2.1-5">Mapping Community: Any BGP CCA (e.g., Community, Extended
         Community) on an overlay route that maps to a Resolution Scheme. For
-        example, color:0:100, transport-target:0:100.<a href="#section-2.1-6" class="pilcrow">¶</a></p>
-<p id="section-2.1-7">Provider Namespace: Internal Infrastructure address space in
-        Provider network managed by the Operator.<a href="#section-2.1-7" class="pilcrow">¶</a></p>
-<p id="section-2.1-8">Resolution Scheme: A construct comprising of an ordered set of
+        example, color:0:100, transport-target:0:100.<a href="#section-2.1-5" class="pilcrow">¶</a></p>
+<p id="section-2.1-6">Provider Namespace: Internal Infrastructure address space in
+        Provider network managed by the Operator.<a href="#section-2.1-6" class="pilcrow">¶</a></p>
+<p id="section-2.1-7">Resolution Scheme: A construct comprising of an ordered set of
         TRDBs to resolve next hop reachability, for realizing a desired
-        intent.<a href="#section-2.1-8" class="pilcrow">¶</a></p>
-<p id="section-2.1-9">Service Family: A BGP address family used for advertising routes
+        intent.<a href="#section-2.1-7" class="pilcrow">¶</a></p>
+<p id="section-2.1-8">Service Family: A BGP address family used for advertising routes
         for destinations in "data traffic". For example, AFI/SAFIs 1/1 or
-        1/128.<a href="#section-2.1-9" class="pilcrow">¶</a></p>
+        1/128.<a href="#section-2.1-8" class="pilcrow">¶</a></p>
+<p id="section-2.1-9">Service Prefix: A destinations in "data traffic". Routes to these
+        prefixes are carried in a Service family.<a href="#section-2.1-9" class="pilcrow">¶</a></p>
 <p id="section-2.1-10">Transport Family: A BGP address family used for advertising
         tunnels, which are in turn used by service routes for resolution. For
         example, AFI/SAFIs 1/4 or 1/76.<a href="#section-2.1-10" class="pilcrow">¶</a></p>
@@ -2051,9 +2053,11 @@ li > p:last-of-type:only-child {
       </ul>
 <p id="section-3-5"><a href="#ArchOv" class="auto internal xref">Figure 1</a> depicts the intra-AS and inter-AS
       application of these constructs. It uses an example topology of Inter-AS
-      option C network with two AS domains. AS1 is a RSVP-TE network, AS2 is a
-      SRTE network. BGP CT and BGP LU are transport layer families used
-      between the two AS domains. IP1, IP2, IP3 are service prefixes
+      option C (Section 10, <span>[<a href="#RFC4364" class="cite xref">RFC4364</a>]</span>) network with two AS domains,
+      each domain contains tunnels serving two Intents, viz. low-latency denoted
+      by color 100 and high-bandwidth denoted by color 200. AS1 is a RSVP-TE
+      network, AS2 is a SRTE network. BGP CT and BGP LU are transport families
+      used between the two AS domains. IP1, IP2, IP3 are service prefixes
       (AFI/SAFI: 1/1) behind egress PE11.<a href="#section-3-5" class="pilcrow">¶</a></p>
 <p id="section-3-6">PE21, SN11 and PE11 are the SNs in this network. SN11 is an ingress
       PE with intra domain reachability to PE11. PE21 is an ingress PE with
@@ -2076,21 +2080,21 @@ li > p:last-of-type:only-child {
       (AFI/SAFIs 1/4 or 2/4). It disseminates "Transport Class" information
       for the transport prefixes across the participating domains while
       avoiding the need of per-transport class loopback. This is not possible
-      with BGP LU without using per-color loopback. This makes the end-to-end
-      network a "Transport Class" aware tunneled network.<a href="#section-3-9" class="pilcrow">¶</a></p>
+      with BGP LU without using per-color loopback. This dissemination makes
+      the end-to-end network a "Transport Class" aware tunneled network.<a href="#section-3-9" class="pilcrow">¶</a></p>
 <p id="section-3-10">In <a href="#ArchOv" class="auto internal xref">Figure 1</a>, BGP CT routes are originated at BN11 in
       AS1 with next hop "self" towards BN21 in AS2 to extend available RSVP-TE
       tunnels for Transport Class 100 and 200 in AS1. BN21 propagates these
       routes with next hop "self" to PE21, which resolves the BGP CT routes
       over SRTE tunnels belonging to same transport class.<a href="#section-3-10" class="pilcrow">¶</a></p>
-<p id="section-3-11">Overlay routes carry an indication of the desired Transport Classes
-      using a BGP community which assumes the role of a "Mapping Community". A
-      Resolution Scheme is identified by its "Mapping Community", where its
-      configuration can either be auto-generated based on TC ID or done
-      manually.<a href="#section-3-11" class="pilcrow">¶</a></p>
-<p id="section-3-12">The following text illustrates CT architecture having the property of
-      providing tiered fallback options at a per-route granularity. In <a href="#ArchOv" class="auto internal xref">Figure 1</a>, the Resolution Schemes are shown and the following
-      next hop resolutions are done by SN11 and PE21 for the service routes of
+<p id="section-3-11">Resolution Schemes are used to realize Intent. A Resolution Scheme is
+      identified by its "Mapping Community", and contains an ordered list of
+      transport classes. Overlay routes carry an indication of the desired
+      Intent using a BGP community which assumes the role of "Mapping Community".<a href="#section-3-11" class="pilcrow">¶</a></p>
+<p id="section-3-12">The following text illustrates how CT architecture provides tiered
+      fallback options at a per-route granularity. <a href="#ArchOv" class="auto internal xref">Figure 1</a>,
+      shows the Resolution Schemes in use, which make the following next hop
+      resolution happen at SN11 and PE21 for the service routes of
       prefixes IP1, IP2, IP3:<a href="#section-3-12" class="pilcrow">¶</a></p>
 <ul class="normal ulEmpty">
 <li class="normal ulEmpty" id="section-3-13.1">
@@ -2279,41 +2283,43 @@ li > p:last-of-type:only-child {
 <a href="#name-transport-class-route-target" class="selfRef">"Transport Class" Route Target Extended Community</a>
           </figcaption></figure>
 </div>
-<p id="section-4.3-4">The VPN route import/export mechanisms specified in <span><a href="#RFC4364" class="internal xref">BGP/MPLS IP VPNs</a> [<a href="#RFC4364" class="cite xref">RFC4364</a>]</span> and the Constrained Route
+<p id="section-4.3-4">A Transport Class Route Target Extended community with TC ID 100
+        is denoted as "transport-target:0:100".<a href="#section-4.3-4" class="pilcrow">¶</a></p>
+<p id="section-4.3-5">The VPN route import/export mechanisms specified in <span><a href="#RFC4364" class="internal xref">BGP/MPLS IP VPNs</a> [<a href="#RFC4364" class="cite xref">RFC4364</a>]</span> and the Constrained Route
         Distribution mechanisms specified in <span><a href="#RFC4684" class="internal xref">Route
         Target Constrain</a> [<a href="#RFC4684" class="cite xref">RFC4684</a>]</span> are applied using the Route Target extended
         community. These mechanisms are applied to BGP CT routes (AFI/SAFI:
         1/76 or 2/76) using "Transport Class Route Target Extended
-        community".<a href="#section-4.3-4" class="pilcrow">¶</a></p>
-<p id="section-4.3-5">A BGP speaker that implements procedures described in this document
+        community".<a href="#section-4.3-5" class="pilcrow">¶</a></p>
+<p id="section-4.3-6">A BGP speaker that implements procedures described in this document
         and <span><a href="#RFC4684" class="internal xref">Route Target Constrain</a> [<a href="#RFC4684" class="cite xref">RFC4684</a>]</span> MUST also
         apply the RTC procedures to the Transport Class Route Target Extended
         communities carried on BGP CT routes (AFI/SAFI: 1/76 or 2/76). An RTC
         route is generated for each Route Target imported by locally
-        provisioned Transport Classes.<a href="#section-4.3-5" class="pilcrow">¶</a></p>
-<p id="section-4.3-6">Further, when processing RT membership NLRIs containing Transport
+        provisioned Transport Classes.<a href="#section-4.3-6" class="pilcrow">¶</a></p>
+<p id="section-4.3-7">Further, when processing RT membership NLRIs containing Transport
         Class Route Target Extended community received from external BGP
         peers, it is necessary to consider multiple EBGP paths for a given RTC
         prefix for building the outbound route filter, and not just the best
         path. An implementation MAY provide configuration to control how many
-        EBGP RTC paths are considered.<a href="#section-4.3-6" class="pilcrow">¶</a></p>
-<p id="section-4.3-7">The Transport Class Route Target Extended community is carried on
+        EBGP RTC paths are considered.<a href="#section-4.3-7" class="pilcrow">¶</a></p>
+<p id="section-4.3-8">The Transport Class Route Target Extended community is carried on
         BGP CT family routes and is used to associate them with appropriate
         TRDBs at receiving BGP speakers. The Transport Target is carried
         unaltered on the BGP CT route across BGP CT negotiated sessions except
         for scenarios described in <a href="#non-agreeing" class="auto internal xref">Section 11.2.2</a>.
         Implementations should provide policy mechanisms to perform match,
         strip, or rewrite operations on a Transport Target just like any other
-        BGP community.<a href="#section-4.3-7" class="pilcrow">¶</a></p>
-<p id="section-4.3-8">Defining a new type code for the Transport Class Route Target
+        BGP community.<a href="#section-4.3-8" class="pilcrow">¶</a></p>
+<p id="section-4.3-9">Defining a new type code for the Transport Class Route Target
         Extended community avoids conflicting with any VPN Route Target
-        assignments already in use for service families.<a href="#section-4.3-8" class="pilcrow">¶</a></p>
-<p id="section-4.3-9">This document also reserves the <span><a href="#tc-rt-nt" class="internal xref">Non-Transitive version of Transport Class extended
+        assignments already in use for service families.<a href="#section-4.3-9" class="pilcrow">¶</a></p>
+<p id="section-4.3-10">This document also reserves the <span><a href="#tc-rt-nt" class="internal xref">Non-Transitive version of Transport Class extended
         community</a> (<a href="#tc-rt-nt" class="auto internal xref">Section 13.2.1.1.2</a>)</span> for future use. The "Non-Transitive Transport Class"
         Route Target Extended Community is not used. If received, it is
         considered equivalent in functionality to the Transitive Transport
         Class Route Target Extended Community, except for the difference in
-        Transitive bit flag.<a href="#section-4.3-9" class="pilcrow">¶</a></p>
+        Transitive bit flag.<a href="#section-4.3-10" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2376,9 +2382,9 @@ li > p:last-of-type:only-child {
 <p id="section-5.1-7">If more than one distinct Mapping Communities on an overlay route
         map to distinct Resolution Schemes with dissimilar Intents at a
         receiving node, it is considered a configuration error.<a href="#section-5.1-7" class="pilcrow">¶</a></p>
-<p id="section-5.1-8">Since a route can carry multiple communities, but only a single 
+<p id="section-5.1-8">Since a route can carry multiple communities, but only a single
         Resolution Scheme can be in effect for the route on any given router,
-        it is incumbent on the operator to ensure that communities attached 
+        it is incumbent on the operator to ensure that communities attached
         to a route will map to the desired Resolution Scheme at each point
         in the network.<a href="#section-5.1-8" class="pilcrow">¶</a></p>
 <p id="section-5.1-9">It should be noted that the Mapping Community role does not require
@@ -4661,10 +4667,10 @@ li > p:last-of-type:only-child {
             CT route towards R4. The MPLS Label advertised by R1 will not be
             used by R4. UDP tunneled forwarding will be used between R1 and
             R4.<a href="#section-11.3.2.2-7" class="pilcrow">¶</a></p>
-<p id="section-11.3.2.2-8">Note in this example that R3 and R4 cannot communicate 
-            directly with each other, because they don't support a common 
-            forwarding technology. The BGP CT routes received at R3, R4 
-            from each other will remain unusable, due to incompatible 
+<p id="section-11.3.2.2-8">Note in this example that R3 and R4 cannot communicate
+            directly with each other, because they don't support a common
+            forwarding technology. The BGP CT routes received at R3, R4
+            from each other will remain unusable, due to incompatible
             forwarding technology.<a href="#section-11.3.2.2-8" class="pilcrow">¶</a></p>
 </section>
 </section>
@@ -5068,7 +5074,7 @@ Registry Name: BGP Transitive Extended Community Types
       be extended in future to work for non-Internet SAFIs (SAFIs other than
       1).<a href="#section-14-10" class="pilcrow">¶</a></p>
 <p id="section-14-11">The restriction of the applicability of the BGP CT SAFI 76 to its
-      intended well-defined scope and utilizing <span>[<a href="#RFC8212" class="cite xref">RFC8212</a>]</span> limits 
+      intended well-defined scope and utilizing <span>[<a href="#RFC8212" class="cite xref">RFC8212</a>]</span> limits
       the likelihood of traffic diversions.<a href="#section-14-11" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -5810,7 +5816,7 @@ Registry Name: BGP Transitive Extended Community Types
         originates BGP LU route for it's loopback, with some attributes like
         community identifying the originating node or region, and AIGP
         attribute. These attributes may be unique per egress node, thus do not
-        help with update packing in transport layer family routes.<a href="#appendix-C.1-4" class="pilcrow">¶</a></p>
+        help with update packing in transport family routes.<a href="#appendix-C.1-4" class="pilcrow">¶</a></p>
 </section>
 </section>
 </div>
@@ -6001,7 +6007,7 @@ Registry Name: BGP Transitive Extended Community Types
 <p id="appendix-F-2">The decision to not reuse SAFI 128 and create a new address-family to
       carry these transport-routes was based on suggestion made by Richard
       Roberts and Krzysztof Szarkowicz.<a href="#appendix-F-2" class="pilcrow">¶</a></p>
-<p id="appendix-F-3">Thanks to John Scudder for showing us with example how the Figures 
+<p id="appendix-F-3">Thanks to John Scudder for showing us with example how the Figures
       can be enhanced using SVG format.<a href="#appendix-F-3" class="pilcrow">¶</a></p>
 </section>
 </div>
