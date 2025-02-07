@@ -1229,7 +1229,7 @@ li > p:last-of-type:only-child {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Vairavakkalai &amp; Venkataraman</td>
-<td class="center">Expires 10 August 2025</td>
+<td class="center">Expires 11 August 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1242,12 +1242,12 @@ li > p:last-of-type:only-child {
 <dd class="internet-draft">draft-ietf-idr-bgp-ct-36</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-02-06" class="published">6 February 2025</time>
+<time datetime="2025-02-07" class="published">7 February 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Experimental</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-08-10">10 August 2025</time></dd>
+<dd class="expires"><time datetime="2025-08-11">11 August 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1318,7 +1318,7 @@ li > p:last-of-type:only-child {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 10 August 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 11 August 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1999,10 +1999,11 @@ li > p:last-of-type:only-child {
                 <text x="436" y="340">ID</text>
                 <text x="112" y="356">Mapping</text>
                 <text x="184" y="356">Community</text>
-                <text x="12" y="388">at</text>
-                <text x="44" y="388">SN11</text>
-                <text x="80" y="388">and</text>
-                <text x="120" y="388">PE21,</text>
+                <text x="32" y="388">Intents</text>
+                <text x="76" y="388">at</text>
+                <text x="108" y="388">SN11</text>
+                <text x="144" y="388">and</text>
+                <text x="184" y="388">PE21:</text>
                 <text x="68" y="420">Scheme1:</text>
                 <text x="156" y="420">color:0:100,</text>
                 <text x="268" y="420">(TRDB[TC-100],</text>
@@ -2052,71 +2053,82 @@ li > p:last-of-type:only-child {
 </li>
       </ul>
 <p id="section-3-5"><a href="#ArchOv" class="auto internal xref">Figure 1</a> depicts the intra-AS and inter-AS
-      application of these constructs. It uses an example topology of Inter-AS
+      application of these constructs. Interactions between SN1 and PE11 describe 
+      the Intra-AS usage. Interactions between PE21 and PE11 describe the Inter-AS usage.<a href="#section-3-5" class="pilcrow">¶</a></p>
+<p id="section-3-6"> The example topology is an Inter-AS
       option C (Section 10, <span>[<a href="#RFC4364" class="cite xref">RFC4364</a>]</span>) network with two AS domains,
-      each domain contains tunnels serving two Intents, viz. low-latency denoted
-      by color 100 and high-bandwidth denoted by color 200. AS1 is a RSVP-TE
+      each domain contains tunnels serving two Intents, e.g. 'low-latency' denoted
+      by color 100 and 'high-bandwidth' denoted by color 200. AS1 is a RSVP-TE
       network, AS2 is a SRTE network. BGP CT and BGP LU are transport families
       used between the two AS domains. IP1, IP2, IP3 are service prefixes
-      (AFI/SAFI: 1/1) behind egress PE11.<a href="#section-3-5" class="pilcrow">¶</a></p>
-<p id="section-3-6">PE21, SN11 and PE11 are the SNs in this network. SN11 is an ingress
+      (AFI/SAFI: 1/1) behind egress PE11.<a href="#section-3-6" class="pilcrow">¶</a></p>
+<p id="section-3-7">PE21, SN11 and PE11 are the SNs in this network. SN11 is an ingress
       PE with intra domain reachability to PE11. PE21 is an ingress PE with
-      inter domain reachability to PE11.<a href="#section-3-6" class="pilcrow">¶</a></p>
-<p id="section-3-7">The tunneling mechanisms are made "Transport Class" aware. They
+      inter domain reachability to PE11.<a href="#section-3-7" class="pilcrow">¶</a></p>
+<p id="section-3-8">The tunneling mechanisms are made "Transport Class" aware. They
       publish their underlay tunnels for a Transport Class into an associated
       <span><a href="#trdb" class="internal xref">"Transport Route Database" (TRDB)</a> (<a href="#trdb" class="auto internal xref">Section 4.2</a>)</span>. In <a href="#ArchOv" class="auto internal xref">Figure 1</a>, RSVP-TE publishes its underlay tunnels into TRDBs
       created for Transport Class 100 and 200 at BN11 and SN11 within AS1;
       Similarly, SR-TE publishes its underlay tunnels into TRDBs created for
-      Transport Class 100 and 200 at PE21 within AS2.<a href="#section-3-7" class="pilcrow">¶</a></p>
-<p id="section-3-8">The underlay route in a TRDB can be advertised in BGP to extend an
-      underlay tunnel to adjacent domains. A new BGP transport layer address
-      family called "BGP Classful Transport", also known as BGP CT (AFI/SAFIs
-      1/76, 2/76) is defined for this purpose. BGP CT makes it possible to
-      advertise multiple tunnels to the same destination address, thus
-      avoiding the need for multiple loopbacks on the Egress Service Node
-      (eSN).<a href="#section-3-8" class="pilcrow">¶</a></p>
-<p id="section-3-9">The BGP CT address family carries transport prefixes across tunnel
+      Transport Class 100 and 200 at PE21 within AS2.<a href="#section-3-8" class="pilcrow">¶</a></p>
+<p id="section-3-9">Resolution Schemes are used to realize Intent. A Resolution Scheme is
+      identified by its "Mapping Community", and contains an ordered list of
+      transport classes. Overlay routes carry an indication of the desired
+      Intent using a BGP community which assumes the role of "Mapping Community".<a href="#section-3-9" class="pilcrow">¶</a></p>
+<p id="section-3-10">Egress SN "PE11" advertises service routes with desired  Mapping Community 
+      e.g. color:0:100.<a href="#section-3-10" class="pilcrow">¶</a></p>
+<p id="section-3-11">For the Intra-AS case, SN1 maps this intra-AS route on RSVP-TE 
+      tunnels with TC ID 100 by using the Resolution Scheme for color:0:100.<a href="#section-3-11" class="pilcrow">¶</a></p>
+<p id="section-3-12">For the Inter-AS case, the underlay route in a TRDB is advertised 
+      in BGP to extend an underlay tunnel to adjacent domains. A new BGP 
+      transport family called "BGP Classful Transport", also known as BGP CT 
+      (AFI/SAFIs 1/76, 2/76) is defined for this purpose. BGP CT makes it
+      possible to advertise multiple tunnels to the same destination address, 
+      thus avoiding the need for multiple loopbacks on the Egress Service Node
+      (eSN).<a href="#section-3-12" class="pilcrow">¶</a></p>
+<p id="section-3-13">The BGP CT address family carries transport prefixes across tunnel
       domain boundaries. Its design and operation are analogous to BGP LU
       (AFI/SAFIs 1/4 or 2/4). It disseminates "Transport Class" information
       for the transport prefixes across the participating domains while
       avoiding the need of per-transport class loopback. This is not possible
       with BGP LU without using per-color loopback. This dissemination makes
-      the end-to-end network a "Transport Class" aware tunneled network.<a href="#section-3-9" class="pilcrow">¶</a></p>
-<p id="section-3-10">In <a href="#ArchOv" class="auto internal xref">Figure 1</a>, BGP CT routes are originated at BN11 in
+      the end-to-end network a "Transport Class" aware tunneled network.<a href="#section-3-13" class="pilcrow">¶</a></p>
+<p id="section-3-14">In <a href="#ArchOv" class="auto internal xref">Figure 1</a>, BGP CT routes are originated at BN11 in
       AS1 with next hop "self" towards BN21 in AS2 to extend available RSVP-TE
       tunnels for Transport Class 100 and 200 in AS1. BN21 propagates these
       routes with next hop "self" to PE21, which resolves the BGP CT routes
-      over SRTE tunnels belonging to same transport class.<a href="#section-3-10" class="pilcrow">¶</a></p>
-<p id="section-3-11">Resolution Schemes are used to realize Intent. A Resolution Scheme is
-      identified by its "Mapping Community", and contains an ordered list of
-      transport classes. Overlay routes carry an indication of the desired
-      Intent using a BGP community which assumes the role of "Mapping Community".<a href="#section-3-11" class="pilcrow">¶</a></p>
-<p id="section-3-12">The following text illustrates how CT architecture provides tiered
+      over SRTE tunnels belonging to same transport class. Thus forming a 
+      BGP CT tunnel for each TC ID at PE21.<a href="#section-3-14" class="pilcrow">¶</a></p>
+<p id="section-3-15">PE21 maps the Inter-AS service routes received with color:0:100 from 
+      AS1 on BGP CT tunnel with TC ID 100 by using the Resolution Scheme for 
+      color:0:100. Note that this procedure is same as that followed by SN1 
+      in the Intra-AS case.<a href="#section-3-15" class="pilcrow">¶</a></p>
+<p id="section-3-16">The following text illustrates how CT architecture provides tiered
       fallback options at a per-route granularity. <a href="#ArchOv" class="auto internal xref">Figure 1</a>,
       shows the Resolution Schemes in use, which make the following next hop
-      resolution happen at SN11 and PE21 for the service routes of
-      prefixes IP1, IP2, IP3:<a href="#section-3-12" class="pilcrow">¶</a></p>
+      resolution happen at SN11 (Intra-AS) and PE21 (Inter-AS) for the service 
+      routes of prefixes IP1, IP2, IP3:<a href="#section-3-16" class="pilcrow">¶</a></p>
 <ul class="normal ulEmpty">
-<li class="normal ulEmpty" id="section-3-13.1">
-          <p id="section-3-13.1.1">Resolve IP1 next hop over available tunnels in TRDB for Transport
-          Class 100 with fallback to TRDB for best effort.<a href="#section-3-13.1.1" class="pilcrow">¶</a></p>
+<li class="normal ulEmpty" id="section-3-17.1">
+          <p id="section-3-17.1.1">Resolve IP1 next hop over available tunnels in TRDB for Transport
+          Class 100 with fallback to TRDB for best effort.<a href="#section-3-17.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal ulEmpty" id="section-3-13.2">
-          <p id="section-3-13.2.1">Resolve IP2 next hop over available tunnels in TRDB for Transport
-          Class 200 with fallback to TRDB for best effort.<a href="#section-3-13.2.1" class="pilcrow">¶</a></p>
+        <li class="normal ulEmpty" id="section-3-17.2">
+          <p id="section-3-17.2.1">Resolve IP2 next hop over available tunnels in TRDB for Transport
+          Class 200 with fallback to TRDB for best effort.<a href="#section-3-17.2.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal ulEmpty" id="section-3-13.3">
-          <p id="section-3-13.3.1">Resolve IP3 next hop over available tunnels in TRDB for Transport
-          Class 100 with fallback to TRDB for Transport Class 200.<a href="#section-3-13.3.1" class="pilcrow">¶</a></p>
+        <li class="normal ulEmpty" id="section-3-17.3">
+          <p id="section-3-17.3.1">Resolve IP3 next hop over available tunnels in TRDB for Transport
+          Class 100 with fallback to TRDB for Transport Class 200.<a href="#section-3-17.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="section-3-14">In <a href="#ArchOv" class="auto internal xref">Figure 1</a>, SN11 resolves IP1, IP2 and IP3
+<p id="section-3-18">In <a href="#ArchOv" class="auto internal xref">Figure 1</a>, SN11 resolves IP1, IP2 and IP3
       directly over RSVP-TE tunnels in AS1. PE21 resolves IP1, IP2 and IP3
-      over extended BGP CT tunnels that resolve over SR-TE tunnels in AS2.<a href="#section-3-14" class="pilcrow">¶</a></p>
-<p id="section-3-15">This document describes procedures using MPLS forwarding
+      over extended BGP CT tunnels that resolve over SR-TE tunnels in AS2.<a href="#section-3-18" class="pilcrow">¶</a></p>
+<p id="section-3-19">This document describes procedures using MPLS forwarding
       architecture. However, these procedures would work in a similar manner
-      for non-MPLS forwarding architectures as well. <a href="#SRv6-Support" class="auto internal xref">Section 7.13</a> describes the application of BGP CT over SRv6
-      data plane.<a href="#section-3-15" class="pilcrow">¶</a></p>
+      for non-MPLS forwarding architectures as well. <a href="#SRv6-Support" class="auto internal xref">Section 7.13</a> 
+      describes the application of BGP CT over SRv6 data plane.<a href="#section-3-19" class="pilcrow">¶</a></p>
 </section>
 <div id="tc">
 <section id="section-4">
@@ -2647,7 +2659,7 @@ li > p:last-of-type:only-child {
           so that overlay routes can resolve over this BGP CT tunnel route by
           performing a lookup for EP. Please note that a TRDB is a logical
           database of tunnel routes belonging to the same Transport Class ID,
-          hence it uses only the EP as the lookup key without RD or TC-ID.<a href="#section-7.3-1.5.1" class="pilcrow">¶</a></p>
+          hence it uses only the EP as the lookup key without RD or TC ID.<a href="#section-7.3-1.5.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal ulEmpty" id="section-7.3-1.6">
             <p id="section-7.3-1.6.1">If no Mapping Community was found on a BGP CT route, the best
@@ -2964,7 +2976,7 @@ li > p:last-of-type:only-child {
       <h2 id="name-illustration-of-bgp-ct-proc">
 <a href="#section-8" class="section-number selfRef">8. </a><a href="#name-illustration-of-bgp-ct-proc" class="section-name selfRef">Illustration of BGP CT Procedures</a>
       </h2>
-<p id="section-8-1">This section illustrates BGP CT procedures in an Inter AS Option C
+<p id="section-8-1">This section illustrates BGP CT procedures in an Inter-AS Option C
       MPLS network.<a href="#section-8-1" class="pilcrow">¶</a></p>
 <p id="section-8-2">All Illustrations in this document make use of <span>[<a href="#RFC6890" class="cite xref">RFC6890</a>]</span> IP address ranges. The range 192.0.2.0/24 is used to
       represent transport endpoints like loopback addresses. The range
