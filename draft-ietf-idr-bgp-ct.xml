@@ -10,7 +10,7 @@
 <?rfc inline="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="exp" docName="draft-ietf-idr-bgp-ct-37" ipr="trust200902">
+<rfc category="exp" docName="draft-ietf-idr-bgp-ct-38" ipr="trust200902">
   <front>
     <title abbrev="BGP Classful Transport Planes">BGP Classful Transport
     Planes</title>
@@ -85,12 +85,12 @@
     </abstract>
 
     <note title="Requirements Language">
-      <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-      "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
-      "OPTIONAL" in this document are to be interpreted as described in BCP 14
-      <xref target="RFC2119">RFC 2119</xref> <xref target="RFC8174">RFC
-      8174</xref> when, and only when, they appear in all capitals, as shown
-      here.</t>
+
+      <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
+      NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and
+      "OPTIONAL" in this document are to be interpreted as described in
+      <xref target="RFC2119">RFC 2119</xref>.</t>
+
     </note>
   </front>
 
@@ -212,21 +212,15 @@
 
       <t>iSN: Ingress Service Node</t>
 
-      <t>LPM: Longest Prefix Match</t>
-
       <t>L-ISIS: Labeled ISIS (RFC 8667)</t>
 
       <t>LSP: Label Switched Path</t>
-
-      <t>MNH: BGP MultiNexthop attribute</t>
 
       <t>MPLS: Multi Protocol Label Switching</t>
 
       <t>NLRI: Network Layer Reachability Information</t>
 
       <t>PE: Provider Edge</t>
-
-      <t>PHP: Penultimate Hop Pop</t>
 
       <t>PIC: Prefix scale Independent Convergence</t>
 
@@ -1664,8 +1658,7 @@ Resolution Schemes   Transport Route DB    Transport Class
         with Gold SLA. This route is sent with NLRI RD prefix
         192.0.2.11:100:192.0.2.11, Label B-L0, next hop 192.0.2.11 and a route
         target extended community transport-target:0:100. Label B-L0 can
-        either be Implicit Null (Label 3) or an Ultimate Hop Pop (UHP)
-        label.</t>
+        either be Implicit Null (Label 3) or an UHP label.</t>
 
         <t>This route is received by ASBR13 and it resolves over the tunnel
         ASBR13_to_PE11_gold. The route is then readvertised by ASBR13 in BGP
@@ -1840,8 +1833,8 @@ Resolution Schemes   Transport Route DB    Transport Class
 
           <t>Traffic repair to absorb the failure happens at ingress node
           PE25, in a service prefix scale independent manner. This is called
-          PIC (Prefix scale Independent Convergence). The repair time will be
-          proportional to time taken for withdrawing the BGP CT route.</t>
+          PIC. The repair time will be proportional to time taken for withdrawing 
+          the BGP CT route.</t>
 
           <t>These examples demonstrate the various levels of failsafe
           mechanisms available to protect traffic in a BGP CT network.</t>
@@ -3468,6 +3461,9 @@ Registry Name: BGP Transitive Extended Community Types
         <t>IANA is requested to update the reference to this document.</t>
       </section>
 
+    </section>
+
+<section anchor="local-registries" title="Registries maintained by this document">
       <section title="Transport Class ID">
         <t>This document reserves the Transport class ID value 0 to represent
         "Best Effort Transport Class ID". This is used in the 'Transport Class
@@ -3507,8 +3503,7 @@ Registry Name: BGP Transitive Extended Community Types
         in <xref target="RFC9012"/> and <xref target="RFC9256"/>, the range
         1-4294967295 uses 'Private Use' as Registration Procedure.</t>
       </section>
-    </section>
-
+</section>
     <section anchor="Security" title="Security Considerations">
       <t>This document uses <xref target="RFC4760"/> mechanisms to define new
       BGP address families (AFI/SAFI : 1/76 and 2/76) that carry transport
@@ -3734,7 +3729,7 @@ Registry Name: BGP Transitive Extended Community Types
       </reference>
 
       <reference anchor="PCEP-RSVP-COLOR"
-                 target="https://datatracker.ietf.org/doc/html/draft-ietf-pce-pcep-color-08">
+                 target="https://datatracker.ietf.org/doc/html/draft-ietf-pce-pcep-color-11">
         <front>
           <title abbrev="PCEP RSVP COLOR">Path Computation Element
           Protocol(PCEP) Extension for RSVP Color</title>
@@ -3745,7 +3740,7 @@ Registry Name: BGP Transitive Extended Community Types
           <author fullname="Vishnu" initials="Pavan" role="editor"
                   surname="Beeram"/>
 
-          <date day="23" month="01" year="2025"/>
+          <date day="17" month="02" year="2025"/>
         </front>
       </reference>
 
