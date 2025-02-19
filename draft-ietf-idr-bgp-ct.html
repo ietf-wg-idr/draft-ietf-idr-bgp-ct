@@ -31,7 +31,7 @@
       Transport", a.k.a., BGP CT. 
     ' name="description">
 <meta content="xml2rfc 3.18.2" name="generator">
-<meta content="draft-ietf-idr-bgp-ct-36" name="ietf.draft">
+<meta content="draft-ietf-idr-bgp-ct-37" name="ietf.draft">
 <!-- Generator version information:
   xml2rfc 3.18.2
     Python 3.9.6
@@ -1229,7 +1229,7 @@ li > p:last-of-type:only-child {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Vairavakkalai &amp; Venkataraman</td>
-<td class="center">Expires 11 August 2025</td>
+<td class="center">Expires 23 August 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1239,15 +1239,15 @@ li > p:last-of-type:only-child {
 <dt class="label-workgroup">Workgroup:</dt>
 <dd class="workgroup">Network Working Group</dd>
 <dt class="label-internet-draft">Internet-Draft:</dt>
-<dd class="internet-draft">draft-ietf-idr-bgp-ct-36</dd>
+<dd class="internet-draft">draft-ietf-idr-bgp-ct-37</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-02-07" class="published">7 February 2025</time>
+<time datetime="2025-02-19" class="published">19 February 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Experimental</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-08-11">11 August 2025</time></dd>
+<dd class="expires"><time datetime="2025-08-23">23 August 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1318,7 +1318,7 @@ li > p:last-of-type:only-child {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 11 August 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 23 August 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -5045,14 +5045,15 @@ Registry Name: BGP Transitive Extended Community Types
       BGP address families (AFI/SAFI : 1/76 and 2/76) that carry transport
       layer endpoints. These address families are explicitly configured and
       negotiated between BGP speakers, which confines the propagation scope of
-      this reachability information, thus following a 'walled garden'
-      approach.<a href="#section-14-1" class="pilcrow">¶</a></p>
-<p id="section-14-2">This mitigates the risk of advertising internal loopback addresses
-      outside the administrative control of the provider network. Furthermore,
-      procedures defined in <a href="#secure-propagate" class="auto internal xref">Section 9.1</a> mitigate the
-      risk of unintended propagation of BGP CT routes across Inter-AS
-      boundaries even when BGP CT family is negotiated on the EBGP
-      session.<a href="#section-14-2" class="pilcrow">¶</a></p>
+      this reachability information. These routes stay in the part of network 
+      where the new address family is negotiated, and don't leak out into 
+      the Internet.<a href="#section-14-1" class="pilcrow">¶</a></p>
+<p id="section-14-2">Furthermore, procedures defined in <a href="#secure-propagate" class="auto internal xref">Section 9.1</a> mitigate 
+      the risk of unintended propagation of BGP CT routes across Inter-AS
+      boundaries even when BGP CT family is negotiated. BGP import and export policies 
+      are used to control the BGP CT reachability information exchanged across AS boundaries.
+      This mitigates the risk of advertising internal loopback addresses outside the 
+      administrative control of the provider network.<a href="#section-14-2" class="pilcrow">¶</a></p>
 <p id="section-14-3">This document does not change the underlying security issues inherent
       in the existing BGP protocol, such as those described in <span>[<a href="#RFC4271" class="cite xref">RFC4271</a>]</span> and <span>[<a href="#RFC4272" class="cite xref">RFC4272</a>]</span>.<a href="#section-14-3" class="pilcrow">¶</a></p>
 <p id="section-14-4">Additionally, BGP sessions SHOULD be protected using TCP
