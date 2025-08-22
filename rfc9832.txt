@@ -1349,25 +1349,25 @@ Table of Contents
 
 8.1.  Reference Topology
 
-             [RR26]          [RR27]                    [RR16]
-               |               |                         |
-               |               |                         |
-               | +--[ABR23]--+ | +--[ASBR21]-[ASBR13]--+ | +--[PE11]--+
-               | |           | | |        \  /         | | |          |
-[CE41]-[PE25]-[P28]          [P29]         \/          [P15]      [CE31]
-                 |           |   |         /\          |   |          |
-                 |           |   |        /  \         |   |          |
-                 |           |   |       /    \        |   |          |
-                 +--[ABR24]--+   +--[ASBR22]-[ASBR14]--+   +--[PE12]--+
+                [RR26]          [RR27]                    [RR16]
+                  |               |                         |
+                  |               |                         |
+                  | +--[ABR23]--+ | +--[ASBR21]-[ASBR13]--+ | +-[PE11]+
+                  | |           | | |        \  /         | | |       |
+   [CE41]-[PE25]-[P28]          [P29]         \/          [P15]   [CE31]
+                    |           |   |         /\          |   |       |
+                    |           |   |        /  \         |   |       |
+                    |           |   |       /    \        |   |       |
+                    +--[ABR24]--+   +--[ASBR22]-[ASBR14]--+   +-[PE12]+
 
 
-      :      AS2       :         AS2       :                     :
-  AS4 :    region-1    :      region-2     :       AS1           :   AS3
-      :                :                   :                     :
+         :      AS2       :         AS2       :                   :
+     AS4 :    region-1    :      region-2     :       AS1         :  AS3
+         :                :                   :                   :
 
-203.0.113.41  ---------- Traffic Direction ------------>  203.0.113.31
+   203.0.113.41  ---------- Traffic Direction ---------->  203.0.113.31
 
-                Figure 3: Multi-Domain BGP CT Network
+                   Figure 3: Multi-Domain BGP CT Network
 
    This example shows a provider MPLS network that consists of two ASes,
    AS1 and AS2, that serve customers AS3 and AS4, respectively.  The
@@ -2037,19 +2037,19 @@ Table of Contents
    layer.  Each domain specifies the same SLA using different color
    values.
 
-    ..................... ....................... ......................
-    :      Gold(100)    : :       Gold(300)     : :       Gold(500)    :
-    :                   : :                     : :                    :
-    : [PE11]----[ASBR11]---[ASBR21------[ASBR22]---[ASBR31-------[PE31]:
-    :                   : :                     : :                    :
-    :        AS1        : :          AS2        : :         AS3        :
-    :                   : :                     : :                    :
-    :      Bronze(200)  : :     Bronze(400)     : :     Bronze(600)    :
-    ..................... ....................... ......................
+     ..................... ....................... .....................
+     :      Gold(100)    : :       Gold(300)     : :       Gold(500)   :
+     :                   : :                     : :                   :
+     : [PE11]----[ASBR11]---[ASBR21------[ASBR22]---[ASBR31------[PE31]:
+     :                   : :                     : :                   :
+     :        AS1        : :          AS2        : :         AS3       :
+     :                   : :                     : :                   :
+     :      Bronze(200)  : :     Bronze(400)     : :     Bronze(600)   :
+     ..................... ....................... .....................
 
-               ----------- Traffic Direction -------->
+                ----------- Traffic Direction -------->
 
-        Figure 8: Transport Layer with Non-Agreeing Color Domains
+         Figure 8: Transport Layer with Non-agreeing Color Domains
 
    In the topology shown in Figure 8, we have three Autonomous Systems.
    All the nodes in the topology support BGP CT.
@@ -2108,20 +2108,20 @@ Table of Contents
    traverse through finer shades when available and take coarse shades
    otherwise.
 
-    ..................... ....................... ......................
-    :                   : :      Gold1(101)     : :                    :
-    :      Gold(100)    : :      Gold2(102)     : :      Gold(100)     :
-    :                   : :                     : :                    :
-    : [PE11]----[ASBR11]---[ASBR21------[ASBR22]---[ASBR31-------[PE31]:
-    :                   : :                     : :                    :
-    :   Metro Ingress   : :        Core         : :    Metro Egress    :
-    :                   : :                     : :                    :
-    :        AS1        : :          AS2        : :         AS3        :
-    ..................... ....................... ......................
+     ..................... ....................... .....................
+     :                   : :      Gold1(101)     : :                   :
+     :      Gold(100)    : :      Gold2(102)     : :      Gold(100)    :
+     :                   : :                     : :                   :
+     : [PE11]----[ASBR11]---[ASBR21------[ASBR22]---[ASBR31------[PE31]:
+     :                   : :                     : :                   :
+     :   Metro Ingress   : :        Core         : :    Metro Egress   :
+     :                   : :                     : :                   :
+     :        AS1        : :          AS2        : :         AS3       :
+     ..................... ....................... .....................
 
-                  ----------- Traffic Direction -------->
+                   ----------- Traffic Direction -------->
 
-        Figure 9: Transport Layer with Heterogeneous Color Domains
+         Figure 9: Transport Layer with Heterogenous Color Domains
 
    In Figure 9, we have three Autonomous Systems.  All the nodes in the
    topology support BGP CT.
@@ -3192,18 +3192,18 @@ B.2.  Inter-AS Option A Use Case
 
 B.2.1.  Topology
 
-                  [RR11]                        [RR21]
-                    |                             |
-                    +                             +
-[CE31]---[PE11]----[P1]----[ASBR11]---[ASBR21]---[P2]---[PE21]----[CE41]
+                     [RR11]                        [RR21]
+                       |                             |
+                       +                             +
+   [CE31]---[PE11]---[P1]---[ASBR11]---[ASBR21]---[P2]---[PE21]---[CE41]
 
-        :                           :                          :
-  AS3   :            ..AS1..        :      ..AS2..             :    AS4
-        :                           :                          :
+           :                         :                         :
+     AS3   :          ..AS1..        :      ..AS2..            :    AS4
+           :                         :                         :
 
-203.0.113.31          -------Traffic Direction------>      203.0.113.41
+   203.0.113.31          -------Traffic Direction------>    203.0.113.41
 
-                 Figure 15: BGP CT Inter-AS Option A
+                    Figure 15: BGP CT Inter-AS option A
 
    This example in Figure 15 shows two provider network Autonomous
    systems AS1, AS2.  They serve L3VPN customers AS3, AS4 respectively.
@@ -3291,18 +3291,18 @@ B.3.  Inter-AS Option B Use Case
 
 B.3.1.  Topology
 
-                  [RR13]                        [RR23]
-                    |                             |
-                    +                             +
-[CE31]---[PE11]----[P1]----[ASBR12]---[ASBR21]---[P2]---[PE22]----[CE41]
+                     [RR13]                        [RR23]
+                       |                             |
+                       +                             +
+   [CE31]---[PE11]---[P1]---[ASBR12]---[ASBR21]---[P2]---[PE22]---[CE41]
 
-        :                           :                          :
-  AS3   :            ..AS1..        :      ..AS2..             :    AS4
-        :                           :                          :
+           :                         :                       :
+     AS3   :          ..AS1..        :      ..AS2..          :    AS4
+           :                         :                       :
 
-203.0.113.31          ---- Traffic Direction ---->         203.0.113.41
+   203.0.113.31          ---- Traffic Direction ---->       203.0.113.41
 
-                 Figure 16: BGP CT Inter-AS Option B
+                    Figure 16: BGP CT Inter-AS option B
 
    Figure 16 shows two provider network Autonomous Systems: AS1 and AS2.
    They serve L3VPN customers AS3 and AS4, respectively.  The ASBRs
